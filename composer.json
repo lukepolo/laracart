@@ -1,0 +1,24 @@
+{
+    "name": "lukepolo/laracart",
+    "description": "A simple cart for Laravel",
+    "keywords": ["laravel", "cart", "shopping", "shoppingcart"],
+    "homepage": "https://github.com/lukepolo/laracart",
+    "license": "MIT",
+    "authors": [{
+        "name": "Luke Policinski",
+        "email": "Luke@LukePOLO.com",
+        "homepage": "http://LukePOLO.com"
+    }],
+    "require": {
+      "php": ">=5.4.0",
+      "illuminate/support": "5.1.*"
+    },
+    "autoload": {
+      "psr-4": {
+        "LukePOLO\\LaraCart\\": "src/"
+      }
+    },
+    "minimum-stability": "dev"
+}
+
+
