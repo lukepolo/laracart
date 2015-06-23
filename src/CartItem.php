@@ -59,7 +59,7 @@ class CartItem
 
         // Check to see if any of the sub options have a price associated with it
         foreach($this->options as $option) {
-            $price += $option->search('price');
+            $price += $option->price;
         }
 
         // add tax to the item
