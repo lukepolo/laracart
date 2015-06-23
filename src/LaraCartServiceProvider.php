@@ -2,6 +2,11 @@
 
 use Illuminate\Support\ServiceProvider;
 
+/**
+ * Class LaraCartServiceProvider
+ *
+ * @package LukePOLO\LaraCart
+ */
 class LaraCartServiceProvider extends ServiceProvider {
 
     /**
