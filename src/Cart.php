@@ -118,7 +118,10 @@ class Cart
     protected function generateHash(CartItem $cartItem)
     {
         $cartItemArray = (array) $cartItem;
-        ksort($cartItemArray['options']);
+
+        if(empty($cartItemArray['options']) === false) {
+            ksort($cartItemArray['options']);
+        }
 
         return md5(json_encode($cartItemArray));
     }

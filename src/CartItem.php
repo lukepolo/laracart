@@ -38,10 +38,13 @@ class CartItem
         $this->locale = config('laracart.locale', 'en_US');
         $this->displayLocale = config('laracart.display_locale');
 
-        // Generates all the options for the cart item
-        foreach($options as $option) {
-            $this->addOption($option);
+        if(empty($options) === false) {
+            // Generates all the options for the cart item
+            foreach($options as $option) {
+                $this->addOption($option);
+            }
         }
+
     }
 
     /**
