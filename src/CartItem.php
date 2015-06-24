@@ -13,7 +13,7 @@ class CartItem
     public $name;
     public $qty;
     public $price;
-    public $options;
+    public $options = [];
 
     public $tax;
     public $locale;
