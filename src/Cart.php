@@ -67,10 +67,12 @@ class Cart
      * @param int $qty
      * @param string $price
      * @param array $options
+     *
+     * @return string
      */
     public function add($itemID, $name = null, $qty = 1, $price = '0.00', $options = [])
     {
-        $this->addItem(new CartItem(
+        return $this->addItem(new CartItem(
             $itemID,
             $name,
             $qty,
@@ -83,6 +85,8 @@ class Cart
      * Adds the cartItem into the cart session
      *
      * @param $cartItem
+     *
+     * @return string
      */
     public function addItem($cartItem)
     {
@@ -100,6 +104,8 @@ class Cart
 
         // Update the cart session
         $this->update();
+
+        return $itemHash;
     }
 
     /**

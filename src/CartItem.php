@@ -40,7 +40,7 @@ class CartItem
 
         // Generates all the options for the cart item
         foreach($options as $option) {
-            $this->options[] = new CartItemOption($option);
+            $this->addOption($option);
         }
     }
 
@@ -91,5 +91,10 @@ class CartItem
         } else {
             return $this->getPrice($tax, false) * $this->qty;
         }
+    }
+
+    public function addOption($option)
+    {
+        $this->options[] = new CartItemOption($option);
     }
 }
