@@ -22,6 +22,9 @@ class Cart
     public $cart;
     public $tax;
 
+    /**
+     *
+     */
     function __construct()
     {
         // TODO -- allow for different type of sessions
@@ -57,6 +60,42 @@ class Cart
     public function get($instance = 'default')
     {
         $this->cart = \Session::get(config('laracart.cache_prefix', 'laracart_').$instance);
+    }
+
+    /**
+     * Updates cart session
+     */
+    public function update()
+    {
+        // todo add fire event
+        \Session::set(config('laracart.cache_prefix', 'laracart_').$this->instance, $this->cart);
+    }
+
+    /**
+     * Empties the carts items
+     */
+    public function emptyCart()
+    {
+        unset($this->cart->items);
+        // TODO - fire event
+    }
+
+    /**
+     * Generates a hash based on the cartItem array
+     *
+     * @param CartItem $cartItem
+     *
+     * @return string
+     */
+    protected function generateHash(CartItem $cartItem)
+    {
+        $cartItemArray = (array) $cartItem;
+
+        if(empty($cartItemArray['options']) === false) {
+            ksort($cartItemArray['options']);
+        }
+
+        return md5(json_encode($cartItemArray));
     }
 
     /**
@@ -109,25 +148,22 @@ class Cart
     }
 
     /**
-     * Geneates a hash based on the cartItem array
+     * Gets all the items within the cart
      *
-     * @param CartItem $cartItem
-     *
-     * @return string
+     * @return array
      */
-    protected function generateHash(CartItem $cartItem)
+    public function getItems()
     {
-        $cartItemArray = (array) $cartItem;
-
-        if(empty($cartItemArray['options']) === false) {
-            ksort($cartItemArray['options']);
+        if (isset($this->cart->items) === true) {
+            return $this->cart->items;
+        } else {
+            return [];
         }
-
-        return md5(json_encode($cartItemArray));
     }
 
     /**
      * Finds a cartItem based on the itemHash
+     *
      * @param $itemHash
      *
      * @return CartItem | null
@@ -142,12 +178,52 @@ class Cart
     }
 
     /**
-     * Updates cart session
+     * Updates an items hash
+     *
+     * @param $itemHash
      */
-    public function update()
+    public function updateItemHash($itemHash)
     {
-        // todo add fire event
-        \Session::set(config('laracart.cache_prefix', 'laracart_').$this->instance, $this->cart);
+        $this->add($this->findItem($itemHash));
+        $this->removeItem($itemHash);
+    }
+
+    /**
+     * Removes a CartItem based on the itemHash
+     * @param $itemHash
+     */
+    public function removeItem($itemHash)
+    {
+        array_forget($this->cart->items, $itemHash);
+        // TODO - fire event
+    }
+
+    /**
+     * TODO - remove how we update and move to item class
+     * Updates an items attributes
+     *
+     * @param $itemHash
+     * @param $key
+     * @param $value
+     *
+     * @throws UnknownItemProperty
+     */
+    public function updateItem($itemHash, $key, $value)
+    {
+        // TODO - validation for each of the item types
+        if(empty($item = $this->findItem($itemHash)) === false) {
+
+//            $item->update($key, $value);
+//
+            if(isset($item->$attr) === true) {
+                $item->$attr = $value;
+                array_forget($this->cart->items, $itemHash);
+                $this->addItem($item);
+            } else {
+                throw new UnknownItemProperty();
+            }
+        }
+        // TODO - fire event
     }
 
     /**
@@ -169,63 +245,6 @@ class Cart
             }
         }
         return $count;
-    }
-
-    /**
-     * Gets all the items within the cart
-     *
-     * @return array
-     */
-    public function getItems()
-    {
-        if (isset($this->cart->items) === true) {
-            return $this->cart->items;
-        } else {
-            return [];
-        }
-    }
-
-    /**
-     * Empties the carts items
-     */
-    public function emptyCart()
-    {
-        unset($this->cart->items);
-        // TODO - fire event
-    }
-
-    /**
-     * Removes a CartItem based on the itemHash
-     * @param $itemHash
-     */
-    public function removeItem($itemHash)
-    {
-        array_forget($this->cart->items, $itemHash);
-        // TODO - fire event
-    }
-
-    /**
-     * Updates an items attributes
-     *
-     * @param $itemHash
-     * @param $attr
-     * @param $value
-     *
-     * @throws UnknownItemProperty
-     */
-    public function updateItem($itemHash, $attr, $value)
-    {
-        // TODO - validation for each of the item types
-        if(empty($item = $this->findItem($itemHash)) === false) {
-            if(isset($item->$attr) === true) {
-                $item->$attr = $value;
-                array_forget($this->cart->items, $itemHash);
-                $this->addItem($item);
-            } else {
-                throw new UnknownItemProperty();
-            }
-        }
-        // TODO - fire event
     }
 
     /**

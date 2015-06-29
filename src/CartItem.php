@@ -2,6 +2,8 @@
 
 namespace LukePOLO\LaraCart;
 
+use LukePOLO\LaraCart\Exceptions\InvalidOption;
+
 /**
  * Class CartItem
  *
@@ -9,7 +11,7 @@ namespace LukePOLO\LaraCart;
  */
 class CartItem
 {
-    public $itemID;
+    public $id;
     public $name;
     public $qty;
     public $price;
@@ -20,15 +22,15 @@ class CartItem
     public $displayLocale;
 
     /**
-     * @param $itemID
+     * @param $id
      * @param $name
      * @param $qty
      * @param $price
      * @param array $options
      */
-    public function __construct($itemID, $name, $qty, $price, $options = [])
+    public function __construct($id, $name, $qty, $price, $options = [])
     {
-        $this->itemID = $itemID;
+        $this->id = $id;
         $this->name = $name;
         $this->qty = $qty;
         $this->price = (float) $price;
@@ -79,6 +81,27 @@ class CartItem
     }
 
     /**
+     * TODO - move from cart to here
+     *
+     * @param $key
+     * @param $value
+     *
+     * @throws UnknownItemProperty
+     */
+    public function update($key, $value)
+    {
+        Dump($key);
+        die;
+        if(isset($item->$attr) === true) {
+            $item->$attr = $value;
+            array_forget($this->cart->items, $itemHash);
+            $this->addItem($item);
+        } else {
+            throw new UnknownItemProperty();
+        }
+    }
+
+    /**
      * Gets the sub total of the item based on the qty with or without tax in the proper format
      *
      * @param bool $tax
@@ -96,8 +119,70 @@ class CartItem
         }
     }
 
-    public function addOption($option)
+    /**
+     * Adds an option to a cart item
+     *
+     * @param array $option
+     */
+    public function addOption(array $option)
     {
-        $this->options[] = new CartItemOption($option);
+        $cartItemOption = new CartItemOption($option);
+
+        $this->options[] = $cartItemOption;
+    }
+
+    /**
+     * Updates an items option by a key value pair
+     *
+     * @param $keyValue - the value that is used to search for a specific option
+     * @param $updateKey - the key that you wish to update
+     * @param $updateValue - the value to replace inside the key
+     * @param string $updateByKey - the key that it searches for to find the option
+     *
+     * @throws InvalidOption
+     */
+    public function updateOption($keyValue, $updateKey, $updateValue, $updateByKey = 'id')
+    {
+        $option = $this->findOption($updateByKey, $keyValue);
+
+        if(empty($option) === false) {
+            $option->update($updateKey, $updateValue);
+        } else {
+            throw new InvalidOption();
+        }
+    }
+
+    /**
+     * Finds an items option by its key and value
+     *
+     * @param $updateByKey
+     * @param $keyValue
+     *
+     * @return mixed
+     */
+    public function findOption($updateByKey, $keyValue)
+    {
+        return array_first($this->options, function($optionKey, $optionValue) use($updateByKey, $keyValue)
+        {
+            if($optionValue->$updateByKey == $keyValue) {
+                return true;
+            }
+        });
+    }
+
+    /**
+     * Updates all options for an item
+     * @param $options
+     */
+    public function updateOptions($options)
+    {
+        $this->options = [];
+
+        if(empty($options) === false) {
+            // Generates all the options for the cart item
+            foreach($options as $option) {
+                $this->addOption($option);
+            }
+        }
     }
 }
