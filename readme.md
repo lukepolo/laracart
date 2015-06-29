@@ -14,7 +14,7 @@ There are features that are incomplete and others that are not fully tested, ple
 
 Install the package through [Composer](http://getcomposer.org/). Edit your project's `composer.json` file by adding:
 
-    composer require "lukepolo/laracart"
+    composer require lukepolo/laracart
 
 Include Service Providers / Facade in `app/config/app.php`:
 ```php
