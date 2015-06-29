@@ -50,7 +50,7 @@ class Cart
     /**
      * Creates a CartItem and then adds it to cart
      *
-     * @param $itemID
+     * @param string|int $itemID
      * @param null $name
      * @param int $qty
      * @param string $price
@@ -196,6 +196,18 @@ class Cart
     }
 
     /**
+     * Removes a CartItem based on the itemHash
+     *
+     * @param $itemHash
+     */
+    public function removeItem($itemHash)
+    {
+        array_forget($this->cart->items, $itemHash);
+
+        $this->events->fire('laracart.removeItem', $itemHash);
+    }
+
+    /**
      * Empties the carts items
      */
     public function emptyCart()
@@ -213,18 +225,6 @@ class Cart
         unset($this->cart);
 
         $this->events->fire('laracart.destroy', $this->instance);
-    }
-
-    /**
-     * Removes a CartItem based on the itemHash
-     *
-     * @param $itemHash
-     */
-    public function removeItem($itemHash)
-    {
-        array_forget($this->cart->items, $itemHash);
-
-        $this->events->fire('laracart.removeItem', $itemHash);
     }
 
     /**
