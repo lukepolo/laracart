@@ -3,6 +3,8 @@
 namespace LukePOLO\LaraCart;
 
 use LukePOLO\LaraCart\Exceptions\InvalidOption;
+use LukePOLO\LaraCart\Exceptions\InvalidPrice;
+use LukePOLO\LaraCart\Exceptions\InvalidQuantity;
 use LukePOLO\LaraCart\Exceptions\UnknownItemProperty;
 
 /**
@@ -159,10 +161,25 @@ class CartItem
      * @param $key
      * @param $value
      *
-     * @throws UnknownItemProperty
+     * @throws InvalidQuantity | InvalidPrice | UnknownItemProperty
      */
     public function update($key, $value)
     {
+        switch($key) {
+            case 'qty' :
+                // validate qty
+                if(is_int($value) === false) {
+                    throw new InvalidQuantity();
+                }
+            break;
+            case 'price' :
+                // validate is currency
+                if(is_numeric($value) === false || preg_match('/\.(\d){3}/', $value)) {
+                    throw new InvalidPrice();
+                }
+            break;
+        }
+
         if(isset($this->$key) === true) {
             $this->$key = $value;
         } else {

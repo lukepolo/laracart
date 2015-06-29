@@ -158,7 +158,6 @@ class Cart
      */
     public function updateItem($itemHash, $key, $value)
     {
-        // TODO - validation for each of the item types
         if(empty($item = $this->findItem($itemHash)) === false) {
             $item->update($key, $value);
         }
