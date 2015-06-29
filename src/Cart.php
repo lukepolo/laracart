@@ -2,8 +2,6 @@
 
 namespace LukePOLO\LaraCart;
 
-use LukePOLO\LaraCart\Exceptions\UnknownItemProperty;
-
 /**
  * Class Cart
  *
@@ -22,9 +20,6 @@ class Cart
     public $cart;
     public $tax;
 
-    /**
-     *
-     */
     function __construct()
     {
         // TODO -- allow for different type of sessions
@@ -49,53 +44,7 @@ class Cart
 
         $this->get($instance);
 
-        // TODO - fire event that there was a new instance of the cart
-    }
-
-    /**
-     * Gets the instance in the session
-     *
-     * @param string $instance
-     */
-    public function get($instance = 'default')
-    {
-        $this->cart = \Session::get(config('laracart.cache_prefix', 'laracart_').$instance);
-    }
-
-    /**
-     * Updates cart session
-     */
-    public function update()
-    {
-        // todo add fire event
-        \Session::set(config('laracart.cache_prefix', 'laracart_').$this->instance, $this->cart);
-    }
-
-    /**
-     * Empties the carts items
-     */
-    public function emptyCart()
-    {
-        unset($this->cart->items);
-        // TODO - fire event
-    }
-
-    /**
-     * Generates a hash based on the cartItem array
-     *
-     * @param CartItem $cartItem
-     *
-     * @return string
-     */
-    protected function generateHash(CartItem $cartItem)
-    {
-        $cartItemArray = (array) $cartItem;
-
-        if(empty($cartItemArray['options']) === false) {
-            ksort($cartItemArray['options']);
-        }
-
-        return md5(json_encode($cartItemArray));
+        \Event::fire('laracart.new');
     }
 
     /**
@@ -107,7 +56,7 @@ class Cart
      * @param string $price
      * @param array $options
      *
-     * @return string
+     * @return string itemHash
      */
     public function add($itemID, $name = null, $qty = 1, $price = '0.00', $options = [])
     {
@@ -125,12 +74,12 @@ class Cart
      *
      * @param $cartItem
      *
-     * @return string
+     * @return string itemHash
      */
     public function addItem($cartItem)
     {
         // We need to generate the item hash to uniquely identify the item
-        $itemHash = $this->generateHash($cartItem);
+        $itemHash = $cartItem->generateHash();
 
         // If an item is a duplicate we know we need to bump the quantity
         if(isset($this->cart->items) && array_get($this->cart->items, $itemHash)) {
@@ -139,12 +88,24 @@ class Cart
             array_set($this->cart->items, $itemHash, $cartItem);
         }
 
-        // TODO - add fire event
+        \Event::fire('laracart.addItem', $cartItem);
 
         // Update the cart session
         $this->update();
 
         return $itemHash;
+    }
+
+    /**
+     * Gets the instance in the session
+     *
+     * @param string $instance
+     *
+     * @return $this cart instance
+     */
+    public function get($instance = 'default')
+    {
+        return $this->cart = \Session::get(config('laracart.cache_prefix', 'laracart_').$instance);
     }
 
     /**
@@ -178,52 +139,80 @@ class Cart
     }
 
     /**
-     * Updates an items hash
-     *
-     * @param $itemHash
+     * Updates cart session
      */
-    public function updateItemHash($itemHash)
+    public function update()
     {
-        $this->add($this->findItem($itemHash));
-        $this->removeItem($itemHash);
+        \Session::set(config('laracart.cache_prefix', 'laracart_').$this->instance, $this->cart);
+
+        \Event::fire('laracart.update', $this->cart);
     }
 
     /**
-     * Removes a CartItem based on the itemHash
-     * @param $itemHash
-     */
-    public function removeItem($itemHash)
-    {
-        array_forget($this->cart->items, $itemHash);
-        // TODO - fire event
-    }
-
-    /**
-     * TODO - remove how we update and move to item class
      * Updates an items attributes
      *
      * @param $itemHash
      * @param $key
      * @param $value
      *
-     * @throws UnknownItemProperty
      */
     public function updateItem($itemHash, $key, $value)
     {
         // TODO - validation for each of the item types
         if(empty($item = $this->findItem($itemHash)) === false) {
-
-//            $item->update($key, $value);
-//
-            if(isset($item->$attr) === true) {
-                $item->$attr = $value;
-                array_forget($this->cart->items, $itemHash);
-                $this->addItem($item);
-            } else {
-                throw new UnknownItemProperty();
-            }
+            $item->update($key, $value);
         }
-        // TODO - fire event
+        \Event::fire('laracart.updateItem', $item);
+    }
+
+    /**
+     * Updates an items hash
+     *
+     * @param $itemHash
+     *
+     * @return string ItemHash
+     */
+    public function updateItemHash($itemHash)
+    {
+        // Gets the item with its current hash
+        $item = $this->findItem($itemHash);
+
+        // removes the item
+        $this->removeItem($itemHash);
+
+        \Event::fire('laracart.updateHash', $itemHash);
+
+        // Adds the item with its new hash
+        return $this->addItem($item);
+    }
+
+    public function updateItemHashes()
+    {
+        foreach($this->getItems() as $itemHash => $item) {
+            $this->updateItemHash($itemHash);
+        }
+    }
+
+    /**
+     * Empties the carts items
+     */
+    public function emptyCart()
+    {
+        unset($this->cart->items);
+
+        \Event::fire('laracart.empty', $this->instance);
+    }
+
+    /**
+     * Removes a CartItem based on the itemHash
+     *
+     * @param $itemHash
+     */
+    public function removeItem($itemHash)
+    {
+        array_forget($this->cart->items, $itemHash);
+
+        \Event::fire('laracart.removeItem', $itemHash);
     }
 
     /**

@@ -3,6 +3,7 @@
 namespace LukePOLO\LaraCart;
 
 use LukePOLO\LaraCart\Exceptions\InvalidOption;
+use LukePOLO\LaraCart\Exceptions\UnknownItemProperty;
 
 /**
  * Class CartItem
@@ -11,6 +12,8 @@ use LukePOLO\LaraCart\Exceptions\InvalidOption;
  */
 class CartItem
 {
+    protected $itemHash;
+
     public $id;
     public $name;
     public $qty;
@@ -47,6 +50,76 @@ class CartItem
             }
         }
 
+        // generate itemHash
+        $this->generateHash();
+    }
+
+    /**
+     * Generates a hash based on the cartItem array
+     *
+     * @return string itemHash
+     */
+    public function generateHash()
+    {
+        // Reset the itemHash to null
+        $this->itemHash = null;
+
+        // Transform into an array
+        $cartItemArray = (array) $this;
+
+        // Sort the options so we can get an accurate MD5
+        if(empty($cartItemArray['options']) === false) {
+            ksort($cartItemArray['options']);
+        }
+
+        // Create an md5 out of the array
+        $this->itemHash = $itemHash = md5(json_encode($cartItemArray));
+
+        return $itemHash;
+    }
+
+    /**
+     * Gets the hash for the item
+     *
+     * @return mixed
+     */
+    public function getHash()
+    {
+        return $this->itemHash;
+    }
+
+    /**
+     * Adds an option to a cart item
+     *
+     * @param array $option
+     */
+    public function addOption(array $option)
+    {
+        $cartItemOption = new CartItemOption($option);
+
+        $this->options[] = $cartItemOption;
+
+        $this->generateHash();
+    }
+
+    /**
+     * Finds an items option by its key and value
+     *
+     * @param $updateByKey
+     * @param $keyValue
+     *
+     * @return mixed
+     */
+    public function findOption($updateByKey, $keyValue)
+    {
+        return array_first($this->options, function($optionKey, $optionValue) use($updateByKey, $keyValue)
+        {
+            if($optionValue->$updateByKey == $keyValue) {
+                return true;
+            } else {
+                return false;
+            }
+        });
     }
 
     /**
@@ -81,7 +154,7 @@ class CartItem
     }
 
     /**
-     * TODO - move from cart to here
+     * Updates an items properties
      *
      * @param $key
      * @param $value
@@ -90,45 +163,13 @@ class CartItem
      */
     public function update($key, $value)
     {
-        Dump($key);
-        die;
-        if(isset($item->$attr) === true) {
-            $item->$attr = $value;
-            array_forget($this->cart->items, $itemHash);
-            $this->addItem($item);
+        if(isset($this->$key) === true) {
+            $this->$key = $value;
         } else {
             throw new UnknownItemProperty();
         }
-    }
 
-    /**
-     * Gets the sub total of the item based on the qty with or without tax in the proper format
-     *
-     * @param bool $tax
-     * @param bool $format
-     *
-     * @return float|string
-     */
-    public function subTotal($tax = false, $format = true)
-    {
-        // Formats the total basd on the locale
-        if($format) {
-            return LaraCart::formatMoney($this->getPrice($tax, false) * $this->qty, $this->locale, $this->displayLocale);
-        } else {
-            return $this->getPrice($tax, false) * $this->qty;
-        }
-    }
-
-    /**
-     * Adds an option to a cart item
-     *
-     * @param array $option
-     */
-    public function addOption(array $option)
-    {
-        $cartItemOption = new CartItemOption($option);
-
-        $this->options[] = $cartItemOption;
+        $this->generateHash();
     }
 
     /**
@@ -150,24 +191,8 @@ class CartItem
         } else {
             throw new InvalidOption();
         }
-    }
 
-    /**
-     * Finds an items option by its key and value
-     *
-     * @param $updateByKey
-     * @param $keyValue
-     *
-     * @return mixed
-     */
-    public function findOption($updateByKey, $keyValue)
-    {
-        return array_first($this->options, function($optionKey, $optionValue) use($updateByKey, $keyValue)
-        {
-            if($optionValue->$updateByKey == $keyValue) {
-                return true;
-            }
-        });
+        $this->generateHash();
     }
 
     /**
@@ -183,6 +208,26 @@ class CartItem
             foreach($options as $option) {
                 $this->addOption($option);
             }
+        }
+
+        $this->generateHash();
+    }
+
+    /**
+     * Gets the sub total of the item based on the qty with or without tax in the proper format
+     *
+     * @param bool $tax
+     * @param bool $format
+     *
+     * @return float|string
+     */
+    public function subTotal($tax = false, $format = true)
+    {
+        // Formats the total basd on the locale
+        if($format) {
+            return LaraCart::formatMoney($this->getPrice($tax, false) * $this->qty, $this->locale, $this->displayLocale);
+        } else {
+            return $this->getPrice($tax, false) * $this->qty;
         }
     }
 }

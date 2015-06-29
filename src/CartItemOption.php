@@ -19,6 +19,12 @@ class CartItemOption
         $this->options = $options;
     }
 
+    /**
+     * Updates an option by its key
+     *
+     * @param $key
+     * @param $value
+     */
     public function update($key, $value)
     {
         $this->$key = $value;
@@ -36,6 +42,12 @@ class CartItemOption
         return array_get($this->options, $option);
     }
 
+    /**
+     * Magic Method allows for user input to set a value inside a object
+     *
+     * @param $option
+     * @param $value
+     */
     public function __set($option, $value)
     {
         array_set($this->options, $option, $value);
