@@ -22,8 +22,8 @@ class Cart
 
     function __construct()
     {
-        // TODO -- allow for different type of sessions
         $this->session = app('session');
+        $this->events = app('events');
 
         // Setup the Locale and Tax Variables for the Cart
         $this->locale = config('laracart.locale', 'en_US');
@@ -44,7 +44,7 @@ class Cart
 
         $this->get($instance);
 
-        \Event::fire('laracart.new');
+        $this->events->fire('laracart.new');
     }
 
     /**
@@ -88,7 +88,7 @@ class Cart
             array_set($this->cart->items, $itemHash, $cartItem);
         }
 
-        \Event::fire('laracart.addItem', $cartItem);
+        $this->events->fire('laracart.addItem', $cartItem);
 
         // Update the cart session
         $this->update();
@@ -145,7 +145,7 @@ class Cart
     {
         \Session::set(config('laracart.cache_prefix', 'laracart_').$this->instance, $this->cart);
 
-        \Event::fire('laracart.update', $this->cart);
+        $this->events->fire('laracart.update', $this->cart);
     }
 
     /**
@@ -161,7 +161,7 @@ class Cart
         if(empty($item = $this->findItem($itemHash)) === false) {
             $item->update($key, $value);
         }
-        \Event::fire('laracart.updateItem', $item);
+        $this->events->fire('laracart.updateItem', $item);
     }
 
     /**
@@ -179,12 +179,15 @@ class Cart
         // removes the item
         $this->removeItem($itemHash);
 
-        \Event::fire('laracart.updateHash', $itemHash);
+        $this->events->fire('laracart.updateHash', $itemHash);
 
         // Adds the item with its new hash
         return $this->addItem($item);
     }
 
+    /**
+     * Updates all item hashes within the cart
+     */
     public function updateItemHashes()
     {
         foreach($this->getItems() as $itemHash => $item) {
@@ -199,7 +202,17 @@ class Cart
     {
         unset($this->cart->items);
 
-        \Event::fire('laracart.empty', $this->instance);
+        $this->events->fire('laracart.empty', $this->instance);
+    }
+
+    /**
+     * Completely destroys cart and anything associated with it
+     */
+    public function destroyCart()
+    {
+        unset($this->cart);
+
+        $this->events->fire('laracart.destroy', $this->instance);
     }
 
     /**
@@ -211,7 +224,7 @@ class Cart
     {
         array_forget($this->cart->items, $itemHash);
 
-        \Event::fire('laracart.removeItem', $itemHash);
+        $this->events->fire('laracart.removeItem', $itemHash);
     }
 
     /**
