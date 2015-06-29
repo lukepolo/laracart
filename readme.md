@@ -1,12 +1,20 @@
 ## LaraCart
 [![Latest Stable Version](https://poser.pugx.org/lukepolo/laracart/v/stable)](https://packagist.org/packages/lukepolo/laracart) [![Total Downloads](https://poser.pugx.org/lukepolo/laracart/downloads)](https://packagist.org/packages/lukepolo/laracart) [![Latest Unstable Version](https://poser.pugx.org/lukepolo/laracart/v/unstable)](https://packagist.org/packages/lukepolo/laracart) [![License](https://poser.pugx.org/lukepolo/laracart/license)](https://packagist.org/packages/lukepolo/laracart)
 
+## !!WARNING!! Currently In Development
+There are features that are incomplete and others that are not fully tested, please feel free to submit issues and enhancements
+
+## Features
+* Display Currency along with Locale 
+* Easy Session Base Usage
+* Totals / SubTotals  with taxes
+* Option can have prices and are calculated in the totals and sub totals
+
 ## Installation
 
 Install the package through [Composer](http://getcomposer.org/). Edit your project's `composer.json` file by adding:
 
     composer require "lukepolo/laracart"
-
 
 Include Service Providers / Facade in `app/config/app.php`:
 ```php
@@ -17,6 +25,13 @@ Optionally include the Facade (suggested) :
 ```php
 	'LaraCart' => LukePOLO\LaraCart\Facades\LaraCart::class,
 ```
+
+Copy over the configuration file by running the command :
+``` 
+    php artisan vendor:publish 
+```
+
+Look through the configuration options and change as needed
 
 ## Overview
 Look at one of the following topics to learn more about LaravelShoppingcart
@@ -29,40 +44,120 @@ Look at one of the following topics to learn more about LaravelShoppingcart
 
 ## Usage
 
-**LaraCart::add()**
-
+**Adding an Item to the cart **
 ```php
-    /**
-     * @param string|int $itemID
-     * @param null $name
-     * @param int $qty
-     * @param string $price
-     * @param array $options an array of options
-    */
-```
-
-Example:
-```php
+    // First way we can just add like this
     LaraCart::add(1, 'Burger', 5, 2.00, [
+        // Notice this is an array of arrays, 
+        // this allows us to further expand the cart functions to the options
         [
             'Description' => 'Bacon',
             'Price' => 1.00
         ]
     ]);
-
 ```
 
+**Updating an Items Attributes**
+```php
+    LaraCart::updateItem($itemHash, 'name', 'CheeseBurger w/Bacon');
+    LaraCart::updateItem($itemHash, 'qty', 5);
+    LaraCart::updateItem($itemHash, 'price', '2.50');
+```
+
+**Removing an item**
+```php
+    LaraCart::removeItem($itemHash);
+```
+
+**Empty / Destroying the Cart**
+```php
+    // Empty will only empty the contents
+    LaraCart::emptyCart()
+    
+    // Destroy will remove the entire instance of the cart including coupons ect.
+    LaraCart::destroyCart()
+```
+
+**Get the contents of the cart**
+```php
+    LaraCart::getItems();
+```
+
+**Find a specific item in the cart**
+```php
+    LaraCart::findItem($itemHash);
+```
+**Gets the total number of items in the cart**
+```php
+    LaraCart::count();
+```
+
+**Display Item Price with Locale**
+```php
+    // $tax = false by default
+    $cartItem->getPrice($tax); // $24.23 | USD 24.23
+```
+
+**Get the subtotal of the item**
+```php
+    // $tax = false by default
+    $cartItem->subTotal($tax);
+```
+
+**Add Option to Item**
+```php
+    $cartItem->addOption([
+        'Description' => 'Fries',
+        'Price' => '.75'
+    ]);
+```
+
+**Updating Options**
+```php
+    // Replacing an options value
+    // $cartItem->id = '123';
+    // This updates the "Description" to "No Cheese"
+    $cartItem->updateOption('123', 'Description', 'No Cheese', $updateByKey = 'id');
+    
+    // Replace all options with the new options
+    $cartItem->updateOptions([
+        [
+            'Description' => 'Extra Cheese',
+            'Price' => '.25'
+        ]
+    ]);
+    
+    $cartItem->removeOption('', $removeByKey = 'id');
+```
+
+**Get the Sub-Total of the cart** (This also includes the prices in the options array!)
+```php
+    // By default $tax = false
+    LaraCart::subTotal($tax);
+```
+** Get the total of the cart**
+```php 
+    // By default $tax = true
+    LaraCart::total($tax);
+```
+
+
 ## Instances
+Instances is a way that we can use multiple carts within the same session. By using 
+```php
+    LaraCart::setInstance('yourInstanceName');
+```
+Will switch to that instance of the cart. Each following request will **NOT** use that instance. (Will be changed soon to keep the session in which you have set)
 
 ## Exceptions
-The Cart package will throw exceptions if something goes wrong. This way it's easier to debug your code using the Cart package or to handle the error based on the type of exceptions. The Cart packages can throw the following exceptions:
+LaraCart packages can throw the following exceptions:
 
 | Exception                             | Reason                                                                           |
 | ------------------------------------- | --------------------------------------------------------------------------------- |
-| *InvalidOption*       | When trying to update an option on an item, cannot find a key value pair that mathces  |
+| *InvalidOption*       | When trying to update an option on an item, cannot find a key value pair that matches  |
 | *InvalidPrice*    | When trying to give an item a non currency format   |
 | *InvalidQuantity*    | When trying to give an item a non-integer for a quantity  |
-| *UnknownItemProperty*    | When trying to update an items attribute that doesn't exsist |
+| *UnknownItemProperty*    | When trying to update an items attribute that doesn't exists |
 
 ## Events
 
@@ -78,12 +173,6 @@ The cart also has events build in. There are five events available for you to li
 | laracart.removeItem($itemHash)      | When a item is removed from the cart |
 | laracart.empty($cartInstance)      | When a cart is emptied |
 | laracart.destroy($cartInstance)      | When a cart is destroyed |
-
-
-
-## Example
-
-```
 
 
 License

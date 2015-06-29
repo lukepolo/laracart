@@ -212,6 +212,22 @@ class CartItem
         $this->generateHash();
     }
 
+
+    /**
+     * Removes an items option by a key value pair
+     *
+     * @param $keyValue - the value that is used to search for a specific option
+     * @param string $removeByKey - the key that it searches for to find the option
+     *
+     * @throws InvalidOption
+     */
+    public function removeOption($keyValue, $removeByKey = 'id')
+    {
+        Dump('need to finish this');
+        die;
+        $this->generateHash();
+    }
+
     /**
      * Updates all options for an item
      * @param $options
