@@ -31,7 +31,9 @@ class Cart
         $this->tax = config('laracart.tax');
 
         // Set a default instance of the cart
-        $this->setInstance();
+        $instance = $this->session->get('laracart.instance', 'default');
+
+        $this->setInstance($instance);
     }
 
     /**
@@ -43,6 +45,9 @@ class Cart
         $this->instance = $instance;
 
         $this->get($instance);
+
+        // set in the session that we are using a different instance
+        $this->session->set('laracart.instance', $instance);
 
         $this->events->fire('laracart.new');
     }
@@ -105,7 +110,7 @@ class Cart
      */
     public function get($instance = 'default')
     {
-        return $this->cart = \Session::get(config('laracart.cache_prefix', 'laracart_').$instance);
+        return $this->cart = $this->session->get(config('laracart.cache_prefix', 'laracart_').$instance);
     }
 
     /**
@@ -143,7 +148,7 @@ class Cart
      */
     public function update()
     {
-        \Session::set(config('laracart.cache_prefix', 'laracart_').$this->instance, $this->cart);
+        $this->session->set(config('laracart.cache_prefix', 'laracart_').$this->instance, $this->cart);
 
         $this->events->fire('laracart.update', $this->cart);
     }
