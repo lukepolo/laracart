@@ -48,6 +48,7 @@ class Cart
 
     /**
      * Sets and Gets the instance of the cart in the session we should be using
+     *
      * @param string $instance
      */
     public function setInstance($instance = 'default')
@@ -101,7 +102,7 @@ class Cart
         if(isset($this->cart->items) && array_get($this->cart->items, $itemHash)) {
             $this->findItem($itemHash)->qty += $cartItem->qty;
         } else {
-            array_set($this->cart->items, $itemHash, $cartItem);
+            $this->cart->items[] = $cartItem;
         }
 
         $this->events->fire('laracart.addItem', $cartItem);
@@ -131,11 +132,14 @@ class Cart
      */
     public function getItems()
     {
+        $items = [];
         if (isset($this->cart->items) === true) {
-            return $this->cart->items;
-        } else {
-            return [];
+            foreach($this->cart->items as $item) {
+                $items[$item->getHash()] = $item;
+            }
         }
+
+        return $items;
     }
 
     /**
@@ -147,11 +151,7 @@ class Cart
      */
     public function findItem($itemHash)
     {
-        if(isset($this->cart->items)) {
-            return array_get($this->cart->items, $itemHash);
-        } else {
-            return null;
-        }
+        return array_get($this->getItems(), $itemHash);
     }
 
     /**

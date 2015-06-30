@@ -36,6 +36,7 @@ class CartItem
      * @param $qty
      * @param $price
      * @param array $options
+     *
      */
     public function __construct($id, $name, $qty, $price, $options = [], LaraCartService $laraCartService)
     {
@@ -109,6 +110,8 @@ class CartItem
      * Adds an option to a cart item
      *
      * @param array $option
+     *
+     * @return string $itemHash
      */
     public function addOption(array $option)
     {
@@ -116,7 +119,7 @@ class CartItem
 
         $this->options[] = $cartItemOption;
 
-        $this->generateHash();
+        return $this->generateHash();
     }
 
     /**
@@ -177,6 +180,8 @@ class CartItem
      * @param $value
      *
      * @throws InvalidQuantity | InvalidPrice | UnknownItemProperty
+     *
+     * @return string $itemHash
      */
     public function update($key, $value)
     {
@@ -201,7 +206,7 @@ class CartItem
             throw new UnknownItemProperty();
         }
 
-        $this->generateHash();
+        return $this->generateHash();
     }
 
     /**
@@ -213,6 +218,8 @@ class CartItem
      * @param string $updateByKey - the key that it searches for to find the option
      *
      * @throws InvalidOption
+     *
+     * @return string $itemHash
      */
     public function updateOption($keyValue, $updateKey, $updateValue, $updateByKey = 'id')
     {
@@ -224,7 +231,7 @@ class CartItem
             throw new InvalidOption();
         }
 
-        $this->generateHash();
+        return $this->generateHash();
     }
 
 
@@ -235,6 +242,8 @@ class CartItem
      * @param string $removeByKey - the key that it searches for to find the option
      *
      * @throws InvalidOption
+     *
+     * @return string $itemHash
      */
     public function removeOption($keyValue, $removeByKey = 'id')
     {
@@ -245,12 +254,15 @@ class CartItem
                 ->toArray()
         );
 
-        $this->generateHash();
+        return $this->generateHash();
     }
 
     /**
      * Updates all options for an item
+     *
      * @param $options
+     *
+     * @return string $itemHash
      */
     public function updateOptions($options)
     {
@@ -263,7 +275,7 @@ class CartItem
             }
         }
 
-        $this->generateHash();
+        return $this->generateHash();
     }
 
     /**

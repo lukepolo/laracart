@@ -55,4 +55,20 @@ class CartItemOption
     {
         array_set($this->options, $option, $value);
     }
+
+    /**
+     * Magic Method allows for user to check if an option isset
+     *
+     * @param $option
+     *
+     * @return bool
+     */
+    public function __isset($option)
+    {
+        if(empty($this->options[$option]) === false) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 }
