@@ -55,6 +55,11 @@ Look at one of the following topics to learn more about LaravelShoppingcart
             'Price' => 1.00
         ]
     ]);
+
+    // You can also do simple arrays for convenience
+    LaraCart::add(2, 'Shirt', 200, 15.99, [
+        'Size' => 'XL'
+    ]);
 ```
 
 **Updating an Items Attributes**
@@ -126,8 +131,13 @@ Look at one of the following topics to learn more about LaravelShoppingcart
             'Price' => '.25'
         ]
     ]);
-    
-    $cartItem->removeOption('', $removeByKey = 'id');
+
+    // You can either use the built in option 'id'
+    $cartItem->removeOption($optionID, $removeByKey = 'id');
+
+    // Or you can use your own
+    $cartItem->removeOption($optionName, $removeByKey = 'optionName');
+
 ```
 
 **Get the Sub-Total of the cart** (This also includes the prices in the options array!)
