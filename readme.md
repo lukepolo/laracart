@@ -1,4 +1,4 @@
-## LaraCart
+## LaraCart - Laravel 5.1 Shopping Cart Package
 [![Latest Stable Version](https://poser.pugx.org/lukepolo/laracart/v/stable)](https://packagist.org/packages/lukepolo/laracart) [![Total Downloads](https://poser.pugx.org/lukepolo/laracart/downloads)](https://packagist.org/packages/lukepolo/laracart) [![Latest Unstable Version](https://poser.pugx.org/lukepolo/laracart/v/unstable)](https://packagist.org/packages/lukepolo/laracart) [![License](https://poser.pugx.org/lukepolo/laracart/license)](https://packagist.org/packages/lukepolo/laracart)
 
 ## !!WARNING!! Currently In Development
@@ -44,7 +44,7 @@ Look at one of the following topics to learn more about LaravelShoppingcart
 
 ## Usage
 
-**Adding an Item to the cart **
+**Adding an Item to the cart**
 ```php
     // First way we can just add like this
     LaraCart::add(1, 'Burger', 5, 2.00, [
@@ -135,7 +135,7 @@ Look at one of the following topics to learn more about LaravelShoppingcart
     // By default $tax = false
     LaraCart::subTotal($tax);
 ```
-** Get the total of the cart**
+**Get the total of the cart**
 ```php 
     // By default $tax = true
     LaraCart::total($tax);
@@ -143,7 +143,7 @@ Look at one of the following topics to learn more about LaravelShoppingcart
 
 
 ## Instances
-Instances is a way that we can use multiple carts within the same session. By using 
+Instances is a way that we can use multiple carts within the same session. By using:
 ```php
     LaraCart::setInstance('yourInstanceName');
 ```
@@ -161,7 +161,7 @@ LaraCart packages can throw the following exceptions:
 
 ## Events
 
-The cart also has events build in. There are five events available for you to listen for.
+The cart also has events build in:
 
 | Event                | Fired                                   |
 | -------------------- | --------------------------------------- |

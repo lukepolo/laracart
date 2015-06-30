@@ -17,6 +17,7 @@ class CartItem
     protected $itemHash;
 
     public $id;
+
     public $name;
     public $qty;
     public $price;
@@ -45,10 +46,15 @@ class CartItem
         $this->locale = config('laracart.locale', 'en_US');
         $this->displayLocale = config('laracart.display_locale');
 
+        // Allows for simple options that are not arrays
         if(empty($options) === false) {
-            // Generates all the options for the cart item
-            foreach($options as $option) {
-                $this->addOption($option);
+            if (is_array($options) === true) {
+                $this->addOption($options);
+            } else {
+                // Generates all the options for the cart item
+                foreach ($options as $option) {
+                    $this->addOption($option);
+                }
             }
         }
 
@@ -223,8 +229,13 @@ class CartItem
      */
     public function removeOption($keyValue, $removeByKey = 'id')
     {
-        Dump('need to finish this');
-        die;
+        $this->options = array_values(
+            collect($this->options)
+                ->keyBy($removeByKey)
+                ->forget($keyValue)
+                ->toArray()
+        );
+
         $this->generateHash();
     }
 
@@ -256,7 +267,7 @@ class CartItem
      */
     public function subTotal($tax = false, $format = true)
     {
-        // Formats the total basd on the locale
+        // Formats the total based on the locale
         if($format) {
             return LaraCart::formatMoney($this->getPrice($tax, false) * $this->qty, $this->locale, $this->displayLocale);
         } else {

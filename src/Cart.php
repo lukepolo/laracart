@@ -13,8 +13,8 @@ class Cart
      * @var \Illuminate\Session\SessionManager
      */
     protected $session;
-
     protected $instance;
+
     public $locale;
     public $displayLocale;
     public $cart;
