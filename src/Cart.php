@@ -99,7 +99,7 @@ class Cart
         $itemHash = $cartItem->generateHash();
 
         // If an item is a duplicate we know we need to bump the quantity
-        if(isset($this->cart->items) && array_get($this->cart->items, $itemHash)) {
+        if($this->findItem($itemHash)) {
             $this->findItem($itemHash)->qty += $cartItem->qty;
         } else {
             $this->cart->items[] = $cartItem;
@@ -218,7 +218,12 @@ class Cart
      */
     public function removeItem($itemHash)
     {
-        array_forget($this->cart->items, $itemHash);
+        foreach($this->cart->items as $itemKey => $item) {
+           if($item->getHash() == $itemHash) {
+               unset($this->cart->items[$itemKey]);
+               break;
+           }
+        }
 
         $this->events->fire('laracart.removeItem', $itemHash);
     }
@@ -275,7 +280,7 @@ class Cart
     {
         $total = 0;
         if($this->count() != 0) {
-            foreach ($this->cart->items as $item) {
+            foreach ($this->getItems() as $item) {
                 $total += $item->subTotal($tax, false);
             }
         }
