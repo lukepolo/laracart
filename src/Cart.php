@@ -2,6 +2,8 @@
 
 namespace LukePOLO\LaraCart;
 
+use LukePOLO\LaraCart\LaraCartInterface as LaraCartService;
+
 /**
  * Class Cart
  *
@@ -15,20 +17,28 @@ class Cart
     protected $session;
     protected $instance;
 
-    public $locale;
-    public $displayLocale;
     public $cart;
+
     public $tax;
 
-    function __construct()
+    public $locale;
+    public $internationalFormat;
+
+    /**
+     * @param LaraCartInterface $laraCartService | LukePOLO\LaraCart\LaraCart $laraCartService
+     */
+    function __construct(LaraCartService $laraCartService)
     {
+        $this->laraCartService = $laraCartService;
         $this->session = app('session');
         $this->events = app('events');
 
-        // Setup the Locale and Tax Variables for the Cart
-        $this->locale = config('laracart.locale', 'en_US');
-        $this->displayLocale = config('laracart.display_locale');
+        // Sets the tax for the cart
         $this->tax = config('laracart.tax');
+
+        // Sets the locale for the cart
+        $this->locale = config('laracart.locale', 'en_US');
+        $this->internationalFormat = config('laracart.international_format');
 
         // Set a default instance of the cart
         $instance = $this->session->get('laracart.instance', 'default');
@@ -70,7 +80,8 @@ class Cart
             $name,
             $qty,
             $price,
-            $options
+            $options,
+            $this->laraCartService
         ));
     }
 
@@ -269,7 +280,7 @@ class Cart
             }
         }
 
-        return LaraCart::formatMoney($total, $this->locale, $this->displayLocale);
+        return $this->laraCartService->formatMoney($total, $this->locale, $this->internationalFormat);
     }
 
     /**

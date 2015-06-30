@@ -28,9 +28,13 @@ class LaraCartServiceProvider extends ServiceProvider {
      */
     public function register()
     {
-        $this->app['laracart'] = $this->app->share(function($app)
-        {
-            return new Cart($app['session']);
+        $this->app->singleton(
+            LaraCartInterface::class,
+            LaraCart::class
+        );
+
+        $this->app['laracart'] = $this->app->share(function($app) {
+            return new Cart($app->make(LaraCartInterface::class));
         });
     }
 }

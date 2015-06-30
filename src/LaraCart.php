@@ -9,20 +9,17 @@ namespace LukePOLO\LaraCart;
  */
 class LaraCart implements LaraCartInterface
 {
-
-    // TODO - make it usable via public
-    // TODO - make available for windows, since money_format does not work without additonal packages
     /**
      * @param $number
      * @param $locale
-     * @param $displayLocale
+     * @param $internationalFormat
      *
      * @return string
      */
-    public static function formatMoney($number, $locale, $displayLocale)
+    public static function formatMoney($number, $locale, $internationalFormat)
     {
         setlocale(LC_MONETARY, $locale);
-        if($displayLocale) {
+        if($internationalFormat) {
             return money_format('%i', $number);
         } else {
             return money_format('%n', $number);

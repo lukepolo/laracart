@@ -2,6 +2,8 @@
 
 namespace LukePOLO\LaraCart;
 
+use LukePOLO\LaraCart\LaraCartInterface as LaraCartService;
+
 use LukePOLO\LaraCart\Exceptions\InvalidOption;
 use LukePOLO\LaraCart\Exceptions\InvalidPrice;
 use LukePOLO\LaraCart\Exceptions\InvalidQuantity;
@@ -24,8 +26,9 @@ class CartItem
     public $options = [];
 
     public $tax;
+
     public $locale;
-    public $displayLocale;
+    public $internationalFormat;
 
     /**
      * @param $id
@@ -34,17 +37,21 @@ class CartItem
      * @param $price
      * @param array $options
      */
-    public function __construct($id, $name, $qty, $price, $options = [])
+    public function __construct($id, $name, $qty, $price, $options = [], LaraCartService $laraCartService)
     {
+        $this->laraCartService = $laraCartService;
+
         $this->id = $id;
         $this->name = $name;
         $this->qty = $qty;
         $this->price = (float) $price;
 
-        // Sets the tax and Locale for the item
+        // Sets the tax
         $this->tax = config('laracart.tax');
+
+        // Sets the locale for the item
         $this->locale = config('laracart.locale', 'en_US');
-        $this->displayLocale = config('laracart.display_locale');
+        $this->internationalFormat = config('laracart.international_format');
 
         // Allows for simple options that are not arrays
         if(empty($options) === false) {
@@ -155,7 +162,7 @@ class CartItem
 
         // Formats the price based on the locale
         if($format) {
-            return LaraCart::formatMoney($price, $this->locale, $this->displayLocale);
+            return $this->laraCartService->formatMoney($price, $this->locale, $this->internationalFormat);
         } else {
             return $price;
         }
@@ -269,7 +276,7 @@ class CartItem
     {
         // Formats the total based on the locale
         if($format) {
-            return LaraCart::formatMoney($this->getPrice($tax, false) * $this->qty, $this->locale, $this->displayLocale);
+            return $this->laraCartService->formatMoney($this->getPrice($tax, false) * $this->qty, $this->locale, $this->internationalFormat);
         } else {
             return $this->getPrice($tax, false) * $this->qty;
         }
