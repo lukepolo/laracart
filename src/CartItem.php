@@ -53,14 +53,20 @@ class CartItem
         $this->locale = config('laracart.locale', 'en_US');
         $this->internationalFormat = config('laracart.international_format');
 
+        $options = [
+          'Size' => 'SM'
+        ];
+
         // Allows for simple options that are not arrays
         if(empty($options) === false) {
-            if (is_array($options) === true) {
-                $this->addOption($options);
-            } else {
-                // Generates all the options for the cart item
-                foreach ($options as $option) {
+            // Generates all the options for the cart item
+            foreach ($options as $optionKey => $option) {
+                if (is_array($option)) {
                     $this->addOption($option);
+                } else {
+                    $this->addOption([
+                        $optionKey => $option
+                    ]);
                 }
             }
         }
