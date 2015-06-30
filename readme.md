@@ -7,7 +7,10 @@ There are features that are incomplete and others that are not fully tested, ple
 ## Features
 * Display Currency along with Locale 
 * Easy Session Base Usage
-* Totals / SubTotals  with taxes
+* Totals / SubTotals with taxes
+* Items have locale and currency and tax separate from the cart
+* Multiple Cart Instances
+* Unique Item Hash that is updated after every update to the item
 * Option can have prices and are calculated in the totals and sub totals
 
 ## Installation
@@ -34,7 +37,6 @@ Copy over the configuration file by running the command :
 Look through the configuration options and change as needed
 
 ## Overview
-Look at one of the following topics to learn more about LaravelShoppingcart
 
 * [Usage](#usage)
 * [Instances](#instances)
@@ -43,6 +45,8 @@ Look at one of the following topics to learn more about LaravelShoppingcart
 * [Example](#example)
 
 ## Usage
+
+Note : Because of the item hashing you must be careful how you update your items.Each change to an item will update its hash either continue to use the same item object or make sure to use the hash that is returned.
 
 **Adding an Item to the cart**
 ```php
@@ -157,7 +161,7 @@ Instances is a way that we can use multiple carts within the same session. By us
 ```php
     LaraCart::setInstance('yourInstanceName');
 ```
-Will switch to that instance of the cart. Each following request will **NOT** use that instance. (Will be changed soon to keep the session in which you have set)
+Will switch to that instance of the cart. Each following request reuse the last instance of the cart set
 
 ## Exceptions
 LaraCart packages can throw the following exceptions:
