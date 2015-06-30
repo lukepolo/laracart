@@ -44,7 +44,7 @@ class CartItem
         $this->id = $id;
         $this->name = $name;
         $this->qty = $qty;
-        $this->price = (float) $price;
+        $this->price = floatval($price);
 
         // Sets the tax
         $this->tax = config('laracart.tax');
@@ -52,10 +52,6 @@ class CartItem
         // Sets the locale for the item
         $this->locale = config('laracart.locale', 'en_US');
         $this->internationalFormat = config('laracart.international_format');
-
-        $options = [
-          'Size' => 'SM'
-        ];
 
         // Allows for simple options that are not arrays
         if(empty($options) === false) {

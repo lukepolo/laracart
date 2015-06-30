@@ -16,6 +16,9 @@ class CartItemOption
     public function __construct($options)
     {
         $this->id = md5(json_encode($options));
+        if(isset($options['price']) === true) {
+            $options['price'] = floatval($options['price']);
+        }
         $this->options = $options;
     }
 
