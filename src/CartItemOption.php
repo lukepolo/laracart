@@ -14,6 +14,9 @@ class CartItemOption
     public $id;
     public $options;
 
+    public $locale;
+    public $internationalFormat;
+
     /**
      * @param $options
      */
@@ -57,7 +60,7 @@ class CartItemOption
     public function __get($option)
     {
         if($option == 'price') {
-            return $this->laraCartService->formatMoney(array_get($this->options, $option));
+            return $this->laraCartService->formatMoney(array_get($this->options, $option), $this->locale, $this->internationalFormat);
         } else {
             return array_get($this->options, $option);
         }
