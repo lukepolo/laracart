@@ -82,7 +82,30 @@ class Cart
             $qty,
             $price,
             $options,
-            $this->laraCartService
+            false
+        ));
+    }
+
+    /**
+     * Creates a CartItem and then adds it to cart
+     *
+     * @param string|int $itemID
+     * @param null $name
+     * @param int $qty
+     * @param string $price
+     * @param array $options
+     *
+     * @return string itemHash
+     */
+    public function addLine($itemID, $name = null, $qty = 1, $price = '0.00', $options = [])
+    {
+        return $this->addItem(new CartItem(
+            $itemID,
+            $name,
+            $qty,
+            $price,
+            $options,
+            true
         ));
     }
 
@@ -100,12 +123,18 @@ class Cart
 
         // If an item is a duplicate we know we need to bump the quantity
         if($this->findItem($itemHash)) {
-            $this->findItem($itemHash)->qty += $cartItem->qty;
+            if($cartItem->lineItem === false) {
+                $this->findItem($itemHash)->qty += $cartItem->qty;
+            } else {
+                // regenerate a hash till its unique
+                $cartItem->itemHash = $cartItem->generatehash(true);
+                // Re-add the item
+                $this->addItem($cartItem);
+            }
         } else {
             $this->cart->items[] = $cartItem;
+            $this->events->fire('laracart.addItem', $cartItem);
         }
-
-        $this->events->fire('laracart.addItem', $cartItem);
 
         // Update the cart session
         $this->update();
@@ -171,13 +200,22 @@ class Cart
      * @param $key
      * @param $value
      *
+     * @return string $newHash
      */
     public function updateItem($itemHash, $key, $value)
     {
         if(empty($item = $this->findItem($itemHash)) === false) {
             $item->update($key, $value);
         }
-        $this->events->fire('laracart.updateItem', $item);
+
+        $newHash = $item->generateHash();
+
+        $this->events->fire('laracart.updateItem', [
+            'item' => $item,
+            'newHash' => $newHash
+        ]);
+
+        return $newHash;
     }
 
     /**

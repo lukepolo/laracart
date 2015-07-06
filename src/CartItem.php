@@ -30,22 +30,24 @@ class CartItem
     public $locale;
     public $internationalFormat;
 
+
     /**
-     * @param $id
-     * @param $name
-     * @param $qty
-     * @param $price
+     * @param string $id
+     * @param string $name
+     * @param int $qty
+     * @param float $price
      * @param array $options
-     *
+     * @param bool $lineItem
      */
-    public function __construct($id, $name, $qty, $price, $options = [], LaraCartService $laraCartService)
+    public function __construct($id, $name, $qty, $price, $options = [], $lineItem = false)
     {
-        $this->laraCartService = $laraCartService;
+        $this->setCartService();
 
         $this->id = $id;
         $this->name = $name;
         $this->qty = $qty;
         $this->price = floatval($price);
+        $this->lineItem = $lineItem;
 
         // Sets the tax
         $this->tax = config('laracart.tax');
@@ -73,27 +75,48 @@ class CartItem
     }
 
     /**
+     * Sets the LaraCart Services class into the instance
+     */
+    public function setCartService()
+    {
+        $this->laraCartService = \App::make(LaraCartInterface::class);
+    }
+
+    /**
      * Generates a hash based on the cartItem array
+     *
+     * @param bool $force
      *
      * @return string itemHash
      */
-    public function generateHash()
+    public function generateHash($force = false)
     {
-        // Reset the itemHash to null
-        $this->itemHash = null;
-
-        // Transform into an array
-        $cartItemArray = (array) $this;
-
-        // Sort the options so we can get an accurate MD5
-        if(empty($cartItemArray['options']) === false) {
-            ksort($cartItemArray['options']);
+        // Forces a rehash
+        if($force === true)
+        {
+            $this->itemHash = null;
         }
 
-        // Create an md5 out of the array
-        $this->itemHash = $itemHash = md5(json_encode($cartItemArray));
+        // Line items never change their itemHash so we don't want to generate a new one
+        if($this->lineItem === false) {
+            // Reset the itemHash to null
+            $this->itemHash = null;
 
-        return $itemHash;
+            // Transform into an array
+            $cartItemArray = (array)$this;
+
+            // Sort the options so we can get an accurate MD5
+            if (empty($cartItemArray['options']) === false) {
+                ksort($cartItemArray['options']);
+            }
+
+            // Create an md5 out of the array
+            $this->itemHash = $itemHash = md5(json_encode($cartItemArray));
+        } elseif(empty($this->itemHash) === true) {
+            // Generate a random string for the a line item
+            $this->itemHash = str_random(40);
+        }
+        return $this->itemHash;
     }
 
     /**
