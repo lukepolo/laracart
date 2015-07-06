@@ -116,6 +116,9 @@ Note : Because of the item hashing you must be careful how you update your items
 ```php
     // $tax = false by default
     $cartItem->subTotal($tax);
+
+    // Gets the totals for the item options if applicable
+    $cartItem->optionsTotal($formatMoney = true);
 ```
 
 **Add Option to Item**
