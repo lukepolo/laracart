@@ -1,4 +1,6 @@
-<?php namespace LukePOLO\LaraCart;
+<?php
+
+namespace LukePOLO\LaraCart;
 
 /**
  * Class CartItemOption
@@ -7,6 +9,8 @@
  */
 class CartItemOption
 {
+    private $laraCartService;
+
     public $id;
     public $options;
 
@@ -15,11 +19,21 @@ class CartItemOption
      */
     public function __construct($options)
     {
+        $this->setCartService();
+
         $this->id = md5(json_encode($options));
         if(isset($options['price']) === true) {
             $options['price'] = floatval($options['price']);
         }
         $this->options = $options;
+    }
+
+    /**
+     * Sets the LaraCart Services class into the instance
+     */
+    public function setCartService()
+    {
+        $this->laraCartService = \App::make(LaraCartInterface::class);
     }
 
     /**
@@ -42,7 +56,11 @@ class CartItemOption
      */
     public function __get($option)
     {
-        return array_get($this->options, $option);
+        if($option == 'price') {
+            return $this->laraCartService->formatMoney(array_get($this->options, $option));
+        } else {
+            return array_get($this->options, $option);
+        }
     }
 
     /**

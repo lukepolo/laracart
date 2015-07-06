@@ -16,8 +16,16 @@ class LaraCart implements LaraCartInterface
      *
      * @return string
      */
-    public static function formatMoney($number, $locale, $internationalFormat)
+    public static function formatMoney($number, $locale = null, $internationalFormat = null)
     {
+        if(empty($locale) === true) {
+            $locale = config('laracart.locale', 'en_US');
+        }
+
+        if(empty($internationalFormat) === true) {
+            $internationalFormat = config('laracart.international_format');
+        }
+
         setlocale(LC_MONETARY, $locale);
         if($internationalFormat) {
             return money_format('%i', $number);

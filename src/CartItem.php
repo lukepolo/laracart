@@ -2,8 +2,6 @@
 
 namespace LukePOLO\LaraCart;
 
-use LukePOLO\LaraCart\LaraCartInterface as LaraCartService;
-
 use LukePOLO\LaraCart\Exceptions\InvalidOption;
 use LukePOLO\LaraCart\Exceptions\InvalidPrice;
 use LukePOLO\LaraCart\Exceptions\InvalidQuantity;
@@ -17,6 +15,8 @@ use LukePOLO\LaraCart\Exceptions\UnknownItemProperty;
 class CartItem
 {
     protected $itemHash;
+
+    private $laraCartService;
 
     public $id;
 
@@ -51,10 +51,6 @@ class CartItem
 
         // Sets the tax
         $this->tax = config('laracart.tax');
-
-        // Sets the locale for the item
-        $this->locale = config('laracart.locale', 'en_US');
-        $this->internationalFormat = config('laracart.international_format');
 
         // Allows for simple options that are not arrays
         if(empty($options) === false) {
@@ -316,6 +312,29 @@ class CartItem
             return $this->laraCartService->formatMoney($this->getPrice($tax, false) * $this->qty, $this->locale, $this->internationalFormat);
         } else {
             return $this->getPrice($tax, false) * $this->qty;
+        }
+    }
+
+    /**
+     * Gets the totals for the options
+     *
+     * @param bool $format
+     *
+     * @return int|mixed
+     */
+    public function optionsTotal($format = true)
+    {
+        $total = 0;
+        foreach($this->options as $option) {
+            if(empty($option->price) === false) {
+                $total += array_get($option->options, 'price');
+            }
+        }
+
+        if($format) {
+            return $this->laraCartService->formatMoney($total,$this->locale, $this->internationalFormat);
+        } else {
+            return $total;
         }
     }
 }

@@ -36,10 +36,6 @@ class Cart
         // Sets the tax for the cart
         $this->tax = config('laracart.tax');
 
-        // Sets the locale for the cart
-        $this->locale = config('laracart.locale', 'en_US');
-        $this->internationalFormat = config('laracart.international_format');
-
         // Set a default instance of the cart
         $instance = $this->session->get('laracart.instance', 'default');
 
