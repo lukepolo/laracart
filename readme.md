@@ -64,6 +64,11 @@ Note : Because of the item hashing you must be careful how you update your items
     LaraCart::add(2, 'Shirt', 200, 15.99, [
         'Size' => 'XL'
     ]);
+
+    // If you need line items rather than just updating the qty you can do
+    LaraCart::addLine(2, 'Shirt', 200, 15.99, [
+        'Size' => 'XL'
+    ]);
 ```
 
 **Updating an Items Attributes**
