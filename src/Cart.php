@@ -60,6 +60,48 @@ class Cart
     }
 
     /**
+     * Adds an Attribute to the cart
+     *
+     * @param $attribute
+     * @param $value
+     */
+    public function setAttribute($attribute, $value)
+    {
+        $this->cart->attributes[$attribute] = $value;
+
+        $this->update();
+    }
+
+    /**
+     * Removes an attribute from the cart
+     *
+     * @param $attribute
+     */
+    public function removeAttribute($attribute)
+    {
+        unset($this->cart->attributes[$attribute]);
+
+        $this->update();
+    }
+
+    /**
+     * Gets an an attribute from the cart
+     *
+     * @param $attribute
+     *
+     * @return mixed
+     */
+    public function getAttribute($attribute)
+    {
+        return $this->cart->attributes[$attribute];
+    }
+
+    public function getAttributes()
+    {
+        return $this->cart->attributes;
+    }
+
+    /**
      * Creates a CartItem and then adds it to cart
      *
      * @param string|int $itemID
