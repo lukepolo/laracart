@@ -67,7 +67,7 @@ class Cart
      */
     public function setAttribute($attribute, $value)
     {
-        $this->cart->attributes[$attribute] = $value;
+        array_set($this->cart->attributes, $attribute, $value);
 
         $this->update();
     }
@@ -79,7 +79,7 @@ class Cart
      */
     public function removeAttribute($attribute)
     {
-        unset($this->cart->attributes[$attribute]);
+        array_forget($this->cart->attributes, $attribute);
 
         $this->update();
     }
@@ -93,12 +93,21 @@ class Cart
      */
     public function getAttribute($attribute)
     {
-        return $this->cart->attributes[$attribute];
+        if(isset($this->cart->attributes) === true) {
+            return array_get($this->cart->attributes, $attribute);
+        } else {
+            return null;
+        }
+
     }
 
     public function getAttributes()
     {
-        return $this->cart->attributes;
+        if(isset($this->cart->attributes) === true) {
+            return $this->cart->attributes;
+        } else {
+            return null;
+        }
     }
 
     /**
