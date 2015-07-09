@@ -101,6 +101,11 @@ class Cart
 
     }
 
+    /**
+     * Gets all the carts attributes
+     *
+     * @return mixed
+     */
     public function getAttributes()
     {
         if(isset($this->cart->attributes) === true) {

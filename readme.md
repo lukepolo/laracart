@@ -71,6 +71,18 @@ Note : Because of the item hashing you must be careful how you update your items
     ]);
 ```
 
+**Cart Attributes**
+```php
+    // Sometimes you want to give a cart some kind of attributes , such as labels
+    LaraCart::addAttribute('label', 'Luke's Cart');
+    LaraCart::updateAttribute('label', 'Not Luke's Cart');
+    LaraCart::removeAttribute('label');
+
+    // Gets all the attributes
+    LaraCart::getAttributes();
+
+```
+
 **Updating an Items Attributes**
 ```php
     LaraCart::updateItem($itemHash, 'name', 'CheeseBurger w/Bacon');
