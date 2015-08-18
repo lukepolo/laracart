@@ -371,7 +371,7 @@ class Cart
         $total = 0;
         if($this->count() != 0) {
             foreach ($this->getItems() as $item) {
-                $total += $item->subTotal($tax, false);
+                $total += $item->subTotal($tax, false) + $item->optionsTotal($tax, false);
             }
         }
 
