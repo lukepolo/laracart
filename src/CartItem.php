@@ -309,7 +309,8 @@ class CartItem
     {
         // Formats the total based on the locale
         if($format) {
-            return $this->laraCartService->formatMoney($this->getPrice($tax, false) * $this->qty, $this->locale, $this->internationalFormat);
+            $total = $this->getPrice($tax, false) + $this->optionsTotal($tax, false);
+            return $this->laraCartService->formatMoney($total * $this->qty, $this->locale, $this->internationalFormat);
         } else {
             return $this->getPrice($tax, false) * $this->qty;
         }
@@ -322,7 +323,7 @@ class CartItem
      *
      * @return int|mixed
      */
-    public function optionsTotal($format = true)
+    public function optionsTotal($tax = false, $format = true)
     {
         $total = 0;
         foreach($this->options as $option) {
@@ -331,8 +332,12 @@ class CartItem
             }
         }
 
+        if($tax) {
+            $total = $total + ($total * $this->tax);
+        }
+
         if($format) {
-            return $this->laraCartService->formatMoney($total,$this->locale, $this->internationalFormat);
+            return $this->laraCartService->formatMoney($total, $this->locale, $this->internationalFormat);
         } else {
             return $total;
         }
