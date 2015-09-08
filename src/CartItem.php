@@ -24,7 +24,7 @@ class CartItem
     public $qty;
     public $price;
     public $options = [];
-
+    public $subItems = [];
     public $tax;
 
     public $locale;
@@ -49,24 +49,10 @@ class CartItem
         $this->price = floatval($price);
         $this->lineItem = $lineItem;
 
-        // Sets the tax
         $this->tax = config('laracart.tax');
 
-        // Allows for simple options that are not arrays
-        if(empty($options) === false) {
-            // Generates all the options for the cart item
-            foreach ($options as $optionKey => $option) {
-                if (is_array($option)) {
-                    $this->addOption($option);
-                } else {
-                    $this->addOption([
-                        $optionKey => $option
-                    ]);
-                }
-            }
-        }
+       $this->options = $options;
 
-        // generate itemHash
         $this->generateHash();
     }
 
@@ -79,7 +65,9 @@ class CartItem
     }
 
     /**
-     * Generates a hash based on the cartItem array
+     * TODO - move to laracart class
+     *
+     *  Generates a hash based on the cartItem array
      *
      * @param bool $force
      *
@@ -87,29 +75,21 @@ class CartItem
      */
     public function generateHash($force = false)
     {
-        // Forces a rehash
-        if($force === true)
-        {
+        if($force === true) {
             $this->itemHash = null;
         }
 
-        // Line items never change their itemHash so we don't want to generate a new one
         if($this->lineItem === false) {
-            // Reset the itemHash to null
             $this->itemHash = null;
 
-            // Transform into an array
             $cartItemArray = (array)$this;
 
-            // Sort the options so we can get an accurate MD5
             if (empty($cartItemArray['options']) === false) {
                 ksort($cartItemArray['options']);
             }
 
-            // Create an md5 out of the array
             $this->itemHash = $itemHash = md5(json_encode($cartItemArray));
         } elseif(empty($this->itemHash) === true) {
-            // Generate a random string for the a line item
             $this->itemHash = str_random(40);
         }
         return $this->itemHash;
@@ -128,29 +108,25 @@ class CartItem
     /**
      * Adds an option to a cart item
      *
-     * @param array $option
+     * @param array $subItem
      *
      * @return string $itemHash
      */
-    public function addOption(array $option)
+    public function addSubItem(array $subItem)
     {
-        $cartItemOption = new CartItemOption($option);
+        $subItem = new CartSubItem($subItem);
 
-        $this->options[] = $cartItemOption;
+        $this->subItems[$subItem->getHash()] = $subItem;
 
         return $this->generateHash();
     }
 
     /**
      * Finds an items option by its key and value
-     *
-     * @param $updateByKey
-     * @param $keyValue
-     *
-     * @return mixed
      */
-    public function findOption($updateByKey, $keyValue)
+    public function findSubItem($itemHash)
     {
+        dd('Find item by itemhash');
         return array_first($this->options, function($optionKey, $optionValue) use($updateByKey, $keyValue)
         {
             if($optionValue->$updateByKey == $keyValue) {
@@ -171,21 +147,22 @@ class CartItem
      */
     public function getPrice($tax = false, $format = true)
     {
-        // Initial  price of the item
         $price = $this->price;
 
+        foreach($this->subItems as $subItem) {
+            if(isset($subItem->price)) {
+                dd('Price needs to be addded for sub item '.$subItem->pirce);
+            }
 
-        // Check to see if any of the sub options have a price associated with it
-        foreach($this->options as $option) {
-            $price += $option->price;
+            foreach($subItem->items as $item) {
+                $price += $item->getPrice($tax, false);
+            }
         }
 
-        // add tax to the item
         if($tax) {
             $price += $price * $this->tax;
         }
 
-        // Formats the price based on the locale
         if($format) {
             return $this->laraCartService->formatMoney($price, $this->locale, $this->internationalFormat);
         } else {
@@ -207,18 +184,18 @@ class CartItem
     {
         switch($key) {
             case 'qty' :
-                // validate qty
                 if(is_int($value) === false) {
                     throw new InvalidQuantity();
                 }
             break;
             case 'price' :
-                // validate is currency
                 if(is_numeric($value) === false || preg_match('/\.(\d){3}/', $value)) {
                     throw new InvalidPrice();
                 }
             break;
         }
+
+        dd('use laravel functions');
 
         if(isset($this->$key) === true) {
             $this->$key = $value;
@@ -229,73 +206,16 @@ class CartItem
         return $this->generateHash();
     }
 
-    /**
-     * Updates an items option by a key value pair
-     *
-     * @param $keyValue - the value that is used to search for a specific option
-     * @param $updateKey - the key that you wish to update
-     * @param $updateValue - the value to replace inside the key
-     * @param string $updateByKey - the key that it searches for to find the option
-     *
-     * @throws InvalidOption
-     *
-     * @return string $itemHash
-     */
-    public function updateOption($keyValue, $updateKey, $updateValue, $updateByKey = 'id')
+
+    public function updateOption($key, $value)
     {
-        $option = $this->findOption($updateByKey, $keyValue);
-
-        if(empty($option) === false) {
-            $option->update($updateKey, $updateValue);
-        } else {
-            throw new InvalidOption();
-        }
-
-        return $this->generateHash();
+        $this->update('options.'.$key, $value);
     }
 
-
-    /**
-     * Removes an items option by a key value pair
-     *
-     * @param $keyValue - the value that is used to search for a specific option
-     * @param string $removeByKey - the key that it searches for to find the option
-     *
-     * @throws InvalidOption
-     *
-     * @return string $itemHash
-     */
-    public function removeOption($keyValue, $removeByKey = 'id')
+    public function removeOption($key)
     {
-        $this->options = array_values(
-            collect($this->options)
-                ->keyBy($removeByKey)
-                ->forget($keyValue)
-                ->toArray()
-        );
-
-        return $this->generateHash();
-    }
-
-    /**
-     * Updates all options for an item
-     *
-     * @param $options
-     *
-     * @return string $itemHash
-     */
-    public function updateOptions($options)
-    {
-        $this->options = [];
-
-        if(empty($options) === false) {
-            // Generates all the options for the cart item
-            foreach($options as $option) {
-                $this->addOption($option);
-            }
-        }
-
-        return $this->generateHash();
+        Dump('Trying to remove  '.$key);
+        dd('TODO - update option');
     }
 
     /**
@@ -308,9 +228,8 @@ class CartItem
      */
     public function subTotal($tax = false, $format = true)
     {
-        // Formats the total based on the locale
         if($format) {
-            $total = $this->getPrice($tax, false) + $this->optionsTotal($tax, false);
+            $total = $this->getPrice($tax, false) + $this->subItemsTotal($tax, false);
             return $this->laraCartService->formatMoney($total * $this->qty, $this->locale, $this->internationalFormat);
         } else {
             return $this->getPrice($tax, false) * $this->qty;
@@ -319,17 +238,13 @@ class CartItem
 
     /**
      * Gets the totals for the options
-     *
-     * @param bool $format
-     *
-     * @return int|mixed
      */
-    public function optionsTotal($tax = false, $format = true)
+    public function subItemsTotal($tax = false, $format = true)
     {
         $total = 0;
-        foreach($this->options as $option) {
-            if(empty($option->price) === false) {
-                $total += array_get($option->options, 'price');
+        foreach($this->subItems as $item) {
+            if(isset($item->price)) {
+                $total += array_get($item->options, 'price');
             }
         }
 

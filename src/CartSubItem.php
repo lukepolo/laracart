@@ -7,11 +7,11 @@ namespace LukePOLO\LaraCart;
  *
  * @package LukePOLO\LaraCart
  */
-class CartItemOption
+class CartSubItem
 {
     private $laraCartService;
+    private $itemHash;
 
-    public $id;
     public $options;
 
     public $locale;
@@ -24,11 +24,23 @@ class CartItemOption
     {
         $this->setCartService();
 
-        $this->id = md5(json_encode($options));
+        // TODO  - move hasing function to laracart class
+
+        $this->itemHash = md5(json_encode($options));
         if(isset($options['price']) === true) {
             $options['price'] = floatval($options['price']);
         }
         $this->options = $options;
+    }
+
+    /**
+     * Gets the hash for the item
+     *
+     * @return mixed
+     */
+    public function getHash()
+    {
+        return $this->itemHash;
     }
 
     /**
@@ -44,10 +56,14 @@ class CartItemOption
      *
      * @param $key
      * @param $value
+     *
+     * @return string
      */
     public function update($key, $value)
     {
         $this->$key = $value;
+
+        return $this->id = md5(json_encode($this->options));
     }
 
     /**
