@@ -18,9 +18,7 @@ class LaraCart implements LaraCartContract
      */
     function __construct()
     {
-        $this->session = app('session');
-        $this->events = app('events');
-        $this->setInstance($this->session->get('laracart.instance', 'default'));
+        $this->setInstance(\Session::get('laracart.instance', 'default'));
     }
 
     /**
@@ -35,9 +33,9 @@ class LaraCart implements LaraCartContract
         $this->get($instance);
 
         // set in the session that we are using a different instance
-        $this->session->set('laracart.instance', $instance);
+        \Session::set('laracart.instance', $instance);
 
-        $this->events->fire('laracart.new');
+        \Event::fire('laracart.new');
     }
 
     /**
@@ -49,7 +47,7 @@ class LaraCart implements LaraCartContract
      */
     public function get($instance = 'default')
     {
-        if (empty($this->cart = $this->session->get(config('laracart.cache_prefix', 'laracart.') . $instance))) {
+        if (empty($this->cart = \Session::get(config('laracart.cache_prefix', 'laracart.') . $instance))) {
             $this->cart = new Cart($instance);
         }
 
