@@ -38,7 +38,7 @@ class CartItem
      */
     public function __construct($id, $name, $qty, $price, $options = [], $lineItem = false)
     {
-        $this->setCartService();
+        $this->laraCartService = \App::make(LaraCartContract::class);
 
         $this->id = $id;
         $this->name = $name;
@@ -104,14 +104,6 @@ class CartItem
         } else {
             return false;
         }
-    }
-
-    /**
-     * Sets the LaraCart Services class into the instance
-     */
-    public function setCartService()
-    {
-        $this->laraCartService = \App::make(LaraCartContract::class);
     }
 
     /**

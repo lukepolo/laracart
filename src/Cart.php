@@ -19,7 +19,7 @@ class Cart
     protected $instance;
 
     public $tax;
-    public $cart;
+    public $items;
     public $locale;
     public $internationalFormat;
 
@@ -66,7 +66,7 @@ class Cart
      */
     public function setAttribute($attribute, $value)
     {
-        array_set($this->cart->attributes, $attribute, $value);
+        array_set($this->items->attributes, $attribute, $value);
 
         $this->update();
     }
@@ -78,7 +78,7 @@ class Cart
      */
     public function removeAttribute($attribute)
     {
-        array_forget($this->cart->attributes, $attribute);
+        array_forget($this->items->attributes, $attribute);
 
         $this->update();
     }
@@ -93,8 +93,8 @@ class Cart
      */
     public function getAttribute($attribute, $defaultValue = null)
     {
-        if(isset($this->cart->attributes) === true) {
-            return array_get($this->cart->attributes, $attribute, $defaultValue);
+        if(isset($this->items->attributes) === true) {
+            return array_get($this->items->attributes, $attribute, $defaultValue);
         } else {
             return $defaultValue;
         }
@@ -108,8 +108,8 @@ class Cart
      */
     public function getAttributes()
     {
-        if(isset($this->cart->attributes) === true) {
-            return $this->cart->attributes;
+        if(isset($this->items->attributes) === true) {
+            return $this->items->attributes;
         } else {
             return null;
         }
@@ -184,7 +184,7 @@ class Cart
                 $this->addItem($cartItem);
             }
         } else {
-            $this->cart->items[] = $cartItem;
+            $this->items->items[] = $cartItem;
             $this->events->fire('laracart.addItem', $cartItem);
         }
 
@@ -203,7 +203,7 @@ class Cart
      */
     public function get($instance = 'default')
     {
-        return $this->cart = $this->session->get(config('laracart.cache_prefix', 'laracart_').$instance);
+        return $this->items = $this->session->get(config('laracart.cache_prefix', 'laracart_').$instance);
     }
 
     /**
@@ -214,8 +214,8 @@ class Cart
     public function getItems()
     {
         $items = [];
-        if (isset($this->cart->items) === true) {
-            foreach($this->cart->items as $item) {
+        if (isset($this->items->items) === true) {
+            foreach($this->items->items as $item) {
                 $items[$item->getHash()] = $item;
             }
         }
@@ -240,9 +240,9 @@ class Cart
      */
     public function update()
     {
-        $this->session->set(config('laracart.cache_prefix', 'laracart_').$this->instance, $this->cart);
+        $this->session->set(config('laracart.cache_prefix', 'laracart_').$this->instance, $this->items);
 
-        $this->events->fire('laracart.update', $this->cart);
+        $this->events->fire('laracart.update', $this->items);
     }
 
     /**
@@ -308,9 +308,9 @@ class Cart
      */
     public function removeItem($itemHash)
     {
-        foreach($this->cart->items as $itemKey => $item) {
+        foreach($this->items->items as $itemKey => $item) {
            if($item->getHash() == $itemHash) {
-               unset($this->cart->items[$itemKey]);
+               unset($this->items->items[$itemKey]);
                break;
            }
         }
@@ -323,7 +323,7 @@ class Cart
      */
     public function emptyCart()
     {
-        unset($this->cart->items);
+        unset($this->items->items);
 
         $this->update();
 
@@ -335,7 +335,7 @@ class Cart
      */
     public function destroyCart()
     {
-        unset($this->cart);
+        unset($this->items);
 
         $this->update();
 
@@ -413,11 +413,11 @@ class Cart
      */
     public function applyCoupon(CouponContract $coupon)
     {
-        if(empty($this->cart->coupons)) {
-            $this->cart->coupons = [];
+        if(empty($this->items->coupons)) {
+            $this->items->coupons = [];
         }
 
-        $this->cart->coupons[] = $coupon;
+        $this->items->coupons[] = $coupon;
 
         $this->update();
     }
@@ -430,8 +430,8 @@ class Cart
     public function getTotalDiscount($formatted = true)
     {
         $total = 0;
-        if(empty($this->cart->coupons) === false) {
-            foreach($this->cart->coupons as $coupon) {
+        if(empty($this->items->coupons) === false) {
+            foreach($this->items->coupons as $coupon) {
                 $total += $coupon->discount($this);
             }
         }
