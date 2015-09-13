@@ -8,7 +8,8 @@ use LukePOLO\LaraCart\Contracts\LaraCartContract;
  *
  * @package LukePOLO\LaraCart
  */
-class LaraCartServiceProvider extends ServiceProvider {
+class LaraCartServiceProvider extends ServiceProvider
+{
 
     /**
      * Perform post-registration booting of services.
@@ -18,7 +19,7 @@ class LaraCartServiceProvider extends ServiceProvider {
     public function boot()
     {
         $this->publishes([
-            __DIR__.'/config/laracart.php' => config_path('laracart.php'),
+            __DIR__ . '/config/laracart.php' => config_path('laracart.php'),
         ]);
     }
 
@@ -34,7 +35,7 @@ class LaraCartServiceProvider extends ServiceProvider {
             LaraCart::class
         );
 
-        $this->app['laracart'] = $this->app->share(function($app) {
+        $this->app['laracart'] = $this->app->share(function ($app) {
             return $app->make(LaraCartContract::class);
         });
     }

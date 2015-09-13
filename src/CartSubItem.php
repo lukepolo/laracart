@@ -9,11 +9,10 @@ namespace LukePOLO\LaraCart;
  */
 class CartSubItem
 {
-    private $itemHash;
-
     public $locale;
     public $options;
     public $internationalFormat;
+    private $itemHash;
 
     /**
      * @param $options
@@ -21,7 +20,7 @@ class CartSubItem
     public function __construct($options)
     {
         $this->itemHash = \LaraCart::generateHash($options);
-        if(isset($options['price']) === true) {
+        if (isset($options['price']) === true) {
             $options['price'] = floatval($options['price']);
         }
         $this->options = $options;
@@ -61,7 +60,7 @@ class CartSubItem
      */
     public function __get($option)
     {
-        if($option == 'price') {
+        if ($option == 'price') {
             return \LaraCart::formatMoney(array_get($this->options, $option), $this->locale, $this->internationalFormat);
         } else {
             return array_get($this->options, $option);
@@ -88,7 +87,7 @@ class CartSubItem
      */
     public function __isset($option)
     {
-        if(empty($this->options[$option]) === false) {
+        if (empty($this->options[$option]) === false) {
             return true;
         } else {
             return false;

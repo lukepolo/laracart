@@ -49,7 +49,7 @@ class LaraCart implements LaraCartContract
      */
     public function get($instance = 'default')
     {
-        if(empty($this->cart = $this->session->get(config('laracart.cache_prefix', 'laracart.').$instance))) {
+        if (empty($this->cart = $this->session->get(config('laracart.cache_prefix', 'laracart.') . $instance))) {
             $this->cart = new Cart($instance);
         }
 

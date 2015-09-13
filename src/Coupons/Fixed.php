@@ -31,7 +31,6 @@ class Fixed implements CouponContract
      */
     public function discount(Cart $cart)
     {
-
         return $this->value;
     }
 }

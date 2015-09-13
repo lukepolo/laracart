@@ -36,14 +36,12 @@ class CartItem
     public function __construct($id, $name, $qty, $price, $options = [], $lineItem = false)
     {
         $this->id = $id;
-        $this->name = $name;
         $this->qty = $qty;
-        $this->price = floatval($price);
+        $this->name = $name;
+        $this->options = $options;
         $this->lineItem = $lineItem;
-
+        $this->price = floatval($price);
         $this->tax = config('laracart.tax');
-
-       $this->options = $options;
 
         $this->generateHash();
     }
@@ -57,7 +55,7 @@ class CartItem
      */
     public function __get($option)
     {
-        if($option == 'price') {
+        if ($option == 'price') {
             return $this->getPrice();
         } else {
             return array_get($this->options, $option);
@@ -94,7 +92,7 @@ class CartItem
      */
     public function __isset($option)
     {
-        if(empty($this->options[$option]) === false) {
+        if (empty($this->options[$option]) === false) {
             return true;
         } else {
             return false;
@@ -110,11 +108,11 @@ class CartItem
      */
     public function generateHash($force = false)
     {
-        if($force === true) {
+        if ($force === true) {
             $this->itemHash = null;
         }
 
-        if($this->lineItem === false) {
+        if ($this->lineItem === false) {
             $this->itemHash = null;
 
             $cartItemArray = (array)$this;
@@ -124,7 +122,7 @@ class CartItem
             }
 
             $this->itemHash = $itemHash = \LaraCart::generateHash($cartItemArray);
-        } elseif(empty($this->itemHash) === true) {
+        } elseif (empty($this->itemHash) === true) {
             $this->itemHash = \LaraCart::generateRandomHash();
         }
         return $this->itemHash;
@@ -176,24 +174,24 @@ class CartItem
     {
         $price = $this->price;
 
-        foreach($this->subItems as $subItem) {
+        foreach ($this->subItems as $subItem) {
 
-            if(isset($subItem->price)) {
+            if (isset($subItem->price)) {
                 $price += $subItem->price;
             }
 
-            if(empty($subItem->items) === false) {
-                foreach($subItem->items as $item) {
+            if (empty($subItem->items) === false) {
+                foreach ($subItem->items as $item) {
                     $price += $item->getPrice($tax, false);
                 }
             }
         }
 
-        if($tax) {
+        if ($tax) {
             $price += $price * $this->tax;
         }
 
-        if($format) {
+        if ($format) {
             return \LaraCart::formatMoney($price, $this->locale, $this->internationalFormat);
         } else {
             return $price;
@@ -212,20 +210,20 @@ class CartItem
      */
     public function update($key, $value)
     {
-        switch($key) {
+        switch ($key) {
             case 'qty' :
-                if(is_int($value) === false) {
+                if (is_int($value) === false) {
                     throw new InvalidQuantity();
                 }
-            break;
+                break;
             case 'price' :
-                if(is_numeric($value) === false || preg_match('/\.(\d){3}/', $value)) {
+                if (is_numeric($value) === false || preg_match('/\.(\d){3}/', $value)) {
                     throw new InvalidPrice();
                 }
-            break;
+                break;
         }
 
-        if(isset($this->$key) === true) {
+        if (isset($this->$key) === true) {
             $this->$key = $value;
         } else {
             throw new UnknownItemProperty();
@@ -244,7 +242,7 @@ class CartItem
      */
     public function subTotal($tax = false, $format = true)
     {
-        if($format) {
+        if ($format) {
             $total = $this->getPrice($tax, false) + $this->subItemsTotal($tax, false);
             return \LaraCart::formatMoney($total * $this->qty, $this->locale, $this->internationalFormat);
         } else {
@@ -258,17 +256,17 @@ class CartItem
     public function subItemsTotal($tax = false, $format = true)
     {
         $total = 0;
-        foreach($this->subItems as $item) {
-            if(isset($item->price)) {
+        foreach ($this->subItems as $item) {
+            if (isset($item->price)) {
                 $total += array_get($item->options, 'price');
             }
         }
 
-        if($tax) {
+        if ($tax) {
             $total = $total + ($total * $this->tax);
         }
 
-        if($format) {
+        if ($format) {
             return \LaraCart::formatMoney($total, $this->locale, $this->internationalFormat);
         } else {
             return $total;

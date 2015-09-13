@@ -7,4 +7,6 @@ namespace LukePOLO\LaraCart\Exceptions;
  *
  * @package LukePOLO\LaraCart\Exceptions
  */
-class UnknownItemProperty extends \Exception {}
+class UnknownItemProperty extends \Exception
+{
+}

@@ -38,7 +38,7 @@ trait CouponTrait
      */
     public function __isset($attribute)
     {
-        if(empty($this->attributes[$attribute]) === false) {
+        if (empty($this->attributes[$attribute]) === false) {
             return true;
         } else {
             return false;

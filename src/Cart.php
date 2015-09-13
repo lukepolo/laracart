@@ -11,17 +11,16 @@ use LukePOLO\LaraCart\Contracts\CouponContract;
  */
 class Cart
 {
-    /**
-     * @var \Illuminate\Session\SessionManager
-     */
-    protected $instance;
-
     public $tax;
     public $items;
     public $locale;
     public $coupons = [];
     public $attributes = [];
     public $internationalFormat;
+    /**
+     * @var \Illuminate\Session\SessionManager
+     */
+    protected $instance;
 
     function __construct($instance)
     {
@@ -43,6 +42,15 @@ class Cart
         array_set($this->attributes, $attribute, $value);
 
         $this->update();
+    }
+
+    /**
+     * Updates cart session
+     */
+    public function update()
+    {
+        \Session::set(config('laracart.cache_prefix', 'laracart.') . $this->instance, $this);
+        \Event::fire('laracart.update', $this);
     }
 
     /**
@@ -104,6 +112,63 @@ class Cart
     }
 
     /**
+     * Adds the cartItem into the cart session
+     *
+     * @param $cartItem
+     *
+     * @return string itemHash
+     */
+    public function addItem($cartItem)
+    {
+        $itemHash = $cartItem->generateHash();
+
+        if ($this->getItem($itemHash)) {
+            if ($cartItem->lineItem === false) {
+                $this->getItem($itemHash)->qty += $cartItem->qty;
+            } else {
+                $cartItem->itemHash = $cartItem->generatehash(true);
+                $this->addItem($cartItem);
+            }
+        } else {
+            $this->items[] = $cartItem;
+            \Event::fire('laracart.addItem', $cartItem);
+        }
+
+        $this->update();
+
+        return $cartItem;
+    }
+
+    /**
+     * Finds a cartItem based on the itemHash
+     *
+     * @param $itemHash
+     *
+     * @return CartItem | null
+     */
+    public function getItem($itemHash)
+    {
+        return array_get($this->getItems(), $itemHash);
+    }
+
+    /**
+     * Gets all the items within the cart
+     *
+     * @return array
+     */
+    public function getItems()
+    {
+        $items = [];
+        if (isset($this->items) === true) {
+            foreach ($this->items as $item) {
+                $items[$item->getHash()] = $item;
+            }
+        }
+
+        return $items;
+    }
+
+    /**
      * Creates a CartItem and then adds it to cart
      *
      * @param string|int $itemID
@@ -127,72 +192,6 @@ class Cart
     }
 
     /**
-     * Adds the cartItem into the cart session
-     *
-     * @param $cartItem
-     *
-     * @return string itemHash
-     */
-    public function addItem($cartItem)
-    {
-        $itemHash = $cartItem->generateHash();
-
-        if($this->getItem($itemHash)) {
-            if($cartItem->lineItem === false) {
-                $this->getItem($itemHash)->qty += $cartItem->qty;
-            } else {
-                $cartItem->itemHash = $cartItem->generatehash(true);
-                $this->addItem($cartItem);
-            }
-        } else {
-            $this->items[] = $cartItem;
-            \Event::fire('laracart.addItem', $cartItem);
-        }
-
-        $this->update();
-
-        return $cartItem;
-    }
-
-    /**
-     * Gets all the items within the cart
-     *
-     * @return array
-     */
-    public function getItems()
-    {
-        $items = [];
-        if (isset($this->items) === true) {
-            foreach($this->items as $item) {
-                $items[$item->getHash()] = $item;
-            }
-        }
-
-        return $items;
-    }
-
-    /**
-     * Finds a cartItem based on the itemHash
-     *
-     * @param $itemHash
-     *
-     * @return CartItem | null
-     */
-    public function getItem($itemHash)
-    {
-        return array_get($this->getItems(), $itemHash);
-    }
-
-    /**
-     * Updates cart session
-     */
-    public function update()
-    {
-        \Session::set(config('laracart.cache_prefix', 'laracart.').$this->instance, $this);
-        \Event::fire('laracart.update', $this);
-    }
-
-    /**
      * Updates an items attributes
      *
      * @param $itemHash
@@ -203,7 +202,7 @@ class Cart
      */
     public function updateItem($itemHash, $key, $value)
     {
-        if(empty($item = $this->getItem($itemHash)) === false) {
+        if (empty($item = $this->getItem($itemHash)) === false) {
             $item->update($key, $value);
         }
 
@@ -215,6 +214,16 @@ class Cart
         ]);
 
         return $newHash;
+    }
+
+    /**
+     * Updates all item hashes within the cart
+     */
+    public function updateItemHashes()
+    {
+        foreach ($this->getItems() as $itemHash => $item) {
+            $this->updateItemHash($itemHash);
+        }
     }
 
     /**
@@ -236,27 +245,17 @@ class Cart
     }
 
     /**
-     * Updates all item hashes within the cart
-     */
-    public function updateItemHashes()
-    {
-        foreach($this->getItems() as $itemHash => $item) {
-            $this->updateItemHash($itemHash);
-        }
-    }
-
-    /**
      * Removes a CartItem based on the itemHash
      *
      * @param $itemHash
      */
     public function removeItem($itemHash)
     {
-        foreach($this->items as $itemKey => $item) {
-           if($item->getHash() == $itemHash) {
-               unset($this->items[$itemKey]);
-               break;
-           }
+        foreach ($this->items as $itemKey => $item) {
+            if ($item->getHash() == $itemHash) {
+                unset($this->items[$itemKey]);
+                break;
+            }
         }
 
         \Event::fire('laracart.removeItem', $itemHash);
@@ -287,24 +286,22 @@ class Cart
     }
 
     /**
-     * Get the count based on qty, or number of unique items
-     *
-     * @param bool $withQty
-     *
-     * @return int
+     * Gets the total of the cart with or without tax
+     * @return string
      */
-    public function count($withQty = true)
+    public function total($formatted = true, $withDiscount = true)
     {
-        $count = 0;
-        foreach($this->getItems() as $item)
-        {
-            if($withQty) {
-                $count+=$item->qty;
-            } else {
-                $count++;
-            }
+        $total = $this->subTotal(true, false);
+
+        if ($withDiscount) {
+            $total -= $this->getTotalDiscount(false);
         }
-        return $count;
+
+        if ($formatted) {
+            return \LaraCart::formatMoney($total, $this->locale, $this->internationalFormat);
+        } else {
+            return $total;
+        }
     }
 
     /**
@@ -317,13 +314,13 @@ class Cart
     public function subTotal($tax = false, $formatted = true)
     {
         $total = 0;
-        if($this->count() != 0) {
+        if ($this->count() != 0) {
             foreach ($this->getItems() as $item) {
                 $total += $item->subTotal($tax, false) + $item->subItemsTotal($tax, false);
             }
         }
 
-        if($formatted) {
+        if ($formatted) {
             return \LaraCart::formatMoney($total, $this->locale, $this->internationalFormat);
         } else {
             return $total;
@@ -332,18 +329,38 @@ class Cart
     }
 
     /**
-     * Gets the total of the cart with or without tax
-     * @return string
+     * Get the count based on qty, or number of unique items
+     *
+     * @param bool $withQty
+     *
+     * @return int
      */
-    public function total($formatted = true, $withDiscount = true)
+    public function count($withQty = true)
     {
-        $total = $this->subTotal(true, false);
+        $count = 0;
+        foreach ($this->getItems() as $item) {
+            if ($withQty) {
+                $count += $item->qty;
+            } else {
+                $count++;
+            }
+        }
+        return $count;
+    }
 
-        if($withDiscount) {
-            $total -= $this->getTotalDiscount(false);
+    /**
+     * Gets the total amount discounted
+     *
+     * @return int
+     */
+    public function getTotalDiscount($formatted = true)
+    {
+        $total = 0;
+        foreach ($this->coupons as $coupon) {
+            $total += $coupon->discount($this);
         }
 
-        if($formatted) {
+        if ($formatted) {
             return \LaraCart::formatMoney($total, $this->locale, $this->internationalFormat);
         } else {
             return $total;
@@ -360,24 +377,5 @@ class Cart
         $this->coupons[] = $coupon;
 
         $this->update();
-    }
-
-    /**
-     * Gets the total amount discounted
-     *
-     * @return int
-     */
-    public function getTotalDiscount($formatted = true)
-    {
-        $total = 0;
-        foreach($this->coupons as $coupon) {
-            $total += $coupon->discount($this);
-        }
-
-        if($formatted) {
-            return \LaraCart::formatMoney($total, $this->locale, $this->internationalFormat);
-        } else {
-            return $total;
-        }
     }
 }
