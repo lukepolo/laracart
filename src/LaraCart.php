@@ -2,14 +2,18 @@
 
 namespace LukePOLO\LaraCart;
 
+use LukePOLO\LaraCart\Contracts\LaraCartContract;
+
 /**
  * Class LaraCart
  *
  * @package LukePOLO\LaraCart
  */
-class LaraCart implements LaraCartInterface
+class LaraCart implements LaraCartContract
 {
     /**
+     * Formats the number into a money format based on the locale and international formats
+     *
      * @param $number
      * @param $locale
      * @param $internationalFormat

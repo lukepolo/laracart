@@ -2,7 +2,8 @@
 
 namespace LukePOLO\LaraCart;
 
-use LukePOLO\LaraCart\LaraCartInterface as LaraCartService;
+use LukePOLO\LaraCart\Contracts\CouponContract;
+use LukePOLO\LaraCart\Contracts\LaraCartContract;
 
 /**
  * Class Cart
@@ -17,17 +18,15 @@ class Cart
     protected $session;
     protected $instance;
 
-    public $cart;
-
     public $tax;
-
+    public $cart;
     public $locale;
     public $internationalFormat;
 
     /**
-     * @param LaraCartInterface $laraCartService | LukePOLO\LaraCart\LaraCart $laraCartService
+     * @param LaraCartContract $laraCartService | LukePOLO\LaraCart\LaraCart $laraCartService
      */
-    function __construct(LaraCartService $laraCartService)
+    function __construct(LaraCartContract $laraCartService)
     {
         $this->laraCartService = $laraCartService;
         $this->session = app('session');
@@ -392,8 +391,51 @@ class Cart
      * Gets the total of the cart with or without tax
      * @return string
      */
-    public function total($formatted = true)
+    public function total($formatted = true, $withDiscount = true)
     {
-        return $this->subTotal(true, $formatted);
+        $total = $this->subTotal(true, false);
+
+        if($withDiscount) {
+            $total -= $this->getTotalDiscount();
+        }
+
+        if($formatted) {
+            return $this->laraCartService->formatMoney($total, $this->locale, $this->internationalFormat);
+        } else {
+            return $total;
+        }
+    }
+
+    /**
+     * Applies a coupon to the cart
+     *
+     * @param CouponContract $coupon
+     */
+    public function applyCoupon(CouponContract $coupon)
+    {
+        if(empty($this->cart->coupons)) {
+            $this->cart->coupons = [];
+        }
+
+        $this->cart->coupons[] = $coupon;
+
+        $this->update();
+    }
+
+    /**
+     * Gets the total amount discounted
+     *
+     * @return int
+     */
+    public function getTotalDiscount()
+    {
+        $totalDiscount = 0;
+        if(empty($this->cart->coupons) === false) {
+            foreach($this->cart->coupons as $coupon) {
+                $totalDiscount +=$coupon->discount($this);
+            }
+        }
+
+        return $totalDiscount;
     }
 }

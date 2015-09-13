@@ -2,7 +2,7 @@
 
 namespace LukePOLO\LaraCart;
 
-use LukePOLO\LaraCart\Exceptions\InvalidOption;
+use LukePOLO\LaraCart\Contracts\LaraCartContract;
 use LukePOLO\LaraCart\Exceptions\InvalidPrice;
 use LukePOLO\LaraCart\Exceptions\InvalidQuantity;
 use LukePOLO\LaraCart\Exceptions\UnknownItemProperty;
@@ -19,15 +19,13 @@ class CartItem
     private $laraCartService;
 
     public $id;
-
-    public $name;
+    public $tax;
     public $qty;
+    public $name;
     public $price;
+    public $locale;
     public $options = [];
     public $subItems = [];
-    public $tax;
-
-    public $locale;
     public $internationalFormat;
 
     /**
@@ -113,7 +111,7 @@ class CartItem
      */
     public function setCartService()
     {
-        $this->laraCartService = \App::make(LaraCartInterface::class);
+        $this->laraCartService = \App::make(LaraCartContract::class);
     }
 
     /**
