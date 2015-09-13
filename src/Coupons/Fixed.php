@@ -17,10 +17,12 @@ class Fixed implements CouponContract
      * @param $code
      * @param $value
      */
-    public function __construct($code, $value)
+    public function __construct($code, $value, $attributes = [])
     {
         $this->code = $code;
         $this->value = $value;
+
+        $this->setAttributes($attributes);
     }
 
     /**
@@ -32,5 +34,15 @@ class Fixed implements CouponContract
     public function discount(Cart $cart)
     {
         return $this->value;
+    }
+
+    /**
+     * Displays the type of value it is for the user
+     *
+     * @return mixed
+     */
+    public function displayValue($locale = null, $internationalFormat = null)
+    {
+        return \LaraCart::formatMoney($this->value, $locale, $internationalFormat);
     }
 }

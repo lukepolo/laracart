@@ -45,4 +45,15 @@ trait CouponTrait
         }
     }
 
+    /**
+     * Sets all the attributes for the coupon
+     *
+     * @param $attributes
+     */
+    public function setAttributes($attributes)
+    {
+        foreach($attributes as $key => $value) {
+            $this->$key = $value;
+        }
+    }
 }

@@ -19,4 +19,11 @@ interface CouponContract
      * @return string
      */
     public function discount(Cart $cart);
+
+    /**
+     * Displays the type of value it is for the user
+     *
+     * @return mixed
+     */
+    public function displayValue();
 }

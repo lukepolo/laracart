@@ -371,8 +371,41 @@ class Cart
      */
     public function applyCoupon(CouponContract $coupon)
     {
-        $this->coupons[] = $coupon;
+        $this->coupons[$coupon->code] = $coupon;
 
         $this->update();
+    }
+
+    /**
+     * Gets the coupons for the current cart
+     *
+     * @return array
+     */
+    public function getCoupons()
+    {
+        return $this->coupons;
+    }
+
+    /**
+     * Removes a coupon in the cart
+     *
+     * @param $code
+     */
+    public function removeCoupon($code)
+    {
+        array_forget($this->coupons, $code);
+
+        $this->update();
+    }
+
+    /**
+     * Finds a specific coupon in the cart
+     *
+     * @param $code
+     * @return mixed
+     */
+    public function findCoupon($code)
+    {
+        return array_get($this->coupons, $code);
     }
 }
