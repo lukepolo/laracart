@@ -17,9 +17,6 @@ class Cart
     public $coupons = [];
     public $attributes = [];
     public $internationalFormat;
-    /**
-     * @var \Illuminate\Session\SessionManager
-     */
     protected $instance;
 
     function __construct($instance)
