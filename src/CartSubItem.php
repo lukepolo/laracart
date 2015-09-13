@@ -2,8 +2,6 @@
 
 namespace LukePOLO\LaraCart;
 
-use LukePOLO\LaraCart\Contracts\LaraCartContract;
-
 /**
  * Class CartItemOption
  *
@@ -11,7 +9,6 @@ use LukePOLO\LaraCart\Contracts\LaraCartContract;
  */
 class CartSubItem
 {
-    private $laraCartService;
     private $itemHash;
 
     public $locale;
@@ -23,9 +20,7 @@ class CartSubItem
      */
     public function __construct($options)
     {
-        $this->laraCartService = \App::make(LaraCartContract::class);
-
-        $this->itemHash = $this->laraCartService->generateHash($options);
+        $this->itemHash = \LaraCart::generateHash($options);
         if(isset($options['price']) === true) {
             $options['price'] = floatval($options['price']);
         }
@@ -67,7 +62,7 @@ class CartSubItem
     public function __get($option)
     {
         if($option == 'price') {
-            return $this->laraCartService->formatMoney(array_get($this->options, $option), $this->locale, $this->internationalFormat);
+            return \LaraCart::formatMoney(array_get($this->options, $option), $this->locale, $this->internationalFormat);
         } else {
             return array_get($this->options, $option);
         }

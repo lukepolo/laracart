@@ -3,7 +3,6 @@
 namespace LukePOLO\LaraCart;
 
 use LukePOLO\LaraCart\Contracts\CouponContract;
-use LukePOLO\LaraCart\Contracts\LaraCartContract;
 
 /**
  * Class Cart
@@ -15,47 +14,22 @@ class Cart
     /**
      * @var \Illuminate\Session\SessionManager
      */
-    protected $session;
     protected $instance;
 
     public $tax;
     public $items;
     public $locale;
+    public $coupons = [];
+    public $attributes = [];
     public $internationalFormat;
 
-    /**
-     * @param LaraCartContract $laraCartService | LukePOLO\LaraCart\LaraCart $laraCartService
-     */
-    function __construct(LaraCartContract $laraCartService)
-    {
-        $this->laraCartService = $laraCartService;
-        $this->session = app('session');
-        $this->events = app('events');
-
-        // Sets the tax for the cart
-        $this->tax = config('laracart.tax');
-
-        // Set a default instance of the cart
-        $instance = $this->session->get('laracart.instance', 'default');
-
-        $this->setInstance($instance);
-    }
-
-    /**
-     * Sets and Gets the instance of the cart in the session we should be using
-     *
-     * @param string $instance
-     */
-    public function setInstance($instance = 'default')
+    function __construct($instance)
     {
         $this->instance = $instance;
-
-        $this->get($instance);
-
-        // set in the session that we are using a different instance
-        $this->session->set('laracart.instance', $instance);
-
-        $this->events->fire('laracart.new');
+        $this->tax = config('laracart.tax');
+        $this->locale = config('laracart.locale');
+        $this->multipleCoupons = config('laracart.multiple_coupons');
+        $this->internationalFormat = config('laracart.international_format');
     }
 
     /**
@@ -66,7 +40,7 @@ class Cart
      */
     public function setAttribute($attribute, $value)
     {
-        array_set($this->items->attributes, $attribute, $value);
+        array_set($this->attributes, $attribute, $value);
 
         $this->update();
     }
@@ -78,7 +52,7 @@ class Cart
      */
     public function removeAttribute($attribute)
     {
-        array_forget($this->items->attributes, $attribute);
+        array_forget($this->attributes, $attribute);
 
         $this->update();
     }
@@ -93,12 +67,7 @@ class Cart
      */
     public function getAttribute($attribute, $defaultValue = null)
     {
-        if(isset($this->items->attributes) === true) {
-            return array_get($this->items->attributes, $attribute, $defaultValue);
-        } else {
-            return $defaultValue;
-        }
-
+        return array_get($this->attributes, $attribute, $defaultValue);
     }
 
     /**
@@ -108,11 +77,7 @@ class Cart
      */
     public function getAttributes()
     {
-        if(isset($this->items->attributes) === true) {
-            return $this->items->attributes;
-        } else {
-            return null;
-        }
+        return $this->attributes;
     }
 
     /**
@@ -170,40 +135,23 @@ class Cart
      */
     public function addItem($cartItem)
     {
-        // We need to generate the item hash to uniquely identify the item
         $itemHash = $cartItem->generateHash();
 
-        // If an item is a duplicate we know we need to bump the quantity
         if($this->getItem($itemHash)) {
             if($cartItem->lineItem === false) {
                 $this->getItem($itemHash)->qty += $cartItem->qty;
             } else {
-                // regenerate a hash till its unique
                 $cartItem->itemHash = $cartItem->generatehash(true);
-                // Re-add the item
                 $this->addItem($cartItem);
             }
         } else {
-            $this->items->items[] = $cartItem;
-            $this->events->fire('laracart.addItem', $cartItem);
+            $this->items[] = $cartItem;
+            \Event::fire('laracart.addItem', $cartItem);
         }
 
-        // Update the cart session
         $this->update();
 
         return $cartItem;
-    }
-
-    /**
-     * Gets the instance in the session
-     *
-     * @param string $instance
-     *
-     * @return $this cart instance
-     */
-    public function get($instance = 'default')
-    {
-        return $this->items = $this->session->get(config('laracart.cache_prefix', 'laracart_').$instance);
     }
 
     /**
@@ -214,8 +162,8 @@ class Cart
     public function getItems()
     {
         $items = [];
-        if (isset($this->items->items) === true) {
-            foreach($this->items->items as $item) {
+        if (isset($this->items) === true) {
+            foreach($this->items as $item) {
                 $items[$item->getHash()] = $item;
             }
         }
@@ -240,9 +188,8 @@ class Cart
      */
     public function update()
     {
-        $this->session->set(config('laracart.cache_prefix', 'laracart_').$this->instance, $this->items);
-
-        $this->events->fire('laracart.update', $this->items);
+        \Session::set(config('laracart.cache_prefix', 'laracart.').$this->instance, $this);
+        \Event::fire('laracart.update', $this);
     }
 
     /**
@@ -262,7 +209,7 @@ class Cart
 
         $newHash = $item->generateHash();
 
-        $this->events->fire('laracart.updateItem', [
+        \Event::fire('laracart.updateItem', [
             'item' => $item,
             'newHash' => $newHash
         ]);
@@ -279,15 +226,12 @@ class Cart
      */
     public function updateItemHash($itemHash)
     {
-        // Gets the item with its current hash
         $item = $this->getItem($itemHash);
 
-        // removes the item
         $this->removeItem($itemHash);
 
-        $this->events->fire('laracart.updateHash', $itemHash);
+        \Event::fire('laracart.updateHash', $itemHash);
 
-        // Adds the item with its new hash
         return $this->addItem($item);
     }
 
@@ -308,14 +252,14 @@ class Cart
      */
     public function removeItem($itemHash)
     {
-        foreach($this->items->items as $itemKey => $item) {
+        foreach($this->items as $itemKey => $item) {
            if($item->getHash() == $itemHash) {
-               unset($this->items->items[$itemKey]);
+               unset($this->items[$itemKey]);
                break;
            }
         }
 
-        $this->events->fire('laracart.removeItem', $itemHash);
+        \Event::fire('laracart.removeItem', $itemHash);
     }
 
     /**
@@ -323,11 +267,11 @@ class Cart
      */
     public function emptyCart()
     {
-        unset($this->items->items);
+        unset($this->items);
 
         $this->update();
 
-        $this->events->fire('laracart.empty', $this->instance);
+        \Event::fire('laracart.empty', $this->instance);
     }
 
     /**
@@ -339,7 +283,7 @@ class Cart
 
         $this->update();
 
-        $this->events->fire('laracart.destroy', $this->instance);
+        \Event::fire('laracart.destroy', $this->instance);
     }
 
     /**
@@ -380,7 +324,7 @@ class Cart
         }
 
         if($formatted) {
-            return $this->laraCartService->formatMoney($total, $this->locale, $this->internationalFormat);
+            return \LaraCart::formatMoney($total, $this->locale, $this->internationalFormat);
         } else {
             return $total;
         }
@@ -400,7 +344,7 @@ class Cart
         }
 
         if($formatted) {
-            return $this->laraCartService->formatMoney($total, $this->locale, $this->internationalFormat);
+            return \LaraCart::formatMoney($total, $this->locale, $this->internationalFormat);
         } else {
             return $total;
         }
@@ -413,11 +357,7 @@ class Cart
      */
     public function applyCoupon(CouponContract $coupon)
     {
-        if(empty($this->items->coupons)) {
-            $this->items->coupons = [];
-        }
-
-        $this->items->coupons[] = $coupon;
+        $this->coupons[] = $coupon;
 
         $this->update();
     }
@@ -430,14 +370,12 @@ class Cart
     public function getTotalDiscount($formatted = true)
     {
         $total = 0;
-        if(empty($this->items->coupons) === false) {
-            foreach($this->items->coupons as $coupon) {
-                $total += $coupon->discount($this);
-            }
+        foreach($this->coupons as $coupon) {
+            $total += $coupon->discount($this);
         }
 
         if($formatted) {
-            return $this->laraCartService->formatMoney($total, $this->locale, $this->internationalFormat);
+            return \LaraCart::formatMoney($total, $this->locale, $this->internationalFormat);
         } else {
             return $total;
         }

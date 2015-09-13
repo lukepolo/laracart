@@ -2,7 +2,6 @@
 
 namespace LukePOLO\LaraCart;
 
-use LukePOLO\LaraCart\Contracts\LaraCartContract;
 use LukePOLO\LaraCart\Exceptions\InvalidPrice;
 use LukePOLO\LaraCart\Exceptions\InvalidQuantity;
 use LukePOLO\LaraCart\Exceptions\UnknownItemProperty;
@@ -15,8 +14,6 @@ use LukePOLO\LaraCart\Exceptions\UnknownItemProperty;
 class CartItem
 {
     protected $itemHash;
-
-    private $laraCartService;
 
     public $id;
     public $tax;
@@ -38,8 +35,6 @@ class CartItem
      */
     public function __construct($id, $name, $qty, $price, $options = [], $lineItem = false)
     {
-        $this->laraCartService = \App::make(LaraCartContract::class);
-
         $this->id = $id;
         $this->name = $name;
         $this->qty = $qty;
@@ -128,9 +123,9 @@ class CartItem
                 ksort($cartItemArray['options']);
             }
 
-            $this->itemHash = $itemHash = $this->laraCartService->generateHash($cartItemArray);
+            $this->itemHash = $itemHash = \LaraCart::generateHash($cartItemArray);
         } elseif(empty($this->itemHash) === true) {
-            $this->itemHash = $this->laraCartService->generateRandomHash();
+            $this->itemHash = \LaraCart::generateRandomHash();
         }
         return $this->itemHash;
     }
@@ -199,7 +194,7 @@ class CartItem
         }
 
         if($format) {
-            return $this->laraCartService->formatMoney($price, $this->locale, $this->internationalFormat);
+            return \LaraCart::formatMoney($price, $this->locale, $this->internationalFormat);
         } else {
             return $price;
         }
@@ -251,7 +246,7 @@ class CartItem
     {
         if($format) {
             $total = $this->getPrice($tax, false) + $this->subItemsTotal($tax, false);
-            return $this->laraCartService->formatMoney($total * $this->qty, $this->locale, $this->internationalFormat);
+            return \LaraCart::formatMoney($total * $this->qty, $this->locale, $this->internationalFormat);
         } else {
             return $this->getPrice($tax, false) * $this->qty;
         }
@@ -274,7 +269,7 @@ class CartItem
         }
 
         if($format) {
-            return $this->laraCartService->formatMoney($total, $this->locale, $this->internationalFormat);
+            return \LaraCart::formatMoney($total, $this->locale, $this->internationalFormat);
         } else {
             return $total;
         }

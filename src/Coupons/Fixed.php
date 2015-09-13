@@ -8,7 +8,7 @@ use LukePOLO\LaraCart\Traits\CouponTrait;
 
 class Fixed implements CouponContract
 {
-    use CouponTrait
+    use CouponTrait;
 
     public $code;
     public $value;

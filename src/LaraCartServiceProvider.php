@@ -35,8 +35,7 @@ class LaraCartServiceProvider extends ServiceProvider {
         );
 
         $this->app['laracart'] = $this->app->share(function($app) {
-            return new Cart($app->make(LaraCartContract::class));
+            return $app->make(LaraCartContract::class);
         });
-
     }
 }
