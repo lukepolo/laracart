@@ -23,7 +23,7 @@ class CartSubItem
      */
     public function __construct($options)
     {
-        $this->setCartService();
+        $this->laraCartService = \App::make(LaraCartContract::class);
 
         $this->itemHash = $this->laraCartService->generateHash($options);
         if(isset($options['price']) === true) {
@@ -40,14 +40,6 @@ class CartSubItem
     public function getHash()
     {
         return $this->itemHash;
-    }
-
-    /**
-     * Sets the LaraCart Services class into the instance
-     */
-    public function setCartService()
-    {
-        $this->laraCartService = \App::make(LaraCartContract::class);
     }
 
     /**
