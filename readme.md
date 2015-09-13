@@ -133,46 +133,24 @@ Note : Because of the item hashing you must be careful how you update your items
     $cartItem->optionsTotal($formatMoney = true);
 ```
 
-**Add Option to Item**
+**Adding SubItems**
 ```php
-    $cartItem->addOption([
+    $cartItem->addSubItem([
         'Description' => 'Fries',
         'Price' => '.75'
     ]);
-```
-
-**Updating Options**
-```php
-    // Replacing an options value
-    // $cartItem->id = '123';
-    // This updates the "Description" to "No Cheese"
-    $cartItem->updateOption('123', 'Description', 'No Cheese', $updateByKey = 'id');
     
-    // Replace all options with the new options
-    $cartItem->updateOptions([
-        [
-            'Description' => 'Extra Cheese',
-            'Price' => '.25'
-        ]
-    ]);
-
-    // You can either use the built in option 'id'
-    $cartItem->removeOption($optionID, $removeByKey = 'id');
-
-    // Or you can use your own
-    $cartItem->removeOption($optionName, $removeByKey = 'optionName');
-
+    To update you can do on the item 
+    $cartItem->findSubItem($itemHash)->update('price') = 1.00;
 ```
 
-**Get the Sub-Total of the cart** (This also includes the prices in the options array!)
+**Get the Sub-Total of the cart** (This also includes the prices in the sub items and attributes!)
 ```php
-    // By default $tax = false
-    LaraCart::subTotal($tax);
+    LaraCart::subTotal($tax = false, $formatted = true);
 ```
 **Get the total of the cart**
 ```php 
-    // By default $tax = true
-    LaraCart::total($tax);
+    LaraCart::total($formatted = false, $withDiscount = true);
 ```
 
 
@@ -182,6 +160,23 @@ Instances is a way that we can use multiple carts within the same session. By us
     LaraCart::setInstance('yourInstanceName');
 ```
 Will switch to that instance of the cart. Each following request reuse the last instance of the cart set
+
+## Coupons
+Adding coupons could never be easier, currenlty there are a set of coupons inside LaraCart. To create new types of coupons just create a copy of one of the existing coupons and modifiy it!
+````
+$coupon = new \LukePOLO\LaraCart\Coupons\Fixed($coupon->CouponCode, $coupon->CouponValue, [
+    'description' => $coupon->Description
+]);
+
+LaraCart::applyCoupon($coupon);
+
+// To remove
+LaraCart::removeCoupon($code);
+
+// Couppons themeslves also have nifty formatting options , for instance Fixed value coupons can have a money format
+$fixedCoupon->getValue(); // $2.50
+$percentCoupon->getValue; // 15% 
+````
 
 ## Exceptions
 LaraCart packages can throw the following exceptions:
