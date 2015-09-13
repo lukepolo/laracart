@@ -88,15 +88,16 @@ class Cart
      * Gets an an attribute from the cart
      *
      * @param $attribute
+     * @param $defaultValue
      *
      * @return mixed
      */
-    public function getAttribute($attribute)
+    public function getAttribute($attribute, $defaultValue = null)
     {
         if(isset($this->cart->attributes) === true) {
-            return array_get($this->cart->attributes, $attribute);
+            return array_get($this->cart->attributes, $attribute, $defaultValue);
         } else {
-            return null;
+            return $defaultValue;
         }
 
     }
@@ -174,9 +175,9 @@ class Cart
         $itemHash = $cartItem->generateHash();
 
         // If an item is a duplicate we know we need to bump the quantity
-        if($this->findItem($itemHash)) {
+        if($this->getItem($itemHash)) {
             if($cartItem->lineItem === false) {
-                $this->findItem($itemHash)->qty += $cartItem->qty;
+                $this->getItem($itemHash)->qty += $cartItem->qty;
             } else {
                 // regenerate a hash till its unique
                 $cartItem->itemHash = $cartItem->generatehash(true);
@@ -230,7 +231,7 @@ class Cart
      *
      * @return CartItem | null
      */
-    public function findItem($itemHash)
+    public function getItem($itemHash)
     {
         return array_get($this->getItems(), $itemHash);
     }
@@ -256,7 +257,7 @@ class Cart
      */
     public function updateItem($itemHash, $key, $value)
     {
-        if(empty($item = $this->findItem($itemHash)) === false) {
+        if(empty($item = $this->getItem($itemHash)) === false) {
             $item->update($key, $value);
         }
 
@@ -280,7 +281,7 @@ class Cart
     public function updateItemHash($itemHash)
     {
         // Gets the item with its current hash
-        $item = $this->findItem($itemHash);
+        $item = $this->getItem($itemHash);
 
         // removes the item
         $this->removeItem($itemHash);
@@ -325,6 +326,8 @@ class Cart
     {
         unset($this->cart->items);
 
+        $this->update();
+
         $this->events->fire('laracart.empty', $this->instance);
     }
 
@@ -334,6 +337,8 @@ class Cart
     public function destroyCart()
     {
         unset($this->cart);
+
+        $this->update();
 
         $this->events->fire('laracart.destroy', $this->instance);
     }
@@ -366,7 +371,7 @@ class Cart
      *
      * @return string
      */
-    public function subTotal($tax = false)
+    public function subTotal($tax = false, $formatted = true)
     {
         $total = 0;
         if($this->count() != 0) {
@@ -375,15 +380,20 @@ class Cart
             }
         }
 
-        return $this->laraCartService->formatMoney($total, $this->locale, $this->internationalFormat);
+        if($formatted) {
+            return $this->laraCartService->formatMoney($total, $this->locale, $this->internationalFormat);
+        } else {
+            return $total;
+        }
+
     }
 
     /**
      * Gets the total of the cart with or without tax
      * @return string
      */
-    public function total($tax = true)
+    public function total($formatted = true)
     {
-        return $this->subTotal($tax);
+        return $this->subTotal(true, $formatted);
     }
 }

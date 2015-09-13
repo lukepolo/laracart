@@ -30,7 +30,6 @@ class CartItem
     public $locale;
     public $internationalFormat;
 
-
     /**
      * @param string $id
      * @param string $name
@@ -57,6 +56,59 @@ class CartItem
     }
 
     /**
+     * Magic Method allows for user input as an object
+     *
+     * @param $option
+     *
+     * @return mixed | null
+     */
+    public function __get($option)
+    {
+        if($option == 'price') {
+            return $this->getPrice();
+        } else {
+            return array_get($this->options, $option);
+        }
+    }
+
+    /**
+     * Magic Method allows for user input to set a value inside the options array
+     *
+     * @param $option
+     * @param $value
+     */
+    public function __set($option, $value)
+    {
+        array_set($this->options, $option, $value);
+    }
+
+    /**
+     * Magic Method allows for user remove a value inside the options array
+     *
+     * @param $option
+     */
+    public function __unset($option)
+    {
+        array_forget($this->options, $option);
+    }
+
+    /**
+     * Magic Method allows for user to check if an option isset
+     *
+     * @param $option
+     *
+     * @return bool
+     */
+    public function __isset($option)
+    {
+        if(empty($this->options[$option]) === false) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    /**
      * Sets the LaraCart Services class into the instance
      */
     public function setCartService()
@@ -65,8 +117,6 @@ class CartItem
     }
 
     /**
-     * TODO - move to laracart class
-     *
      *  Generates a hash based on the cartItem array
      *
      * @param bool $force
@@ -88,9 +138,9 @@ class CartItem
                 ksort($cartItemArray['options']);
             }
 
-            $this->itemHash = $itemHash = md5(json_encode($cartItemArray));
+            $this->itemHash = $itemHash = $this->laraCartService->generateHash($cartItemArray);
         } elseif(empty($this->itemHash) === true) {
-            $this->itemHash = str_random(40);
+            $this->itemHash = $this->laraCartService->generateRandomHash();
         }
         return $this->itemHash;
     }
@@ -126,15 +176,7 @@ class CartItem
      */
     public function findSubItem($itemHash)
     {
-        dd('Find item by itemhash');
-        return array_first($this->options, function($optionKey, $optionValue) use($updateByKey, $keyValue)
-        {
-            if($optionValue->$updateByKey == $keyValue) {
-                return true;
-            } else {
-                return false;
-            }
-        });
+        return array_get($this->subItems, $itemHash);
     }
 
     /**
@@ -150,12 +192,15 @@ class CartItem
         $price = $this->price;
 
         foreach($this->subItems as $subItem) {
+
             if(isset($subItem->price)) {
-                dd('Price needs to be addded for sub item '.$subItem->pirce);
+                $price += $subItem->price;
             }
 
-            foreach($subItem->items as $item) {
-                $price += $item->getPrice($tax, false);
+            if(empty($subItem->items) === false) {
+                foreach($subItem->items as $item) {
+                    $price += $item->getPrice($tax, false);
+                }
             }
         }
 
@@ -195,8 +240,6 @@ class CartItem
             break;
         }
 
-        dd('use laravel functions');
-
         if(isset($this->$key) === true) {
             $this->$key = $value;
         } else {
@@ -204,18 +247,6 @@ class CartItem
         }
 
         return $this->generateHash();
-    }
-
-
-    public function updateOption($key, $value)
-    {
-        $this->update('options.'.$key, $value);
-    }
-
-    public function removeOption($key)
-    {
-        Dump('Trying to remove  '.$key);
-        dd('TODO - update option');
     }
 
     /**

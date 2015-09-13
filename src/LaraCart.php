@@ -16,21 +16,42 @@ class LaraCart implements LaraCartInterface
      *
      * @return string
      */
-    public static function formatMoney($number, $locale = null, $internationalFormat = null)
+    public function formatMoney($number, $locale = null, $internationalFormat = null)
     {
-        if(empty($locale) === true) {
+        if (empty($locale) === true) {
             $locale = config('laracart.locale', 'en_US');
         }
 
-        if(empty($internationalFormat) === true) {
+        if (empty($internationalFormat) === true) {
             $internationalFormat = config('laracart.international_format');
         }
 
         setlocale(LC_MONETARY, $locale);
-        if($internationalFormat) {
+        if ($internationalFormat) {
             return money_format('%i', $number);
         } else {
             return money_format('%n', $number);
         }
+    }
+
+    /**
+     * Generates a hash for an object
+     *
+     * @param $object
+     * @return string
+     */
+    public function generateHash($object)
+    {
+        return md5(json_encode($object));
+    }
+
+    /**
+     * Generates a random hash
+     *
+     * @return string
+     */
+    public function generateRandomHash()
+    {
+        return str_random(40);
     }
 }

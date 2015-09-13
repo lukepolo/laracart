@@ -26,7 +26,7 @@ class CartSubItem
 
         // TODO  - move hasing function to laracart class
 
-        $this->itemHash = md5(json_encode($options));
+        $this->itemHash = $this->laraCartService->generateHash($options);
         if(isset($options['price']) === true) {
             $options['price'] = floatval($options['price']);
         }

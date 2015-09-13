@@ -9,5 +9,5 @@ namespace LukePOLO\LaraCart;
  */
 interface LaraCartInterface
 {
-    public static function formatMoney($number, $locale, $displayLocale);
+    public function formatMoney($number, $locale, $displayLocale);
 }
