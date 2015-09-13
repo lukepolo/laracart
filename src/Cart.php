@@ -396,7 +396,7 @@ class Cart
         $total = $this->subTotal(true, false);
 
         if($withDiscount) {
-            $total -= $this->getTotalDiscount();
+            $total -= $this->getTotalDiscount(false);
         }
 
         if($formatted) {
@@ -427,15 +427,19 @@ class Cart
      *
      * @return int
      */
-    public function getTotalDiscount()
+    public function getTotalDiscount($formatted = true)
     {
-        $totalDiscount = 0;
+        $total = 0;
         if(empty($this->cart->coupons) === false) {
             foreach($this->cart->coupons as $coupon) {
-                $totalDiscount +=$coupon->discount($this);
+                $total += $coupon->discount($this);
             }
         }
 
-        return $totalDiscount;
+        if($formatted) {
+            return $this->laraCartService->formatMoney($total, $this->locale, $this->internationalFormat);
+        } else {
+            return $total;
+        }
     }
 }
