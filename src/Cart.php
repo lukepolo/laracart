@@ -297,7 +297,7 @@ class Cart
         if ($formatted) {
             return \LaraCart::formatMoney($total, $this->locale, $this->internationalFormat);
         } else {
-            return $total;
+            return number_format($total, 2);
         }
     }
 
@@ -320,7 +320,7 @@ class Cart
         if ($formatted) {
             return \LaraCart::formatMoney($total, $this->locale, $this->internationalFormat);
         } else {
-            return $total;
+            return number_format($total, 2);
         }
 
     }
