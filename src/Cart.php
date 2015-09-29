@@ -12,6 +12,7 @@ use LukePOLO\LaraCart\Contracts\CouponContract;
 class Cart
 {
     public $tax;
+    public $fees;
     public $items;
     public $locale;
     public $coupons = [];
@@ -294,11 +295,33 @@ class Cart
             $total -= $this->getTotalDiscount(false);
         }
 
+        $total += $this->getFeeTotals();
+
         if ($formatted) {
             return \LaraCart::formatMoney($total, $this->locale, $this->internationalFormat);
         } else {
             return number_format($total, 2);
         }
+    }
+
+
+    /**
+     * Gets all the fee totals
+     *
+     * @return int
+     */
+    public function getFeeTotals()
+    {
+        $feeTotal = 0;
+
+        foreach($this->getFees() as $fee) {
+            $feeTotal += $fee['amount'];
+            if($fee['taxable']) {
+                $feeTotal += $fee['amount'] * $this->tax;
+            }
+        }
+
+        return $feeTotal;
     }
 
     /**
@@ -407,5 +430,47 @@ class Cart
     public function findCoupon($code)
     {
         return array_get($this->coupons, $code);
+    }
+
+    /**
+     * Getes all the fees on the cart object
+     *
+     * @return mixed
+     */
+    public function getFees()
+    {
+        return $this->fees;
+    }
+
+    /**
+     * Allows to charge for additional fees that may or may not be taxable
+     * ex - service fee , delivery fee, tips
+     *
+     * @param $name
+     * @param $amount
+     * @param bool|false $taxable
+     * @param array $options
+     */
+    public function addFee($name, $amount, $taxable = false, Array $options = [])
+    {
+        array_set($this->fees, $name, [
+            'amount' => $amount,
+            'taxable' => $taxable,
+            'options' => $options
+        ]);
+
+        $this->update();
+    }
+
+    /**
+     * Reemoves a fee from the fee array
+     *
+     * @param $name
+     */
+    public function removeFee($name)
+    {
+        array_forget($this->fees, $name);
+
+        $this->update();
     }
 }
