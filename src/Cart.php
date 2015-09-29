@@ -354,7 +354,7 @@ class Cart
     {
         $total = 0;
         foreach ($this->coupons as $coupon) {
-            $total += $coupon->discount($this);
+            $total += $coupon->discount();
         }
 
         if ($formatted) {

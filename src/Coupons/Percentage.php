@@ -28,12 +28,11 @@ class Percentage implements CouponContract
     /**
      * Gets the discount amount
      *
-     * @param Cart $cart
      * @return string
      */
-    public function discount(Cart $cart)
+    public function discount()
     {
-        return $cart->total(false, false) * $this->value;
+        return \LaraCart::total(false, false) * $this->value;
     }
 
     /**

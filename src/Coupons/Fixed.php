@@ -28,10 +28,9 @@ class Fixed implements CouponContract
     /**
      * Gets the discount amount
      *
-     * @param Cart $cart
      * @return string
      */
-    public function discount(Cart $cart)
+    public function discount()
     {
         return $this->value;
     }
