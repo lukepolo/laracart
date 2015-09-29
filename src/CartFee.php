@@ -3,53 +3,26 @@
 namespace LukePOLO\LaraCart;
 
 /**
- * Class CartItemOption
+ * Class CartFee
  *
  * @package LukePOLO\LaraCart
  */
-class CartSubItem
+class CartFee
 {
     public $locale;
-    public $price;
+    public $amount;
+    public $taxable;
     public $options = [];
     public $internationalFormat;
-    private $itemHash;
 
     /**
      * @param $options
      */
-    public function __construct($options)
+    public function __construct($amount, $taxable, $options)
     {
-        $this->itemHash = \LaraCart::generateHash($options);
-        if (isset($options['price']) === true) {
-            $this->price = floatval($options['price']);
-        }
+        $this->amount = $this->price = floatval($amount);
+        $this->taxable = $taxable;
         $this->options = $options;
-    }
-
-    /**
-     * Gets the hash for the item
-     *
-     * @return mixed
-     */
-    public function getHash()
-    {
-        return $this->itemHash;
-    }
-
-    /**
-     * Updates an option by its key
-     *
-     * @param $key
-     * @param $value
-     *
-     * @return string
-     */
-    public function update($key, $value)
-    {
-        $this->$key = $value;
-
-        return $this->id = md5(json_encode($this->options));
     }
 
     /**
@@ -65,15 +38,13 @@ class CartSubItem
     }
 
     /**
-     * Gets the formatted price
+     * Gets the formatted amount
      *
      * @return string
      */
-    public function getPrice()
+    public function getAmount()
     {
-        if(!empty($this->price)) {
-            return \LaraCart::formatMoney($this->price, $this->locale, $this->internationalFormat);
-        }
+        return \LaraCart::formatMoney($this->amount, $this->locale, $this->internationalFormat);
     }
 
     /**

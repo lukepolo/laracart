@@ -314,9 +314,9 @@ class Cart
         $feeTotal = 0;
 
         foreach($this->getFees() as $fee) {
-            $feeTotal += $fee['amount'];
-            if($fee['taxable']) {
-                $feeTotal += $fee['amount'] * $this->tax;
+            $feeTotal += $fee->amount;
+            if($fee->taxable) {
+                $feeTotal += $fee->amount * $this->tax;
             }
         }
 
@@ -464,11 +464,7 @@ class Cart
      */
     public function addFee($name, $amount, $taxable = false, Array $options = [])
     {
-        array_set($this->fees, $name, [
-            'amount' => $amount,
-            'taxable' => $taxable,
-            'options' => $options
-        ]);
+        array_set($this->fees, $name, new CartFee($amount, $taxable, $options));
 
         $this->update();
     }
