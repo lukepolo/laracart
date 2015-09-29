@@ -304,7 +304,6 @@ class Cart
         }
     }
 
-
     /**
      * Gets all the fee totals
      *
@@ -440,6 +439,18 @@ class Cart
     public function getFees()
     {
         return $this->fees;
+    }
+
+    /**
+     * Gets a speific fee from the fees array
+     *
+     * @param $name
+     *
+     * @return mixed
+     */
+    public function getFee($name)
+    {
+        return array_get($this->fees, $name);
     }
 
     /**
