@@ -12,7 +12,7 @@ use LukePOLO\LaraCart\Contracts\CouponContract;
 class Cart
 {
     public $tax;
-    public $fees;
+    public $fees = [];
     public $items;
     public $locale;
     public $coupons = [];
