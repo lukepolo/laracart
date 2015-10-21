@@ -450,7 +450,7 @@ class Cart
      */
     public function getFee($name)
     {
-        return array_get($this->fees, $name);
+        return array_get($this->fees, $name, new CartFee(null, false));
     }
 
     /**
