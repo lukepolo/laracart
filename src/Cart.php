@@ -303,6 +303,24 @@ class Cart
             return number_format($total, 2);
         }
     }
+    
+    /**
+     * Gets the total tax for the cart
+     *
+     * @param bool|true $formatted
+     *
+     * @return string
+     */
+    public function taxTotal($formatted = true)
+    {
+        $totalTax = $this->total(false) - $this->subTotal(false, false);
+
+        if ($formatted) {
+            return \LaraCart::formatMoney($totalTax, $this->locale, $this->internationalFormat);
+        } else {
+            return number_format($totalTax, 2);
+        }
+    }
 
     /**
      * Gets all the fee totals
