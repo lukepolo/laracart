@@ -295,7 +295,7 @@ class Cart
             $total -= $this->getTotalDiscount(false);
         }
 
-        $total += $this->getFeeTotals();
+        $total += $this->getFeeTotals(false);
 
         if ($formatted) {
             return \LaraCart::formatMoney($total, $this->locale, $this->internationalFormat);
@@ -313,7 +313,7 @@ class Cart
      */
     public function taxTotal($formatted = true)
     {
-        $totalTax = $this->total(false) - $this->subTotal(false, false);
+        $totalTax = $this->total(false) - $this->subTotal(false, false) - $this->getFeeTotals(false);
 
         if ($formatted) {
             return \LaraCart::formatMoney($totalTax, $this->locale, $this->internationalFormat);
@@ -322,12 +322,15 @@ class Cart
         }
     }
 
+
     /**
      * Gets all the fee totals
      *
-     * @return int
+     * @param bool|true $formatted
+     * 
+     * @return string
      */
-    public function getFeeTotals()
+    public function getFeeTotals($formatted = true)
     {
         $feeTotal = 0;
 
@@ -338,7 +341,11 @@ class Cart
             }
         }
 
-        return $feeTotal;
+        if ($formatted) {
+            return \LaraCart::formatMoney($feeTotal, $this->locale, $this->internationalFormat);
+        } else {
+            return number_format($feeTotal, 2);
+        }
     }
 
     /**
