@@ -63,7 +63,7 @@ class LaraCart implements LaraCartContract
      *
      * @return string
      */
-    public function formatMoney($number, $locale = null, $internationalFormat = null)
+    public function formatMoney(float $number, $locale = null, $internationalFormat = null)
     {
         if (empty($locale) === true) {
             $locale = config('laracart.locale', 'en_US');
