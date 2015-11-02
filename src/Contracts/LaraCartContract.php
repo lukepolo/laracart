@@ -18,7 +18,7 @@ interface LaraCartContract
      *
      * @return string
      */
-    public function formatMoney($number, $locale = null, $internationalFormat = null);
+    public function formatMoney(float $number, $locale = null, $internationalFormat = null);
 
     /**
      * Generates a hash for an object
