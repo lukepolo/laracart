@@ -144,4 +144,17 @@ trait CouponTrait
             }
         }
     }
+    
+    /**
+     * Sets a discount to an item with what code was used and the discount amount
+     *
+     * @param $item
+     * @param $code
+     * @param $discount
+     */
+    public function setDiscountToItem($item, $code, $discount)
+    {
+        $item->code = $code;
+        $item->discount = $discount;
+    }
 }
