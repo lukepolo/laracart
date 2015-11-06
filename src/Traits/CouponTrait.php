@@ -151,7 +151,7 @@ trait CouponTrait
      * @param $code
      * @param $discount
      */
-    public function setDiscountToItem($item, $code, $discount)
+    public function setDiscountOnItem($item, $code, $discount)
     {
         $item->code = $code;
         $item->discount = $discount;
