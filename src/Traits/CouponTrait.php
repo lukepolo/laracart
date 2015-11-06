@@ -133,7 +133,6 @@ trait CouponTrait
      */
     public function checkValidTimes(Carbon $startDate, Carbon $endDate, $throwErrors)
     {
-        // TODO - remove coupon from the cart
         if (Carbon::now()->between($startDate, $endDate)) {
             return true;
         } else {
@@ -144,7 +143,7 @@ trait CouponTrait
             }
         }
     }
-    
+
     /**
      * Sets a discount to an item with what code was used and the discount amount
      *

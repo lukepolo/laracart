@@ -289,13 +289,7 @@ class Cart
      */
     public function total($formatted = true, $withDiscount = true)
     {
-        $total = $this->subTotal(true, false);
-
-        if ($withDiscount) {
-            $total -= $this->getTotalDiscount(false);
-        }
-
-        $total += $this->getFeeTotals(false);
+        $total = $this->subTotal(true, false, $withDiscount) + $this->getFeeTotals(false);
 
         if ($formatted) {
             return \LaraCart::formatMoney($total, $this->locale, $this->internationalFormat);
@@ -313,7 +307,7 @@ class Cart
      */
     public function taxTotal($formatted = true)
     {
-        $totalTax = $this->total(false) - $this->subTotal(false, false) - $this->getFeeTotals(false);
+        $totalTax = $this->total(false, false) - $this->subTotal(false, false, false) - $this->getFeeTotals(false);
 
         if ($formatted) {
             return \LaraCart::formatMoney($totalTax, $this->locale, $this->internationalFormat);
@@ -351,16 +345,18 @@ class Cart
     /**
      * Gets the subtotal of the cart with or without tax
      *
-     * @param bool $tax
+     * @param bool|false $tax
+     * @param bool|true $formatted
+     * @param bool|true $withDiscount
      *
      * @return string
      */
-    public function subTotal($tax = false, $formatted = true)
+    public function subTotal($tax = false, $formatted = true, $withDiscount = true)
     {
         $total = 0;
         if ($this->count() != 0) {
             foreach ($this->getItems() as $item) {
-                $total += $item->subTotal($tax, false) + $item->subItemsTotal($tax, false);
+                $total += $item->subTotal($tax, false, $withDiscount);
             }
         }
 
@@ -395,7 +391,9 @@ class Cart
     /**
      * Gets the total amount discounted
      *
-     * @return int
+     * @param bool|true $formatted
+     *
+     * @return int|string
      */
     public function getTotalDiscount($formatted = true)
     {

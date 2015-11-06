@@ -237,21 +237,33 @@ class CartItem
      *
      * @param bool $tax
      * @param bool $format
+     * @param bool $withDiscount
      *
      * @return float|string
      */
-    public function subTotal($tax = false, $format = true)
+    public function subTotal($tax = false, $format = true, $withDiscount = true)
     {
+        $total = ($this->getPrice($tax, false) + $this->subItemsTotal($tax, false)) * $this->qty;
+        if ($withDiscount) {
+            $total -= $this->getDiscount(false);
+        }
+
         if ($format) {
-            $total = $this->getPrice($tax, false) + $this->subItemsTotal($tax, false);
-            return \LaraCart::formatMoney($total * $this->qty, $this->locale, $this->internationalFormat);
+
+            return \LaraCart::formatMoney($total, $this->locale, $this->internationalFormat);
         } else {
-            return $this->getPrice($tax, false) * $this->qty;
+            return $total ;
         }
     }
 
+
     /**
      * Gets the totals for the options
+     *
+     * @param bool|false $tax
+     * @param bool|true $format
+     *
+     * @return int|mixed|string
      */
     public function subItemsTotal($tax = false, $format = true)
     {
@@ -271,5 +283,22 @@ class CartItem
         } else {
             return $total;
         }
+    }
+
+    /**
+     * Gets the discount of an item
+     *
+     * @param bool|true $format
+     *
+     * @return mixed|null|string
+     */
+    public function getDiscount($format = true)
+    {
+        if($format) {
+            return \LaraCart::formatMoney($this->discount, $this->locale, $this->internationalFormat);
+        } else {
+            return $this->discount;
+        }
+
     }
 }
