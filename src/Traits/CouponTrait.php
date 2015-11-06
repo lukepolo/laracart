@@ -70,7 +70,7 @@ trait CouponTrait
         try {
             $this->discount(true);
 
-            return true;
+            return 'Coupon Applied';
         } catch (\Exception $e) {
             return $e->getMessage();
         }
