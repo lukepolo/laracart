@@ -102,6 +102,16 @@ class LaraCart implements LaraCartContract
         return str_random(40);
     }
 
+    /**
+     * This magic method allows me to call methods within the cart , this is to allow me to store the cart into the session
+     *
+     * @param $method
+     * @param $args
+     *
+     * @return mixed
+     *
+     * @throws \Exception
+     */
     public function __call($method, $args)
     {
         if (!method_exists($this->cart, $method)) {
