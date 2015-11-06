@@ -20,7 +20,7 @@ class Cart
     public $internationalFormat;
     protected $instance;
 
-    function __construct($instance)
+    public function __construct($instance)
     {
         $this->instance = $instance;
         $this->tax = config('laracart.tax');

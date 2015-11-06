@@ -294,10 +294,16 @@ class CartItem
      */
     public function getDiscount($format = true)
     {
-        if($format) {
-            return \LaraCart::formatMoney($this->discount, $this->locale, $this->internationalFormat);
+        if(\LaraCart::findCoupon($this->code)) {
+            $discount = $this->discount;
         } else {
-            return $this->discount;
+            $discount = 0;
+        }
+
+        if($format) {
+            return \LaraCart::formatMoney($discount, $this->locale, $this->internationalFormat);
+        } else {
+            return $discount;
         }
 
     }
