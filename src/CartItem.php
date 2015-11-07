@@ -5,7 +5,6 @@ namespace LukePOLO\LaraCart;
 use LukePOLO\LaraCart\Exceptions\InvalidPrice;
 use LukePOLO\LaraCart\Exceptions\InvalidQuantity;
 use LukePOLO\LaraCart\Exceptions\UnknownItemProperty;
-use LaraCart;
 
 /**
  * Class CartItem
@@ -197,7 +196,7 @@ class CartItem
         }
 
         if ($format) {
-            return LaraCart::formatMoney($price, $this->locale, $this->internationalFormat);
+            return \LaraCart::formatMoney($price, $this->locale, $this->internationalFormat);
         } else {
             return $price;
         }
@@ -255,7 +254,7 @@ class CartItem
 
         if ($format) {
 
-            return LaraCart::formatMoney($total, $this->locale, $this->internationalFormat);
+            return \LaraCart::formatMoney($total, $this->locale, $this->internationalFormat);
         } else {
             return $total ;
         }
@@ -284,7 +283,7 @@ class CartItem
         }
 
         if ($format) {
-            return LaraCart::formatMoney($total, $this->locale, $this->internationalFormat);
+            return \LaraCart::formatMoney($total, $this->locale, $this->internationalFormat);
         } else {
             return $total;
         }
@@ -299,14 +298,14 @@ class CartItem
      */
     public function getDiscount($format = true)
     {
-        if(LaraCart::findCoupon($this->code)) {
+        if(\LaraCart::findCoupon($this->code)) {
             $discount = $this->discount;
         } else {
             $discount = 0;
         }
 
         if($format) {
-            return LaraCart::formatMoney($discount, $this->locale, $this->internationalFormat);
+            return \LaraCart::formatMoney($discount, $this->locale, $this->internationalFormat);
         } else {
             return $discount;
         }

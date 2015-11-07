@@ -22,7 +22,6 @@ class LaraCart implements LaraCartContract
         $this->setInstance(\Session::get('laracart.instance', 'default'));
     }
 
-
     /**
      * Sets and Gets the instance of the cart in the session we should be using
      *
@@ -40,7 +39,7 @@ class LaraCart implements LaraCartContract
 
         \Event::fire('laracart.new');
 
-        return $this->cart;
+        return $this;
     }
 
     /**
@@ -56,7 +55,7 @@ class LaraCart implements LaraCartContract
             $this->cart = new Cart($instance);
         }
 
-        return $this->cart;
+        return $this;
     }
 
     /**
@@ -82,11 +81,11 @@ class LaraCart implements LaraCartContract
     public function formatMoney($number, $locale = null, $internationalFormat = null)
     {
         if (empty($locale) === true) {
-            $locale = config('laracart.locale', 'en_US');
+            $locale = config('laracart.locale', 'en_US.UTF-8');
         }
 
         if (empty($internationalFormat) === true) {
-            $internationalFormat = config('laracart.international_format');
+            $internationalFormat = config('laracart.international_format', false);
         }
 
         setlocale(LC_MONETARY, $locale);
