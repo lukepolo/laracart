@@ -2,8 +2,6 @@
 
 namespace LukePOLO\LaraCart;
 
-use LaraCart;
-
 /**
  * Class CartItemOption
  *
@@ -59,7 +57,7 @@ class CartSubItem
     public function getPrice()
     {
         if(!empty($this->price)) {
-            return LaraCart::formatMoney($this->price, $this->locale, $this->internationalFormat);
+            return \App::make('laracart')->formatMoney($this->price, $this->locale, $this->internationalFormat);
         }
     }
 

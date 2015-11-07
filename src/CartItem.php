@@ -196,7 +196,7 @@ class CartItem
         }
 
         if ($format) {
-            return \LaraCart::formatMoney($price, $this->locale, $this->internationalFormat);
+            return \App::make('laracart')->formatMoney($price, $this->locale, $this->internationalFormat);
         } else {
             return $price;
         }
@@ -254,7 +254,7 @@ class CartItem
 
         if ($format) {
 
-            return \LaraCart::formatMoney($total, $this->locale, $this->internationalFormat);
+            return \App::make('laracart')->formatMoney($total, $this->locale, $this->internationalFormat);
         } else {
             return $total ;
         }
@@ -283,7 +283,7 @@ class CartItem
         }
 
         if ($format) {
-            return \LaraCart::formatMoney($total, $this->locale, $this->internationalFormat);
+            return \App::make('laracart')->formatMoney($total, $this->locale, $this->internationalFormat);
         } else {
             return $total;
         }
@@ -298,14 +298,15 @@ class CartItem
      */
     public function getDiscount($format = true)
     {
-        if(\LaraCart::findCoupon($this->code)) {
+        // TODO - move to main laracart should not be in here
+        if(\App::make('laracart')->findCoupon($this->code)) {
             $discount = $this->discount;
         } else {
             $discount = 0;
         }
 
         if($format) {
-            return \LaraCart::formatMoney($discount, $this->locale, $this->internationalFormat);
+            return \App::make('laracart')->formatMoney($discount, $this->locale, $this->internationalFormat);
         } else {
             return $discount;
         }

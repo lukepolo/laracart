@@ -114,95 +114,157 @@ class LaraCartTest extends Orchestra\Testbench\TestCase
         $this->assertEquals(2, $this->laracart->count(false));
     }
 
-    public function testAddItem()
-    {
-    }
-
     public function testUpdateItem()
     {
-    }
+        $item = $this->laracart->add('1', 'Testing Item', 1, '1', [
+            'b_test' => 'option_1',
+            'a_test' => 'option_2'
+        ]);
 
-    public function testUpdateItemHash()
-    {
-    }
+        $this->laracart->updateItem($item->getHash(), 'b_test', 3);
 
-    public function testUpdateItemHashes()
-    {
+        $item = $this->laracart->getItem($item->getHash());
+
+        $this->assertEquals('3', $item->b_test);
     }
 
     public function testRemoveItem()
     {
+        $item = $this->laracart->add('1', 'Testing Item', 1, '1', [
+            'b_test' => 'option_1',
+            'a_test' => 'option_2'
+        ]);
 
+        $this->assertEquals(1, $this->laracart->count());
+        $this->laracart->removeItem($item->getHash());
+        $this->assertEmpty($this->laracart->getItem($item->getHash()));
     }
 
     public function testCount()
     {
+        $item = $this->laracart->add('1', 'Testing Item', 2, '1', [
+            'b_test' => 'option_1',
+            'a_test' => 'option_2'
+        ]);
 
+        $this->assertEquals(2, $this->laracart->count());
+        $this->assertEquals(1 , $this->laracart->count(false));
     }
 
     public function testEmptyCart()
     {
+        $item = $this->laracart->add('1', 'Testing Item', 2, '1', [
+            'b_test' => 'option_1',
+            'a_test' => 'option_2'
+        ]);
+
+        $this->laracart->setAttribute('test', 1);
+
+        $this->laracart->emptyCart();
+
+        $this->assertEquals(1, $this->laracart->getAttribute('test'));
+        $this->assertEquals(0, $this->laracart->count());
     }
 
     public function testDestroyCart()
     {
-    }
+        $item = $this->laracart->add('1', 'Testing Item', 2, '1', [
+            'b_test' => 'option_1',
+            'a_test' => 'option_2'
+        ]);
 
-    public function testGetCoupons()
-    {
-    }
+        $this->laracart->setAttribute('test', 1);
 
-    public function testFindCoupon()
-    {
+        $this->laracart->destroyCart();
+
+        $this->assertEquals(null, $this->laracart->getAttribute('test'));
+        $this->assertEquals(0, $this->laracart->count());
     }
 
     public function testApplyCoupon( )
     {
+        $fixedCoupon = New LukePOLO\LaraCart\Coupons\Fixed('10OFF', 10);
+        $this->laracart->applyCoupon($fixedCoupon);
+        $this->assertEquals($fixedCoupon, $this->laracart->findCoupon('10OFF'));
+
+        $percentCoupon = New LukePOLO\LaraCart\Coupons\Percentage('10%OFF', '.1');
+        $this->laracart->applyCoupon($percentCoupon);
+        $this->assertEquals($percentCoupon, $this->laracart->findCoupon('10%OFF'));
+
+        $this->assertCount(2, $this->laracart->getCoupons());
     }
 
     public function testRemoveCoupon()
     {
-    }
+        $fixedCoupon = New LukePOLO\LaraCart\Coupons\Fixed('10OFF', 10);
+        $this->laracart->applyCoupon($fixedCoupon);
 
-    public function testGetFee()
-    {
-    }
-
-
-    public function testGetFees()
-    {
+        $this->assertEquals($fixedCoupon, $this->laracart->findCoupon('10OFF'));
+        $this->laracart->removeCoupon('10OFF');
+        $this->assertEmpty($this->laracart->findCoupon('10OFF'));
     }
 
     public function testAddFee()
     {
-    }
+        $this->laracart->addFee('test', 10);
 
-    public function testRemoveFee()
-    {
-    }
+        $this->assertCount(1, $this->laracart->getFees());
 
+        $this->laracart->removeFee('test');
+
+        $this->assertCount(0, $this->laracart->getFees());
+    }
 
     public function testGetFeeTotals()
     {
+        $this->laracart->addFee('test', 5);
+        $this->laracart->addFee('test_2', 20);
+
+        $this->assertEquals('$25.00', $this->laracart->getFeeTotals());
+        $this->assertEquals(25, $this->laracart->getFeeTotals(false));
 
     }
 
     public function testGetTotalDiscount()
     {
+        $fixedCoupon = New LukePOLO\LaraCart\Coupons\Fixed('10OFF', 10);
+        $this->laracart->applyCoupon($fixedCoupon);
+        $this->assertEquals($fixedCoupon, $this->laracart->findCoupon('10OFF'));
 
+        $this->assertEquals('$10.00', $this->laracart->getTotalDiscount());
+        $this->assertEquals(10, $this->laracart->getTotalDiscount(false));
     }
 
     public function testTaxTotal()
     {
+        $item = $this->laracart->add('1', 'Testing Item', 1, '24.00', [
+            'b_test' => 'option_1',
+            'a_test' => 'option_2'
+        ]);
+
+        $this->assertEquals("$.07", $this->laracart->taxTotal());
+        $this->assertEquals(".07", $this->laracart->taxTotal(false));
     }
 
     public function testSubTotal()
     {
+        $item = $this->laracart->add('1', 'Testing Item', 1, '24.00', [
+            'b_test' => 'option_1',
+            'a_test' => 'option_2'
+        ]);
 
+        $this->assertEquals('$24.00', $this->laracart->subTotal());
+        $this->assertEquals('24.00', $this->laracart->subTotal(false, false));
     }
 
     public function testTotal()
     {
+        $item = $this->laracart->add('1', 'Testing Item', 1, '1.00', [
+            'b_test' => 'option_1',
+            'a_test' => 'option_2'
+        ]);
 
+        $this->assertEquals('$1.07', $this->laracart->subTotal(true, false));
+        $this->assertEquals('1.07', $this->laracart->subTotal(true, false));
     }
 }

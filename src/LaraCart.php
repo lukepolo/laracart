@@ -270,35 +270,7 @@ class LaraCart implements LaraCartContract
             'newHash' => $newHash
         ]);
 
-        return $newHash;
-    }
-
-    /**
-     * Updates an items hash
-     *
-     * @param $itemHash
-     *
-     * @return string ItemHash
-     */
-    public function updateItemHash($itemHash)
-    {
-        $item = $this->getItem($itemHash);
-
-        $this->removeItem($itemHash);
-
-        \Event::fire('laracart.updateHash', $itemHash);
-
-        return $this->addItem($item);
-    }
-
-    /**
-     * Updates all item hashes within the cart
-     */
-    public function updateItemHashes()
-    {
-        foreach ($this->getItems() as $itemHash => $item) {
-            $this->updateItemHash($itemHash);
-        }
+        return $item;
     }
 
     /**
@@ -355,7 +327,7 @@ class LaraCart implements LaraCartContract
      */
     public function destroyCart()
     {
-        unset($this->cart->items);
+        $this->cart = new Cart();
 
         $this->update();
 
