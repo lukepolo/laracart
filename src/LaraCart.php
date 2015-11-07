@@ -33,7 +33,6 @@ class LaraCart implements LaraCartContract
 
         $this->get($instance);
 
-        // set in the session that we are using a different instance
         \Session::set('laracart.instance', $instance);
 
         \Event::fire('laracart.new');
@@ -56,6 +55,46 @@ class LaraCart implements LaraCartContract
     }
 
     /**
+     * Updates cart session
+     */
+    public function update()
+    {
+        \Session::set(config('laracart.cache_prefix', 'laracart.') . $this->cart->instance, $this->cart);
+
+        \Event::fire('laracart.update', $this->cart);
+    }
+
+    /**
+     * // TODO - move to helper class
+     *
+     * Formats the number into a money format based on the locale and international formats
+     *
+     * @param $number
+     * @param $locale
+     * @param $internationalFormat
+     *
+     * @return string
+     */
+    public function formatMoney($number, $locale = null, $internationalFormat = null)
+    {
+        if (empty($locale) === true) {
+            $locale = config('laracart.locale', 'en_US');
+        }
+
+        if (empty($internationalFormat) === true) {
+            $internationalFormat = config('laracart.international_format');
+        }
+
+        setlocale(LC_MONETARY, $locale);
+        if ($internationalFormat) {
+            return money_format('%i', $number);
+        } else {
+            return money_format('%n', $number);
+        }
+    }
+
+    /**
+     * // TODO - move to a helper class
      * Generates a hash for an object
      *
      * @param $object
@@ -67,6 +106,7 @@ class LaraCart implements LaraCartContract
     }
 
     /**
+     * // TODO - move to a helper class
      * Generates a random hash
      *
      * @return string
@@ -75,42 +115,6 @@ class LaraCart implements LaraCartContract
     {
         return str_random(40);
     }
-
-    /**
-     * Adds an Attribute to the cart
-     *
-     * @param $attribute
-     * @param $value
-     */
-    public function setAttribute($attribute, $value)
-    {
-        array_set($this->cart->attributes, $attribute, $value);
-
-        $this->update();
-    }
-
-    /**
-     * Updates cart session
-     */
-    public function update()
-    {
-        \Session::set(config('laracart.cache_prefix', 'laracart.') . $this->cart->instance, $this->cart);
-
-        \Event::fire('laracart.update', $this->cart);
-    }
-
-    /**
-     * Removes an attribute from the cart
-     *
-     * @param $attribute
-     */
-    public function removeAttribute($attribute)
-    {
-        array_forget($this->cart->attributes, $attribute);
-
-        $this->update();
-    }
-
     /**
      * Gets an an attribute from the cart
      *
@@ -135,54 +139,28 @@ class LaraCart implements LaraCartContract
     }
 
     /**
-     * Creates a CartItem and then adds it to cart
+     * Adds an Attribute to the cart
      *
-     * @param string|int $itemID
-     * @param null $name
-     * @param int $qty
-     * @param string $price
-     * @param array $options
-     *
-     * @return string itemHash
+     * @param $attribute
+     * @param $value
      */
-    public function add($itemID, $name = null, $qty = 1, $price = '0.00', $options = [])
+    public function setAttribute($attribute, $value)
     {
-        return $this->addItem(new CartItem(
-            $itemID,
-            $name,
-            $qty,
-            $price,
-            $options,
-            false
-        ));
+        array_set($this->cart->attributes, $attribute, $value);
+
+        $this->update();
     }
 
     /**
-     * Adds the cartItem into the cart session
+     * Removes an attribute from the cart
      *
-     * @param $cartItem
-     *
-     * @return string itemHash
+     * @param $attribute
      */
-    public function addItem($cartItem)
+    public function removeAttribute($attribute)
     {
-        $itemHash = $cartItem->generateHash();
-
-        if ($this->getItem($itemHash)) {
-            if ($cartItem->lineItem === false) {
-                $this->getItem($itemHash)->qty += $cartItem->qty;
-            } else {
-                $cartItem->itemHash = $cartItem->generatehash(true);
-                $this->addItem($cartItem);
-            }
-        } else {
-            $this->cart->items[] = $cartItem;
-            \Event::fire('laracart.addItem', $cartItem);
-        }
+        array_forget($this->cart->attributes, $attribute);
 
         $this->update();
-
-        return $cartItem;
     }
 
     /**
@@ -225,6 +203,29 @@ class LaraCart implements LaraCartContract
      *
      * @return string itemHash
      */
+    public function add($itemID, $name = null, $qty = 1, $price = '0.00', $options = [])
+    {
+        return $this->addItem(new CartItem(
+            $itemID,
+            $name,
+            $qty,
+            $price,
+            $options,
+            false
+        ));
+    }
+
+    /**
+     * Creates a CartItem and then adds it to cart
+     *
+     * @param string|int $itemID
+     * @param null $name
+     * @param int $qty
+     * @param string $price
+     * @param array $options
+     *
+     * @return string itemHash
+     */
     public function addLine($itemID, $name = null, $qty = 1, $price = '0.00', $options = [])
     {
         return $this->addItem(new CartItem(
@@ -235,6 +236,34 @@ class LaraCart implements LaraCartContract
             $options,
             true
         ));
+    }
+
+    /**
+     * Adds the cartItem into the cart session
+     *
+     * @param $cartItem
+     *
+     * @return string itemHash
+     */
+    public function addItem($cartItem)
+    {
+        $itemHash = $cartItem->generateHash();
+
+        if ($this->getItem($itemHash)) {
+            if ($cartItem->lineItem === false) {
+                $this->getItem($itemHash)->qty += $cartItem->qty;
+            } else {
+                $cartItem->itemHash = $cartItem->generatehash(true);
+                $this->addItem($cartItem);
+            }
+        } else {
+            $this->cart->items[] = $cartItem;
+            \Event::fire('laracart.addItem', $cartItem);
+        }
+
+        $this->update();
+
+        return $cartItem;
     }
 
     /**
@@ -263,16 +292,6 @@ class LaraCart implements LaraCartContract
     }
 
     /**
-     * Updates all item hashes within the cart
-     */
-    public function updateItemHashes()
-    {
-        foreach ($this->getItems() as $itemHash => $item) {
-            $this->updateItemHash($itemHash);
-        }
-    }
-
-    /**
      * Updates an items hash
      *
      * @param $itemHash
@@ -291,6 +310,16 @@ class LaraCart implements LaraCartContract
     }
 
     /**
+     * Updates all item hashes within the cart
+     */
+    public function updateItemHashes()
+    {
+        foreach ($this->getItems() as $itemHash => $item) {
+            $this->updateItemHash($itemHash);
+        }
+    }
+
+    /**
      * Removes a CartItem based on the itemHash
      *
      * @param $itemHash
@@ -305,6 +334,26 @@ class LaraCart implements LaraCartContract
         }
 
         \Event::fire('laracart.removeItem', $itemHash);
+    }
+
+    /**
+     * Get the count based on qty, or number of unique items
+     *
+     * @param bool $withItemQty
+     *
+     * @return int
+     */
+    public function count($withItemQty = true)
+    {
+        $count = 0;
+        foreach ($this->getItems() as $item) {
+            if ($withItemQty) {
+                $count += $item->qty;
+            } else {
+                $count++;
+            }
+        }
+        return $count;
     }
 
     /**
@@ -332,6 +381,150 @@ class LaraCart implements LaraCartContract
     }
 
     /**
+     * Gets the coupons for the current cart
+     *
+     * @return array
+     */
+    public function getCoupons()
+    {
+        return $this->cart->coupons;
+    }
+
+    /**
+     * // TODO - badly named
+     * Finds a specific coupon in the cart
+     *
+     * @param $code
+     * @return mixed
+     */
+    public function findCoupon($code)
+    {
+        return array_get($this->cart->coupons, $code);
+    }
+
+    /**
+     * // todo - badly named
+     * Applies a coupon to the cart
+     *
+     * @param CouponContract $coupon
+     */
+    public function applyCoupon(CouponContract $coupon)
+    {
+        $this->cart->coupons[$coupon->code] = $coupon;
+
+        $this->update();
+    }
+
+    /**
+     * Removes a coupon in the cart
+     *
+     * @param $code
+     */
+    public function removeCoupon($code)
+    {
+        array_forget($this->cart->coupons, $code);
+
+        $this->update();
+    }
+
+    /**
+     * Gets a speific fee from the fees array
+     *
+     * @param $name
+     *
+     * @return mixed
+     */
+    public function getFee($name)
+    {
+        return array_get($this->cart->fees, $name, new CartFee(null, false));
+    }
+
+    /**
+     * Getes all the fees on the cart object
+     *
+     * @return mixed
+     */
+    public function getFees()
+    {
+        return $this->cart->fees;
+    }
+
+    /**
+     * Allows to charge for additional fees that may or may not be taxable
+     * ex - service fee , delivery fee, tips
+     *
+     * @param $name
+     * @param $amount
+     * @param bool|false $taxable
+     * @param array $options
+     */
+    public function addFee($name, $amount, $taxable = false, Array $options = [])
+    {
+        array_set($this->cart->fees, $name, new CartFee($amount, $taxable, $options));
+
+        $this->update();
+    }
+
+    /**
+     * Reemoves a fee from the fee array
+     *
+     * @param $name
+     */
+    public function removeFee($name)
+    {
+        array_forget($this->cart->fees, $name);
+
+        $this->update();
+    }
+
+    /**
+     * Gets all the fee totals
+     *
+     * @param bool|true $formatted
+     *
+     * @return string
+     */
+    public function getFeeTotals($formatted = true)
+    {
+        $feeTotal = 0;
+
+        foreach ($this->getFees() as $fee) {
+            $feeTotal += $fee->amount;
+            if ($fee->taxable) {
+                $feeTotal += $fee->amount * $this->cart->tax;
+            }
+        }
+
+        if ($formatted) {
+            return $this->formatMoney($feeTotal);
+        } else {
+            return number_format($feeTotal, 2);
+        }
+    }
+
+    /**
+     * Gets the total amount discounted
+     *
+     * @param bool|true $formatted
+     *
+     * @return int|string
+     */
+    public function getTotalDiscount($formatted = true)
+    {
+        $total = 0;
+        foreach ($this->cart->coupons as $coupon) {
+            $total += $coupon->discount();
+        }
+
+        if ($formatted) {
+            return $this->formatMoney($total);
+        } else {
+            return $total;
+        }
+    }
+
+
+    /**
      * Gets the total tax for the cart
      *
      * @param bool|true $formatted
@@ -346,24 +539,6 @@ class LaraCart implements LaraCartContract
             return $this->formatMoney($totalTax);
         } else {
             return number_format($totalTax, 2);
-        }
-    }
-
-    /**
-     * Gets the total of the cart with or without tax
-     *
-     * @param bool|true $formatted
-     * @param bool|true $withDiscount
-     * @return string
-     */
-    public function total($formatted = true, $withDiscount = true)
-    {
-        $total = $this->subTotal(true, false, $withDiscount) + $this->getFeeTotals(false);
-
-        if ($formatted) {
-            return $this->formatMoney($total);
-        } else {
-            return number_format($total, 2);
         }
     }
 
@@ -394,190 +569,20 @@ class LaraCart implements LaraCartContract
     }
 
     /**
-     * Get the count based on qty, or number of unique items
-     *
-     * @param bool $withQty
-     *
-     * @return int
-     */
-    public function count($withQty = true)
-    {
-        $count = 0;
-        foreach ($this->getItems() as $item) {
-            if ($withQty) {
-                $count += $item->qty;
-            } else {
-                $count++;
-            }
-        }
-        return $count;
-    }
-
-    /**
-     * Formats the number into a money format based on the locale and international formats
-     *
-     * @param $number
-     * @param $locale
-     * @param $internationalFormat
-     *
-     * @return string
-     */
-    public function formatMoney($number, $locale = null, $internationalFormat = null)
-    {
-        if (empty($locale) === true) {
-            $locale = config('laracart.locale', 'en_US');
-        }
-
-        if (empty($internationalFormat) === true) {
-            $internationalFormat = config('laracart.international_format');
-        }
-
-        setlocale(LC_MONETARY, $locale);
-        if ($internationalFormat) {
-            return money_format('%i', $number);
-        } else {
-            return money_format('%n', $number);
-        }
-    }
-
-    /**
-     * Gets all the fee totals
+     * Gets the total of the cart with or without tax
      *
      * @param bool|true $formatted
-     *
+     * @param bool|true $withDiscount
      * @return string
      */
-    public function getFeeTotals($formatted = true)
+    public function total($formatted = true, $withDiscount = true)
     {
-        $feeTotal = 0;
-
-        foreach ($this->getFees() as $fee) {
-            $feeTotal += $fee->amount;
-            if ($fee->taxable) {
-                $feeTotal += $fee->amount * $this->tax;
-            }
-        }
-
-        if ($formatted) {
-            return $this->formatMoney($feeTotal);
-        } else {
-            return number_format($feeTotal, 2);
-        }
-    }
-
-    /**
-     * Getes all the fees on the cart object
-     *
-     * @return mixed
-     */
-    public function getFees()
-    {
-        return $this->cart->fees;
-    }
-
-    /**
-     * Gets the total amount discounted
-     *
-     * @param bool|true $formatted
-     *
-     * @return int|string
-     */
-    public function getTotalDiscount($formatted = true)
-    {
-        $total = 0;
-        foreach ($this->cart->coupons as $coupon) {
-            $total += $coupon->discount();
-        }
+        $total = $this->subTotal(true, false, $withDiscount) + $this->getFeeTotals(false);
 
         if ($formatted) {
             return $this->formatMoney($total);
         } else {
-            return $total;
+            return number_format($total, 2);
         }
-    }
-
-    /**
-     * Applies a coupon to the cart
-     *
-     * @param CouponContract $coupon
-     */
-    public function applyCoupon(CouponContract $coupon)
-    {
-        $this->cart->coupons[$coupon->code] = $coupon;
-
-        $this->update();
-    }
-
-    /**
-     * Gets the coupons for the current cart
-     *
-     * @return array
-     */
-    public function getCoupons()
-    {
-        return $this->cart->coupons;
-    }
-
-    /**
-     * Removes a coupon in the cart
-     *
-     * @param $code
-     */
-    public function removeCoupon($code)
-    {
-        array_forget($this->cart->coupons, $code);
-
-        $this->update();
-    }
-
-    /**
-     * Finds a specific coupon in the cart
-     *
-     * @param $code
-     * @return mixed
-     */
-    public function findCoupon($code)
-    {
-        return array_get($this->cart->coupons, $code);
-    }
-
-    /**
-     * Gets a speific fee from the fees array
-     *
-     * @param $name
-     *
-     * @return mixed
-     */
-    public function getFee($name)
-    {
-        return array_get($this->cart->fees, $name, new CartFee(null, false));
-    }
-
-    /**
-     * Allows to charge for additional fees that may or may not be taxable
-     * ex - service fee , delivery fee, tips
-     *
-     * @param $name
-     * @param $amount
-     * @param bool|false $taxable
-     * @param array $options
-     */
-    public function addFee($name, $amount, $taxable = false, Array $options = [])
-    {
-        array_set($this->cart->fees, $name, new CartFee($amount, $taxable, $options));
-
-        $this->update();
-    }
-
-    /**
-     * Reemoves a fee from the fee array
-     *
-     * @param $name
-     */
-    public function removeFee($name)
-    {
-        array_forget($this->cart->fees, $name);
-
-        $this->update();
     }
 }
