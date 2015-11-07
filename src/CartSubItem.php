@@ -28,31 +28,6 @@ class CartSubItem
     }
 
     /**
-     * Gets the hash for the item
-     *
-     * @return mixed
-     */
-    public function getHash()
-    {
-        return $this->itemHash;
-    }
-
-    /**
-     * Updates an option by its key
-     *
-     * @param $key
-     * @param $value
-     *
-     * @return string
-     */
-    public function update($key, $value)
-    {
-        $this->$key = $value;
-
-        return $this->id = md5(json_encode($this->options));
-    }
-
-    /**
      * Magic Method allows for user input as an object
      *
      * @param $option
@@ -62,6 +37,16 @@ class CartSubItem
     public function __get($option)
     {
         return array_get($this->options, $option);
+    }
+
+    /**
+     * Gets the hash for the item
+     *
+     * @return mixed
+     */
+    public function getHash()
+    {
+        return $this->itemHash;
     }
 
     /**
@@ -85,6 +70,21 @@ class CartSubItem
     public function __set($option, $value)
     {
         array_set($this->options, $option, $value);
+    }
+
+    /**
+     * Updates an option by its key
+     *
+     * @param $key
+     * @param $value
+     *
+     * @return string
+     */
+    public function update($key, $value)
+    {
+        $this->$key = $value;
+
+        return $this->id = md5(json_encode($this->options));
     }
 
     /**

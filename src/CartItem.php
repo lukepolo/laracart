@@ -100,7 +100,8 @@ class CartItem
     }
 
     /**
-     *  Generates a hash based on the cartItem array
+     * // TODO - badly named
+     * Generates a hash based on the cartItem array
      *
      * @param bool $force
      *
@@ -139,6 +140,17 @@ class CartItem
     }
 
     /**
+     * Finds an items option by its key and value
+     *
+     * @param $itemHash
+     * @return mixed
+     */
+    public function findSubItem($itemHash)
+    {
+        return array_get($this->subItems, $itemHash);
+    }
+
+    /**
      * Adds an option to a cart item
      *
      * @param array $subItem
@@ -152,18 +164,6 @@ class CartItem
         $this->subItems[$subItem->getHash()] = $subItem;
 
         return $this->generateHash();
-    }
-
-
-    /**
-     * Finds an items option by its key and value
-     *
-     * @param $itemHash
-     * @return mixed
-     */
-    public function findSubItem($itemHash)
-    {
-        return array_get($this->subItems, $itemHash);
     }
 
     /**
@@ -309,6 +309,5 @@ class CartItem
         } else {
             return $discount;
         }
-
     }
 }
