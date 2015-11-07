@@ -2,6 +2,8 @@
 
 namespace LukePOLO\LaraCart;
 
+use LaraCart;
+
 /**
  * Class CartItemOption
  *
@@ -20,7 +22,7 @@ class CartSubItem
      */
     public function __construct($options)
     {
-        $this->itemHash = \LaraCart::generateHash($options);
+        $this->itemHash = app('generateCartHash', $options);
         if (isset($options['price']) === true) {
             $this->price = floatval($options['price']);
         }
@@ -57,7 +59,7 @@ class CartSubItem
     public function getPrice()
     {
         if(!empty($this->price)) {
-            return \LaraCart::formatMoney($this->price, $this->locale, $this->internationalFormat);
+            return LaraCart::formatMoney($this->price, $this->locale, $this->internationalFormat);
         }
     }
 

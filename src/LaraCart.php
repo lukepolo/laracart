@@ -22,10 +22,13 @@ class LaraCart implements LaraCartContract
         $this->setInstance(\Session::get('laracart.instance', 'default'));
     }
 
+
     /**
      * Sets and Gets the instance of the cart in the session we should be using
      *
      * @param string $instance
+     *
+     * @return mixed
      */
     public function setInstance($instance = 'default')
     {
@@ -36,6 +39,8 @@ class LaraCart implements LaraCartContract
         \Session::set('laracart.instance', $instance);
 
         \Event::fire('laracart.new');
+
+        return $this->cart;
     }
 
     /**
@@ -65,7 +70,6 @@ class LaraCart implements LaraCartContract
     }
 
     /**
-     * // TODO - move to helper class
      *
      * Formats the number into a money format based on the locale and international formats
      *
@@ -86,6 +90,7 @@ class LaraCart implements LaraCartContract
         }
 
         setlocale(LC_MONETARY, $locale);
+
         if ($internationalFormat) {
             return money_format('%i', $number);
         } else {
@@ -93,28 +98,6 @@ class LaraCart implements LaraCartContract
         }
     }
 
-    /**
-     * // TODO - move to a helper class
-     * Generates a hash for an object
-     *
-     * @param $object
-     * @return string
-     */
-    public function generateHash($object)
-    {
-        return md5(json_encode($object));
-    }
-
-    /**
-     * // TODO - move to a helper class
-     * Generates a random hash
-     *
-     * @return string
-     */
-    public function generateRandomHash()
-    {
-        return str_random(40);
-    }
     /**
      * Gets an an attribute from the cart
      *
