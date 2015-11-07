@@ -15,7 +15,7 @@ class LaraCart implements LaraCartContract
     public $cart;
 
     /**
-     * @param LaraCartContract $laraCartService | LukePOLO\LaraCart\LaraCart $laraCartService
+     * LaraCart constructor.
      */
     function __construct()
     {
@@ -53,33 +53,6 @@ class LaraCart implements LaraCartContract
         }
 
         return $this->cart;
-    }
-
-    /**
-     * Formats the number into a money format based on the locale and international formats
-     *
-     * @param $number
-     * @param $locale
-     * @param $internationalFormat
-     *
-     * @return string
-     */
-    public function formatMoney($number, $locale = null, $internationalFormat = null)
-    {
-        if (empty($locale) === true) {
-            $locale = config('laracart.locale', 'en_US');
-        }
-
-        if (empty($internationalFormat) === true) {
-            $internationalFormat = config('laracart.international_format');
-        }
-
-        setlocale(LC_MONETARY, $locale);
-        if ($internationalFormat) {
-            return money_format('%i', $number);
-        } else {
-            return money_format('%n', $number);
-        }
     }
 
     /**
@@ -122,6 +95,7 @@ class LaraCart implements LaraCartContract
     public function update()
     {
         \Session::set(config('laracart.cache_prefix', 'laracart.') . $this->cart->instance, $this->cart);
+
         \Event::fire('laracart.update', $this->cart);
     }
 
@@ -358,21 +332,6 @@ class LaraCart implements LaraCartContract
     }
 
     /**
-     * Gets the total of the cart with or without tax
-     * @return string
-     */
-    public function total($formatted = true, $withDiscount = true)
-    {
-        $total = $this->subTotal(true, false, $withDiscount) + $this->getFeeTotals(false);
-
-        if ($formatted) {
-            return $this->formatMoney($total);
-        } else {
-            return number_format($total, 2);
-        }
-    }
-
-    /**
      * Gets the total tax for the cart
      *
      * @param bool|true $formatted
@@ -390,29 +349,21 @@ class LaraCart implements LaraCartContract
         }
     }
 
-
     /**
-     * Gets all the fee totals
+     * Gets the total of the cart with or without tax
      *
      * @param bool|true $formatted
-     *
+     * @param bool|true $withDiscount
      * @return string
      */
-    public function getFeeTotals($formatted = true)
+    public function total($formatted = true, $withDiscount = true)
     {
-        $feeTotal = 0;
-
-        foreach($this->getFees() as $fee) {
-            $feeTotal += $fee->amount;
-            if($fee->taxable) {
-                $feeTotal += $fee->amount * $this->tax;
-            }
-        }
+        $total = $this->subTotal(true, false, $withDiscount) + $this->getFeeTotals(false);
 
         if ($formatted) {
-            return $this->formatMoney($feeTotal);
+            return $this->formatMoney($total);
         } else {
-            return number_format($feeTotal, 2);
+            return number_format($total, 2);
         }
     }
 
@@ -460,6 +411,68 @@ class LaraCart implements LaraCartContract
             }
         }
         return $count;
+    }
+
+    /**
+     * Formats the number into a money format based on the locale and international formats
+     *
+     * @param $number
+     * @param $locale
+     * @param $internationalFormat
+     *
+     * @return string
+     */
+    public function formatMoney($number, $locale = null, $internationalFormat = null)
+    {
+        if (empty($locale) === true) {
+            $locale = config('laracart.locale', 'en_US');
+        }
+
+        if (empty($internationalFormat) === true) {
+            $internationalFormat = config('laracart.international_format');
+        }
+
+        setlocale(LC_MONETARY, $locale);
+        if ($internationalFormat) {
+            return money_format('%i', $number);
+        } else {
+            return money_format('%n', $number);
+        }
+    }
+
+    /**
+     * Gets all the fee totals
+     *
+     * @param bool|true $formatted
+     *
+     * @return string
+     */
+    public function getFeeTotals($formatted = true)
+    {
+        $feeTotal = 0;
+
+        foreach ($this->getFees() as $fee) {
+            $feeTotal += $fee->amount;
+            if ($fee->taxable) {
+                $feeTotal += $fee->amount * $this->tax;
+            }
+        }
+
+        if ($formatted) {
+            return $this->formatMoney($feeTotal);
+        } else {
+            return number_format($feeTotal, 2);
+        }
+    }
+
+    /**
+     * Getes all the fees on the cart object
+     *
+     * @return mixed
+     */
+    public function getFees()
+    {
+        return $this->cart->fees;
     }
 
     /**
@@ -526,16 +539,6 @@ class LaraCart implements LaraCartContract
     public function findCoupon($code)
     {
         return array_get($this->cart->coupons, $code);
-    }
-
-    /**
-     * Getes all the fees on the cart object
-     *
-     * @return mixed
-     */
-    public function getFees()
-    {
-        return $this->cart->fees;
     }
 
     /**

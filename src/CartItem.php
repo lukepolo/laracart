@@ -154,8 +154,12 @@ class CartItem
         return $this->generateHash();
     }
 
+
     /**
      * Finds an items option by its key and value
+     *
+     * @param $itemHash
+     * @return mixed
      */
     public function findSubItem($itemHash)
     {
