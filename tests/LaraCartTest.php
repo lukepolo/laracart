@@ -2,6 +2,12 @@
 
 class LaraCartTest extends Orchestra\Testbench\TestCase
 {
+    protected function getEnvironmentSetUp($app)
+    {
+        // Setup default database to use sqlite :memory:
+        $app['config']->set('laracart.tax', '.07');
+    }
+
     public function setUp()
     {
         parent::setUp();
@@ -237,13 +243,13 @@ class LaraCartTest extends Orchestra\Testbench\TestCase
 
     public function testTaxTotal()
     {
-        $item = $this->laracart->add('1', 'Testing Item', 1, '24.00', [
+        $item = $this->laracart->add('1', 'Testing Item', 1, '1.00', [
             'b_test' => 'option_1',
             'a_test' => 'option_2'
         ]);
 
-        $this->assertEquals("$.07", $this->laracart->taxTotal());
-        $this->assertEquals(".07", $this->laracart->taxTotal(false));
+        $this->assertEquals("$0.07", $this->laracart->taxTotal());
+        $this->assertEquals("0.07", $this->laracart->taxTotal(false));
     }
 
     public function testSubTotal()
@@ -264,7 +270,7 @@ class LaraCartTest extends Orchestra\Testbench\TestCase
             'a_test' => 'option_2'
         ]);
 
-        $this->assertEquals('$1.07', $this->laracart->subTotal(true, false));
-        $this->assertEquals('1.07', $this->laracart->subTotal(true, false));
+        $this->assertEquals('$1.07', $this->laracart->total());
+        $this->assertEquals('1.07', $this->laracart->total(false));
     }
 }
