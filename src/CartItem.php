@@ -4,7 +4,6 @@ namespace LukePOLO\LaraCart;
 
 use LukePOLO\LaraCart\Exceptions\InvalidPrice;
 use LukePOLO\LaraCart\Exceptions\InvalidQuantity;
-use LukePOLO\LaraCart\Exceptions\UnknownItemProperty;
 
 /**
  * Class CartItem
@@ -13,6 +12,9 @@ use LukePOLO\LaraCart\Exceptions\UnknownItemProperty;
  */
 class CartItem
 {
+    CONST QTY = 'qty';
+    CONST PRICE = 'price';
+
     protected $itemHash;
 
     public $id;
@@ -58,7 +60,7 @@ class CartItem
      */
     public function __get($option)
     {
-        if ($option == 'price') {
+        if ($option == self::PRICE) {
             return $this->getPrice();
         } else {
             return array_get($this->options, $option);
@@ -218,23 +220,19 @@ class CartItem
     public function update($key, $value)
     {
         switch ($key) {
-            case 'qty':
+            case self::QTY:
                 if (is_int($value) === false) {
                     throw new InvalidQuantity();
                 }
                 break;
-            case 'price':
+            case self::PRICE:
                 if (is_numeric($value) === false || preg_match('/\.(\d){3}/', $value)) {
                     throw new InvalidPrice();
                 }
                 break;
         }
 
-        if (isset($this->$key) === true) {
-            $this->$key = $value;
-        } else {
-            throw new UnknownItemProperty();
-        }
+        $this->$key = $value;
 
         return $this->generateHash();
     }
@@ -277,7 +275,7 @@ class CartItem
         $total = 0;
         foreach ($this->subItems as $item) {
             if (isset($item->price)) {
-                $total += array_get($item->options, 'price');
+                $total += array_get($item->options, self::PRICE);
             }
         }
 
