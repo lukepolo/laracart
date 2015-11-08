@@ -35,8 +35,18 @@ class LaraCartServiceProvider extends ServiceProvider
             LaraCart::class
         );
 
-        $this->app['laracart'] = $this->app->share(function ($app) {
+        $this->app->singleton('laracart', function ($app) {
             return $app->make(LaraCartContract::class);
+        });
+
+        $this->app->bind('generateCartHash', function($app, $data)
+        {
+            return md5(json_encode($data));
+        });
+
+        $this->app->bind('generateRandomCartItemHash', function()
+        {
+            return str_random(40);
         });
     }
 }

@@ -16,7 +16,11 @@ class CartFee
     public $internationalFormat;
 
     /**
-     * @param $options
+     * CartFee constructor.
+     *
+     * @param $amount
+     * @param $taxable
+     * @param array $options
      */
     public function __construct($amount, $taxable, $options = [])
     {

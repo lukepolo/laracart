@@ -6,6 +6,10 @@ use LukePOLO\LaraCart\Cart;
 use LukePOLO\LaraCart\Contracts\CouponContract;
 use LukePOLO\LaraCart\Traits\CouponTrait;
 
+/**
+ * Class Fixed
+ * @package LukePOLO\LaraCart\Coupons
+ */
 class Fixed implements CouponContract
 {
     use CouponTrait;
@@ -14,8 +18,11 @@ class Fixed implements CouponContract
     public $value;
 
     /**
+     * Fixed constructor.
+     *
      * @param $code
      * @param $value
+     * @param array $attributes
      */
     public function __construct($code, $value, $attributes = [])
     {
@@ -36,9 +43,11 @@ class Fixed implements CouponContract
     }
 
     /**
-     * Displays the type of value it is for the user
+     * Displays the value in a money format
      *
-     * @return mixed
+     * @param null $locale
+     * @param null $internationalFormat
+     * @return string
      */
     public function displayValue($locale = null, $internationalFormat = null)
     {

@@ -6,6 +6,16 @@ use LukePOLO\LaraCart\Cart;
 use LukePOLO\LaraCart\Contracts\CouponContract;
 use LukePOLO\LaraCart\Traits\CouponTrait;
 
+/**
+ * Class Percentage
+ *
+ * @package LukePOLO\LaraCart\Coupons
+ */
+
+/**
+ * Class Percentage
+ * @package LukePOLO\LaraCart\Coupons
+ */
 class Percentage implements CouponContract
 {
     use CouponTrait;
@@ -13,9 +23,14 @@ class Percentage implements CouponContract
     public $code;
     public $value;
 
+
     /**
+     * Percentage constructor.
+     *
      * @param $code
      * @param $value
+     *
+     * @param array $attributes
      */
     public function __construct($code, $value, $attributes = [])
     {
@@ -35,9 +50,8 @@ class Percentage implements CouponContract
         return \LaraCart::total(false, false) * $this->value;
     }
 
+
     /**
-     * Displays the type of value it is for the user
-     *
      * @return mixed
      */
     public function displayValue()

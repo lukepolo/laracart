@@ -20,36 +20,11 @@ class CartSubItem
      */
     public function __construct($options)
     {
-        $this->itemHash = \LaraCart::generateHash($options);
+        $this->itemHash = app('generateCartHash', $options);
         if (isset($options['price']) === true) {
             $this->price = floatval($options['price']);
         }
         $this->options = $options;
-    }
-
-    /**
-     * Gets the hash for the item
-     *
-     * @return mixed
-     */
-    public function getHash()
-    {
-        return $this->itemHash;
-    }
-
-    /**
-     * Updates an option by its key
-     *
-     * @param $key
-     * @param $value
-     *
-     * @return string
-     */
-    public function update($key, $value)
-    {
-        $this->$key = $value;
-
-        return $this->id = md5(json_encode($this->options));
     }
 
     /**
@@ -65,6 +40,16 @@ class CartSubItem
     }
 
     /**
+     * Gets the hash for the item
+     *
+     * @return mixed
+     */
+    public function getHash()
+    {
+        return $this->itemHash;
+    }
+
+    /**
      * Gets the formatted price
      *
      * @return string
@@ -72,7 +57,7 @@ class CartSubItem
     public function getPrice()
     {
         if(!empty($this->price)) {
-            return \LaraCart::formatMoney($this->price, $this->locale, $this->internationalFormat);
+            return \App::make('laracart')->formatMoney($this->price, $this->locale, $this->internationalFormat);
         }
     }
 
@@ -85,6 +70,21 @@ class CartSubItem
     public function __set($option, $value)
     {
         array_set($this->options, $option, $value);
+    }
+
+    /**
+     * Updates an option by its key
+     *
+     * @param $key
+     * @param $value
+     *
+     * @return string
+     */
+    public function update($key, $value)
+    {
+        $this->$key = $value;
+
+        return $this->id = md5(json_encode($this->options));
     }
 
     /**
