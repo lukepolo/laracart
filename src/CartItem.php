@@ -111,10 +111,6 @@ class CartItem
      */
     public function generateHash($force = false)
     {
-        if ($force === true) {
-            $this->itemHash = null;
-        }
-
         if ($this->lineItem === false) {
             $this->itemHash = null;
 
@@ -125,7 +121,7 @@ class CartItem
             }
 
             $this->itemHash = app(LaraCart::HASH, $cartItemArray);
-        } elseif (empty($this->itemHash) === true) {
+        } elseif ($force || empty($this->itemHash) === true) {
             $this->itemHash = app(LaraCart::RANHASH);
         }
         return $this->itemHash;
