@@ -54,9 +54,9 @@ class CartSubItem
     /**
      * Gets the formatted price
      *
-     * @param $format $tax
+     * @param bool|true $format
      *
-     * @return string
+     * @return mixed
      */
     public function getPrice($format = true)
     {

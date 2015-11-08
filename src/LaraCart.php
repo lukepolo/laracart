@@ -79,13 +79,13 @@ class LaraCart implements LaraCartContract
      * @param $number
      * @param $locale
      * @param $internationalFormat
-     * @param $formatted
+     * @param $format
      *
      * @return string
      */
-    public function formatMoney($number, $locale = null, $internationalFormat = null, $formatted = true)
+    public function formatMoney($number, $locale = null, $internationalFormat = null, $format = true)
     {
-        if ($formatted) {
+        if ($format) {
 
             setlocale(LC_MONETARY, empty($locale) ? $locale : config('laracart.locale', 'en_US.UTF-8'));
 
@@ -430,11 +430,11 @@ class LaraCart implements LaraCartContract
     /**
      * Gets all the fee totals
      *
-     * @param bool|true $formatted
+     * @param bool|true $format
      *
      * @return string
      */
-    public function getFeeTotals($formatted = true)
+    public function getFeeTotals($format = true)
     {
         $feeTotal = 0;
 
@@ -445,7 +445,7 @@ class LaraCart implements LaraCartContract
             }
         }
 
-        if ($formatted) {
+        if ($format) {
             return $this->formatMoney($feeTotal);
         } else {
             return number_format($feeTotal, 2);
@@ -455,18 +455,18 @@ class LaraCart implements LaraCartContract
     /**
      * Gets the total amount discounted
      *
-     * @param bool|true $formatted
+     * @param bool|true $format
      *
      * @return int|string
      */
-    public function getTotalDiscount($formatted = true)
+    public function getTotalDiscount($format = true)
     {
         $total = 0;
         foreach ($this->cart->coupons as $coupon) {
             $total += $coupon->discount();
         }
 
-        if ($formatted) {
+        if ($format) {
             return $this->formatMoney($total);
         } else {
             return $total;
@@ -477,15 +477,15 @@ class LaraCart implements LaraCartContract
     /**
      * Gets the total tax for the cart
      *
-     * @param bool|true $formatted
+     * @param bool|true $format
      *
      * @return string
      */
-    public function taxTotal($formatted = true)
+    public function taxTotal($format = true)
     {
         $totalTax = $this->total(false, false) - $this->subTotal(false, false, false) - $this->getFeeTotals(false);
 
-        if ($formatted) {
+        if ($format) {
             return $this->formatMoney($totalTax);
         } else {
             return number_format($totalTax, 2);
@@ -496,12 +496,12 @@ class LaraCart implements LaraCartContract
      * Gets the subtotal of the cart with or without tax
      *
      * @param bool|false $tax
-     * @param bool|true $formatted
+     * @param bool|true $format
      * @param bool|true $withDiscount
      *
      * @return string
      */
-    public function subTotal($tax = false, $formatted = true, $withDiscount = true)
+    public function subTotal($tax = false, $format = true, $withDiscount = true)
     {
         $total = 0;
         if ($this->count() != 0) {
@@ -510,7 +510,7 @@ class LaraCart implements LaraCartContract
             }
         }
 
-        if ($formatted) {
+        if ($format) {
             return $this->formatMoney($total);
         } else {
             return number_format($total, 2);
@@ -521,15 +521,15 @@ class LaraCart implements LaraCartContract
     /**
      * Gets the total of the cart with or without tax
      *
-     * @param bool|true $formatted
+     * @param bool|true $format
      * @param bool|true $withDiscount
      * @return string
      */
-    public function total($formatted = true, $withDiscount = true)
+    public function total($format = true, $withDiscount = true)
     {
         $total = $this->subTotal(true, false, $withDiscount) + $this->getFeeTotals(false);
 
-        if ($formatted) {
+        if ($format) {
             return $this->formatMoney($total);
         } else {
             return number_format($total, 2);
