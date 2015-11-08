@@ -84,7 +84,7 @@ class CartSubItem
     {
         $this->$key = $value;
 
-        return $this->id = md5(json_encode($this->options));
+        return md5(json_encode($this->options));
     }
 
     /**

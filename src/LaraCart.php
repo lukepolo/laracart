@@ -17,7 +17,7 @@ class LaraCart implements LaraCartContract
     /**
      * LaraCart constructor.
      */
-    function __construct()
+    public function __construct()
     {
         $this->setInstance(\Session::get('laracart.instance', 'default'));
     }
@@ -31,8 +31,6 @@ class LaraCart implements LaraCartContract
      */
     public function setInstance($instance = 'default')
     {
-        $this->instance = $instance;
-
         $this->get($instance);
 
         \Session::set('laracart.instance', $instance);
@@ -177,15 +175,16 @@ class LaraCart implements LaraCartContract
     /**
      * Creates a CartItem and then adds it to cart
      *
-     * @param string|int $itemID
+     * @param $itemID
      * @param null $name
      * @param int $qty
      * @param string $price
      * @param array $options
+     * @param bool|false $lineItem
      *
-     * @return string itemHash
+     * @return string
      */
-    public function add($itemID, $name = null, $qty = 1, $price = '0.00', $options = [])
+    public function add($itemID, $name = null, $qty = 1, $price = '0.00', $options = [], $lineItem = false)
     {
         return $this->addItem(new CartItem(
             $itemID,
@@ -193,7 +192,7 @@ class LaraCart implements LaraCartContract
             $qty,
             $price,
             $options,
-            false
+            $lineItem
         ));
     }
 
@@ -210,14 +209,7 @@ class LaraCart implements LaraCartContract
      */
     public function addLine($itemID, $name = null, $qty = 1, $price = '0.00', $options = [])
     {
-        return $this->addItem(new CartItem(
-            $itemID,
-            $name,
-            $qty,
-            $price,
-            $options,
-            true
-        ));
+        return $this->add($itemID, $name, $qty, $price, $options, true);
     }
 
     /**
