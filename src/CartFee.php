@@ -24,7 +24,7 @@ class CartFee
      */
     public function __construct($amount, $taxable, $options = [])
     {
-        $this->amount = $this->price = floatval($amount);
+        $this->amount = floatval($amount);
         $this->taxable = $taxable;
         $this->options = $options;
     }

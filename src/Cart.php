@@ -16,6 +16,7 @@ class Cart
     public $instance;
     public $coupons = [];
     public $attributes = [];
+    public $multipleCoupons;
     public $internationalFormat;
 
     /**
