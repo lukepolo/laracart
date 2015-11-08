@@ -358,7 +358,7 @@ class LaraCart implements LaraCartContract
      *
      * @param CouponContract $coupon
      */
-    public function applyCoupon(CouponContract $coupon)
+    public function addCoupon(CouponContract $coupon)
     {
         $this->cart->coupons[$coupon->code] = $coupon;
 
@@ -434,7 +434,7 @@ class LaraCart implements LaraCartContract
      *
      * @return string
      */
-    public function getFeeTotals($format = true)
+    public function feeTotals($format = true)
     {
         $feeTotal = 0;
 
@@ -459,7 +459,7 @@ class LaraCart implements LaraCartContract
      *
      * @return int|string
      */
-    public function getTotalDiscount($format = true)
+    public function totalDiscount($format = true)
     {
         $total = 0;
         foreach ($this->cart->coupons as $coupon) {
@@ -483,7 +483,7 @@ class LaraCart implements LaraCartContract
      */
     public function taxTotal($format = true)
     {
-        $totalTax = $this->total(false, false) - $this->subTotal(false, false, false) - $this->getFeeTotals(false);
+        $totalTax = $this->total(false, false) - $this->subTotal(false, false, false) - $this->feeTotals(false);
 
         if ($format) {
             return $this->formatMoney($totalTax);
@@ -527,7 +527,7 @@ class LaraCart implements LaraCartContract
      */
     public function total($format = true, $withDiscount = true)
     {
-        $total = $this->subTotal(true, false, $withDiscount) + $this->getFeeTotals(false);
+        $total = $this->subTotal(true, false, $withDiscount) + $this->feeTotals(false);
 
         if ($format) {
             return $this->formatMoney($total);

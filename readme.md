@@ -183,7 +183,7 @@ $coupon = new \LukePOLO\LaraCart\Coupons\Fixed($coupon->CouponCode, $coupon->Cou
     'description' => $coupon->Description
 ]);
 
-LaraCart::applyCoupon($coupon);
+LaraCart::addCoupon($coupon);
 
 // To remove
 LaraCart::removeCoupon($code);
