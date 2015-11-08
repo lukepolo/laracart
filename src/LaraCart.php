@@ -86,21 +86,14 @@ class LaraCart implements LaraCartContract
     public function formatMoney($number, $locale = null, $internationalFormat = null, $formatted = true)
     {
         if ($formatted) {
-            if (empty($locale) === true) {
-                $locale = config('laracart.locale', 'en_US.UTF-8');
-            }
+
+            setlocale(LC_MONETARY, empty($locale) ? $locale : config('laracart.locale', 'en_US.UTF-8'));
 
             if (empty($internationalFormat) === true) {
                 $internationalFormat = config('laracart.international_format', false);
             }
 
-            setlocale(LC_MONETARY, $locale);
-
-            if ($internationalFormat) {
-                return money_format('%i', $number);
-            } else {
-                return money_format('%n', $number);
-            }
+            return money_format($internationalFormat ? '%i' : '%n', $number);
         } else {
             return number_format($number, 2);
         }
