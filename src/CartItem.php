@@ -124,9 +124,9 @@ class CartItem
                 ksort($cartItemArray['options']);
             }
 
-            $this->itemHash = app('generateCartHash', $cartItemArray);
+            $this->itemHash = app(LaraCart::HASH, $cartItemArray);
         } elseif (empty($this->itemHash) === true) {
-            $this->itemHash = app('generateRandomCartItemHash');
+            $this->itemHash = app(LaraCart::RANHASH);
         }
         return $this->itemHash;
     }

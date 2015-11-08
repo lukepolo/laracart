@@ -16,6 +16,7 @@ class LaraCart implements LaraCartContract
     CONST QTY = 'qty';
     CONST PRICE = 'price';
     CONST HASH = 'generateCartHash';
+    CONST RANHASH = 'generateRandomCartItemHash';
 
     public $cart;
 

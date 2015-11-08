@@ -39,12 +39,12 @@ class LaraCartServiceProvider extends ServiceProvider
             return $app->make(LaraCartContract::class);
         });
 
-        $this->app->bind('generateCartHash', function($app, $data)
+        $this->app->bind(LaraCart::HASH, function($app, $data)
         {
             return md5(json_encode($data));
         });
 
-        $this->app->bind('generateRandomCartItemHash', function()
+        $this->app->bind(LaraCart::RANHASH, function()
         {
             return str_random(40);
         });
