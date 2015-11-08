@@ -120,7 +120,7 @@ class LaraCartTest extends Orchestra\Testbench\TestCase
         $this->assertEquals(2, $this->laracart->count(false));
     }
 
-    public function testUpdateItem()
+    public function testItem()
     {
         $item = $this->laracart->add('1', 'Testing Item', 1, '1', [
             'b_test' => 'option_1',
@@ -132,6 +132,37 @@ class LaraCartTest extends Orchestra\Testbench\TestCase
         $item = $this->laracart->getItem($item->getHash());
 
         $this->assertEquals('3', $item->b_test);
+        $this->assertEquals(1, $item->price);
+        $this->assertTrue(isset($item->b_test));
+        $this->assertFalse(isset($item->z_test));
+    }
+
+    public function testSubItem()
+    {
+        $item = $this->laracart->add('1', 'Testing Item', 1, '1', [
+            'b_test' => 'option_1',
+            'a_test' => 'option_2'
+        ]);
+
+        $subItemData = [
+            'name' => 'testSubItem',
+            'price' => 2
+        ];
+
+        $subItem = $item->addSubItem($subItemData);
+
+        $item->findSubItem($subItem->getHash());
+
+        $this->assertEquals(new \LukePOLO\LaraCart\CartSubItem($subItemData), $subItem);
+        $this->assertEquals('2', $subItem->price);
+        $this->assertEquals('$2.00', $subItem->getPrice());
+
+        $subItem->test = 4;
+
+        $this->assertEquals(4, $subItem->test);
+
+        $this->assertTrue(isset($subItem->test));
+        $this->assertFalse(isset($subItem->testz));
     }
 
     public function testRemoveItem()
@@ -212,13 +243,38 @@ class LaraCartTest extends Orchestra\Testbench\TestCase
 
     public function testAddFee()
     {
-        $this->laracart->addFee('test', 10);
+        $amount = 10;
+        $taxable = false;
+        $options = [
+            'test' => 1
+        ];
+
+        $this->laracart->addFee('test', $amount, $taxable, $options);
+
+        $this->assertEquals(new \LukePOLO\LaraCart\CartFee($amount, $taxable, $options),  $this->laracart->getFee('test'));
 
         $this->assertCount(1, $this->laracart->getFees());
 
         $this->laracart->removeFee('test');
 
         $this->assertCount(0, $this->laracart->getFees());
+    }
+
+    public function testFeeFunctions()
+    {
+        $this->laracart->addFee('test', 10, false, [
+            'test' => 3
+        ]);
+
+        $fee = $this->laracart->getFee('test');
+
+        $this->assertEquals(3, $fee->test);
+        $this->assertEquals('$10.00', $fee->getAmount());
+
+        $fee->test2 = '1';
+        $this->assertTrue(isset($fee->test2));
+        $this->assertFalse(isset($fee->test3));
+        $this->assertEquals(1, $fee->test2);
     }
 
     public function testFeeTotals()
@@ -243,7 +299,7 @@ class LaraCartTest extends Orchestra\Testbench\TestCase
 
     public function testTaxTotal()
     {
-        $item = $this->laracart->add('1', 'Testing Item', 1, '1.00', [
+        $this->laracart->add('1', 'Testing Item', 1, '1.00', [
             'b_test' => 'option_1',
             'a_test' => 'option_2'
         ]);
@@ -254,7 +310,7 @@ class LaraCartTest extends Orchestra\Testbench\TestCase
 
     public function testSubTotal()
     {
-        $item = $this->laracart->add('1', 'Testing Item', 1, '24.00', [
+        $this->laracart->add('1', 'Testing Item', 1, '24.00', [
             'b_test' => 'option_1',
             'a_test' => 'option_2'
         ]);
@@ -265,6 +321,7 @@ class LaraCartTest extends Orchestra\Testbench\TestCase
 
     public function testTotal()
     {
+        // TODO - Test taxable fees
         $item = $this->laracart->add('1', 'Testing Item', 1, '1.00', [
             'b_test' => 'option_1',
             'a_test' => 'option_2'

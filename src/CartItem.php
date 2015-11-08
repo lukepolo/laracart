@@ -57,11 +57,7 @@ class CartItem
      */
     public function __get($option)
     {
-        if ($option == LaraCart::PRICE) {
-            return $this->getPrice();
-        } else {
-            return array_get($this->options, $option);
-        }
+        return array_get($this->options, $option);
     }
 
     /**
@@ -73,16 +69,6 @@ class CartItem
     public function __set($option, $value)
     {
         array_set($this->options, $option, $value);
-    }
-
-    /**
-     * Magic Method allows for user remove a value inside the options array
-     *
-     * @param $option
-     */
-    public function __unset($option)
-    {
-        array_forget($this->options, $option);
     }
 
     /**
@@ -159,7 +145,9 @@ class CartItem
 
         $this->subItems[$subItem->getHash()] = $subItem;
 
-        return $this->generateHash();
+        $this->generateHash();
+
+        return $subItem;
     }
 
     /**
