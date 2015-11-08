@@ -14,4 +14,4 @@ before_script:
   - travis_retry composer self-update
   - travis_retry composer install --prefer-source --no-interaction --dev
 
-script: phpunit tests --coverage-text
+script: vendor/bin/phpunit tests

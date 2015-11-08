@@ -5,7 +5,7 @@
     "laravel",
     "cart",
     "shopping",
-    "shoppingcart"
+    "shopping cart"
   ],
   "homepage": "https://github.com/lukepolo/laracart",
   "license": "MIT",
@@ -21,9 +21,9 @@
     "illuminate/support": "5.1.*"
   },
   "require-dev": {
-    "phpunit/phpunit" : "4.*",
+    "phpunit/phpunit" : "5.0.*",
     "mockery/mockery": "0.9.*",
-    "orchestra/testbench": "~3.0"
+    "orchestra/testbench": "~3.1"
   },
   "autoload": {
     "psr-4": {
