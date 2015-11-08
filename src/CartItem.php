@@ -188,11 +188,7 @@ class CartItem
             $price += $price * $this->tax;
         }
 
-        if ($format) {
-            return \App::make(LaraCart::SERVICE)->formatMoney($price, $this->locale, $this->internationalFormat);
-        } else {
-            return number_format($price, 2);
-        }
+        return \App::make(LaraCart::SERVICE)->formatMoney($price, $this->locale, $this->internationalFormat, $format);
     }
 
     /**
@@ -241,12 +237,7 @@ class CartItem
             $total -= $this->getDiscount(false);
         }
 
-        if ($format) {
-
-            return \App::make(LaraCart::SERVICE)->formatMoney($total, $this->locale, $this->internationalFormat);
-        } else {
-            return $total;
-        }
+        return \App::make(LaraCart::SERVICE)->formatMoney($total, $this->locale, $this->internationalFormat, $format);
     }
 
 
@@ -271,11 +262,7 @@ class CartItem
             $total = $total + ($total * $this->tax);
         }
 
-        if ($format) {
-            return \App::make(LaraCart::SERVICE)->formatMoney($total, $this->locale, $this->internationalFormat);
-        } else {
-            return $total;
-        }
+        return \App::make(LaraCart::SERVICE)->formatMoney($total, $this->locale, $this->internationalFormat, $format);
     }
 
     /**
@@ -294,10 +281,6 @@ class CartItem
             $discount = 0;
         }
 
-        if ($format) {
-            return \App::make(LaraCart::SERVICE)->formatMoney($discount, $this->locale, $this->internationalFormat);
-        } else {
-            return $discount;
-        }
+        return \App::make(LaraCart::SERVICE)->formatMoney($discount, $this->locale, $this->internationalFormat, $format);
     }
 }

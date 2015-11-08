@@ -78,25 +78,30 @@ class LaraCart implements LaraCartContract
      * @param $number
      * @param $locale
      * @param $internationalFormat
+     * @param $formatted
      *
      * @return string
      */
-    public function formatMoney($number, $locale = null, $internationalFormat = null)
+    public function formatMoney($number, $locale = null, $internationalFormat = null, $formatted = true)
     {
-        if (empty($locale) === true) {
-            $locale = config('laracart.locale', 'en_US.UTF-8');
-        }
+        if ($formatted) {
+            if (empty($locale) === true) {
+                $locale = config('laracart.locale', 'en_US.UTF-8');
+            }
 
-        if (empty($internationalFormat) === true) {
-            $internationalFormat = config('laracart.international_format', false);
-        }
+            if (empty($internationalFormat) === true) {
+                $internationalFormat = config('laracart.international_format', false);
+            }
 
-        setlocale(LC_MONETARY, $locale);
+            setlocale(LC_MONETARY, $locale);
 
-        if ($internationalFormat) {
-            return money_format('%i', $number);
+            if ($internationalFormat) {
+                return money_format('%i', $number);
+            } else {
+                return money_format('%n', $number);
+            }
         } else {
-            return money_format('%n', $number);
+            return number_format($number, 2);
         }
     }
 

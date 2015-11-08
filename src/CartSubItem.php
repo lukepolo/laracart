@@ -9,11 +9,13 @@ namespace LukePOLO\LaraCart;
  */
 class CartSubItem
 {
+    private $itemHash;
+
     public $locale;
     public $price = 0;
+    public $items = [];
     public $options = [];
     public $internationalFormat;
-    private $itemHash;
 
     /**
      * @param $options
@@ -60,17 +62,11 @@ class CartSubItem
     {
         $price = $this->price;
 
-        if (empty($this->items) === false) {
-            foreach ($this->items as $item) {
-                $price += $item->getPrice(false, false);
-            }
+        foreach ($this->items as $item) {
+            $price += $item->getPrice(false, false);
         }
 
-        if($format) {
-            return \App::make(LaraCart::SERVICE)->formatMoney($price, $this->locale, $this->internationalFormat);
-        } else {
-            return number_format($price, 2);
-        }
+        return \App::make(LaraCart::SERVICE)->formatMoney($price, $this->locale, $this->internationalFormat, $format);
     }
 
     /**
