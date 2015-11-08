@@ -4,7 +4,6 @@ namespace LukePOLO\LaraCart;
 
 use LukePOLO\LaraCart\Exceptions\InvalidPrice;
 use LukePOLO\LaraCart\Exceptions\InvalidQuantity;
-use LukePOLO\LaraCart\Exceptions\UnknownItemProperty;
 
 /**
  * Class CartItem
@@ -58,7 +57,7 @@ class CartItem
      */
     public function __get($option)
     {
-        if ($option == 'price') {
+        if ($option == LaraCart::PRICE) {
             return $this->getPrice();
         } else {
             return array_get($this->options, $option);
@@ -112,22 +111,16 @@ class CartItem
      */
     public function generateHash($force = false)
     {
-        if ($force === true) {
-            $this->itemHash = null;
-        }
-
         if ($this->lineItem === false) {
             $this->itemHash = null;
 
             $cartItemArray = (array)$this;
 
-            if (empty($cartItemArray['options']) === false) {
-                ksort($cartItemArray['options']);
-            }
+            ksort($cartItemArray['options']);
 
-            $this->itemHash = app('generateCartHash', $cartItemArray);
-        } elseif (empty($this->itemHash) === true) {
-            $this->itemHash = app('generateRandomCartItemHash');
+            $this->itemHash = app(LaraCart::HASH, $cartItemArray);
+        } elseif ($force || empty($this->itemHash) === true) {
+            $this->itemHash = app(LaraCart::RANHASH);
         }
         return $this->itemHash;
     }
@@ -182,27 +175,14 @@ class CartItem
         $price = $this->price;
 
         foreach ($this->subItems as $subItem) {
-
-            if (isset($subItem->price)) {
-                $price += $subItem->price;
-            }
-
-            if (empty($subItem->items) === false) {
-                foreach ($subItem->items as $item) {
-                    $price += $item->getPrice($tax, false);
-                }
-            }
+            $price += $subItem->getPrice(false);
         }
 
         if ($tax) {
             $price += $price * $this->tax;
         }
 
-        if ($format) {
-            return \App::make('laracart')->formatMoney($price, $this->locale, $this->internationalFormat);
-        } else {
-            return $price;
-        }
+        return \App::make(LaraCart::SERVICE)->formatMoney($price, $this->locale, $this->internationalFormat, $format);
     }
 
     /**
@@ -211,30 +191,26 @@ class CartItem
      * @param $key
      * @param $value
      *
-     * @throws InvalidQuantity | InvalidPrice | UnknownItemProperty
+     * @throws InvalidQuantity | InvalidPrice
      *
      * @return string $itemHash
      */
     public function update($key, $value)
     {
         switch ($key) {
-            case 'qty':
+            case LaraCart::QTY:
                 if (is_int($value) === false) {
                     throw new InvalidQuantity();
                 }
                 break;
-            case 'price':
+            case LaraCart::PRICE:
                 if (is_numeric($value) === false || preg_match('/\.(\d){3}/', $value)) {
                     throw new InvalidPrice();
                 }
                 break;
         }
 
-        if (isset($this->$key) === true) {
-            $this->$key = $value;
-        } else {
-            throw new UnknownItemProperty();
-        }
+        $this->$key = $value;
 
         return $this->generateHash();
     }
@@ -255,12 +231,7 @@ class CartItem
             $total -= $this->getDiscount(false);
         }
 
-        if ($format) {
-
-            return \App::make('laracart')->formatMoney($total, $this->locale, $this->internationalFormat);
-        } else {
-            return $total;
-        }
+        return \App::make(LaraCart::SERVICE)->formatMoney($total, $this->locale, $this->internationalFormat, $format);
     }
 
 
@@ -277,7 +248,7 @@ class CartItem
         $total = 0;
         foreach ($this->subItems as $item) {
             if (isset($item->price)) {
-                $total += array_get($item->options, 'price');
+                $total += array_get($item->options, LaraCart::PRICE);
             }
         }
 
@@ -285,11 +256,7 @@ class CartItem
             $total = $total + ($total * $this->tax);
         }
 
-        if ($format) {
-            return \App::make('laracart')->formatMoney($total, $this->locale, $this->internationalFormat);
-        } else {
-            return $total;
-        }
+        return \App::make(LaraCart::SERVICE)->formatMoney($total, $this->locale, $this->internationalFormat, $format);
     }
 
     /**
@@ -302,16 +269,12 @@ class CartItem
     public function getDiscount($format = true)
     {
         // TODO - move to main laracart should not be in here
-        if (\App::make('laracart')->findCoupon($this->code)) {
+        if (\App::make(LaraCart::SERVICE)->findCoupon($this->code)) {
             $discount = $this->discount;
         } else {
             $discount = 0;
         }
 
-        if ($format) {
-            return \App::make('laracart')->formatMoney($discount, $this->locale, $this->internationalFormat);
-        } else {
-            return $discount;
-        }
+        return \App::make(LaraCart::SERVICE)->formatMoney($discount, $this->locale, $this->internationalFormat, $format);
     }
 }

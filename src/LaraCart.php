@@ -12,6 +12,12 @@ use LukePOLO\LaraCart\Contracts\LaraCartContract;
  */
 class LaraCart implements LaraCartContract
 {
+    CONST SERVICE = 'laracart';
+    CONST QTY = 'qty';
+    CONST PRICE = 'price';
+    CONST HASH = 'generateCartHash';
+    CONST RANHASH = 'generateRandomCartItemHash';
+
     public $cart;
 
     /**
@@ -73,25 +79,23 @@ class LaraCart implements LaraCartContract
      * @param $number
      * @param $locale
      * @param $internationalFormat
+     * @param $format
      *
      * @return string
      */
-    public function formatMoney($number, $locale = null, $internationalFormat = null)
+    public function formatMoney($number, $locale = null, $internationalFormat = null, $format = true)
     {
-        if (empty($locale) === true) {
-            $locale = config('laracart.locale', 'en_US.UTF-8');
-        }
+        if ($format) {
 
-        if (empty($internationalFormat) === true) {
-            $internationalFormat = config('laracart.international_format', false);
-        }
+            setlocale(LC_MONETARY, empty($locale) ? $locale : config('laracart.locale', 'en_US.UTF-8'));
 
-        setlocale(LC_MONETARY, $locale);
+            if (empty($internationalFormat) === true) {
+                $internationalFormat = config('laracart.international_format', false);
+            }
 
-        if ($internationalFormat) {
-            return money_format('%i', $number);
+            return money_format($internationalFormat ? '%i' : '%n', $number);
         } else {
-            return money_format('%n', $number);
+            return number_format($number, 2);
         }
     }
 
@@ -354,7 +358,7 @@ class LaraCart implements LaraCartContract
      *
      * @param CouponContract $coupon
      */
-    public function applyCoupon(CouponContract $coupon)
+    public function addCoupon(CouponContract $coupon)
     {
         $this->cart->coupons[$coupon->code] = $coupon;
 
@@ -426,11 +430,11 @@ class LaraCart implements LaraCartContract
     /**
      * Gets all the fee totals
      *
-     * @param bool|true $formatted
+     * @param bool|true $format
      *
      * @return string
      */
-    public function getFeeTotals($formatted = true)
+    public function feeTotals($format = true)
     {
         $feeTotal = 0;
 
@@ -441,7 +445,7 @@ class LaraCart implements LaraCartContract
             }
         }
 
-        if ($formatted) {
+        if ($format) {
             return $this->formatMoney($feeTotal);
         } else {
             return number_format($feeTotal, 2);
@@ -451,18 +455,18 @@ class LaraCart implements LaraCartContract
     /**
      * Gets the total amount discounted
      *
-     * @param bool|true $formatted
+     * @param bool|true $format
      *
      * @return int|string
      */
-    public function getTotalDiscount($formatted = true)
+    public function totalDiscount($format = true)
     {
         $total = 0;
         foreach ($this->cart->coupons as $coupon) {
             $total += $coupon->discount();
         }
 
-        if ($formatted) {
+        if ($format) {
             return $this->formatMoney($total);
         } else {
             return $total;
@@ -473,15 +477,15 @@ class LaraCart implements LaraCartContract
     /**
      * Gets the total tax for the cart
      *
-     * @param bool|true $formatted
+     * @param bool|true $format
      *
      * @return string
      */
-    public function taxTotal($formatted = true)
+    public function taxTotal($format = true)
     {
-        $totalTax = $this->total(false, false) - $this->subTotal(false, false, false) - $this->getFeeTotals(false);
+        $totalTax = $this->total(false, false) - $this->subTotal(false, false, false) - $this->feeTotals(false);
 
-        if ($formatted) {
+        if ($format) {
             return $this->formatMoney($totalTax);
         } else {
             return number_format($totalTax, 2);
@@ -492,12 +496,12 @@ class LaraCart implements LaraCartContract
      * Gets the subtotal of the cart with or without tax
      *
      * @param bool|false $tax
-     * @param bool|true $formatted
+     * @param bool|true $format
      * @param bool|true $withDiscount
      *
      * @return string
      */
-    public function subTotal($tax = false, $formatted = true, $withDiscount = true)
+    public function subTotal($tax = false, $format = true, $withDiscount = true)
     {
         $total = 0;
         if ($this->count() != 0) {
@@ -506,7 +510,7 @@ class LaraCart implements LaraCartContract
             }
         }
 
-        if ($formatted) {
+        if ($format) {
             return $this->formatMoney($total);
         } else {
             return number_format($total, 2);
@@ -517,15 +521,15 @@ class LaraCart implements LaraCartContract
     /**
      * Gets the total of the cart with or without tax
      *
-     * @param bool|true $formatted
+     * @param bool|true $format
      * @param bool|true $withDiscount
      * @return string
      */
-    public function total($formatted = true, $withDiscount = true)
+    public function total($format = true, $withDiscount = true)
     {
-        $total = $this->subTotal(true, false, $withDiscount) + $this->getFeeTotals(false);
+        $total = $this->subTotal(true, false, $withDiscount) + $this->feeTotals(false);
 
-        if ($formatted) {
+        if ($format) {
             return $this->formatMoney($total);
         } else {
             return number_format($total, 2);
