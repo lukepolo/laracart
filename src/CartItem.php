@@ -19,8 +19,11 @@ class CartItem
     public $tax;
     public $qty;
     public $name;
+    public $code;
     public $price;
     public $locale;
+    public $discount;
+    public $lineItem;
     public $options = [];
     public $subItems = [];
     public $internationalFormat;
@@ -122,7 +125,7 @@ class CartItem
                 ksort($cartItemArray['options']);
             }
 
-            $this->itemHash = $itemHash = app('generateCartHash', $cartItemArray);
+            $this->itemHash = app('generateCartHash', $cartItemArray);
         } elseif (empty($this->itemHash) === true) {
             $this->itemHash = app('generateRandomCartItemHash');
         }
@@ -215,12 +218,12 @@ class CartItem
     public function update($key, $value)
     {
         switch ($key) {
-            case 'qty' :
+            case 'qty':
                 if (is_int($value) === false) {
                     throw new InvalidQuantity();
                 }
                 break;
-            case 'price' :
+            case 'price':
                 if (is_numeric($value) === false || preg_match('/\.(\d){3}/', $value)) {
                     throw new InvalidPrice();
                 }
@@ -256,7 +259,7 @@ class CartItem
 
             return \App::make('laracart')->formatMoney($total, $this->locale, $this->internationalFormat);
         } else {
-            return $total ;
+            return $total;
         }
     }
 
@@ -299,13 +302,13 @@ class CartItem
     public function getDiscount($format = true)
     {
         // TODO - move to main laracart should not be in here
-        if(\App::make('laracart')->findCoupon($this->code)) {
+        if (\App::make('laracart')->findCoupon($this->code)) {
             $discount = $this->discount;
         } else {
             $discount = 0;
         }
 
-        if($format) {
+        if ($format) {
             return \App::make('laracart')->formatMoney($discount, $this->locale, $this->internationalFormat);
         } else {
             return $discount;
