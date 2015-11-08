@@ -10,7 +10,7 @@ namespace LukePOLO\LaraCart;
 class CartSubItem
 {
     public $locale;
-    public $price;
+    public $price = 0;
     public $options = [];
     public $internationalFormat;
     private $itemHash;
@@ -20,9 +20,9 @@ class CartSubItem
      */
     public function __construct($options)
     {
-        $this->itemHash = app('generateCartHash', $options);
-        if (isset($options['price']) === true) {
-            $this->price = floatval($options['price']);
+        $this->itemHash = app(LaraCart::HASH, $options);
+        if (isset($options[LaraCart::PRICE]) === true) {
+            $this->price = floatval($options[LaraCart::PRICE]);
         }
         $this->options = $options;
     }
@@ -52,12 +52,24 @@ class CartSubItem
     /**
      * Gets the formatted price
      *
+     * @param $format $tax
+     *
      * @return string
      */
-    public function getPrice()
+    public function getPrice($format = true)
     {
-        if(!empty($this->price)) {
-            return \App::make('laracart')->formatMoney($this->price, $this->locale, $this->internationalFormat);
+        $price = $this->price;
+
+        if (empty($this->items) === false) {
+            foreach ($this->items as $item) {
+                $price += $item->getPrice(false, false);
+            }
+        }
+
+        if($format) {
+            return \App::make(LaraCart::SERVICE)->formatMoney($price, $this->locale, $this->internationalFormat);
+        } else {
+            return number_format($price, 2);
         }
     }
 

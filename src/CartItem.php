@@ -12,9 +12,6 @@ use LukePOLO\LaraCart\Exceptions\InvalidQuantity;
  */
 class CartItem
 {
-    CONST QTY = 'qty';
-    CONST PRICE = 'price';
-
     protected $itemHash;
 
     public $id;
@@ -60,7 +57,7 @@ class CartItem
      */
     public function __get($option)
     {
-        if ($option == self::PRICE) {
+        if ($option == LaraCart::PRICE) {
             return $this->getPrice();
         } else {
             return array_get($this->options, $option);
@@ -184,16 +181,7 @@ class CartItem
         $price = $this->price;
 
         foreach ($this->subItems as $subItem) {
-
-            if (isset($subItem->price)) {
-                $price += $subItem->price;
-            }
-
-            if (empty($subItem->items) === false) {
-                foreach ($subItem->items as $item) {
-                    $price += $item->getPrice($tax, false);
-                }
-            }
+            $price += $subItem->getPrice(false);
         }
 
         if ($tax) {
@@ -201,9 +189,9 @@ class CartItem
         }
 
         if ($format) {
-            return \App::make('laracart')->formatMoney($price, $this->locale, $this->internationalFormat);
+            return \App::make(LaraCart::SERVICE)->formatMoney($price, $this->locale, $this->internationalFormat);
         } else {
-            return $price;
+            return number_format($price, 2);
         }
     }
 
@@ -213,19 +201,19 @@ class CartItem
      * @param $key
      * @param $value
      *
-     * @throws InvalidQuantity | InvalidPrice | UnknownItemProperty
+     * @throws InvalidQuantity | InvalidPrice
      *
      * @return string $itemHash
      */
     public function update($key, $value)
     {
         switch ($key) {
-            case self::QTY:
+            case LaraCart::QTY:
                 if (is_int($value) === false) {
                     throw new InvalidQuantity();
                 }
                 break;
-            case self::PRICE:
+            case LaraCart::PRICE:
                 if (is_numeric($value) === false || preg_match('/\.(\d){3}/', $value)) {
                     throw new InvalidPrice();
                 }
@@ -255,7 +243,7 @@ class CartItem
 
         if ($format) {
 
-            return \App::make('laracart')->formatMoney($total, $this->locale, $this->internationalFormat);
+            return \App::make(LaraCart::SERVICE)->formatMoney($total, $this->locale, $this->internationalFormat);
         } else {
             return $total;
         }
@@ -275,7 +263,7 @@ class CartItem
         $total = 0;
         foreach ($this->subItems as $item) {
             if (isset($item->price)) {
-                $total += array_get($item->options, self::PRICE);
+                $total += array_get($item->options, LaraCart::PRICE);
             }
         }
 
@@ -284,7 +272,7 @@ class CartItem
         }
 
         if ($format) {
-            return \App::make('laracart')->formatMoney($total, $this->locale, $this->internationalFormat);
+            return \App::make(LaraCart::SERVICE)->formatMoney($total, $this->locale, $this->internationalFormat);
         } else {
             return $total;
         }
@@ -300,14 +288,14 @@ class CartItem
     public function getDiscount($format = true)
     {
         // TODO - move to main laracart should not be in here
-        if (\App::make('laracart')->findCoupon($this->code)) {
+        if (\App::make(LaraCart::SERVICE)->findCoupon($this->code)) {
             $discount = $this->discount;
         } else {
             $discount = 0;
         }
 
         if ($format) {
-            return \App::make('laracart')->formatMoney($discount, $this->locale, $this->internationalFormat);
+            return \App::make(LaraCart::SERVICE)->formatMoney($discount, $this->locale, $this->internationalFormat);
         } else {
             return $discount;
         }
