@@ -48,7 +48,7 @@ class CartFee
      */
     public function getAmount()
     {
-        return \LaraCart::formatMoney($this->amount, $this->locale, $this->internationalFormat);
+        return \App::make(LaraCart::SERVICE)->formatMoney($this->amount, $this->locale, $this->internationalFormat);
     }
 
     /**

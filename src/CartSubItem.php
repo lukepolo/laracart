@@ -81,21 +81,6 @@ class CartSubItem
     }
 
     /**
-     * Updates an option by its key
-     *
-     * @param $key
-     * @param $value
-     *
-     * @return string
-     */
-    public function update($key, $value)
-    {
-        $this->$key = $value;
-
-        return md5(json_encode($this->options));
-    }
-
-    /**
      * Magic Method allows for user to check if an option isset
      *
      * @param $option
