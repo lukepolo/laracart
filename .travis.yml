@@ -10,8 +10,15 @@ matrix:
   allow_failures:
     - php: 7
 
+addons:
+  code_climate:
+    repo_token: 653d80c9cb760f12e0ea14fc523f37cc07d95e69559913242810859ac65c1feb
+
 before_script:
   - travis_retry composer self-update
   - travis_retry composer install --prefer-source --no-interaction
 
 script: vendor/bin/phpunit
+
+after_script:
+  - vendor/bin/test-reporter
