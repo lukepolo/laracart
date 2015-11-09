@@ -47,7 +47,7 @@ class Percentage implements CouponContract
      */
     public function discount()
     {
-        return \LaraCart::total(false, false) * $this->value;
+        return \App::make(\LukePOLO\Laracart\LaraCart::SERVICE)->total(false, false) * $this->value;
     }
 
 
@@ -56,6 +56,6 @@ class Percentage implements CouponContract
      */
     public function displayValue()
     {
-        return $this->value;
+        return ($this->value * 100).'%';
     }
 }

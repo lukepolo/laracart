@@ -228,12 +228,7 @@ class LaraCart implements LaraCartContract
         $itemHash = $cartItem->generateHash();
 
         if ($this->getItem($itemHash)) {
-            if ($cartItem->lineItem === false) {
-                $this->getItem($itemHash)->qty += $cartItem->qty;
-            } else {
-                $cartItem->itemHash = $cartItem->generatehash(true);
-                $this->addItem($cartItem);
-            }
+            $this->getItem($itemHash)->qty += $cartItem->qty;
         } else {
             $this->cart->items[] = $cartItem;
             \Event::fire('laracart.addItem', $cartItem);
