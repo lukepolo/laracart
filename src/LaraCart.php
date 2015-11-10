@@ -248,7 +248,10 @@ class LaraCart implements LaraCartContract
      * @param $key
      * @param $value
      *
-     * @return CartItem $newHash
+     * @return CartItem|null
+     *
+     * @throws Exceptions\InvalidPrice
+     * @throws Exceptions\InvalidQuantity
      */
     public function updateItem($itemHash, $key, $value)
     {
