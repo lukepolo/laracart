@@ -4,6 +4,7 @@ namespace LukePOLO\LaraCart;
 
 use LukePOLO\LaraCart\Exceptions\InvalidPrice;
 use LukePOLO\LaraCart\Exceptions\InvalidQuantity;
+use LukePOLO\LaraCart\Traits\CartOptionsMagicMethodsTrait;
 
 /**
  * Class CartItem
@@ -12,6 +13,8 @@ use LukePOLO\LaraCart\Exceptions\InvalidQuantity;
  */
 class CartItem
 {
+    use CartOptionsMagicMethodsTrait;
+
     protected $itemHash;
 
     public $id;
@@ -23,7 +26,6 @@ class CartItem
     public $locale;
     public $discount;
     public $lineItem;
-    public $options = [];
     public $subItems = [];
     public $internationalFormat;
 
@@ -46,45 +48,6 @@ class CartItem
         $this->tax = config('laracart.tax');
 
         $this->generateHash();
-    }
-
-    /**
-     * Magic Method allows for user input as an object
-     *
-     * @param $option
-     *
-     * @return mixed | null
-     */
-    public function __get($option)
-    {
-        return array_get($this->options, $option);
-    }
-
-    /**
-     * Magic Method allows for user input to set a value inside the options array
-     *
-     * @param $option
-     * @param $value
-     */
-    public function __set($option, $value)
-    {
-        array_set($this->options, $option, $value);
-    }
-
-    /**
-     * Magic Method allows for user to check if an option isset
-     *
-     * @param $option
-     *
-     * @return bool
-     */
-    public function __isset($option)
-    {
-        if (empty($this->options[$option]) === false) {
-            return true;
-        } else {
-            return false;
-        }
     }
 
     /**
@@ -237,7 +200,7 @@ class CartItem
         $total = 0;
         foreach ($this->subItems as $item) {
             if (isset($item->price)) {
-                $total += array_get($item->options, LaraCart::PRICE);
+                $total += $item->price;
             }
         }
 

@@ -24,6 +24,7 @@
     "phpunit/phpunit" : "4.*",
     "mockery/mockery": "0.9.*",
     "orchestra/testbench": "~3.1",
+    "psr/log": "1.0.0",
     "codeclimate/php-test-reporter": "dev-master"
   },
   "autoload": {

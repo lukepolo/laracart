@@ -2,6 +2,8 @@
 
 namespace LukePOLO\LaraCart;
 
+use LukePOLO\LaraCart\Traits\CartOptionsMagicMethodsTrait;
+
 /**
  * Class CartItemOption
  *
@@ -9,12 +11,13 @@ namespace LukePOLO\LaraCart;
  */
 class CartSubItem
 {
+    use CartOptionsMagicMethodsTrait;
+
     private $itemHash;
 
     public $locale;
     public $price = 0;
     public $items = [];
-    public $options = [];
     public $internationalFormat;
 
     /**
@@ -24,21 +27,10 @@ class CartSubItem
     {
         $this->itemHash = app(LaraCart::HASH, $options);
         if (isset($options[LaraCart::PRICE]) === true) {
-            $this->price = floatval($options[LaraCart::PRICE]);
+            $this->price = $options[LaraCart::PRICE];
+            array_forget($options, LaraCart::PRICE);
         }
         $this->options = $options;
-    }
-
-    /**
-     * Magic Method allows for user input as an object
-     *
-     * @param $option
-     *
-     * @return mixed | null
-     */
-    public function __get($option)
-    {
-        return array_get($this->options, $option);
     }
 
     /**
@@ -67,32 +59,5 @@ class CartSubItem
         }
 
         return \App::make(LaraCart::SERVICE)->formatMoney($price, $this->locale, $this->internationalFormat, $format);
-    }
-
-    /**
-     * Magic Method allows for user input to set a value inside a object
-     *
-     * @param $option
-     * @param $value
-     */
-    public function __set($option, $value)
-    {
-        array_set($this->options, $option, $value);
-    }
-
-    /**
-     * Magic Method allows for user to check if an option isset
-     *
-     * @param $option
-     *
-     * @return bool
-     */
-    public function __isset($option)
-    {
-        if (empty($this->options[$option]) === false) {
-            return true;
-        } else {
-            return false;
-        }
     }
 }

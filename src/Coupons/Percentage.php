@@ -30,14 +30,14 @@ class Percentage implements CouponContract
      * @param $code
      * @param $value
      *
-     * @param array $attributes
+     * @param array $options
      */
-    public function __construct($code, $value, $attributes = [])
+    public function __construct($code, $value, $options = [])
     {
         $this->code = $code;
         $this->value = $value;
 
-        $this->setAttributes($attributes);
+        $this->setOptions($options);
     }
 
     /**
