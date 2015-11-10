@@ -11,6 +11,8 @@ use LukePOLO\LaraCart\Traits\CartOptionsMagicMethodsTrait;
  */
 class CartSubItem
 {
+    const ITEMS = 'items';
+
     use CartOptionsMagicMethodsTrait;
 
     private $itemHash;
@@ -26,10 +28,16 @@ class CartSubItem
     public function __construct($options)
     {
         $this->itemHash = app(LaraCart::HASH, $options);
-        if (isset($options[LaraCart::PRICE]) === true) {
+        if (isset($options[LaraCart::PRICE])) {
             $this->price = $options[LaraCart::PRICE];
             array_forget($options, LaraCart::PRICE);
         }
+
+        if (isset($options[self::ITEMS])) {
+            $this->items = $options[self::ITEMS];
+            array_forget($options, self::ITEMS);
+        }
+
         $this->options = $options;
     }
 

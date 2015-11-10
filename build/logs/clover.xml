@@ -1,470 +1,513 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <coverage generated="1447171120">
-  <project timestamp="1447171120">
-    <package name="LukePOLO\LaraCart">
-      <file name="/home/vagrant/Code/MINT/vendor/lukepolo/laracart/src/Cart.php">
-        <class name="Cart" namespace="LukePOLO\LaraCart" fullPackage="LukePOLO" package="LukePOLO">
-          <metrics methods="1" coveredmethods="1" conditionals="0" coveredconditionals="0" statements="6" coveredstatements="6" elements="7" coveredelements="7"/>
-        </class>
-        <line num="27" type="method" name="__construct" crap="1" count="25"/>
-        <line num="29" type="stmt" count="25"/>
-        <line num="30" type="stmt" count="25"/>
-        <line num="31" type="stmt" count="25"/>
-        <line num="32" type="stmt" count="25"/>
-        <line num="33" type="stmt" count="25"/>
-        <line num="34" type="stmt" count="25"/>
-        <metrics loc="35" ncloc="25" classes="1" methods="1" coveredmethods="1" conditionals="0" coveredconditionals="0" statements="6" coveredstatements="6" elements="7" coveredelements="7"/>
-      </file>
-      <file name="/home/vagrant/Code/MINT/vendor/lukepolo/laracart/src/CartFee.php">
-        <class name="CartFee" namespace="LukePOLO\LaraCart" fullPackage="LukePOLO" package="LukePOLO">
-          <metrics methods="2" coveredmethods="2" conditionals="0" coveredconditionals="0" statements="5" coveredstatements="5" elements="7" coveredelements="7"/>
-        </class>
-        <line num="28" type="method" name="__construct" crap="1" count="4"/>
-        <line num="30" type="stmt" count="4"/>
-        <line num="31" type="stmt" count="4"/>
-        <line num="32" type="stmt" count="4"/>
-        <line num="33" type="stmt" count="4"/>
-        <line num="40" type="method" name="getAmount" crap="1" count="1"/>
-        <line num="42" type="stmt" count="1"/>
-        <metrics loc="44" ncloc="27" classes="1" methods="2" coveredmethods="2" conditionals="0" coveredconditionals="0" statements="5" coveredstatements="5" elements="7" coveredelements="7"/>
-      </file>
-      <file name="/home/vagrant/Code/MINT/vendor/lukepolo/laracart/src/CartItem.php">
-        <class name="CartItem" namespace="LukePOLO\LaraCart" fullPackage="LukePOLO" package="LukePOLO">
-          <metrics methods="10" coveredmethods="8" conditionals="0" coveredconditionals="0" statements="66" coveredstatements="62" elements="76" coveredelements="70"/>
-        </class>
-        <line num="40" type="method" name="__construct" crap="1" count="14"/>
-        <line num="42" type="stmt" count="14"/>
-        <line num="43" type="stmt" count="14"/>
-        <line num="44" type="stmt" count="14"/>
-        <line num="45" type="stmt" count="14"/>
-        <line num="46" type="stmt" count="14"/>
-        <line num="47" type="stmt" count="14"/>
-        <line num="48" type="stmt" count="14"/>
-        <line num="50" type="stmt" count="14"/>
-        <line num="51" type="stmt" count="14"/>
-        <line num="61" type="method" name="generateHash" crap="4" count="14"/>
-        <line num="63" type="stmt" count="14"/>
-        <line num="64" type="stmt" count="13"/>
-        <line num="66" type="stmt" count="13"/>
-        <line num="68" type="stmt" count="13"/>
-        <line num="70" type="stmt" count="13"/>
-        <line num="71" type="stmt" count="14"/>
-        <line num="72" type="stmt" count="1"/>
-        <line num="73" type="stmt" count="1"/>
-        <line num="75" type="stmt" count="14"/>
-        <line num="83" type="method" name="getHash" crap="1" count="11"/>
-        <line num="85" type="stmt" count="11"/>
-        <line num="94" type="method" name="findSubItem" crap="1" count="1"/>
-        <line num="96" type="stmt" count="1"/>
-        <line num="106" type="method" name="addSubItem" crap="1" count="1"/>
-        <line num="108" type="stmt" count="1"/>
-        <line num="110" type="stmt" count="1"/>
-        <line num="112" type="stmt" count="1"/>
-        <line num="114" type="stmt" count="1"/>
-        <line num="125" type="method" name="getPrice" crap="3" count="4"/>
-        <line num="127" type="stmt" count="4"/>
-        <line num="129" type="stmt" count="4"/>
-        <line num="130" type="stmt" count="1"/>
-        <line num="131" type="stmt" count="4"/>
-        <line num="133" type="stmt" count="4"/>
-        <line num="134" type="stmt" count="2"/>
-        <line num="135" type="stmt" count="2"/>
-        <line num="137" type="stmt" count="4"/>
-        <line num="150" type="method" name="update" crap="6.29" count="1"/>
-        <line num="153" type="stmt" count="1"/>
-        <line num="154" type="stmt" count="1"/>
-        <line num="155" type="stmt" count="0"/>
-        <line num="157" type="stmt" count="1"/>
-        <line num="158" type="stmt" count="1"/>
-        <line num="159" type="stmt" count="1"/>
-        <line num="160" type="stmt" count="0"/>
-        <line num="162" type="stmt" count="1"/>
-        <line num="165" type="stmt" count="1"/>
-        <line num="167" type="stmt" count="1"/>
-        <line num="179" type="method" name="subTotal" crap="2" count="4"/>
-        <line num="181" type="stmt" count="4"/>
-        <line num="183" type="stmt" count="4"/>
-        <line num="184" type="stmt" count="3"/>
-        <line num="185" type="stmt" count="3"/>
-        <line num="187" type="stmt" count="4"/>
-        <line num="199" type="method" name="subItemsTotal" crap="4" count="4"/>
-        <line num="201" type="stmt" count="4"/>
-        <line num="202" type="stmt" count="4"/>
-        <line num="203" type="stmt" count="1"/>
-        <line num="204" type="stmt" count="1"/>
-        <line num="205" type="stmt" count="1"/>
-        <line num="206" type="stmt" count="4"/>
-        <line num="208" type="stmt" count="4"/>
-        <line num="209" type="stmt" count="2"/>
-        <line num="210" type="stmt" count="2"/>
-        <line num="212" type="stmt" count="4"/>
-        <line num="222" type="method" name="getDiscount" crap="2.04" count="3"/>
-        <line num="225" type="stmt" count="3"/>
-        <line num="227" type="stmt" count="3"/>
-        <line num="228" type="stmt" count="0"/>
-        <line num="229" type="stmt" count="0"/>
-        <line num="231" type="stmt" count="3"/>
-        <line num="232" type="stmt" count="3"/>
-        <line num="233" type="stmt" count="3"/>
-        <line num="234" type="stmt" count="3"/>
-        <line num="236" type="stmt" count="3"/>
-        <metrics loc="238" ncloc="155" classes="1" methods="10" coveredmethods="8" conditionals="0" coveredconditionals="0" statements="66" coveredstatements="62" elements="76" coveredelements="70"/>
-      </file>
-      <file name="/home/vagrant/Code/MINT/vendor/lukepolo/laracart/src/CartSubItem.php">
-        <class name="CartSubItem" namespace="LukePOLO\LaraCart" fullPackage="LukePOLO" package="LukePOLO">
-          <metrics methods="3" coveredmethods="3" conditionals="0" coveredconditionals="0" statements="13" coveredstatements="13" elements="16" coveredelements="16"/>
-        </class>
-        <line num="26" type="method" name="__construct" crap="2" count="1"/>
-        <line num="28" type="stmt" count="1"/>
-        <line num="29" type="stmt" count="1"/>
-        <line num="30" type="stmt" count="1"/>
-        <line num="31" type="stmt" count="1"/>
-        <line num="32" type="stmt" count="1"/>
-        <line num="33" type="stmt" count="1"/>
-        <line num="34" type="stmt" count="1"/>
-        <line num="41" type="method" name="getHash" crap="1" count="1"/>
-        <line num="43" type="stmt" count="1"/>
-        <line num="53" type="method" name="getPrice" crap="2" count="1"/>
-        <line num="55" type="stmt" count="1"/>
-        <line num="57" type="stmt" count="1"/>
-        <line num="58" type="stmt" count="1"/>
-        <line num="59" type="stmt" count="1"/>
-        <line num="61" type="stmt" count="1"/>
-        <metrics loc="62" ncloc="42" classes="1" methods="3" coveredmethods="3" conditionals="0" coveredconditionals="0" statements="13" coveredstatements="13" elements="16" coveredelements="16"/>
-      </file>
-      <file name="/home/vagrant/Code/MINT/vendor/lukepolo/laracart/src/LaraCart.php">
-        <class name="LaraCart" namespace="LukePOLO\LaraCart" fullPackage="LukePOLO" package="LukePOLO">
-          <metrics methods="32" coveredmethods="32" conditionals="0" coveredconditionals="0" statements="137" coveredstatements="137" elements="169" coveredelements="169"/>
-        </class>
-        <line num="26" type="method" name="__construct" crap="1" count="25"/>
-        <line num="28" type="stmt" count="25"/>
-        <line num="29" type="stmt" count="25"/>
-        <line num="38" type="method" name="setInstance" crap="1" count="25"/>
-        <line num="40" type="stmt" count="25"/>
-        <line num="42" type="stmt" count="25"/>
-        <line num="44" type="stmt" count="25"/>
-        <line num="46" type="stmt" count="25"/>
-        <line num="56" type="method" name="get" crap="2" count="25"/>
-        <line num="58" type="stmt" count="25"/>
-        <line num="59" type="stmt" count="25"/>
-        <line num="60" type="stmt" count="25"/>
-        <line num="62" type="stmt" count="25"/>
-        <line num="68" type="method" name="update" crap="1" count="21"/>
-        <line num="70" type="stmt" count="21"/>
-        <line num="72" type="stmt" count="21"/>
-        <line num="73" type="stmt" count="21"/>
-        <line num="86" type="method" name="formatMoney" crap="5" count="8"/>
-        <line num="88" type="stmt" count="8"/>
-        <line num="90" type="stmt" count="8"/>
-        <line num="92" type="stmt" count="8"/>
-        <line num="93" type="stmt" count="8"/>
-        <line num="94" type="stmt" count="8"/>
-        <line num="96" type="stmt" count="8"/>
-        <line num="99" type="stmt" count="4"/>
-        <line num="110" type="method" name="getAttribute" crap="1" count="3"/>
-        <line num="112" type="stmt" count="3"/>
-        <line num="120" type="method" name="getAttributes" crap="1" count="1"/>
-        <line num="122" type="stmt" count="1"/>
-        <line num="131" type="method" name="setAttribute" crap="1" count="3"/>
-        <line num="133" type="stmt" count="3"/>
-        <line num="135" type="stmt" count="3"/>
-        <line num="136" type="stmt" count="3"/>
-        <line num="143" type="method" name="removeAttribute" crap="1" count="1"/>
-        <line num="145" type="stmt" count="1"/>
-        <line num="147" type="stmt" count="1"/>
-        <line num="148" type="stmt" count="1"/>
-        <line num="157" type="method" name="getItem" crap="1" count="14"/>
-        <line num="159" type="stmt" count="14"/>
-        <line num="167" type="method" name="getItems" crap="3" count="15"/>
-        <line num="169" type="stmt" count="15"/>
-        <line num="170" type="stmt" count="15"/>
-        <line num="171" type="stmt" count="11"/>
-        <line num="172" type="stmt" count="11"/>
-        <line num="173" type="stmt" count="11"/>
-        <line num="174" type="stmt" count="11"/>
-        <line num="176" type="stmt" count="15"/>
-        <line num="191" type="method" name="add" crap="1" count="14"/>
-        <line num="193" type="stmt" count="14"/>
-        <line num="194" type="stmt" count="14"/>
-        <line num="195" type="stmt" count="14"/>
-        <line num="196" type="stmt" count="14"/>
-        <line num="197" type="stmt" count="14"/>
-        <line num="198" type="stmt" count="14"/>
-        <line num="199" type="stmt" count="14"/>
-        <line num="201" type="stmt" count="14"/>
-        <line num="202" type="stmt" count="14"/>
-        <line num="216" type="method" name="addLine" crap="1" count="1"/>
-        <line num="218" type="stmt" count="1"/>
-        <line num="228" type="method" name="addItem" crap="2" count="14"/>
-        <line num="230" type="stmt" count="14"/>
-        <line num="232" type="stmt" count="14"/>
-        <line num="233" type="stmt" count="1"/>
-        <line num="234" type="stmt" count="1"/>
-        <line num="235" type="stmt" count="14"/>
-        <line num="236" type="stmt" count="14"/>
-        <line num="239" type="stmt" count="14"/>
-        <line num="241" type="stmt" count="14"/>
-        <line num="256" type="method" name="updateItem" crap="2" count="1"/>
-        <line num="258" type="stmt" count="1"/>
-        <line num="259" type="stmt" count="1"/>
-        <line num="260" type="stmt" count="1"/>
-        <line num="262" type="stmt" count="1"/>
-        <line num="264" type="stmt" count="1"/>
-        <line num="265" type="stmt" count="1"/>
-        <line num="267" type="stmt" count="1"/>
-        <line num="268" type="stmt" count="1"/>
-        <line num="270" type="stmt" count="1"/>
-        <line num="272" type="stmt" count="1"/>
-        <line num="280" type="method" name="removeItem" crap="3" count="1"/>
-        <line num="282" type="stmt" count="1"/>
-        <line num="283" type="stmt" count="1"/>
-        <line num="284" type="stmt" count="1"/>
-        <line num="285" type="stmt" count="1"/>
-        <line num="287" type="stmt" count="1"/>
-        <line num="289" type="stmt" count="1"/>
-        <line num="290" type="stmt" count="1"/>
-        <line num="299" type="method" name="count" crap="3" count="11"/>
-        <line num="301" type="stmt" count="11"/>
-        <line num="302" type="stmt" count="11"/>
-        <line num="303" type="stmt" count="8"/>
-        <line num="304" type="stmt" count="6"/>
-        <line num="305" type="stmt" count="6"/>
-        <line num="306" type="stmt" count="3"/>
-        <line num="308" type="stmt" count="11"/>
-        <line num="310" type="stmt" count="11"/>
-        <line num="316" type="method" name="emptyCart" crap="1" count="1"/>
-        <line num="318" type="stmt" count="1"/>
-        <line num="320" type="stmt" count="1"/>
-        <line num="322" type="stmt" count="1"/>
-        <line num="323" type="stmt" count="1"/>
-        <line num="328" type="method" name="destroyCart" crap="1" count="1"/>
-        <line num="330" type="stmt" count="1"/>
-        <line num="332" type="stmt" count="1"/>
-        <line num="334" type="stmt" count="1"/>
-        <line num="335" type="stmt" count="1"/>
-        <line num="342" type="method" name="getCoupons" crap="1" count="1"/>
-        <line num="344" type="stmt" count="1"/>
-        <line num="354" type="method" name="findCoupon" crap="1" count="6"/>
-        <line num="356" type="stmt" count="6"/>
-        <line num="365" type="method" name="addCoupon" crap="1" count="3"/>
-        <line num="367" type="stmt" count="3"/>
-        <line num="369" type="stmt" count="3"/>
-        <line num="370" type="stmt" count="3"/>
-        <line num="377" type="method" name="removeCoupon" crap="1" count="1"/>
-        <line num="379" type="stmt" count="1"/>
-        <line num="381" type="stmt" count="1"/>
-        <line num="382" type="stmt" count="1"/>
-        <line num="391" type="method" name="getFee" crap="1" count="2"/>
-        <line num="393" type="stmt" count="2"/>
-        <line num="401" type="method" name="getFees" crap="1" count="6"/>
-        <line num="403" type="stmt" count="6"/>
-        <line num="415" type="method" name="addFee" crap="1" count="4"/>
-        <line num="417" type="stmt" count="4"/>
-        <line num="419" type="stmt" count="4"/>
-        <line num="420" type="stmt" count="4"/>
-        <line num="427" type="method" name="removeFee" crap="1" count="1"/>
-        <line num="429" type="stmt" count="1"/>
-        <line num="431" type="stmt" count="1"/>
-        <line num="432" type="stmt" count="1"/>
-        <line num="441" type="method" name="feeTotals" crap="4" count="5"/>
-        <line num="443" type="stmt" count="5"/>
-        <line num="445" type="stmt" count="5"/>
-        <line num="446" type="stmt" count="3"/>
-        <line num="447" type="stmt" count="3"/>
-        <line num="448" type="stmt" count="1"/>
-        <line num="449" type="stmt" count="1"/>
-        <line num="450" type="stmt" count="5"/>
-        <line num="452" type="stmt" count="5"/>
-        <line num="453" type="stmt" count="2"/>
-        <line num="456" type="stmt" count="4"/>
-        <line num="466" type="method" name="totalDiscount" crap="3" count="1"/>
-        <line num="468" type="stmt" count="1"/>
-        <line num="469" type="stmt" count="1"/>
-        <line num="470" type="stmt" count="1"/>
-        <line num="471" type="stmt" count="1"/>
-        <line num="473" type="stmt" count="1"/>
-        <line num="474" type="stmt" count="1"/>
-        <line num="477" type="stmt" count="1"/>
-        <line num="488" type="method" name="taxTotal" crap="2" count="1"/>
-        <line num="490" type="stmt" count="1"/>
-        <line num="492" type="stmt" count="1"/>
-        <line num="493" type="stmt" count="1"/>
-        <line num="496" type="stmt" count="1"/>
-        <line num="508" type="method" name="subTotal" crap="4" count="4"/>
-        <line num="510" type="stmt" count="4"/>
-        <line num="511" type="stmt" count="4"/>
-        <line num="512" type="stmt" count="3"/>
-        <line num="513" type="stmt" count="3"/>
-        <line num="514" type="stmt" count="3"/>
-        <line num="515" type="stmt" count="3"/>
-        <line num="517" type="stmt" count="4"/>
-        <line num="518" type="stmt" count="1"/>
-        <line num="521" type="stmt" count="4"/>
-        <line num="531" type="method" name="total" crap="2" count="3"/>
-        <line num="533" type="stmt" count="3"/>
-        <line num="535" type="stmt" count="3"/>
-        <line num="536" type="stmt" count="1"/>
-        <line num="539" type="stmt" count="3"/>
-        <metrics loc="541" ncloc="323" classes="1" methods="32" coveredmethods="32" conditionals="0" coveredconditionals="0" statements="137" coveredstatements="137" elements="169" coveredelements="169"/>
-      </file>
-      <file name="/home/vagrant/Code/MINT/vendor/lukepolo/laracart/src/LaraCartServiceProvider.php">
-        <class name="LaraCartServiceProvider" namespace="LukePOLO\LaraCart" fullPackage="LukePOLO" package="LukePOLO">
-          <metrics methods="3" coveredmethods="3" conditionals="0" coveredconditionals="0" statements="18" coveredstatements="18" elements="21" coveredelements="21"/>
-        </class>
-        <line num="19" type="method" name="boot" crap="1" count="25"/>
-        <line num="21" type="stmt" count="25"/>
-        <line num="23" type="stmt" count="25"/>
-        <line num="25" type="stmt" count="25"/>
-        <line num="26" type="stmt" count="25"/>
-        <line num="33" type="method" name="register" crap="1" count="25"/>
-        <line num="35" type="stmt" count="25"/>
-        <line num="36" type="stmt" count="25"/>
-        <line num="38" type="stmt" count="25"/>
-        <line num="40" type="stmt" count="25"/>
-        <line num="41" type="stmt" count="25"/>
-        <line num="43" type="stmt" count="7"/>
-        <line num="45" type="stmt" count="25"/>
-        <line num="47" type="stmt" count="25"/>
-        <line num="48" type="stmt" count="25"/>
-        <line num="50" type="stmt" count="13"/>
-        <line num="52" type="stmt" count="25"/>
-        <line num="54" type="stmt" count="25"/>
-        <line num="55" type="stmt" count="25"/>
-        <line num="56" type="method" name="anonymous function" crap="1" count="1"/>
-        <line num="57" type="stmt" count="1"/>
-        <line num="59" type="stmt" count="25"/>
-        <line num="60" type="stmt" count="25"/>
-        <metrics loc="60" ncloc="45" classes="1" methods="3" coveredmethods="3" conditionals="0" coveredconditionals="0" statements="20" coveredstatements="20" elements="23" coveredelements="23"/>
-      </file>
-    </package>
-    <file name="/home/vagrant/Code/MINT/vendor/lukepolo/laracart/src/Contracts/CouponContract.php">
-      <metrics loc="32" ncloc="12" classes="0" methods="0" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="0" coveredstatements="0" elements="0" coveredelements="0"/>
-    </file>
-    <file name="/home/vagrant/Code/MINT/vendor/lukepolo/laracart/src/Contracts/LaraCartContract.php">
-      <metrics loc="280" ncloc="68" classes="0" methods="0" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="0" coveredstatements="0" elements="0" coveredelements="0"/>
-    </file>
-    <package name="LukePOLO\LaraCart\Coupons">
-      <file name="/home/vagrant/Code/MINT/vendor/lukepolo/laracart/src/Coupons/Fixed.php">
-        <class name="Fixed" namespace="LukePOLO\LaraCart\Coupons" fullPackage="LukePOLO" package="LukePOLO">
-          <metrics methods="3" coveredmethods="3" conditionals="0" coveredconditionals="0" statements="9" coveredstatements="9" elements="12" coveredelements="12"/>
-        </class>
-        <line num="26" type="method" name="__construct" crap="1" count="3"/>
-        <line num="28" type="stmt" count="3"/>
-        <line num="29" type="stmt" count="3"/>
-        <line num="31" type="stmt" count="3"/>
-        <line num="32" type="stmt" count="3"/>
-        <line num="39" type="method" name="discount" crap="1" count="1"/>
-        <line num="41" type="stmt" count="1"/>
-        <line num="51" type="method" name="displayValue" crap="1" count="1"/>
-        <line num="53" type="stmt" count="1"/>
-        <line num="54" type="stmt" count="1"/>
-        <line num="55" type="stmt" count="1"/>
-        <line num="57" type="stmt" count="1"/>
-        <metrics loc="58" ncloc="35" classes="1" methods="3" coveredmethods="3" conditionals="0" coveredconditionals="0" statements="9" coveredstatements="9" elements="12" coveredelements="12"/>
-      </file>
-      <file name="/home/vagrant/Code/MINT/vendor/lukepolo/laracart/src/Coupons/Percentage.php">
-        <class name="Percentage" namespace="LukePOLO\LaraCart\Coupons" fullPackage="LukePOLO" package="LukePOLO">
-          <metrics methods="3" coveredmethods="3" conditionals="0" coveredconditionals="0" statements="6" coveredstatements="6" elements="9" coveredelements="9"/>
-        </class>
-        <line num="34" type="method" name="__construct" crap="1" count="1"/>
-        <line num="36" type="stmt" count="1"/>
-        <line num="37" type="stmt" count="1"/>
-        <line num="39" type="stmt" count="1"/>
-        <line num="40" type="stmt" count="1"/>
-        <line num="47" type="method" name="discount" crap="1" count="1"/>
-        <line num="49" type="stmt" count="1"/>
-        <line num="56" type="method" name="displayValue" crap="1" count="1"/>
-        <line num="58" type="stmt" count="1"/>
-        <metrics loc="59" ncloc="34" classes="1" methods="3" coveredmethods="3" conditionals="0" coveredconditionals="0" statements="6" coveredstatements="6" elements="9" coveredelements="9"/>
-      </file>
-    </package>
-    <package name="LukePOLO\LaraCart\Facades">
-      <file name="/home/vagrant/Code/MINT/vendor/lukepolo/laracart/src/Facades/LaraCart.php">
-        <class name="LaraCart" namespace="LukePOLO\LaraCart\Facades" fullPackage="LukePOLO" package="LukePOLO">
-          <metrics methods="1" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="3" coveredstatements="0" elements="4" coveredelements="0"/>
-        </class>
-        <line num="18" type="method" name="getFacadeAccessor" crap="2" count="0"/>
-        <line num="19" type="stmt" count="0"/>
-        <line num="20" type="stmt" count="0"/>
-        <line num="21" type="stmt" count="0"/>
-        <metrics loc="21" ncloc="11" classes="1" methods="1" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="3" coveredstatements="0" elements="4" coveredelements="0"/>
-      </file>
-    </package>
-    <package name="LukePOLO\LaraCart\Traits">
-      <file name="/home/vagrant/Code/MINT/vendor/lukepolo/laracart/src/Traits/CartOptionsMagicMethodsTrait.php">
-        <class name="CartOptionsMagicMethodsTrait" namespace="LukePOLO\LaraCart\Traits" fullPackage="LukePOLO" package="LukePOLO">
-          <metrics methods="3" coveredmethods="3" conditionals="0" coveredconditionals="0" statements="6" coveredstatements="6" elements="9" coveredelements="9"/>
-        </class>
-        <line num="21" type="method" name="__get" crap="1" count="4"/>
-        <line num="23" type="stmt" count="4"/>
-        <line num="32" type="method" name="__set" crap="1" count="4"/>
-        <line num="34" type="stmt" count="4"/>
-        <line num="35" type="stmt" count="4"/>
-        <line num="44" type="method" name="__isset" crap="2" count="4"/>
-        <line num="46" type="stmt" count="4"/>
-        <line num="47" type="stmt" count="4"/>
-        <line num="49" type="stmt" count="4"/>
-        <metrics loc="52" ncloc="27" classes="1" methods="3" coveredmethods="3" conditionals="0" coveredconditionals="0" statements="6" coveredstatements="6" elements="9" coveredelements="9"/>
-      </file>
-      <file name="/home/vagrant/Code/MINT/vendor/lukepolo/laracart/src/Traits/CouponTrait.php">
-        <class name="CouponTrait" namespace="LukePOLO\LaraCart\Traits">
-          <metrics methods="6" coveredmethods="1" conditionals="0" coveredconditionals="0" statements="26" coveredstatements="6" elements="32" coveredelements="7"/>
-        </class>
-        <line num="17" type="method" name="setOptions" crap="2" count="3"/>
-        <line num="19" type="stmt" count="3"/>
-        <line num="20" type="stmt" count="1"/>
-        <line num="21" type="stmt" count="3"/>
-        <line num="22" type="stmt" count="3"/>
-        <line num="29" type="method" name="getMessage" crap="2.50" count="1"/>
-        <line num="32" type="stmt" count="1"/>
-        <line num="34" type="stmt" count="1"/>
-        <line num="35" type="stmt" count="0"/>
-        <line num="36" type="stmt" count="0"/>
-        <line num="49" type="method" name="checkMinAmount" crap="12" count="0"/>
-        <line num="51" type="stmt" count="0"/>
-        <line num="52" type="stmt" count="0"/>
-        <line num="54" type="stmt" count="0"/>
-        <line num="55" type="stmt" count="0"/>
-        <line num="57" type="stmt" count="0"/>
-        <line num="72" type="method" name="maxDiscount" crap="20" count="0"/>
-        <line num="74" type="stmt" count="0"/>
-        <line num="75" type="stmt" count="0"/>
-        <line num="77" type="stmt" count="0"/>
-        <line num="78" type="stmt" count="0"/>
-        <line num="80" type="stmt" count="0"/>
-        <line num="95" type="method" name="checkValidTimes" crap="12" count="0"/>
-        <line num="97" type="stmt" count="0"/>
-        <line num="98" type="stmt" count="0"/>
-        <line num="100" type="stmt" count="0"/>
-        <line num="101" type="stmt" count="0"/>
-        <line num="103" type="stmt" count="0"/>
-        <line num="115" type="method" name="setDiscountOnItem" crap="2" count="0"/>
-        <line num="117" type="stmt" count="0"/>
-        <line num="118" type="stmt" count="0"/>
-        <line num="119" type="stmt" count="0"/>
-        <metrics loc="120" ncloc="74" classes="1" methods="6" coveredmethods="1" conditionals="0" coveredconditionals="0" statements="26" coveredstatements="6" elements="32" coveredelements="7"/>
-      </file>
-    </package>
-    <package name="LukePOLO\LaraCart\Exceptions">
-      <file name="/home/vagrant/Code/MINT/vendor/lukepolo/laracart/src/exceptions/InvalidOption.php">
-        <class name="InvalidOption" namespace="LukePOLO\LaraCart\Exceptions" fullPackage="LukePOLO" package="LukePOLO">
-          <metrics methods="0" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="0" coveredstatements="0" elements="0" coveredelements="0"/>
-        </class>
-        <metrics loc="12" ncloc="7" classes="1" methods="0" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="0" coveredstatements="0" elements="0" coveredelements="0"/>
-      </file>
-      <file name="/home/vagrant/Code/MINT/vendor/lukepolo/laracart/src/exceptions/InvalidPrice.php">
-        <class name="InvalidPrice" namespace="LukePOLO\LaraCart\Exceptions" fullPackage="LukePOLO" package="LukePOLO">
-          <metrics methods="0" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="0" coveredstatements="0" elements="0" coveredelements="0"/>
-        </class>
-        <metrics loc="12" ncloc="7" classes="1" methods="0" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="0" coveredstatements="0" elements="0" coveredelements="0"/>
-      </file>
-      <file name="/home/vagrant/Code/MINT/vendor/lukepolo/laracart/src/exceptions/InvalidQuantity.php">
-        <class name="InvalidQuantity" namespace="LukePOLO\LaraCart\Exceptions" fullPackage="LukePOLO" package="LukePOLO">
-          <metrics methods="0" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="0" coveredstatements="0" elements="0" coveredelements="0"/>
-        </class>
-        <metrics loc="12" ncloc="7" classes="1" methods="0" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="0" coveredstatements="0" elements="0" coveredelements="0"/>
-      </file>
-    </package>
-    <metrics files="16" loc="1638" ncloc="899" classes="14" methods="67" coveredmethods="59" conditionals="0" coveredconditionals="0" statements="297" coveredstatements="270" elements="364" coveredelements="329"/>
-  </project>
+    <project timestamp="1447171120">
+        <package name="LukePOLO\LaraCart">
+            <file name="/home/vagrant/Code/MINT/vendor/lukepolo/laracart/src/Cart.php">
+                <class name="Cart" namespace="LukePOLO\LaraCart" fullPackage="LukePOLO" package="LukePOLO">
+                    <metrics methods="1" coveredmethods="1" conditionals="0" coveredconditionals="0" statements="6"
+                             coveredstatements="6" elements="7" coveredelements="7"/>
+                </class>
+                <line num="27" type="method" name="__construct" crap="1" count="25"/>
+                <line num="29" type="stmt" count="25"/>
+                <line num="30" type="stmt" count="25"/>
+                <line num="31" type="stmt" count="25"/>
+                <line num="32" type="stmt" count="25"/>
+                <line num="33" type="stmt" count="25"/>
+                <line num="34" type="stmt" count="25"/>
+                <metrics loc="35" ncloc="25" classes="1" methods="1" coveredmethods="1" conditionals="0"
+                         coveredconditionals="0" statements="6" coveredstatements="6" elements="7" coveredelements="7"/>
+            </file>
+            <file name="/home/vagrant/Code/MINT/vendor/lukepolo/laracart/src/CartFee.php">
+                <class name="CartFee" namespace="LukePOLO\LaraCart" fullPackage="LukePOLO" package="LukePOLO">
+                    <metrics methods="2" coveredmethods="2" conditionals="0" coveredconditionals="0" statements="5"
+                             coveredstatements="5" elements="7" coveredelements="7"/>
+                </class>
+                <line num="28" type="method" name="__construct" crap="1" count="4"/>
+                <line num="30" type="stmt" count="4"/>
+                <line num="31" type="stmt" count="4"/>
+                <line num="32" type="stmt" count="4"/>
+                <line num="33" type="stmt" count="4"/>
+                <line num="40" type="method" name="getAmount" crap="1" count="1"/>
+                <line num="42" type="stmt" count="1"/>
+                <metrics loc="44" ncloc="27" classes="1" methods="2" coveredmethods="2" conditionals="0"
+                         coveredconditionals="0" statements="5" coveredstatements="5" elements="7" coveredelements="7"/>
+            </file>
+            <file name="/home/vagrant/Code/MINT/vendor/lukepolo/laracart/src/CartItem.php">
+                <class name="CartItem" namespace="LukePOLO\LaraCart" fullPackage="LukePOLO" package="LukePOLO">
+                    <metrics methods="10" coveredmethods="8" conditionals="0" coveredconditionals="0" statements="66"
+                             coveredstatements="62" elements="76" coveredelements="70"/>
+                </class>
+                <line num="40" type="method" name="__construct" crap="1" count="14"/>
+                <line num="42" type="stmt" count="14"/>
+                <line num="43" type="stmt" count="14"/>
+                <line num="44" type="stmt" count="14"/>
+                <line num="45" type="stmt" count="14"/>
+                <line num="46" type="stmt" count="14"/>
+                <line num="47" type="stmt" count="14"/>
+                <line num="48" type="stmt" count="14"/>
+                <line num="50" type="stmt" count="14"/>
+                <line num="51" type="stmt" count="14"/>
+                <line num="61" type="method" name="generateHash" crap="4" count="14"/>
+                <line num="63" type="stmt" count="14"/>
+                <line num="64" type="stmt" count="13"/>
+                <line num="66" type="stmt" count="13"/>
+                <line num="68" type="stmt" count="13"/>
+                <line num="70" type="stmt" count="13"/>
+                <line num="71" type="stmt" count="14"/>
+                <line num="72" type="stmt" count="1"/>
+                <line num="73" type="stmt" count="1"/>
+                <line num="75" type="stmt" count="14"/>
+                <line num="83" type="method" name="getHash" crap="1" count="11"/>
+                <line num="85" type="stmt" count="11"/>
+                <line num="94" type="method" name="findSubItem" crap="1" count="1"/>
+                <line num="96" type="stmt" count="1"/>
+                <line num="106" type="method" name="addSubItem" crap="1" count="1"/>
+                <line num="108" type="stmt" count="1"/>
+                <line num="110" type="stmt" count="1"/>
+                <line num="112" type="stmt" count="1"/>
+                <line num="114" type="stmt" count="1"/>
+                <line num="125" type="method" name="getPrice" crap="3" count="4"/>
+                <line num="127" type="stmt" count="4"/>
+                <line num="129" type="stmt" count="4"/>
+                <line num="130" type="stmt" count="1"/>
+                <line num="131" type="stmt" count="4"/>
+                <line num="133" type="stmt" count="4"/>
+                <line num="134" type="stmt" count="2"/>
+                <line num="135" type="stmt" count="2"/>
+                <line num="137" type="stmt" count="4"/>
+                <line num="150" type="method" name="update" crap="6.29" count="1"/>
+                <line num="153" type="stmt" count="1"/>
+                <line num="154" type="stmt" count="1"/>
+                <line num="155" type="stmt" count="0"/>
+                <line num="157" type="stmt" count="1"/>
+                <line num="158" type="stmt" count="1"/>
+                <line num="159" type="stmt" count="1"/>
+                <line num="160" type="stmt" count="0"/>
+                <line num="162" type="stmt" count="1"/>
+                <line num="165" type="stmt" count="1"/>
+                <line num="167" type="stmt" count="1"/>
+                <line num="179" type="method" name="subTotal" crap="2" count="4"/>
+                <line num="181" type="stmt" count="4"/>
+                <line num="183" type="stmt" count="4"/>
+                <line num="184" type="stmt" count="3"/>
+                <line num="185" type="stmt" count="3"/>
+                <line num="187" type="stmt" count="4"/>
+                <line num="199" type="method" name="subItemsTotal" crap="4" count="4"/>
+                <line num="201" type="stmt" count="4"/>
+                <line num="202" type="stmt" count="4"/>
+                <line num="203" type="stmt" count="1"/>
+                <line num="204" type="stmt" count="1"/>
+                <line num="205" type="stmt" count="1"/>
+                <line num="206" type="stmt" count="4"/>
+                <line num="208" type="stmt" count="4"/>
+                <line num="209" type="stmt" count="2"/>
+                <line num="210" type="stmt" count="2"/>
+                <line num="212" type="stmt" count="4"/>
+                <line num="222" type="method" name="getDiscount" crap="2.04" count="3"/>
+                <line num="225" type="stmt" count="3"/>
+                <line num="227" type="stmt" count="3"/>
+                <line num="228" type="stmt" count="0"/>
+                <line num="229" type="stmt" count="0"/>
+                <line num="231" type="stmt" count="3"/>
+                <line num="232" type="stmt" count="3"/>
+                <line num="233" type="stmt" count="3"/>
+                <line num="234" type="stmt" count="3"/>
+                <line num="236" type="stmt" count="3"/>
+                <metrics loc="238" ncloc="155" classes="1" methods="10" coveredmethods="8" conditionals="0"
+                         coveredconditionals="0" statements="66" coveredstatements="62" elements="76"
+                         coveredelements="70"/>
+            </file>
+            <file name="/home/vagrant/Code/MINT/vendor/lukepolo/laracart/src/CartSubItem.php">
+                <class name="CartSubItem" namespace="LukePOLO\LaraCart" fullPackage="LukePOLO" package="LukePOLO">
+                    <metrics methods="3" coveredmethods="3" conditionals="0" coveredconditionals="0" statements="13"
+                             coveredstatements="13" elements="16" coveredelements="16"/>
+                </class>
+                <line num="26" type="method" name="__construct" crap="2" count="1"/>
+                <line num="28" type="stmt" count="1"/>
+                <line num="29" type="stmt" count="1"/>
+                <line num="30" type="stmt" count="1"/>
+                <line num="31" type="stmt" count="1"/>
+                <line num="32" type="stmt" count="1"/>
+                <line num="33" type="stmt" count="1"/>
+                <line num="34" type="stmt" count="1"/>
+                <line num="41" type="method" name="getHash" crap="1" count="1"/>
+                <line num="43" type="stmt" count="1"/>
+                <line num="53" type="method" name="getPrice" crap="2" count="1"/>
+                <line num="55" type="stmt" count="1"/>
+                <line num="57" type="stmt" count="1"/>
+                <line num="58" type="stmt" count="1"/>
+                <line num="59" type="stmt" count="1"/>
+                <line num="61" type="stmt" count="1"/>
+                <metrics loc="62" ncloc="42" classes="1" methods="3" coveredmethods="3" conditionals="0"
+                         coveredconditionals="0" statements="13" coveredstatements="13" elements="16"
+                         coveredelements="16"/>
+            </file>
+            <file name="/home/vagrant/Code/MINT/vendor/lukepolo/laracart/src/LaraCart.php">
+                <class name="LaraCart" namespace="LukePOLO\LaraCart" fullPackage="LukePOLO" package="LukePOLO">
+                    <metrics methods="32" coveredmethods="32" conditionals="0" coveredconditionals="0" statements="137"
+                             coveredstatements="137" elements="169" coveredelements="169"/>
+                </class>
+                <line num="26" type="method" name="__construct" crap="1" count="25"/>
+                <line num="28" type="stmt" count="25"/>
+                <line num="29" type="stmt" count="25"/>
+                <line num="38" type="method" name="setInstance" crap="1" count="25"/>
+                <line num="40" type="stmt" count="25"/>
+                <line num="42" type="stmt" count="25"/>
+                <line num="44" type="stmt" count="25"/>
+                <line num="46" type="stmt" count="25"/>
+                <line num="56" type="method" name="get" crap="2" count="25"/>
+                <line num="58" type="stmt" count="25"/>
+                <line num="59" type="stmt" count="25"/>
+                <line num="60" type="stmt" count="25"/>
+                <line num="62" type="stmt" count="25"/>
+                <line num="68" type="method" name="update" crap="1" count="21"/>
+                <line num="70" type="stmt" count="21"/>
+                <line num="72" type="stmt" count="21"/>
+                <line num="73" type="stmt" count="21"/>
+                <line num="86" type="method" name="formatMoney" crap="5" count="8"/>
+                <line num="88" type="stmt" count="8"/>
+                <line num="90" type="stmt" count="8"/>
+                <line num="92" type="stmt" count="8"/>
+                <line num="93" type="stmt" count="8"/>
+                <line num="94" type="stmt" count="8"/>
+                <line num="96" type="stmt" count="8"/>
+                <line num="99" type="stmt" count="4"/>
+                <line num="110" type="method" name="getAttribute" crap="1" count="3"/>
+                <line num="112" type="stmt" count="3"/>
+                <line num="120" type="method" name="getAttributes" crap="1" count="1"/>
+                <line num="122" type="stmt" count="1"/>
+                <line num="131" type="method" name="setAttribute" crap="1" count="3"/>
+                <line num="133" type="stmt" count="3"/>
+                <line num="135" type="stmt" count="3"/>
+                <line num="136" type="stmt" count="3"/>
+                <line num="143" type="method" name="removeAttribute" crap="1" count="1"/>
+                <line num="145" type="stmt" count="1"/>
+                <line num="147" type="stmt" count="1"/>
+                <line num="148" type="stmt" count="1"/>
+                <line num="157" type="method" name="getItem" crap="1" count="14"/>
+                <line num="159" type="stmt" count="14"/>
+                <line num="167" type="method" name="getItems" crap="3" count="15"/>
+                <line num="169" type="stmt" count="15"/>
+                <line num="170" type="stmt" count="15"/>
+                <line num="171" type="stmt" count="11"/>
+                <line num="172" type="stmt" count="11"/>
+                <line num="173" type="stmt" count="11"/>
+                <line num="174" type="stmt" count="11"/>
+                <line num="176" type="stmt" count="15"/>
+                <line num="191" type="method" name="add" crap="1" count="14"/>
+                <line num="193" type="stmt" count="14"/>
+                <line num="194" type="stmt" count="14"/>
+                <line num="195" type="stmt" count="14"/>
+                <line num="196" type="stmt" count="14"/>
+                <line num="197" type="stmt" count="14"/>
+                <line num="198" type="stmt" count="14"/>
+                <line num="199" type="stmt" count="14"/>
+                <line num="201" type="stmt" count="14"/>
+                <line num="202" type="stmt" count="14"/>
+                <line num="216" type="method" name="addLine" crap="1" count="1"/>
+                <line num="218" type="stmt" count="1"/>
+                <line num="228" type="method" name="addItem" crap="2" count="14"/>
+                <line num="230" type="stmt" count="14"/>
+                <line num="232" type="stmt" count="14"/>
+                <line num="233" type="stmt" count="1"/>
+                <line num="234" type="stmt" count="1"/>
+                <line num="235" type="stmt" count="14"/>
+                <line num="236" type="stmt" count="14"/>
+                <line num="239" type="stmt" count="14"/>
+                <line num="241" type="stmt" count="14"/>
+                <line num="256" type="method" name="updateItem" crap="2" count="1"/>
+                <line num="258" type="stmt" count="1"/>
+                <line num="259" type="stmt" count="1"/>
+                <line num="260" type="stmt" count="1"/>
+                <line num="262" type="stmt" count="1"/>
+                <line num="264" type="stmt" count="1"/>
+                <line num="265" type="stmt" count="1"/>
+                <line num="267" type="stmt" count="1"/>
+                <line num="268" type="stmt" count="1"/>
+                <line num="270" type="stmt" count="1"/>
+                <line num="272" type="stmt" count="1"/>
+                <line num="280" type="method" name="removeItem" crap="3" count="1"/>
+                <line num="282" type="stmt" count="1"/>
+                <line num="283" type="stmt" count="1"/>
+                <line num="284" type="stmt" count="1"/>
+                <line num="285" type="stmt" count="1"/>
+                <line num="287" type="stmt" count="1"/>
+                <line num="289" type="stmt" count="1"/>
+                <line num="290" type="stmt" count="1"/>
+                <line num="299" type="method" name="count" crap="3" count="11"/>
+                <line num="301" type="stmt" count="11"/>
+                <line num="302" type="stmt" count="11"/>
+                <line num="303" type="stmt" count="8"/>
+                <line num="304" type="stmt" count="6"/>
+                <line num="305" type="stmt" count="6"/>
+                <line num="306" type="stmt" count="3"/>
+                <line num="308" type="stmt" count="11"/>
+                <line num="310" type="stmt" count="11"/>
+                <line num="316" type="method" name="emptyCart" crap="1" count="1"/>
+                <line num="318" type="stmt" count="1"/>
+                <line num="320" type="stmt" count="1"/>
+                <line num="322" type="stmt" count="1"/>
+                <line num="323" type="stmt" count="1"/>
+                <line num="328" type="method" name="destroyCart" crap="1" count="1"/>
+                <line num="330" type="stmt" count="1"/>
+                <line num="332" type="stmt" count="1"/>
+                <line num="334" type="stmt" count="1"/>
+                <line num="335" type="stmt" count="1"/>
+                <line num="342" type="method" name="getCoupons" crap="1" count="1"/>
+                <line num="344" type="stmt" count="1"/>
+                <line num="354" type="method" name="findCoupon" crap="1" count="6"/>
+                <line num="356" type="stmt" count="6"/>
+                <line num="365" type="method" name="addCoupon" crap="1" count="3"/>
+                <line num="367" type="stmt" count="3"/>
+                <line num="369" type="stmt" count="3"/>
+                <line num="370" type="stmt" count="3"/>
+                <line num="377" type="method" name="removeCoupon" crap="1" count="1"/>
+                <line num="379" type="stmt" count="1"/>
+                <line num="381" type="stmt" count="1"/>
+                <line num="382" type="stmt" count="1"/>
+                <line num="391" type="method" name="getFee" crap="1" count="2"/>
+                <line num="393" type="stmt" count="2"/>
+                <line num="401" type="method" name="getFees" crap="1" count="6"/>
+                <line num="403" type="stmt" count="6"/>
+                <line num="415" type="method" name="addFee" crap="1" count="4"/>
+                <line num="417" type="stmt" count="4"/>
+                <line num="419" type="stmt" count="4"/>
+                <line num="420" type="stmt" count="4"/>
+                <line num="427" type="method" name="removeFee" crap="1" count="1"/>
+                <line num="429" type="stmt" count="1"/>
+                <line num="431" type="stmt" count="1"/>
+                <line num="432" type="stmt" count="1"/>
+                <line num="441" type="method" name="feeTotals" crap="4" count="5"/>
+                <line num="443" type="stmt" count="5"/>
+                <line num="445" type="stmt" count="5"/>
+                <line num="446" type="stmt" count="3"/>
+                <line num="447" type="stmt" count="3"/>
+                <line num="448" type="stmt" count="1"/>
+                <line num="449" type="stmt" count="1"/>
+                <line num="450" type="stmt" count="5"/>
+                <line num="452" type="stmt" count="5"/>
+                <line num="453" type="stmt" count="2"/>
+                <line num="456" type="stmt" count="4"/>
+                <line num="466" type="method" name="totalDiscount" crap="3" count="1"/>
+                <line num="468" type="stmt" count="1"/>
+                <line num="469" type="stmt" count="1"/>
+                <line num="470" type="stmt" count="1"/>
+                <line num="471" type="stmt" count="1"/>
+                <line num="473" type="stmt" count="1"/>
+                <line num="474" type="stmt" count="1"/>
+                <line num="477" type="stmt" count="1"/>
+                <line num="488" type="method" name="taxTotal" crap="2" count="1"/>
+                <line num="490" type="stmt" count="1"/>
+                <line num="492" type="stmt" count="1"/>
+                <line num="493" type="stmt" count="1"/>
+                <line num="496" type="stmt" count="1"/>
+                <line num="508" type="method" name="subTotal" crap="4" count="4"/>
+                <line num="510" type="stmt" count="4"/>
+                <line num="511" type="stmt" count="4"/>
+                <line num="512" type="stmt" count="3"/>
+                <line num="513" type="stmt" count="3"/>
+                <line num="514" type="stmt" count="3"/>
+                <line num="515" type="stmt" count="3"/>
+                <line num="517" type="stmt" count="4"/>
+                <line num="518" type="stmt" count="1"/>
+                <line num="521" type="stmt" count="4"/>
+                <line num="531" type="method" name="total" crap="2" count="3"/>
+                <line num="533" type="stmt" count="3"/>
+                <line num="535" type="stmt" count="3"/>
+                <line num="536" type="stmt" count="1"/>
+                <line num="539" type="stmt" count="3"/>
+                <metrics loc="541" ncloc="323" classes="1" methods="32" coveredmethods="32" conditionals="0"
+                         coveredconditionals="0" statements="137" coveredstatements="137" elements="169"
+                         coveredelements="169"/>
+            </file>
+            <file name="/home/vagrant/Code/MINT/vendor/lukepolo/laracart/src/LaraCartServiceProvider.php">
+                <class name="LaraCartServiceProvider" namespace="LukePOLO\LaraCart" fullPackage="LukePOLO"
+                       package="LukePOLO">
+                    <metrics methods="3" coveredmethods="3" conditionals="0" coveredconditionals="0" statements="18"
+                             coveredstatements="18" elements="21" coveredelements="21"/>
+                </class>
+                <line num="19" type="method" name="boot" crap="1" count="25"/>
+                <line num="21" type="stmt" count="25"/>
+                <line num="23" type="stmt" count="25"/>
+                <line num="25" type="stmt" count="25"/>
+                <line num="26" type="stmt" count="25"/>
+                <line num="33" type="method" name="register" crap="1" count="25"/>
+                <line num="35" type="stmt" count="25"/>
+                <line num="36" type="stmt" count="25"/>
+                <line num="38" type="stmt" count="25"/>
+                <line num="40" type="stmt" count="25"/>
+                <line num="41" type="stmt" count="25"/>
+                <line num="43" type="stmt" count="7"/>
+                <line num="45" type="stmt" count="25"/>
+                <line num="47" type="stmt" count="25"/>
+                <line num="48" type="stmt" count="25"/>
+                <line num="50" type="stmt" count="13"/>
+                <line num="52" type="stmt" count="25"/>
+                <line num="54" type="stmt" count="25"/>
+                <line num="55" type="stmt" count="25"/>
+                <line num="56" type="method" name="anonymous function" crap="1" count="1"/>
+                <line num="57" type="stmt" count="1"/>
+                <line num="59" type="stmt" count="25"/>
+                <line num="60" type="stmt" count="25"/>
+                <metrics loc="60" ncloc="45" classes="1" methods="3" coveredmethods="3" conditionals="0"
+                         coveredconditionals="0" statements="20" coveredstatements="20" elements="23"
+                         coveredelements="23"/>
+            </file>
+        </package>
+        <file name="/home/vagrant/Code/MINT/vendor/lukepolo/laracart/src/Contracts/CouponContract.php">
+            <metrics loc="32" ncloc="12" classes="0" methods="0" coveredmethods="0" conditionals="0"
+                     coveredconditionals="0" statements="0" coveredstatements="0" elements="0" coveredelements="0"/>
+        </file>
+        <file name="/home/vagrant/Code/MINT/vendor/lukepolo/laracart/src/Contracts/LaraCartContract.php">
+            <metrics loc="280" ncloc="68" classes="0" methods="0" coveredmethods="0" conditionals="0"
+                     coveredconditionals="0" statements="0" coveredstatements="0" elements="0" coveredelements="0"/>
+        </file>
+        <package name="LukePOLO\LaraCart\Coupons">
+            <file name="/home/vagrant/Code/MINT/vendor/lukepolo/laracart/src/Coupons/Fixed.php">
+                <class name="Fixed" namespace="LukePOLO\LaraCart\Coupons" fullPackage="LukePOLO" package="LukePOLO">
+                    <metrics methods="3" coveredmethods="3" conditionals="0" coveredconditionals="0" statements="9"
+                             coveredstatements="9" elements="12" coveredelements="12"/>
+                </class>
+                <line num="26" type="method" name="__construct" crap="1" count="3"/>
+                <line num="28" type="stmt" count="3"/>
+                <line num="29" type="stmt" count="3"/>
+                <line num="31" type="stmt" count="3"/>
+                <line num="32" type="stmt" count="3"/>
+                <line num="39" type="method" name="discount" crap="1" count="1"/>
+                <line num="41" type="stmt" count="1"/>
+                <line num="51" type="method" name="displayValue" crap="1" count="1"/>
+                <line num="53" type="stmt" count="1"/>
+                <line num="54" type="stmt" count="1"/>
+                <line num="55" type="stmt" count="1"/>
+                <line num="57" type="stmt" count="1"/>
+                <metrics loc="58" ncloc="35" classes="1" methods="3" coveredmethods="3" conditionals="0"
+                         coveredconditionals="0" statements="9" coveredstatements="9" elements="12"
+                         coveredelements="12"/>
+            </file>
+            <file name="/home/vagrant/Code/MINT/vendor/lukepolo/laracart/src/Coupons/Percentage.php">
+                <class name="Percentage" namespace="LukePOLO\LaraCart\Coupons" fullPackage="LukePOLO"
+                       package="LukePOLO">
+                    <metrics methods="3" coveredmethods="3" conditionals="0" coveredconditionals="0" statements="6"
+                             coveredstatements="6" elements="9" coveredelements="9"/>
+                </class>
+                <line num="34" type="method" name="__construct" crap="1" count="1"/>
+                <line num="36" type="stmt" count="1"/>
+                <line num="37" type="stmt" count="1"/>
+                <line num="39" type="stmt" count="1"/>
+                <line num="40" type="stmt" count="1"/>
+                <line num="47" type="method" name="discount" crap="1" count="1"/>
+                <line num="49" type="stmt" count="1"/>
+                <line num="56" type="method" name="displayValue" crap="1" count="1"/>
+                <line num="58" type="stmt" count="1"/>
+                <metrics loc="59" ncloc="34" classes="1" methods="3" coveredmethods="3" conditionals="0"
+                         coveredconditionals="0" statements="6" coveredstatements="6" elements="9" coveredelements="9"/>
+            </file>
+        </package>
+        <package name="LukePOLO\LaraCart\Facades">
+            <file name="/home/vagrant/Code/MINT/vendor/lukepolo/laracart/src/Facades/LaraCart.php">
+                <class name="LaraCart" namespace="LukePOLO\LaraCart\Facades" fullPackage="LukePOLO" package="LukePOLO">
+                    <metrics methods="1" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="3"
+                             coveredstatements="0" elements="4" coveredelements="0"/>
+                </class>
+                <line num="18" type="method" name="getFacadeAccessor" crap="2" count="0"/>
+                <line num="19" type="stmt" count="0"/>
+                <line num="20" type="stmt" count="0"/>
+                <line num="21" type="stmt" count="0"/>
+                <metrics loc="21" ncloc="11" classes="1" methods="1" coveredmethods="0" conditionals="0"
+                         coveredconditionals="0" statements="3" coveredstatements="0" elements="4" coveredelements="0"/>
+            </file>
+        </package>
+        <package name="LukePOLO\LaraCart\Traits">
+            <file name="/home/vagrant/Code/MINT/vendor/lukepolo/laracart/src/Traits/CartOptionsMagicMethodsTrait.php">
+                <class name="CartOptionsMagicMethodsTrait" namespace="LukePOLO\LaraCart\Traits" fullPackage="LukePOLO"
+                       package="LukePOLO">
+                    <metrics methods="3" coveredmethods="3" conditionals="0" coveredconditionals="0" statements="6"
+                             coveredstatements="6" elements="9" coveredelements="9"/>
+                </class>
+                <line num="21" type="method" name="__get" crap="1" count="4"/>
+                <line num="23" type="stmt" count="4"/>
+                <line num="32" type="method" name="__set" crap="1" count="4"/>
+                <line num="34" type="stmt" count="4"/>
+                <line num="35" type="stmt" count="4"/>
+                <line num="44" type="method" name="__isset" crap="2" count="4"/>
+                <line num="46" type="stmt" count="4"/>
+                <line num="47" type="stmt" count="4"/>
+                <line num="49" type="stmt" count="4"/>
+                <metrics loc="52" ncloc="27" classes="1" methods="3" coveredmethods="3" conditionals="0"
+                         coveredconditionals="0" statements="6" coveredstatements="6" elements="9" coveredelements="9"/>
+            </file>
+            <file name="/home/vagrant/Code/MINT/vendor/lukepolo/laracart/src/Traits/CouponTrait.php">
+                <class name="CouponTrait" namespace="LukePOLO\LaraCart\Traits">
+                    <metrics methods="6" coveredmethods="1" conditionals="0" coveredconditionals="0" statements="26"
+                             coveredstatements="6" elements="32" coveredelements="7"/>
+                </class>
+                <line num="17" type="method" name="setOptions" crap="2" count="3"/>
+                <line num="19" type="stmt" count="3"/>
+                <line num="20" type="stmt" count="1"/>
+                <line num="21" type="stmt" count="3"/>
+                <line num="22" type="stmt" count="3"/>
+                <line num="29" type="method" name="getMessage" crap="2.50" count="1"/>
+                <line num="32" type="stmt" count="1"/>
+                <line num="34" type="stmt" count="1"/>
+                <line num="35" type="stmt" count="0"/>
+                <line num="36" type="stmt" count="0"/>
+                <line num="49" type="method" name="checkMinAmount" crap="12" count="0"/>
+                <line num="51" type="stmt" count="0"/>
+                <line num="52" type="stmt" count="0"/>
+                <line num="54" type="stmt" count="0"/>
+                <line num="55" type="stmt" count="0"/>
+                <line num="57" type="stmt" count="0"/>
+                <line num="72" type="method" name="maxDiscount" crap="20" count="0"/>
+                <line num="74" type="stmt" count="0"/>
+                <line num="75" type="stmt" count="0"/>
+                <line num="77" type="stmt" count="0"/>
+                <line num="78" type="stmt" count="0"/>
+                <line num="80" type="stmt" count="0"/>
+                <line num="95" type="method" name="checkValidTimes" crap="12" count="0"/>
+                <line num="97" type="stmt" count="0"/>
+                <line num="98" type="stmt" count="0"/>
+                <line num="100" type="stmt" count="0"/>
+                <line num="101" type="stmt" count="0"/>
+                <line num="103" type="stmt" count="0"/>
+                <line num="115" type="method" name="setDiscountOnItem" crap="2" count="0"/>
+                <line num="117" type="stmt" count="0"/>
+                <line num="118" type="stmt" count="0"/>
+                <line num="119" type="stmt" count="0"/>
+                <metrics loc="120" ncloc="74" classes="1" methods="6" coveredmethods="1" conditionals="0"
+                         coveredconditionals="0" statements="26" coveredstatements="6" elements="32"
+                         coveredelements="7"/>
+            </file>
+        </package>
+        <package name="LukePOLO\LaraCart\Exceptions">
+            <file name="/home/vagrant/Code/MINT/vendor/lukepolo/laracart/src/exceptions/InvalidOption.php">
+                <class name="InvalidOption" namespace="LukePOLO\LaraCart\Exceptions" fullPackage="LukePOLO"
+                       package="LukePOLO">
+                    <metrics methods="0" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="0"
+                             coveredstatements="0" elements="0" coveredelements="0"/>
+                </class>
+                <metrics loc="12" ncloc="7" classes="1" methods="0" coveredmethods="0" conditionals="0"
+                         coveredconditionals="0" statements="0" coveredstatements="0" elements="0" coveredelements="0"/>
+            </file>
+            <file name="/home/vagrant/Code/MINT/vendor/lukepolo/laracart/src/exceptions/InvalidPrice.php">
+                <class name="InvalidPrice" namespace="LukePOLO\LaraCart\Exceptions" fullPackage="LukePOLO"
+                       package="LukePOLO">
+                    <metrics methods="0" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="0"
+                             coveredstatements="0" elements="0" coveredelements="0"/>
+                </class>
+                <metrics loc="12" ncloc="7" classes="1" methods="0" coveredmethods="0" conditionals="0"
+                         coveredconditionals="0" statements="0" coveredstatements="0" elements="0" coveredelements="0"/>
+            </file>
+            <file name="/home/vagrant/Code/MINT/vendor/lukepolo/laracart/src/exceptions/InvalidQuantity.php">
+                <class name="InvalidQuantity" namespace="LukePOLO\LaraCart\Exceptions" fullPackage="LukePOLO"
+                       package="LukePOLO">
+                    <metrics methods="0" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="0"
+                             coveredstatements="0" elements="0" coveredelements="0"/>
+                </class>
+                <metrics loc="12" ncloc="7" classes="1" methods="0" coveredmethods="0" conditionals="0"
+                         coveredconditionals="0" statements="0" coveredstatements="0" elements="0" coveredelements="0"/>
+            </file>
+        </package>
+        <metrics files="16" loc="1638" ncloc="899" classes="14" methods="67" coveredmethods="59" conditionals="0"
+                 coveredconditionals="0" statements="297" coveredstatements="270" elements="364" coveredelements="329"/>
+    </project>
 </coverage>

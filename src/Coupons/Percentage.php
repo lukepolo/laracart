@@ -55,6 +55,6 @@ class Percentage implements CouponContract
      */
     public function displayValue()
     {
-        return ($this->value * 100).'%';
+        return ($this->value * 100) . '%';
     }
 }
