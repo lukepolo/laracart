@@ -186,7 +186,7 @@ class LaraCart implements LaraCartContract
      * @param array $options
      * @param bool|false $lineItem
      *
-     * @return string
+     * @return CartItem
      */
     public function add($itemID, $name = null, $qty = 1, $price = '0.00', $options = [], $lineItem = false)
     {
@@ -211,7 +211,7 @@ class LaraCart implements LaraCartContract
      * @param string $price
      * @param array $options
      *
-     * @return string itemHash
+     * @return CartItem
      */
     public function addLine($itemID, $name = null, $qty = 1, $price = '0.00', $options = [])
     {
@@ -223,7 +223,7 @@ class LaraCart implements LaraCartContract
      *
      * @param CartItem $cartItem
      *
-     * @return string itemHash
+     * @return CartItem
      */
     public function addItem($cartItem)
     {
@@ -248,7 +248,7 @@ class LaraCart implements LaraCartContract
      * @param $key
      * @param $value
      *
-     * @return CartItem|null
+     * @return CartItem
      *
      * @throws Exceptions\InvalidPrice
      * @throws Exceptions\InvalidQuantity

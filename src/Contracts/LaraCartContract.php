@@ -2,6 +2,8 @@
 
 namespace LukePOLO\LaraCart\Contracts;
 
+use LukePOLO\LaraCart\CartItem;
+
 /**
  * Interface LaraCartContract
  *
@@ -103,7 +105,7 @@ interface LaraCartContract
      * @param array $options
      * @param bool|false $lineItem
      *
-     * @return string
+     * @return CartItem
      */
     public function add($itemID, $name = null, $qty = 1, $price = '0.00', $options = [], $lineItem = false);
 
@@ -116,7 +118,7 @@ interface LaraCartContract
      * @param string $price
      * @param array $options
      *
-     * @return string itemHash
+     * @return string CartItem
      */
     public function addLine($itemID, $name = null, $qty = 1, $price = '0.00', $options = []);
 
@@ -125,7 +127,7 @@ interface LaraCartContract
      *
      * @param $cartItem
      *
-     * @return string itemHash
+     * @return CartItem
      */
     public function addItem($cartItem);
 
@@ -136,7 +138,7 @@ interface LaraCartContract
      * @param $key
      * @param $value
      *
-     * @return string $newHash
+     * @return CartItem
      */
     public function updateItem($itemHash, $key, $value);
 
