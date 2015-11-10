@@ -55,7 +55,7 @@ class LaraCart implements LaraCartContract
      */
     public function get($instance = 'default')
     {
-        if (empty($this->cart = \Session::get(config('laracart.cache_prefix', 'laracart.').$instance))) {
+        if (empty($this->cart = \Session::get(config('laracart.cache_prefix', 'laracart.') . $instance))) {
             $this->cart = new Cart($instance);
         }
 
@@ -67,7 +67,7 @@ class LaraCart implements LaraCartContract
      */
     public function update()
     {
-        \Session::set(config('laracart.cache_prefix', 'laracart.').$this->cart->instance, $this->cart);
+        \Session::set(config('laracart.cache_prefix', 'laracart.') . $this->cart->instance, $this->cart);
 
         \Event::fire('laracart.update', $this->cart);
     }

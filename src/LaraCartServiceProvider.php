@@ -20,7 +20,7 @@ class LaraCartServiceProvider extends ServiceProvider
     {
         $this->publishes(
             [
-                __DIR__.'/config/laracart.php' => config_path('laracart.php'),
+                __DIR__ . '/config/laracart.php' => config_path('laracart.php'),
             ]
         );
     }
