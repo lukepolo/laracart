@@ -55,7 +55,7 @@ class LaraCart implements LaraCartContract
      */
     public function get($instance = 'default')
     {
-        if (empty($this->cart = \Session::get(config('laracart.cache_prefix', 'laracart.') . $instance))) {
+        if (empty($this->cart = \Session::get(config('laracart.cache_prefix', 'laracart.').$instance))) {
             $this->cart = new Cart($instance);
         }
 
@@ -67,7 +67,7 @@ class LaraCart implements LaraCartContract
      */
     public function update()
     {
-        \Session::set(config('laracart.cache_prefix', 'laracart.') . $this->cart->instance, $this->cart);
+        \Session::set(config('laracart.cache_prefix', 'laracart.').$this->cart->instance, $this->cart);
 
         \Event::fire('laracart.update', $this->cart);
     }
@@ -94,9 +94,9 @@ class LaraCart implements LaraCartContract
             }
 
             return money_format($internationalFormat ? '%i' : '%n', $number);
-        } else {
-            return number_format($number, 2);
         }
+
+        return number_format($number, 2);
     }
 
     /**
@@ -190,14 +190,16 @@ class LaraCart implements LaraCartContract
      */
     public function add($itemID, $name = null, $qty = 1, $price = '0.00', $options = [], $lineItem = false)
     {
-        return $this->addItem(new CartItem(
-            $itemID,
-            $name,
-            $qty,
-            $price,
-            $options,
-            $lineItem
-        ));
+        return $this->addItem(
+            new CartItem(
+                $itemID,
+                $name,
+                $qty,
+                $price,
+                $options,
+                $lineItem
+            )
+        );
     }
 
     /**
@@ -256,10 +258,13 @@ class LaraCart implements LaraCartContract
 
         $newHash = $item->generateHash();
 
-        \Event::fire('laracart.updateItem', [
-            'item' => $item,
-            'newHash' => $newHash
-        ]);
+        \Event::fire(
+            'laracart.updateItem',
+            [
+                'item' => $item,
+                'newHash' => $newHash,
+            ]
+        );
 
         return $item;
     }
@@ -298,6 +303,7 @@ class LaraCart implements LaraCartContract
                 $count++;
             }
         }
+
         return $count;
     }
 
@@ -442,9 +448,9 @@ class LaraCart implements LaraCartContract
 
         if ($format) {
             return $this->formatMoney($feeTotal);
-        } else {
-            return number_format($feeTotal, 2);
         }
+
+        return number_format($feeTotal, 2);
     }
 
     /**
@@ -463,9 +469,9 @@ class LaraCart implements LaraCartContract
 
         if ($format) {
             return $this->formatMoney($total);
-        } else {
-            return $total;
         }
+
+        return $total;
     }
 
 
@@ -482,9 +488,9 @@ class LaraCart implements LaraCartContract
 
         if ($format) {
             return $this->formatMoney($totalTax);
-        } else {
-            return number_format($totalTax, 2);
         }
+
+        return number_format($totalTax, 2);
     }
 
     /**
@@ -507,10 +513,9 @@ class LaraCart implements LaraCartContract
 
         if ($format) {
             return $this->formatMoney($total);
-        } else {
-            return number_format($total, 2);
         }
 
+        return number_format($total, 2);
     }
 
     /**
@@ -526,8 +531,8 @@ class LaraCart implements LaraCartContract
 
         if ($format) {
             return $this->formatMoney($total);
-        } else {
-            return number_format($total, 2);
         }
+
+        return number_format($total, 2);
     }
 }

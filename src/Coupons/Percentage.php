@@ -2,7 +2,6 @@
 
 namespace LukePOLO\LaraCart\Coupons;
 
-use LukePOLO\LaraCart\Cart;
 use LukePOLO\LaraCart\Contracts\CouponContract;
 use LukePOLO\LaraCart\Traits\CouponTrait;
 

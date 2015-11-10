@@ -119,6 +119,7 @@ interface LaraCartContract
      * @return string itemHash
      */
     public function addLine($itemID, $name = null, $qty = 1, $price = '0.00', $options = []);
+
     /**
      * Adds the cartItem into the cart session
      *
@@ -138,6 +139,7 @@ interface LaraCartContract
      * @return string $newHash
      */
     public function updateItem($itemHash, $key, $value);
+
     /**
      * Removes a CartItem based on the itemHash
      *
@@ -179,6 +181,7 @@ interface LaraCartContract
      * @return mixed
      */
     public function findCoupon($code);
+
     /**
      * // todo - badly named
      * Applies a coupon to the cart
@@ -186,6 +189,7 @@ interface LaraCartContract
      * @param CouponContract $coupon
      */
     public function addCoupon(CouponContract $coupon);
+
     /**
      * Removes a coupon in the cart
      *
@@ -235,6 +239,7 @@ interface LaraCartContract
      * @return string
      */
     public function feeTotals($format = true);
+
     /**
      * Gets the total amount discounted
      *
@@ -243,6 +248,7 @@ interface LaraCartContract
      * @return int|string
      */
     public function totalDiscount($format = true);
+
     /**
      * Gets the total tax for the cart
      *

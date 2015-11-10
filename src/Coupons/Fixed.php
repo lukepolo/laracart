@@ -50,6 +50,10 @@ class Fixed implements CouponContract
      */
     public function displayValue($locale = null, $internationalFormat = null)
     {
-        return \App::make(\LukePOLO\Laracart\LaraCart::SERVICE)->formatMoney($this->value, $locale, $internationalFormat);
+        return \App::make(\LukePOLO\Laracart\LaraCart::SERVICE)->formatMoney(
+            $this->value,
+            $locale,
+            $internationalFormat
+        );
     }
 }

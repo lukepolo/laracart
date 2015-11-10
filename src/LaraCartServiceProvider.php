@@ -18,9 +18,11 @@ class LaraCartServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        $this->publishes([
-            __DIR__ . '/config/laracart.php' => config_path('laracart.php'),
-        ]);
+        $this->publishes(
+            [
+                __DIR__.'/config/laracart.php' => config_path('laracart.php'),
+            ]
+        );
     }
 
     /**
@@ -35,18 +37,25 @@ class LaraCartServiceProvider extends ServiceProvider
             LaraCart::class
         );
 
-        $this->app->singleton('laracart', function ($app) {
-            return $app->make(LaraCartContract::class);
-        });
+        $this->app->singleton(
+            'laracart',
+            function ($app) {
+                return $app->make(LaraCartContract::class);
+            }
+        );
 
-        $this->app->bind(LaraCart::HASH, function($app, $data)
-        {
-            return md5(json_encode($data));
-        });
+        $this->app->bind(
+            LaraCart::HASH,
+            function ($app, $data) {
+                return md5(json_encode($data));
+            }
+        );
 
-        $this->app->bind(LaraCart::RANHASH, function()
-        {
-            return str_random(40);
-        });
+        $this->app->bind(
+            LaraCart::RANHASH,
+            function () {
+                return str_random(40);
+            }
+        );
     }
 }

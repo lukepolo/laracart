@@ -71,6 +71,7 @@ class CartItem
         } elseif ($force || empty($this->itemHash) === true) {
             $this->itemHash = app(LaraCart::RANHASH);
         }
+
         return $this->itemHash;
     }
 
@@ -221,12 +222,17 @@ class CartItem
     public function getDiscount($format = true)
     {
         // TODO - move to main laracart should not be in here
+        $discount = 0;
+
         if (\App::make(LaraCart::SERVICE)->findCoupon($this->code)) {
             $discount = $this->discount;
-        } else {
-            $discount = 0;
         }
 
-        return \App::make(LaraCart::SERVICE)->formatMoney($discount, $this->locale, $this->internationalFormat, $format);
+        return \App::make(LaraCart::SERVICE)->formatMoney(
+            $discount,
+            $this->locale,
+            $this->internationalFormat,
+            $format
+        );
     }
 }

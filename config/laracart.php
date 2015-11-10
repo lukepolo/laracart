@@ -54,5 +54,5 @@ return [
    |--------------------------------------------------------------------------
    |
    */
-    'multipleCoupons' => false
+    'multipleCoupons' => false,
 ];
