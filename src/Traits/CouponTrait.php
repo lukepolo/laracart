@@ -24,7 +24,7 @@ trait CouponTrait
     /**
      * Get the reason why a coupon has failed to apply
      *
-     * @return bool|string
+     * @return string
      */
     public function getMessage()
     {

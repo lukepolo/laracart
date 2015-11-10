@@ -33,7 +33,7 @@ class LaraCart implements LaraCartContract
      *
      * @param string $instance
      *
-     * @return mixed
+     * @return LaraCart
      */
     public function setInstance($instance = 'default')
     {
@@ -221,7 +221,7 @@ class LaraCart implements LaraCartContract
     /**
      * Adds the cartItem into the cart session
      *
-     * @param $cartItem
+     * @param CartItem $cartItem
      *
      * @return string itemHash
      */
@@ -248,7 +248,7 @@ class LaraCart implements LaraCartContract
      * @param $key
      * @param $value
      *
-     * @return string $newHash
+     * @return CartItem $newHash
      */
     public function updateItem($itemHash, $key, $value)
     {
@@ -431,7 +431,7 @@ class LaraCart implements LaraCartContract
     /**
      * Gets all the fee totals
      *
-     * @param bool|true $format
+     * @param boolean $format
      *
      * @return string
      */
@@ -497,7 +497,7 @@ class LaraCart implements LaraCartContract
      * Gets the subtotal of the cart with or without tax
      *
      * @param bool|false $tax
-     * @param bool|true $format
+     * @param boolean $format
      * @param bool|true $withDiscount
      *
      * @return string
@@ -521,8 +521,8 @@ class LaraCart implements LaraCartContract
     /**
      * Gets the total of the cart with or without tax
      *
-     * @param bool|true $format
-     * @param bool|true $withDiscount
+     * @param boolean $format
+     * @param boolean $withDiscount
      * @return string
      */
     public function total($format = true, $withDiscount = true)
