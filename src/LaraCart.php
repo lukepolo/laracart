@@ -12,11 +12,11 @@ use LukePOLO\LaraCart\Contracts\LaraCartContract;
  */
 class LaraCart implements LaraCartContract
 {
-    CONST SERVICE = 'laracart';
-    CONST QTY = 'qty';
-    CONST PRICE = 'price';
-    CONST HASH = 'generateCartHash';
-    CONST RANHASH = 'generateRandomCartItemHash';
+    const SERVICE = 'laracart';
+    const QTY = 'qty';
+    const PRICE = 'price';
+    const HASH = 'generateCartHash';
+    const RANHASH = 'generateRandomCartItemHash';
 
     public $cart;
 
