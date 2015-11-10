@@ -241,7 +241,6 @@ class LaraCart implements LaraCartContract
         return $cartItem;
     }
 
-
     /**
      * Updates an items attributes
      *
