@@ -500,7 +500,7 @@ class LaraCart implements LaraCartContract
      *
      * @param bool|false $tax
      * @param boolean $format
-     * @param bool|true $withDiscount
+     * @param boolean $withDiscount
      *
      * @return string
      */
