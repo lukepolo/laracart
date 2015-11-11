@@ -183,11 +183,12 @@ class LaraCart implements LaraCartContract
      * @param int $qty
      * @param string $price
      * @param array $options
+     * @param bool|false $taxable
      * @param bool|false $lineItem
      *
      * @return CartItem
      */
-    public function add($itemID, $name = null, $qty = 1, $price = '0.00', $options = [], $lineItem = false)
+    public function add($itemID, $name = null, $qty = 1, $price = '0.00', $options = [], $taxable = true, $lineItem = false)
     {
         return $this->addItem(
             new CartItem(
@@ -196,6 +197,7 @@ class LaraCart implements LaraCartContract
                 $qty,
                 $price,
                 $options,
+                $taxable,
                 $lineItem
             )
         );
@@ -212,9 +214,9 @@ class LaraCart implements LaraCartContract
      *
      * @return CartItem
      */
-    public function addLine($itemID, $name = null, $qty = 1, $price = '0.00', $options = [])
+    public function addLine($itemID, $name = null, $qty = 1, $price = '0.00', $options = [], $taxable = true)
     {
-        return $this->add($itemID, $name, $qty, $price, $options, true);
+        return $this->add($itemID, $name, $qty, $price, $options, $taxable, true);
     }
 
     /**

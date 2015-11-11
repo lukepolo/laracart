@@ -218,8 +218,6 @@ class LaraCartTest extends Orchestra\Testbench\TestCase
 
         $subItem = $item->addSubItem($subItemData);
 
-        $item->findSubItem($subItem->getHash());
-
         $this->assertEquals(new \LukePOLO\LaraCart\CartSubItem($subItemData), $subItem);
         $this->assertEquals('2', $subItem->price);
         $this->assertEquals('$2.00', $subItem->getPrice());
@@ -232,15 +230,16 @@ class LaraCartTest extends Orchestra\Testbench\TestCase
         $this->assertFalse(isset($subItem->testz));
 
 
-        $this->assertEquals("$3.00", $item->getPrice());
+        $this->assertEquals("$1.00", $item->getPrice());
+        $this->assertEquals('$3.00', $item->subTotal());
 
         $subItem->items[] = new \LukePOLO\LaraCart\CartItem(
-            '123', 'subItem', 1, 3, [
+            '123', 'subItem', 10, 20, [
                 'testing' => 1,
             ]
         );
 
-        $this->assertEquals('$8.00', $item->subTotal());
+        $this->assertEquals('$203.00', $item->subTotal());
     }
 
     public function testRemoveItem()
@@ -488,7 +487,25 @@ class LaraCartTest extends Orchestra\Testbench\TestCase
             ]
         );
 
+
         $this->assertEquals('$1.07', $this->laracart->total());
         $this->assertEquals('1.07', $this->laracart->total(false));
+
+
+        // TODO - Test taxable fees
+        $item = $this->laracart->add(
+            '1',
+            'Testing Item',
+            1,
+            '1.00',
+            [
+                'b_test' => 'option_1',
+                'a_test' => 'option_2',
+            ],
+            false
+        );
+
+        $this->assertEquals('$2.07', $this->laracart->total());
+        $this->assertEquals('2.07', $this->laracart->total(false));
     }
 }

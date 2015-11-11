@@ -24,25 +24,30 @@ class CartItem
     public $code;
     public $price;
     public $locale;
+    public $taxable;
     public $discount;
     public $lineItem;
     public $subItems = [];
     public $internationalFormat;
 
     /**
-     * @param string $id
-     * @param string $name
-     * @param int $qty
-     * @param float $price
+     * CartItem constructor.
+     *
+     * @param $id
+     * @param $name
+     * @param $qty
+     * @param $price
      * @param array $options
-     * @param bool $lineItem
+     * @param bool|true $taxable
+     * @param bool|false $lineItem
      */
-    public function __construct($id, $name, $qty, $price, $options = [], $lineItem = false)
+    public function __construct($id, $name, $qty, $price, $options = [], $taxable = true, $lineItem = false)
     {
         $this->id = $id;
         $this->qty = $qty;
         $this->name = $name;
         $this->options = $options;
+        $this->taxable = $taxable;
         $this->lineItem = $lineItem;
         $this->price = floatval($price);
         $this->tax = config('laracart.tax');
@@ -124,13 +129,9 @@ class CartItem
      */
     public function getPrice($tax = false, $format = true)
     {
-        $price = $this->price;
+        $price = $this->price * $this->qty;
 
-        foreach ($this->subItems as $subItem) {
-            $price += $subItem->getPrice(false);
-        }
-
-        if ($tax) {
+        if ($tax && $this->taxable) {
             $price += $price * $this->tax;
         }
 
@@ -199,13 +200,14 @@ class CartItem
     public function subItemsTotal($tax = false, $format = true)
     {
         $total = 0;
+
         foreach ($this->subItems as $item) {
             if (isset($item->price)) {
-                $total += $item->price;
+                $total += $item->getPrice($tax);
             }
         }
 
-        if ($tax) {
+        if ($tax && $this->taxable) {
             $total = $total + ($total * $this->tax);
         }
 
