@@ -328,7 +328,7 @@ class LaraCart implements LaraCartContract
      */
     public function destroyCart()
     {
-        $this->cart = new Cart();
+        $this->cart = new Cart($this->cart->instance);
 
         $this->update();
 
