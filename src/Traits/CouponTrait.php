@@ -48,11 +48,11 @@ trait CouponTrait
      */
     public function checkMinAmount($minAmount, $throwErrors)
     {
-        if (LaraCart::total(false, false) >= $minAmount) {
+        if (LaraCart::subTotal(false, false, false) >= $minAmount) {
             return true;
         } else {
             if ($throwErrors) {
-                throw new \Exception('You must have at least a total of ' . LaraCart::formatMoney($minAmount));
+                throw new \Exception('You must have at least a total of '.LaraCart::formatMoney($minAmount));
             } else {
                 return false;
             }
@@ -75,7 +75,7 @@ trait CouponTrait
             return $discount;
         } else {
             if ($throwErrors) {
-                throw new \Exception('This has a max discount of ' . LaraCart::formatMoney($maxDiscount));
+                throw new \Exception('This has a max discount of '.LaraCart::formatMoney($maxDiscount));
             } else {
                 return $maxDiscount;
             }

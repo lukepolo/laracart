@@ -467,8 +467,10 @@ class LaraCart implements LaraCartContract
     public function totalDiscount($format = true)
     {
         $total = 0;
+
         foreach ($this->cart->coupons as $coupon) {
             $total += $coupon->discount();
+
         }
 
         if ($format) {
@@ -527,11 +529,16 @@ class LaraCart implements LaraCartContract
      *
      * @param boolean $format
      * @param boolean $withDiscount
+     *
      * @return string
      */
     public function total($format = true, $withDiscount = true)
     {
-        $total = $this->subTotal(true, false, $withDiscount) + $this->feeTotals(false);
+        $total = $this->subTotal(true, false, false) + $this->feeTotals(false);
+
+        if($withDiscount) {
+            $total -= $this->totalDiscount(false);
+        }
 
         if ($format) {
             return $this->formatMoney($total);
