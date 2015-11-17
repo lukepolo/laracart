@@ -23,6 +23,10 @@ class LaraCartServiceProvider extends ServiceProvider
                 __DIR__ . '/config/laracart.php' => config_path('laracart.php'),
             ]
         );
+
+        $this->mergeConfigFrom(
+            __DIR__.'/config/laracart.php', 'laracart'
+        );
     }
 
     /**

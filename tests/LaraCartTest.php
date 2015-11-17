@@ -341,6 +341,15 @@ class LaraCartTest extends Orchestra\Testbench\TestCase
 
         $this->assertEquals('1', $percentCoupon->discount());
 
+        $this->assertCount(1, $this->laracart->getCoupons());
+
+        $cart = $this->laracart->get()->cart;
+        $cart->multipleCoupons = true;
+
+        $fixedCoupon = new LukePOLO\LaraCart\Coupons\Fixed('10OFF', 10);
+        $this->laracart->addCoupon($fixedCoupon);
+        $this->assertEquals($fixedCoupon, $this->laracart->findCoupon('10OFF'));
+
         $this->assertCount(2, $this->laracart->getCoupons());
     }
 

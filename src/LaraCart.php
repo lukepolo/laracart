@@ -55,7 +55,7 @@ class LaraCart implements LaraCartContract
      */
     public function get($instance = 'default')
     {
-        if (empty($this->cart = \Session::get(config('laracart.cache_prefix', 'laracart.') . $instance))) {
+        if (empty($this->cart = \Session::get(config('laracart.cache_prefix', 'laracart').'.'.$instance))) {
             $this->cart = new Cart($instance);
         }
 
@@ -67,7 +67,7 @@ class LaraCart implements LaraCartContract
      */
     public function update()
     {
-        \Session::set(config('laracart.cache_prefix', 'laracart.') . $this->cart->instance, $this->cart);
+        \Session::set(config('laracart.cache_prefix', 'laracart').'.'.$this->cart->instance, $this->cart);
 
         \Event::fire('laracart.update', $this->cart);
     }
@@ -188,8 +188,15 @@ class LaraCart implements LaraCartContract
      *
      * @return CartItem
      */
-    public function add($itemID, $name = null, $qty = 1, $price = '0.00', $options = [], $taxable = true, $lineItem = false)
-    {
+    public function add(
+        $itemID,
+        $name = null,
+        $qty = 1,
+        $price = '0.00',
+        $options = [],
+        $taxable = true,
+        $lineItem = false
+    ) {
         return $this->addItem(
             new CartItem(
                 $itemID,
@@ -365,6 +372,10 @@ class LaraCart implements LaraCartContract
      */
     public function addCoupon(CouponContract $coupon)
     {
+        if(!$this->cart->multipleCoupons) {
+            $this->cart->coupons = [];
+        }
+
         $this->cart->coupons[$coupon->code] = $coupon;
 
         $this->update();
@@ -521,6 +532,7 @@ class LaraCart implements LaraCartContract
             return $this->formatMoney($total);
         }
 
+
         return number_format($total, 2);
     }
 
@@ -536,7 +548,7 @@ class LaraCart implements LaraCartContract
     {
         $total = $this->subTotal(true, false, false) + $this->feeTotals(false);
 
-        if($withDiscount) {
+        if ($withDiscount) {
             $total -= $this->totalDiscount(false);
         }
 
