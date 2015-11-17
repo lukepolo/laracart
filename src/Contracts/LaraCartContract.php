@@ -129,7 +129,7 @@ interface LaraCartContract
      *
      * @return CartItem
      */
-    public function addItem($cartItem);
+    public function addItem(CartItem $cartItem);
 
     /**
      * Updates an items attributes

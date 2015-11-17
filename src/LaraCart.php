@@ -233,7 +233,7 @@ class LaraCart implements LaraCartContract
      *
      * @return CartItem
      */
-    public function addItem($cartItem)
+    public function addItem(CartItem $cartItem)
     {
         $itemHash = $cartItem->generateHash();
 
