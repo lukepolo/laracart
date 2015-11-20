@@ -203,7 +203,7 @@ class CartItem
 
         foreach ($this->subItems as $item) {
             if (isset($item->price)) {
-                $total += $item->getPrice($tax);
+                $total += $item->getPrice(false);
             }
         }
 
