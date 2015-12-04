@@ -207,6 +207,8 @@ class CartItem
             }
         }
 
+        $total *= $this->qty;
+
         if ($tax && $this->taxable) {
             $total = $total + ($total * $this->tax);
         }
