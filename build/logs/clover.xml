@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1447774743">
-  <project timestamp="1447774743">
+<coverage generated="1449230609">
+  <project timestamp="1449230609">
     <package name="LukePOLO\LaraCart">
       <file name="/home/vagrant/Code/MINT/vendor/lukepolo/laracart/src/Cart.php">
         <class name="Cart" namespace="LukePOLO\LaraCart" fullPackage="LukePOLO" package="LukePOLO">
@@ -82,8 +82,8 @@
         <line num="180" type="method" name="subTotal" crap="2" count="4"/>
         <line num="182" type="stmt" count="4"/>
         <line num="184" type="stmt" count="4"/>
-        <line num="185" type="stmt" count="2"/>
-        <line num="186" type="stmt" count="2"/>
+        <line num="185" type="stmt" count="3"/>
+        <line num="186" type="stmt" count="3"/>
         <line num="188" type="stmt" count="4"/>
         <line num="200" type="method" name="subItemsTotal" crap="5" count="4"/>
         <line num="202" type="stmt" count="4"/>
@@ -96,16 +96,16 @@
         <line num="211" type="stmt" count="2"/>
         <line num="212" type="stmt" count="2"/>
         <line num="214" type="stmt" count="4"/>
-        <line num="224" type="method" name="getDiscount" crap="2.04" count="2"/>
-        <line num="227" type="stmt" count="2"/>
-        <line num="229" type="stmt" count="2"/>
+        <line num="224" type="method" name="getDiscount" crap="2.04" count="3"/>
+        <line num="227" type="stmt" count="3"/>
+        <line num="229" type="stmt" count="3"/>
         <line num="230" type="stmt" count="0"/>
         <line num="231" type="stmt" count="0"/>
-        <line num="233" type="stmt" count="2"/>
-        <line num="234" type="stmt" count="2"/>
-        <line num="235" type="stmt" count="2"/>
-        <line num="236" type="stmt" count="2"/>
-        <line num="238" type="stmt" count="2"/>
+        <line num="233" type="stmt" count="3"/>
+        <line num="234" type="stmt" count="3"/>
+        <line num="235" type="stmt" count="3"/>
+        <line num="236" type="stmt" count="3"/>
+        <line num="238" type="stmt" count="3"/>
         <metrics loc="240" ncloc="154" classes="1" methods="10" coveredmethods="7" conditionals="0" coveredconditionals="0" statements="64" coveredstatements="59" elements="74" coveredelements="66"/>
       </file>
       <file name="/home/vagrant/Code/MINT/vendor/lukepolo/laracart/src/CartSubItem.php">
@@ -247,8 +247,8 @@
         <line num="343" type="stmt" count="1"/>
         <line num="350" type="method" name="getCoupons" crap="1" count="1"/>
         <line num="352" type="stmt" count="1"/>
-        <line num="362" type="method" name="findCoupon" crap="1" count="5"/>
-        <line num="364" type="stmt" count="5"/>
+        <line num="362" type="method" name="findCoupon" crap="1" count="6"/>
+        <line num="364" type="stmt" count="6"/>
         <line num="373" type="method" name="addCoupon" crap="2" count="3"/>
         <line num="375" type="stmt" count="3"/>
         <line num="376" type="stmt" count="3"/>

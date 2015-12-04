@@ -467,7 +467,7 @@ class LaraCartTest extends Orchestra\Testbench\TestCase
 
     public function testSubTotal()
     {
-        $this->laracart->add(
+        $item = $this->laracart->add(
             '1',
             'Testing Item',
             1,
@@ -480,6 +480,10 @@ class LaraCartTest extends Orchestra\Testbench\TestCase
 
         $this->assertEquals('$24.00', $this->laracart->subTotal());
         $this->assertEquals('24.00', $this->laracart->subTotal(false, false));
+
+        $item->qty = 5;
+
+        $this->assertEquals('120.00', $this->laracart->subTotal(false, false));
     }
 
     public function testTotal()
@@ -502,11 +506,11 @@ class LaraCartTest extends Orchestra\Testbench\TestCase
 
 
         // TODO - Test taxable fees
-        $item = $this->laracart->add(
+        $notTaxedItem = $this->laracart->add(
             '1',
             'Testing Item',
             1,
-            '1.00',
+            '2.00',
             [
                 'b_test' => 'option_1',
                 'a_test' => 'option_2',
@@ -514,7 +518,14 @@ class LaraCartTest extends Orchestra\Testbench\TestCase
             false
         );
 
-        $this->assertEquals('$2.07', $this->laracart->total());
-        $this->assertEquals('2.07', $this->laracart->total(false));
+        $this->assertEquals('$3.07', $this->laracart->total());
+        $this->assertEquals('3.07', $this->laracart->total(false));
+
+        $item->qty = 5;
+
+        $this->assertEquals('7.00', $this->laracart->subTotal(false, false));
+
+
+        $this->assertEquals('7.35', $this->laracart->total(false));
     }
 }
