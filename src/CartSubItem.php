@@ -63,7 +63,7 @@ class CartSubItem
         $price = $this->price;
 
         foreach ($this->items as $item) {
-            $price += $item->getPrice(false, false);
+            $price += $item->getPrice(false, false) + $item->subItemsTotal(false, false);
         }
 
         return \App::make(LaraCart::SERVICE)->formatMoney($price, $this->locale, $this->internationalFormat, $format);
