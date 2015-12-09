@@ -480,11 +480,7 @@ class LaraCart implements LaraCartContract
 
         }
 
-        if ($format) {
-            return $this->formatMoney($total);
-        }
-
-        return $total;
+        return $this->formatMoney($total, null, null, $format);
     }
 
 
@@ -519,10 +515,6 @@ class LaraCart implements LaraCartContract
             foreach ($this->getItems() as $item) {
                 $total += $item->subTotal($tax, false, $withDiscount);
             }
-        }
-
-        if ($format) {
-            return $this->formatMoney($total);
         }
 
         return $this->formatMoney($total, null, null, $format);
