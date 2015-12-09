@@ -517,7 +517,6 @@ class LaraCart implements LaraCartContract
         $total = 0;
         if ($this->count() != 0) {
             foreach ($this->getItems() as $item) {
-                dump($item->subTotal(false, false, $withDiscount));
                 $total += $item->subTotal($tax, false, $withDiscount);
             }
         }
