@@ -95,7 +95,7 @@ class LaraCart implements LaraCartContract
             return money_format($internationalFormat ? '%i' : '%n', $number);
         }
 
-        return number_format($number, 2);
+        return number_format($number, 2, '.', '');
     }
 
     /**
@@ -461,11 +461,7 @@ class LaraCart implements LaraCartContract
             }
         }
 
-        if ($format) {
-            return $this->formatMoney($feeTotal);
-        }
-
-        return number_format($feeTotal, 2);
+        return $this->formatMoney($feeTotal, null, null, $format);
     }
 
     /**
@@ -503,11 +499,8 @@ class LaraCart implements LaraCartContract
     {
         $totalTax = $this->total(false, false) - $this->subTotal(false, false, false) - $this->feeTotals(false);
 
-        if ($format) {
-            return $this->formatMoney($totalTax);
-        }
 
-        return number_format($totalTax, 2);
+        return $this->formatMoney($totalTax, null, null, $format);
     }
 
     /**
@@ -524,6 +517,7 @@ class LaraCart implements LaraCartContract
         $total = 0;
         if ($this->count() != 0) {
             foreach ($this->getItems() as $item) {
+                dump($item->subTotal(false, false, $withDiscount));
                 $total += $item->subTotal($tax, false, $withDiscount);
             }
         }
@@ -532,8 +526,7 @@ class LaraCart implements LaraCartContract
             return $this->formatMoney($total);
         }
 
-
-        return number_format($total, 2);
+        return $this->formatMoney($total, null, null, $format);
     }
 
     /**
@@ -552,10 +545,6 @@ class LaraCart implements LaraCartContract
             $total -= $this->totalDiscount(false);
         }
 
-        if ($format) {
-            return $this->formatMoney($total);
-        }
-
-        return number_format($total, 2);
+        return $this->formatMoney($total, null, null, $format);
     }
 }
