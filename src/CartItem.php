@@ -226,10 +226,8 @@ class CartItem
      */
     public function getDiscount($format = true)
     {
-        $discount = $this->discount;
-
         return \App::make(LaraCart::SERVICE)->formatMoney(
-            $discount,
+            $this->discount,
             $this->locale,
             $this->internationalFormat,
             $format
