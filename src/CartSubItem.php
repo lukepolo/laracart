@@ -14,13 +14,11 @@ class CartSubItem
     const ITEMS = 'items';
 
     use CartOptionsMagicMethodsTrait;
-
-    private $itemHash;
-
     public $locale;
     public $price = 0;
     public $items = [];
     public $internationalFormat;
+    private $itemHash;
 
     /**
      * @param $options

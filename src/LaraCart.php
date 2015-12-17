@@ -55,47 +55,11 @@ class LaraCart implements LaraCartContract
      */
     public function get($instance = 'default')
     {
-        if (empty($this->cart = \Session::get(config('laracart.cache_prefix', 'laracart').'.'.$instance))) {
+        if (empty($this->cart = \Session::get(config('laracart.cache_prefix', 'laracart') . '.' . $instance))) {
             $this->cart = new Cart($instance);
         }
 
         return $this;
-    }
-
-    /**
-     * Updates cart session
-     */
-    public function update()
-    {
-        \Session::set(config('laracart.cache_prefix', 'laracart').'.'.$this->cart->instance, $this->cart);
-
-        \Event::fire('laracart.update', $this->cart);
-    }
-
-    /**
-     *
-     * Formats the number into a money format based on the locale and international formats
-     *
-     * @param $number
-     * @param $locale
-     * @param $internationalFormat
-     * @param $format
-     *
-     * @return string
-     */
-    public function formatMoney($number, $locale = null, $internationalFormat = null, $format = true)
-    {
-        if ($format) {
-            setlocale(LC_MONETARY, empty($locale) ? config('laracart.locale', 'en_US.UTF-8') : $locale);
-
-            if (empty($internationalFormat) === true) {
-                $internationalFormat = config('laracart.international_format', false);
-            }
-
-            return money_format($internationalFormat ? '%i' : '%n', $number);
-        }
-
-        return number_format($number, 2, '.', '');
     }
 
     /**
@@ -135,6 +99,16 @@ class LaraCart implements LaraCartContract
     }
 
     /**
+     * Updates cart session
+     */
+    public function update()
+    {
+        \Session::set(config('laracart.cache_prefix', 'laracart') . '.' . $this->cart->instance, $this->cart);
+
+        \Event::fire('laracart.update', $this->cart);
+    }
+
+    /**
      * Removes an attribute from the cart
      *
      * @param $attribute
@@ -147,32 +121,19 @@ class LaraCart implements LaraCartContract
     }
 
     /**
-     * Finds a cartItem based on the itemHash
+     * Creates a CartItem and then adds it to cart
      *
-     * @param $itemHash
+     * @param string|int $itemID
+     * @param null $name
+     * @param int $qty
+     * @param string $price
+     * @param array $options
      *
-     * @return CartItem | null
+     * @return CartItem
      */
-    public function getItem($itemHash)
+    public function addLine($itemID, $name = null, $qty = 1, $price = '0.00', $options = [], $taxable = true)
     {
-        return array_get($this->getItems(), $itemHash);
-    }
-
-    /**
-     * Gets all the items within the cart
-     *
-     * @return array
-     */
-    public function getItems()
-    {
-        $items = [];
-        if (isset($this->cart->items) === true) {
-            foreach ($this->cart->items as $item) {
-                $items[$item->getHash()] = $item;
-            }
-        }
-
-        return $items;
+        return $this->add($itemID, $name, $qty, $price, $options, $taxable, true);
     }
 
     /**
@@ -211,22 +172,6 @@ class LaraCart implements LaraCartContract
     }
 
     /**
-     * Creates a CartItem and then adds it to cart
-     *
-     * @param string|int $itemID
-     * @param null $name
-     * @param int $qty
-     * @param string $price
-     * @param array $options
-     *
-     * @return CartItem
-     */
-    public function addLine($itemID, $name = null, $qty = 1, $price = '0.00', $options = [], $taxable = true)
-    {
-        return $this->add($itemID, $name, $qty, $price, $options, $taxable, true);
-    }
-
-    /**
      * Adds the cartItem into the cart session
      *
      * @param CartItem $cartItem
@@ -247,6 +192,35 @@ class LaraCart implements LaraCartContract
         $this->update();
 
         return $cartItem;
+    }
+
+    /**
+     * Finds a cartItem based on the itemHash
+     *
+     * @param $itemHash
+     *
+     * @return CartItem | null
+     */
+    public function getItem($itemHash)
+    {
+        return array_get($this->getItems(), $itemHash);
+    }
+
+    /**
+     * Gets all the items within the cart
+     *
+     * @return array
+     */
+    public function getItems()
+    {
+        $items = [];
+        if (isset($this->cart->items) === true) {
+            foreach ($this->cart->items as $item) {
+                $items[$item->getHash()] = $item;
+            }
+        }
+
+        return $items;
     }
 
     /**
@@ -295,27 +269,6 @@ class LaraCart implements LaraCartContract
         }
 
         \Event::fire('laracart.removeItem', $itemHash);
-    }
-
-    /**
-     * Get the count based on qty, or number of unique items
-     *
-     * @param bool $withItemQty
-     *
-     * @return int
-     */
-    public function count($withItemQty = true)
-    {
-        $count = 0;
-        foreach ($this->getItems() as $item) {
-            if ($withItemQty) {
-                $count += $item->qty;
-            } else {
-                $count++;
-            }
-        }
-
-        return $count;
     }
 
     /**
@@ -372,7 +325,7 @@ class LaraCart implements LaraCartContract
      */
     public function addCoupon(CouponContract $coupon)
     {
-        if(!$this->cart->multipleCoupons) {
+        if (!$this->cart->multipleCoupons) {
             $this->cart->coupons = [];
         }
 
@@ -388,6 +341,14 @@ class LaraCart implements LaraCartContract
      */
     public function removeCoupon($code)
     {
+        foreach ($this->getItems() as $item) {
+            if (isset($item->code) && $item->code == $code) {
+                $item->code = null;
+                $item->discount = null;
+                $item->couponInfo = null;
+            }
+        }
+
         array_forget($this->cart->coupons, $code);
 
         $this->update();
@@ -403,16 +364,6 @@ class LaraCart implements LaraCartContract
     public function getFee($name)
     {
         return array_get($this->cart->fees, $name, new CartFee(null, false));
-    }
-
-    /**
-     * Getes all the fees on the cart object
-     *
-     * @return mixed
-     */
-    public function getFees()
-    {
-        return $this->cart->fees;
     }
 
     /**
@@ -444,47 +395,6 @@ class LaraCart implements LaraCartContract
     }
 
     /**
-     * Gets all the fee totals
-     *
-     * @param boolean $format
-     *
-     * @return string
-     */
-    public function feeTotals($format = true)
-    {
-        $feeTotal = 0;
-
-        foreach ($this->getFees() as $fee) {
-            $feeTotal += $fee->amount;
-            if ($fee->taxable) {
-                $feeTotal += $fee->amount * $this->cart->tax;
-            }
-        }
-
-        return $this->formatMoney($feeTotal, null, null, $format);
-    }
-
-    /**
-     * Gets the total amount discounted
-     *
-     * @param bool|true $format
-     *
-     * @return int|string
-     */
-    public function totalDiscount($format = true)
-    {
-        $total = 0;
-
-        foreach ($this->cart->coupons as $coupon) {
-            $total += $coupon->discount();
-
-        }
-
-        return $this->formatMoney($total, null, null, $format);
-    }
-
-
-    /**
      * Gets the total tax for the cart
      *
      * @param bool|true $format
@@ -497,6 +407,25 @@ class LaraCart implements LaraCartContract
 
 
         return $this->formatMoney($totalTax, null, null, $format);
+    }
+
+    /**
+     * Gets the total of the cart with or without tax
+     *
+     * @param boolean $format
+     * @param boolean $withDiscount
+     *
+     * @return string
+     */
+    public function total($format = true, $withDiscount = true)
+    {
+        $total = $this->subTotal(true, false, false) + $this->feeTotals(false);
+
+        if ($withDiscount) {
+            $total -= $this->totalDiscount(false);
+        }
+
+        return $this->formatMoney($total, null, null, $format);
     }
 
     /**
@@ -521,21 +450,98 @@ class LaraCart implements LaraCartContract
     }
 
     /**
-     * Gets the total of the cart with or without tax
+     * Get the count based on qty, or number of unique items
+     *
+     * @param bool $withItemQty
+     *
+     * @return int
+     */
+    public function count($withItemQty = true)
+    {
+        $count = 0;
+        foreach ($this->getItems() as $item) {
+            if ($withItemQty) {
+                $count += $item->qty;
+            } else {
+                $count++;
+            }
+        }
+
+        return $count;
+    }
+
+    /**
+     * Gets all the fee totals
      *
      * @param boolean $format
-     * @param boolean $withDiscount
      *
      * @return string
      */
-    public function total($format = true, $withDiscount = true)
+    public function feeTotals($format = true)
     {
-        $total = $this->subTotal(true, false, false) + $this->feeTotals(false);
+        $feeTotal = 0;
 
-        if ($withDiscount) {
-            $total -= $this->totalDiscount(false);
+        foreach ($this->getFees() as $fee) {
+            $feeTotal += $fee->amount;
+            if ($fee->taxable) {
+                $feeTotal += $fee->amount * $this->cart->tax;
+            }
+        }
+
+        return $this->formatMoney($feeTotal, null, null, $format);
+    }
+
+    /**
+     * Getes all the fees on the cart object
+     *
+     * @return mixed
+     */
+    public function getFees()
+    {
+        return $this->cart->fees;
+    }
+
+    /**
+     * Gets the total amount discounted
+     *
+     * @param bool|true $format
+     *
+     * @return int|string
+     */
+    public function totalDiscount($format = true)
+    {
+        $total = 0;
+
+        foreach ($this->cart->coupons as $coupon) {
+            $total += $coupon->discount();
         }
 
         return $this->formatMoney($total, null, null, $format);
+    }
+
+    /**
+     *
+     * Formats the number into a money format based on the locale and international formats
+     *
+     * @param $number
+     * @param $locale
+     * @param $internationalFormat
+     * @param $format
+     *
+     * @return string
+     */
+    public function formatMoney($number, $locale = null, $internationalFormat = null, $format = true)
+    {
+        if ($format) {
+            setlocale(LC_MONETARY, empty($locale) ? config('laracart.locale', 'en_US.UTF-8') : $locale);
+
+            if (empty($internationalFormat) === true) {
+                $internationalFormat = config('laracart.international_format', false);
+            }
+
+            return money_format($internationalFormat ? '%i' : '%n', $number);
+        }
+
+        return number_format($number, 2, '.', '');
     }
 }
