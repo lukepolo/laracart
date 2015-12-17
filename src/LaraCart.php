@@ -388,6 +388,14 @@ class LaraCart implements LaraCartContract
      */
     public function removeCoupon($code)
     {
+        foreach($this->getItems() as $item) {
+            if(isset($item->code) && $item->code == $code) {
+                $item->code = null;
+                $item->discount = null;
+                $item->couponInfo = null;
+            }
+        }
+
         array_forget($this->cart->coupons, $code);
 
         $this->update();
@@ -477,7 +485,6 @@ class LaraCart implements LaraCartContract
 
         foreach ($this->cart->coupons as $coupon) {
             $total += $coupon->discount();
-
         }
 
         return $this->formatMoney($total, null, null, $format);

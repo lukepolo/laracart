@@ -25,9 +25,10 @@ class CartItem
     public $price;
     public $locale;
     public $taxable;
-    public $discount;
     public $lineItem;
+    public $discount = 0;
     public $subItems = [];
+    public $couponInfo = [];
     public $internationalFormat;
 
     /**
@@ -225,12 +226,7 @@ class CartItem
      */
     public function getDiscount($format = true)
     {
-        // TODO - move to main laracart should not be in here
-        $discount = 0;
-
-        if (\App::make(LaraCart::SERVICE)->findCoupon($this->code)) {
-            $discount = $this->discount;
-        }
+        $discount = $this->discount;
 
         return \App::make(LaraCart::SERVICE)->formatMoney(
             $discount,

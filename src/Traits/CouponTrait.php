@@ -116,5 +116,6 @@ trait CouponTrait
     {
         $item->code = $code;
         $item->discount = $discount;
+        $item->couponInfo = $this->options;
     }
 }
