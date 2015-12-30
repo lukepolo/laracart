@@ -59,7 +59,6 @@ Look through the configuration options and change as needed
     LaraCart::add(1, 'Burger', 5, 2.00, [
         // Notice this is an array of arrays,
         // this allows us to further expand the cart functions to the options
-        [
             'Description' => 'Bacon',
             'Price' => 1.00
         ]
@@ -153,7 +152,7 @@ The reasoning behind sub items is to allow you add addiontal items without the a
         'Price' => '.75'
     ]);
 
-    To update you can do on the item
+    // To update you can do on the item
     $cartItem->findSubItem($itemHash)->update('price') = 1.00;
 ```
 
