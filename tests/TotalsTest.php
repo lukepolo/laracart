@@ -62,7 +62,6 @@ class TotalsTest extends Orchestra\Testbench\TestCase
 
     public function testTotal()
     {
-        // TODO - Test taxable fees
         $this->addItem();
 
         $this->assertEquals('$1.07', $this->laracart->total());
@@ -80,4 +79,18 @@ class TotalsTest extends Orchestra\Testbench\TestCase
         $this->assertEquals('11.07', $this->laracart->total(false));
     }
 
+    public function testTaxableFees()
+    {
+
+    }
+
+    public function testTaxableItems()
+    {
+
+    }
+
+    public function testTaxableSubItems()
+    {
+
+    }
 }
