@@ -59,6 +59,7 @@ Look through the configuration options and change as needed
     LaraCart::add(1, 'Burger', 5, 2.00, [
         // Notice this is an array of arrays,
         // this allows us to further expand the cart functions to the options
+        [
             'Description' => 'Bacon',
             'Price' => 1.00
         ]
