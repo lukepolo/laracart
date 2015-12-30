@@ -3,8 +3,14 @@
 namespace LukePOLO\LaraCart\Traits;
 
 use Carbon\Carbon;
-use LaraCart;
+use LukePOLO\LaraCart\CartItem;
+use LukePOLO\LaraCart\Exceptions\CouponException;
 
+/**
+ * Class CouponTrait
+ *
+ * @package LukePOLO\LaraCart\Traits
+ */
 trait CouponTrait
 {
     use CartOptionsMagicMethodsTrait;
@@ -29,10 +35,10 @@ trait CouponTrait
     public function getMessage()
     {
         try {
-            $this->discount(true);
+            $this->discount();
 
             return 'Coupon Applied';
-        } catch (\Exception $e) {
+        } catch (CouponException $e) {
             return $e->getMessage();
         }
     }
@@ -44,15 +50,17 @@ trait CouponTrait
      * @param $throwErrors
      *
      * @return bool
-     * @throws \Exception
+     * @throws CouponException
      */
-    public function checkMinAmount($minAmount, $throwErrors)
+    public function checkMinAmount($minAmount, $throwErrors = true)
     {
-        if (LaraCart::subTotal(false, false, false) >= $minAmount) {
+        $laraCart = \App::make(\LukePOLO\Laracart\LaraCart::SERVICE);
+
+        if ($laraCart->subTotal(false, false, false) >= $minAmount) {
             return true;
         } else {
             if ($throwErrors) {
-                throw new \Exception('You must have at least a total of ' . LaraCart::formatMoney($minAmount));
+                throw new CouponException('You must have at least a total of ' . $laraCart->formatMoney($minAmount));
             } else {
                 return false;
             }
@@ -67,15 +75,15 @@ trait CouponTrait
      * @param $throwErrors
      *
      * @return mixed
-     * @throws \Exception
+     * @throws CouponException
      */
-    public function maxDiscount($maxDiscount, $discount, $throwErrors)
+    public function maxDiscount($maxDiscount, $discount, $throwErrors = true)
     {
         if ($maxDiscount == 0 || $maxDiscount > $discount) {
             return $discount;
         } else {
             if ($throwErrors) {
-                throw new \Exception('This has a max discount of ' . LaraCart::formatMoney($maxDiscount));
+                throw new CouponException('This has a max discount of ' . \App::make(\LukePOLO\Laracart\LaraCart::SERVICE)->formatMoney($maxDiscount));
             } else {
                 return $maxDiscount;
             }
@@ -90,15 +98,15 @@ trait CouponTrait
      * @param $throwErrors
      *
      * @return bool
-     * @throws \Exception
+     * @throws CouponException
      */
-    public function checkValidTimes(Carbon $startDate, Carbon $endDate, $throwErrors)
+    public function checkValidTimes(Carbon $startDate, Carbon $endDate, $throwErrors = true)
     {
         if (Carbon::now()->between($startDate, $endDate)) {
             return true;
         } else {
             if ($throwErrors) {
-                throw new \Exception('This coupon has expired');
+                throw new CouponException('This coupon has expired');
             } else {
                 return false;
             }
@@ -108,14 +116,12 @@ trait CouponTrait
     /**
      * Sets a discount to an item with what code was used and the discount amount
      *
-     * @param $item
-     * @param $code
-     * @param $discount
+     * @param CartItem $item
      */
-    public function setDiscountOnItem($item, $code, $discount)
+    public function setDiscountOnItem(CartItem $item)
     {
-        $item->code = $code;
-        $item->discount = $discount;
+        $item->code = $this->code;
+        $item->discount = $this->discount();
         $item->couponInfo = $this->options;
     }
 }

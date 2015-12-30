@@ -1,5 +1,7 @@
 <?php
 
+use Carbon\Carbon;
+
 class CouponsTest extends Orchestra\Testbench\TestCase
 {
     use \LukePOLO\LaraCart\Tests\LaraCartTestTrait;
@@ -75,26 +77,74 @@ class CouponsTest extends Orchestra\Testbench\TestCase
 
     public function testGetMessage()
     {
+        $fixedCoupon = new LukePOLO\LaraCart\Coupons\Fixed('10OFF', 10);
+        $this->laracart->addCoupon($fixedCoupon);
 
+        $this->assertEquals('Coupon Applied', $this->laracart->findCoupon('10OFF')->getMessage());
     }
 
     public function testCheckMinAmount()
     {
+        $fixedCoupon = new LukePOLO\LaraCart\Coupons\Fixed('10OFF', 10);
+        $this->laracart->addCoupon($fixedCoupon);
 
+        $coupon = $this->laracart->findCoupon('10OFF');
+
+        $this->assertEquals(true, $coupon->checkMinAmount(0));
+        $this->assertEquals(false, $coupon->checkMinAmount(100, false));
+
+        try {
+            $coupon->checkMinAmount(100);
+        } catch(\LukePOLO\LaraCart\Exceptions\CouponException $e) {
+            $this->assertEquals('You must have at least a total of $100.00', $e->getMessage());
+        }
     }
 
     public function testMaxDiscount()
     {
+        $fixedCoupon = new LukePOLO\LaraCart\Coupons\Fixed('10OFF', 10);
+        $this->laracart->addCoupon($fixedCoupon);
 
+        $coupon = $this->laracart->findCoupon('10OFF');
+
+        $this->assertEquals(100, $coupon->maxDiscount(0, 100));
+        $this->assertEquals(100, $coupon->maxDiscount(5000, 100));
+        $this->assertEquals(1, $coupon->maxDiscount(1, 100, false));
+
+        try {
+            $coupon->maxDiscount(10, 100);
+        } catch(\LukePOLO\LaraCart\Exceptions\CouponException $e) {
+            $this->assertEquals('This has a max discount of $10.00', $e->getMessage());
+        }
     }
 
     public function testCheckValidTimes()
     {
+        $fixedCoupon = new LukePOLO\LaraCart\Coupons\Fixed('10OFF', 10);
+        $this->laracart->addCoupon($fixedCoupon);
 
+        $coupon = $this->laracart->findCoupon('10OFF');
+
+        $this->assertEquals(true, $coupon->checkValidTimes(Carbon::yesterday(), Carbon::tomorrow()));
+        $this->assertEquals(false, $coupon->checkValidTimes(Carbon::tomorrow(), Carbon::tomorrow(), false));
+
+        try {
+            $this->assertEquals(false, $coupon->checkValidTimes(Carbon::tomorrow(), Carbon::tomorrow()));
+        } catch(\LukePOLO\LaraCart\Exceptions\CouponException $e) {
+            $this->assertEquals('This coupon has expired', $e->getMessage());
+        }
     }
 
     public function testSetDiscountOnItem()
     {
+        $item = $this->addItem();
+        $fixedCoupon = new LukePOLO\LaraCart\Coupons\Fixed('10OFF', 10);
+        $this->laracart->addCoupon($fixedCoupon);
 
+        $coupon = $this->laracart->findCoupon('10OFF');
+
+        $coupon->setDiscountOnItem($item, '10OFF');
+
+        $this->assertEquals('10OFF', $item->code);
     }
 }
