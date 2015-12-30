@@ -471,6 +471,32 @@ class LaraCart implements LaraCartContract
     }
 
     /**
+     *
+     * Formats the number into a money format based on the locale and international formats
+     *
+     * @param $number
+     * @param $locale
+     * @param $internationalFormat
+     * @param $format
+     *
+     * @return string
+     */
+    public function formatMoney($number, $locale = null, $internationalFormat = null, $format = true)
+    {
+        if ($format) {
+            setlocale(LC_MONETARY, empty($locale) ? config('laracart.locale', 'en_US.UTF-8') : $locale);
+
+            if (empty($internationalFormat) === true) {
+                $internationalFormat = config('laracart.international_format', false);
+            }
+
+            return money_format($internationalFormat ? '%i' : '%n', $number);
+        }
+
+        return number_format($number, 2, '.', '');
+    }
+
+    /**
      * Gets all the fee totals
      *
      * @param boolean $format
@@ -517,31 +543,5 @@ class LaraCart implements LaraCartContract
         }
 
         return $this->formatMoney($total, null, null, $format);
-    }
-
-    /**
-     *
-     * Formats the number into a money format based on the locale and international formats
-     *
-     * @param $number
-     * @param $locale
-     * @param $internationalFormat
-     * @param $format
-     *
-     * @return string
-     */
-    public function formatMoney($number, $locale = null, $internationalFormat = null, $format = true)
-    {
-        if ($format) {
-            setlocale(LC_MONETARY, empty($locale) ? config('laracart.locale', 'en_US.UTF-8') : $locale);
-
-            if (empty($internationalFormat) === true) {
-                $internationalFormat = config('laracart.international_format', false);
-            }
-
-            return money_format($internationalFormat ? '%i' : '%n', $number);
-        }
-
-        return number_format($number, 2, '.', '');
     }
 }
