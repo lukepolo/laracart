@@ -13,6 +13,9 @@ class SubItemsTest extends Orchestra\Testbench\TestCase
             'price' => 2.50
         ]);
 
+        $this->assertInternalType('array', $item->subItems);
+
+        $this->containsOnlyInstancesOf(LukePOLO\LaraCart\CartSubItem::class, $item->subItems);
 
         $this->assertEquals($subItem, $item->findSubItem($subItem->getHash()));
     }
@@ -36,7 +39,7 @@ class SubItemsTest extends Orchestra\Testbench\TestCase
     {
         $item = $this->addItem();
 
-        $item->addSubItem([
+        $subItem = $item->addSubItem([
             'size' => 'XXL',
             'price' => 2.50,
             'items' => [
@@ -44,10 +47,29 @@ class SubItemsTest extends Orchestra\Testbench\TestCase
             ]
         ]);
 
+        $this->assertInternalType('array', $subItem->items);
+
+        $this->containsOnlyInstancesOf(LukePOLO\LaraCart\CartItem::class, $subItem->items);
+
     }
 
     public function testRemoveSubItem()
     {
+        $item = $this->addItem();
+
+        $subItem = $item->addSubItem([
+            'size' => 'XXL',
+            'price' => 2.50
+        ]);
+
+        $subItemHash = $subItem->getHash();
+
+        $this->assertEquals($subItem, $item->findSubItem($subItemHash));
+
+
+        $item->removeSubItem($subItemHash);
+
+        $this->assertEquals(null, $item->findSubItem($subItemHash));
 
     }
 }

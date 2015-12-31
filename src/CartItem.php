@@ -92,18 +92,18 @@ class CartItem
     }
 
     /**
-     * Finds an items option by its key and value
+     * Finds a sub item by its hash
      *
-     * @param $itemHash
+     * @param $subItemHash
      * @return mixed
      */
-    public function findSubItem($itemHash)
+    public function findSubItem($subItemHash)
     {
-        return array_get($this->subItems, $itemHash);
+        return array_get($this->subItems, $subItemHash);
     }
 
     /**
-     * Adds an option to a cart item
+     * Adds an sub item to a item
      *
      * @param array $subItem
      *
@@ -118,6 +118,16 @@ class CartItem
         $this->generateHash();
 
         return $subItem;
+    }
+
+    /**
+     * Removes a sub item from the item
+     *
+     * @param $subItemHash
+     */
+    public function removeSubItem($subItemHash)
+    {
+        unset($this->subItems[$subItemHash]);
     }
 
     /**
