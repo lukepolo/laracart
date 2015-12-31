@@ -1,9 +1,15 @@
 <?php
 
+/**
+ * Class TotalsTest
+ */
 class TotalsTest extends Orchestra\Testbench\TestCase
 {
     use \LukePOLO\LaraCart\Tests\LaraCartTestTrait;
 
+    /**
+     * Test total discounts
+     */
     public function testTotalDiscount()
     {
         $fixedCoupon = new LukePOLO\LaraCart\Coupons\Fixed(
@@ -16,6 +22,9 @@ class TotalsTest extends Orchestra\Testbench\TestCase
         $this->assertEquals(10, $this->laracart->totalDiscount(false));
     }
 
+    /**
+     * test total taxes
+     */
     public function testTaxTotal()
     {
         $this->addItem();
@@ -24,6 +33,9 @@ class TotalsTest extends Orchestra\Testbench\TestCase
         $this->assertEquals("0.07", $this->laracart->taxTotal(false));
     }
 
+    /**
+     * Test getting all the fees
+     */
     public function testFeeTotals()
     {
         $this->laracart->addFee('test', 5);
@@ -34,6 +46,9 @@ class TotalsTest extends Orchestra\Testbench\TestCase
 
     }
 
+    /**
+     * Test getting a sub total (without tax)
+     */
     public function testSubTotal()
     {
         $item = $this->addItem(1, 24);
@@ -46,6 +61,9 @@ class TotalsTest extends Orchestra\Testbench\TestCase
         $this->assertEquals('120.00', $this->laracart->subTotal(false, false));
     }
 
+    /**
+     * Test getting the final total (with tax)
+     */
     public function testTotal()
     {
         $this->addItem();
@@ -54,6 +72,9 @@ class TotalsTest extends Orchestra\Testbench\TestCase
         $this->assertEquals('1.07', $this->laracart->total(false));
     }
 
+    /**
+     * Test the taxable fees total
+     */
     public function testTaxableFees()
     {
         $this->laracart->addFee('test_2', 1, true);
@@ -62,6 +83,9 @@ class TotalsTest extends Orchestra\Testbench\TestCase
         $this->assertEquals('1.07', $this->laracart->feeTotals(false));
     }
 
+    /**
+     * Test making sure items are taxable and not taxable
+     */
     public function testTaxableItems()
     {
         $this->addItem();

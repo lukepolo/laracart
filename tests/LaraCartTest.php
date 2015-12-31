@@ -1,26 +1,44 @@
 <?php
 
+/**
+ * Class LaraCartTest
+ */
 class LaraCartTest extends Orchestra\Testbench\TestCase
 {
     use \LukePOLO\LaraCart\Tests\LaraCartTestTrait;
 
+    /**
+     * Test getting the laracart instance
+     */
     public function testGetInstance()
     {
         $this->assertEquals(new \LukePOLO\LaraCart\LaraCart(), $this->laracart->get());
     }
 
+    /**
+     * Test setting the instance
+     */
     public function testSetInstance()
     {
         $this->assertNotEquals(new \LukePOLO\LaraCart\LaraCart(), $this->laracart->setInstance('test'));
     }
 
+    /**
+     * Testing the money format function
+     */
     public function testFormatMoney()
     {
         $this->assertEquals('$25.00', $this->laracart->formatMoney('25.00'));
         $this->assertEquals('USD 25.00', $this->laracart->formatMoney('25.00', null, true));
         $this->assertEquals('25.00', $this->laracart->formatMoney('25.00', null, null, false));
+
+        $this->assertEquals('$25.56', $this->laracart->formatMoney('25.555'));
+        $this->assertEquals('$25.54', $this->laracart->formatMoney('25.544'));
     }
 
+    /**
+     * Testing if the item count matches
+     */
     public function testCount()
     {
         $this->addItem(2);
@@ -29,6 +47,9 @@ class LaraCartTest extends Orchestra\Testbench\TestCase
         $this->assertEquals(1, $this->laracart->count(false));
     }
 
+    /**
+     * Makes sure that when we empty the cart it deletes all items
+     */
     public function testEmptyCart()
     {
         $this->addItem();
@@ -41,6 +62,9 @@ class LaraCartTest extends Orchestra\Testbench\TestCase
         $this->assertEquals(0, $this->laracart->count());
     }
 
+    /**
+     * Test destroying the cart rather than just emptying it
+     */
     public function testDestroyCart()
     {
         $this->addItem();

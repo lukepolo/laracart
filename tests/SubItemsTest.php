@@ -1,9 +1,15 @@
 <?php
 
+/**
+ * Class SubItemsTest
+ */
 class SubItemsTest extends Orchestra\Testbench\TestCase
 {
     use \LukePOLO\LaraCart\Tests\LaraCartTestTrait;
 
+    /**
+     * Test adding a sub item on a item
+     */
     public function testAddSubItem()
     {
         $item = $this->addItem();
@@ -20,6 +26,9 @@ class SubItemsTest extends Orchestra\Testbench\TestCase
         $this->assertEquals($subItem, $item->findSubItem($subItem->getHash()));
     }
 
+    /**
+     * Test getting the total from a sub item
+     */
     public function  testSubItemTotal()
     {
         $item = $this->addItem();
@@ -35,6 +44,9 @@ class SubItemsTest extends Orchestra\Testbench\TestCase
         $this->assertEquals('2.68', $item->subItemsTotal(true, false));
     }
 
+    /**
+     * Test adding an item on a sub item
+     */
     public function testAddSubItemItems()
     {
         $item = $this->addItem();
@@ -53,6 +65,9 @@ class SubItemsTest extends Orchestra\Testbench\TestCase
 
     }
 
+    /**
+     * Test removing sub items
+     */
     public function testRemoveSubItem()
     {
         $item = $this->addItem();

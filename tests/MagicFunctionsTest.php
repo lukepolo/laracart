@@ -1,9 +1,15 @@
 <?php
 
+/**
+ * Class MagicFunctionsTest
+ */
 class MagicFunctionsTest extends Orchestra\Testbench\TestCase
 {
     use \LukePOLO\LaraCart\Tests\LaraCartTestTrait;
 
+    /**
+     * Test the magic method get
+     */
     public function testGet()
     {
         $item = $this->addItem();
@@ -11,6 +17,9 @@ class MagicFunctionsTest extends Orchestra\Testbench\TestCase
         $this->assertEquals('option_1', $item->b_test);
     }
 
+    /**
+     * Test the magic method set
+     */
     public function testSet()
     {
         $item = $this->addItem();
@@ -20,6 +29,9 @@ class MagicFunctionsTest extends Orchestra\Testbench\TestCase
         $this->assertEquals(123, $item->test_option);
     }
 
+    /**
+     * Test the magic method isset
+     */
     public function testIsset()
     {
         $item = $this->addItem();
