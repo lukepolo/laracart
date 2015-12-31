@@ -119,7 +119,7 @@ class CouponsTest extends Orchestra\Testbench\TestCase
 
         try {
             $coupon->checkMinAmount(100);
-        } catch(\LukePOLO\LaraCart\Exceptions\CouponException $e) {
+        } catch (\LukePOLO\LaraCart\Exceptions\CouponException $e) {
             $this->assertEquals('You must have at least a total of $100.00', $e->getMessage());
         }
     }
@@ -140,7 +140,7 @@ class CouponsTest extends Orchestra\Testbench\TestCase
 
         try {
             $coupon->maxDiscount(10, 100);
-        } catch(\LukePOLO\LaraCart\Exceptions\CouponException $e) {
+        } catch (\LukePOLO\LaraCart\Exceptions\CouponException $e) {
             $this->assertEquals('This has a max discount of $10.00', $e->getMessage());
         }
     }
@@ -160,7 +160,7 @@ class CouponsTest extends Orchestra\Testbench\TestCase
 
         try {
             $this->assertEquals(false, $coupon->checkValidTimes(Carbon::tomorrow(), Carbon::tomorrow()));
-        } catch(\LukePOLO\LaraCart\Exceptions\CouponException $e) {
+        } catch (\LukePOLO\LaraCart\Exceptions\CouponException $e) {
             $this->assertEquals('This coupon has expired', $e->getMessage());
         }
     }
