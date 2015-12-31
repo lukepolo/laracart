@@ -32,6 +32,11 @@
       "LukePOLO\\LaraCart\\": "src/"
     }
   },
+  "autoload-dev": {
+    "psr-4": {
+      "LukePOLO\\LaraCart\\Tests\\": "tests/"
+    }
+  },
   "minimum-stability": "dev"
 }
 
