@@ -29,7 +29,8 @@
   },
   "autoload": {
     "psr-4": {
-      "LukePOLO\\LaraCart\\": "src/"
+      "LukePOLO\\LaraCart\\": "src/",
+      "LukePOLO\\LaraCart\\Tests\\": "tests/"
     }
   },
   "minimum-stability": "dev"

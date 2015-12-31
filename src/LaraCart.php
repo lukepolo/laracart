@@ -128,6 +128,7 @@ class LaraCart implements LaraCartContract
      * @param int $qty
      * @param string $price
      * @param array $options
+     * @param bool|true $taxable
      *
      * @return CartItem
      */
@@ -306,7 +307,6 @@ class LaraCart implements LaraCartContract
     }
 
     /**
-     * // TODO - badly named
      * Finds a specific coupon in the cart
      *
      * @param $code
@@ -318,7 +318,6 @@ class LaraCart implements LaraCartContract
     }
 
     /**
-     * // todo - badly named
      * Applies a coupon to the cart
      *
      * @param CouponContract $coupon
@@ -471,6 +470,34 @@ class LaraCart implements LaraCartContract
     }
 
     /**
+     *
+     * Formats the number into a money format based on the locale and international formats
+     *
+     * @param $number
+     * @param $locale
+     * @param $internationalFormat
+     * @param $format
+     *
+     * @return string
+     */
+    public function formatMoney($number, $locale = null, $internationalFormat = null, $format = true)
+    {
+        $number = number_format($number, 2, '.', '');
+
+        if ($format) {
+            setlocale(LC_MONETARY, empty($locale) ? config('laracart.locale', 'en_US.UTF-8') : $locale);
+
+            if (empty($internationalFormat) === true) {
+                $internationalFormat = config('laracart.international_format', false);
+            }
+
+            $number = money_format($internationalFormat ? '%i' : '%n', $number);
+        }
+
+        return $number;
+    }
+
+    /**
      * Gets all the fee totals
      *
      * @param boolean $format
@@ -517,31 +544,5 @@ class LaraCart implements LaraCartContract
         }
 
         return $this->formatMoney($total, null, null, $format);
-    }
-
-    /**
-     *
-     * Formats the number into a money format based on the locale and international formats
-     *
-     * @param $number
-     * @param $locale
-     * @param $internationalFormat
-     * @param $format
-     *
-     * @return string
-     */
-    public function formatMoney($number, $locale = null, $internationalFormat = null, $format = true)
-    {
-        if ($format) {
-            setlocale(LC_MONETARY, empty($locale) ? config('laracart.locale', 'en_US.UTF-8') : $locale);
-
-            if (empty($internationalFormat) === true) {
-                $internationalFormat = config('laracart.international_format', false);
-            }
-
-            return money_format($internationalFormat ? '%i' : '%n', $number);
-        }
-
-        return number_format($number, 2, '.', '');
     }
 }

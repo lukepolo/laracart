@@ -46,7 +46,12 @@ class Percentage implements CouponContract
      */
     public function discount()
     {
-        return \App::make(\LukePOLO\Laracart\LaraCart::SERVICE)->total(false, false) * $this->value;
+        return \App::make(\LukePOLO\Laracart\LaraCart::SERVICE)->formatMoney(
+            \App::make(\LukePOLO\Laracart\LaraCart::SERVICE)->total(false, false) * $this->value,
+            null,
+            null,
+            false
+        );
     }
 
 

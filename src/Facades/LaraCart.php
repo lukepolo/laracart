@@ -1,4 +1,6 @@
-<?php namespace LukePOLO\LaraCart\Facades;
+<?php
+
+namespace LukePOLO\LaraCart\Facades;
 
 use Illuminate\Support\Facades\Facade;
 

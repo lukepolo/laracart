@@ -7,6 +7,7 @@ use LukePOLO\LaraCart\Traits\CouponTrait;
 
 /**
  * Class Fixed
+ *
  * @package LukePOLO\LaraCart\Coupons
  */
 class Fixed implements CouponContract

@@ -1,0 +1,64 @@
+<?php
+
+namespace LukePOLO\LaraCart\Tests;
+
+/**
+ * Class LaraCartTestTrait
+ * @package LukePOLO\LaraCart\Tests
+ */
+trait LaraCartTestTrait
+{
+    /**
+     * Setup the test functions with laracart
+     */
+    public function setUp()
+    {
+        parent::setUp();
+        $this->laracart = new \LukePOLO\LaraCart\LaraCart();
+    }
+
+    /**
+     * Default tax setup
+     *
+     * @param $app
+     */
+    protected function getEnvironmentSetUp($app)
+    {
+        // Setup default database to use sqlite :memory:
+        $app['config']->set('laracart.tax', '.07');
+    }
+
+    /**
+     * Sets the package providers
+     *
+     * @param $app
+     * @return array
+     */
+    protected function getPackageProviders($app)
+    {
+        return ['\LukePOLO\LaraCart\LaraCartServiceProvider'];
+    }
+
+    /**
+     * Easy way to add an item for many tests
+     *
+     * @param int $qty
+     * @param int $price
+     * @param bool $taxable
+     *
+     * @return mixed
+     */
+    private function addItem($qty = 1, $price = 1, $taxable = true)
+    {
+        return $this->laracart->add(
+            'itemID',
+            'Testing Item',
+            $qty,
+            $price, [
+                'b_test' => 'option_1',
+                'a_test' => 'option_2',
+            ],
+            $taxable
+        );
+    }
+}

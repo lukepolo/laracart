@@ -57,7 +57,6 @@ class CartItem
     }
 
     /**
-     * // TODO - badly named
      * Generates a hash based on the cartItem array
      *
      * @param bool $force
@@ -92,18 +91,18 @@ class CartItem
     }
 
     /**
-     * Finds an items option by its key and value
+     * Finds a sub item by its hash
      *
-     * @param $itemHash
+     * @param $subItemHash
      * @return mixed
      */
-    public function findSubItem($itemHash)
+    public function findSubItem($subItemHash)
     {
-        return array_get($this->subItems, $itemHash);
+        return array_get($this->subItems, $subItemHash);
     }
 
     /**
-     * Adds an option to a cart item
+     * Adds an sub item to a item
      *
      * @param array $subItem
      *
@@ -118,6 +117,16 @@ class CartItem
         $this->generateHash();
 
         return $subItem;
+    }
+
+    /**
+     * Removes a sub item from the item
+     *
+     * @param $subItemHash
+     */
+    public function removeSubItem($subItemHash)
+    {
+        unset($this->subItems[$subItemHash]);
     }
 
     /**
@@ -201,14 +210,15 @@ class CartItem
     public function subItemsTotal($tax = false, $format = true)
     {
         $total = 0;
-
         foreach ($this->subItems as $item) {
+
             if (isset($item->price)) {
                 $total += $item->getPrice(false);
             }
         }
 
         $total *= $this->qty;
+
 
         if ($tax && $this->taxable) {
             $total = $total + ($total * $this->tax);

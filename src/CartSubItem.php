@@ -11,9 +11,10 @@ use LukePOLO\LaraCart\Traits\CartOptionsMagicMethodsTrait;
  */
 class CartSubItem
 {
+    use CartOptionsMagicMethodsTrait;
+
     const ITEMS = 'items';
 
-    use CartOptionsMagicMethodsTrait;
     public $locale;
     public $price = 0;
     public $items = [];
