@@ -76,4 +76,27 @@ class LaraCartTest extends Orchestra\Testbench\TestCase
         $this->assertEquals(null, $this->laracart->getAttribute('test'));
         $this->assertEquals(0, $this->laracart->count());
     }
+
+    /**
+     * Testing to make sure if we switch carts and destroy it destroys the proper cart
+     */
+    public function testDestroyOtherCart()
+    {
+        $this->addItem();
+
+        $this->laracart->setInstance('test');
+        $this->addItem();
+
+        $cart = $this->laracart->get('test');
+
+        $this->assertEquals(1, $cart->count());
+
+        $this->laracart->destroyCart();
+
+        $this->assertEquals(0, $cart->count());
+
+        $cart = $this->laracart->get();
+
+        $this->assertEquals(1, $cart->count());
+    }
 }
