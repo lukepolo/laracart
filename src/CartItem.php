@@ -201,14 +201,15 @@ class CartItem
     public function subItemsTotal($tax = false, $format = true)
     {
         $total = 0;
-
         foreach ($this->subItems as $item) {
+
             if (isset($item->price)) {
                 $total += $item->getPrice(false);
             }
         }
 
         $total *= $this->qty;
+
 
         if ($tax && $this->taxable) {
             $total = $total + ($total * $this->tax);

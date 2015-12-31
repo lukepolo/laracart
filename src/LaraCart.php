@@ -483,6 +483,8 @@ class LaraCart implements LaraCartContract
      */
     public function formatMoney($number, $locale = null, $internationalFormat = null, $format = true)
     {
+        $number = number_format($number, 2, '.', '');
+
         if ($format) {
             setlocale(LC_MONETARY, empty($locale) ? config('laracart.locale', 'en_US.UTF-8') : $locale);
 
@@ -490,10 +492,10 @@ class LaraCart implements LaraCartContract
                 $internationalFormat = config('laracart.international_format', false);
             }
 
-            return money_format($internationalFormat ? '%i' : '%n', $number);
+            $number = money_format($internationalFormat ? '%i' : '%n', $number);
         }
 
-        return number_format($number, 2, '.', '');
+        return $number;
     }
 
     /**
