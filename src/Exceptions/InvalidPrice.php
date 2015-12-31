@@ -3,7 +3,7 @@
 namespace LukePOLO\LaraCart\Exceptions;
 
 /**
- * Class UnknownItemProperty
+ * Class InvalidPrice
  *
  * @package LukePOLO\LaraCart\Exceptions
  */

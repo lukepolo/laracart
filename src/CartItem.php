@@ -57,7 +57,6 @@ class CartItem
     }
 
     /**
-     * // TODO - badly named
      * Generates a hash based on the cartItem array
      *
      * @param bool $force

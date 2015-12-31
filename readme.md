@@ -211,10 +211,9 @@ LaraCart packages can throw the following exceptions:
 
 | Exception                             | Reason                                                                           |
 | ------------------------------------- | --------------------------------------------------------------------------------- |
-| *InvalidOption*       | When trying to update an option on an item, cannot find a key value pair that matches  |
-| *InvalidPrice*    | When trying to give an item a non currency format   |
+| *InvalidPrice*       | When trying to give an item a non currency format   |
 | *InvalidQuantity*    | When trying to give an item a non-integer for a quantity  |
-| *UnknownItemProperty*    | When trying to update an items attribute that doesn't exists |
+| *CouponException*    | When a coupon either is expired or an invalid amount |
 
 ## Events
 

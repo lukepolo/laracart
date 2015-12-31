@@ -128,6 +128,7 @@ class LaraCart implements LaraCartContract
      * @param int $qty
      * @param string $price
      * @param array $options
+     * @param bool|true $taxable
      *
      * @return CartItem
      */
@@ -306,7 +307,6 @@ class LaraCart implements LaraCartContract
     }
 
     /**
-     * // TODO - badly named
      * Finds a specific coupon in the cart
      *
      * @param $code
@@ -318,7 +318,6 @@ class LaraCart implements LaraCartContract
     }
 
     /**
-     * // todo - badly named
      * Applies a coupon to the cart
      *
      * @param CouponContract $coupon

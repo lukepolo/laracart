@@ -1,4 +1,6 @@
-<?php namespace LukePOLO\LaraCart;
+<?php
+
+namespace LukePOLO\LaraCart;
 
 use Illuminate\Support\ServiceProvider;
 use LukePOLO\LaraCart\Contracts\LaraCartContract;

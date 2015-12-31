@@ -4,6 +4,7 @@ namespace LukePOLO\LaraCart\Contracts;
 
 /**
  * Interface CouponContract
+ *
  * @package LukePOLO\LaraCart\Contracts
  */
 interface CouponContract

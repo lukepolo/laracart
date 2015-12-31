@@ -5,6 +5,7 @@ namespace LukePOLO\LaraCart\Traits;
 use Carbon\Carbon;
 use LukePOLO\LaraCart\CartItem;
 use LukePOLO\LaraCart\Exceptions\CouponException;
+use LukePOLO\LaraCart\LaraCart;
 
 /**
  * Class CouponTrait
@@ -54,7 +55,7 @@ trait CouponTrait
      */
     public function checkMinAmount($minAmount, $throwErrors = true)
     {
-        $laraCart = \App::make(\LukePOLO\Laracart\LaraCart::SERVICE);
+        $laraCart = \App::make(LaraCart::SERVICE);
 
         if ($laraCart->subTotal(false, false, false) >= $minAmount) {
             return true;
