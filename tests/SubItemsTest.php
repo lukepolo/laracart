@@ -24,7 +24,7 @@ class SubItemsTest extends Orchestra\Testbench\TestCase
     {
         $item = $this->addItem();
 
-        $subItem = $item->addSubItem([
+        $item->addSubItem([
             'size' => 'XXL',
             'price' => 2.50
         ]);

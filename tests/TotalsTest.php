@@ -7,27 +7,13 @@ class TotalsTest extends Orchestra\Testbench\TestCase
     public function testTotalDiscount()
     {
         $fixedCoupon = new LukePOLO\LaraCart\Coupons\Fixed(
-            '10OFF', 10, [
-                'test' => 1,
-            ]
+            '10OFF', 10
         );
-        $this->laracart->addCoupon($fixedCoupon);
 
-        $fixedCouponInCart = $this->laracart->findCoupon('10OFF');
-        $this->assertEquals($fixedCoupon, $fixedCouponInCart);
+        $this->laracart->addCoupon($fixedCoupon);
 
         $this->assertEquals('$10.00', $this->laracart->totalDiscount());
         $this->assertEquals(10, $this->laracart->totalDiscount(false));
-
-
-        $this->assertEquals('Coupon Applied', $fixedCouponInCart->getMessage());
-        $this->assertEquals(1, $fixedCouponInCart->test);
-        $fixedCoupon->test = 2;
-        $this->assertEquals(2, $fixedCouponInCart->test);
-
-        $this->assertTrue(isset($fixedCouponInCart->test));
-        $this->assertFalse(isset($fixedCouponInCart->test2));
-        $this->assertEquals('$10.00', $fixedCoupon->displayValue());
     }
 
     public function testTaxTotal()
@@ -66,8 +52,19 @@ class TotalsTest extends Orchestra\Testbench\TestCase
 
         $this->assertEquals('$1.07', $this->laracart->total());
         $this->assertEquals('1.07', $this->laracart->total(false));
+    }
 
+    public function testTaxableFees()
+    {
+        $this->laracart->addFee('test_2', 1, true);
 
+        $this->assertEquals('$1.07', $this->laracart->feeTotals());
+        $this->assertEquals('1.07', $this->laracart->feeTotals(false));
+    }
+
+    public function testTaxableItems()
+    {
+        $this->addItem();
         $item = $this->addItem(1, 2, false);
 
         $this->assertEquals('$3.07', $this->laracart->total());
@@ -77,20 +74,5 @@ class TotalsTest extends Orchestra\Testbench\TestCase
 
         $this->assertEquals('11.00', $this->laracart->subTotal(false, false));
         $this->assertEquals('11.07', $this->laracart->total(false));
-    }
-
-    public function testTaxableFees()
-    {
-
-    }
-
-    public function testTaxableItems()
-    {
-
-    }
-
-    public function testTaxableSubItems()
-    {
-
     }
 }
