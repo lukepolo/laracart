@@ -1,9 +1,18 @@
 <?php
 
+/**
+ * Class FeesTest
+ */
 class FeesTest extends Orchestra\Testbench\TestCase
 {
     use \LukePOLO\LaraCart\Tests\LaraCartTestTrait;
 
+    /**
+     * Add a fee
+     *
+     * @param $name
+     * @param int $fee
+     */
     private function addFee($name, $fee = 10)
     {
         $this->laracart->addFee(
@@ -12,6 +21,9 @@ class FeesTest extends Orchestra\Testbench\TestCase
         );
     }
 
+    /**
+     * Testing add a fee to the cart
+     */
     public function testAddFee()
     {
         $this->addFee('testFeeOne');
@@ -21,6 +33,9 @@ class FeesTest extends Orchestra\Testbench\TestCase
         $this->assertEquals('$10.00', $fee->getAmount());
     }
 
+    /**
+     * Test if we can add multiple fees to the cart
+     */
     public function testMultipleFees()
     {
         $this->addFee('testFeeOne');
@@ -30,6 +45,9 @@ class FeesTest extends Orchestra\Testbench\TestCase
         $this->assertEquals('$20.00', $this->laracart->getFee('testFeeTwo')->getAmount());
     }
 
+    /**
+     * Test if we can remove a fee from the cart
+     */
     public function testRemoveFee()
     {
         $this->addFee('testFeeOne');

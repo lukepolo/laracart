@@ -2,10 +2,16 @@
 
 use Carbon\Carbon;
 
+/**
+ * Class CouponsTest
+ */
 class CouponsTest extends Orchestra\Testbench\TestCase
 {
     use \LukePOLO\LaraCart\Tests\LaraCartTestTrait;
 
+    /**
+     * Test the percentage coupons
+     */
     public function testAddPercentageCoupon()
     {
         $this->addItem(3, 1);
@@ -22,6 +28,9 @@ class CouponsTest extends Orchestra\Testbench\TestCase
         $this->assertCount(1, $this->laracart->getCoupons());
     }
 
+    /**
+     * Test the fixed coupons
+     */
     public function testAddFixedCoupon()
     {
         $this->addItem();
@@ -36,6 +45,9 @@ class CouponsTest extends Orchestra\Testbench\TestCase
         $this->assertEquals($fixedCoupon, $this->laracart->findCoupon('10OFF'));
     }
 
+    /**
+     * Test if single coupons works, we souldn't be able to add two
+     */
     public function testSingleCoupons()
     {
         $fixedCouponOne = new LukePOLO\LaraCart\Coupons\Fixed('10OFF', 10);
@@ -49,6 +61,9 @@ class CouponsTest extends Orchestra\Testbench\TestCase
         $this->assertEquals($fixedCouponTwo, $this->laracart->findCoupon('5OFF'));
     }
 
+    /**
+     * Test if we can add multiple if the config is set properly
+     */
     public function testMultipleCoupons()
     {
         $cart = $this->laracart->get()->cart;
@@ -63,6 +78,9 @@ class CouponsTest extends Orchestra\Testbench\TestCase
         $this->assertCount(2, $this->laracart->getCoupons());
     }
 
+    /**
+     * Test removing coupons
+     */
     public function testRemoveCoupon()
     {
         $fixedCoupon = new LukePOLO\LaraCart\Coupons\Fixed('10OFF', 10);
@@ -75,6 +93,9 @@ class CouponsTest extends Orchestra\Testbench\TestCase
         $this->assertEmpty($this->laracart->findCoupon('10OFF'));
     }
 
+    /**
+     * Test getting the mssage from the coupon to see if its vaild or has an erro
+     */
     public function testGetMessage()
     {
         $fixedCoupon = new LukePOLO\LaraCart\Coupons\Fixed('10OFF', 10);
@@ -83,6 +104,9 @@ class CouponsTest extends Orchestra\Testbench\TestCase
         $this->assertEquals('Coupon Applied', $this->laracart->findCoupon('10OFF')->getMessage());
     }
 
+    /**
+     * Test the min amount for a coupon
+     */
     public function testCheckMinAmount()
     {
         $fixedCoupon = new LukePOLO\LaraCart\Coupons\Fixed('10OFF', 10);
@@ -100,6 +124,9 @@ class CouponsTest extends Orchestra\Testbench\TestCase
         }
     }
 
+    /**
+     * Test the max discount for a coupon
+     */
     public function testMaxDiscount()
     {
         $fixedCoupon = new LukePOLO\LaraCart\Coupons\Fixed('10OFF', 10);
@@ -118,6 +145,9 @@ class CouponsTest extends Orchestra\Testbench\TestCase
         }
     }
 
+    /**
+     * Test the valid times for a coupon
+     */
     public function testCheckValidTimes()
     {
         $fixedCoupon = new LukePOLO\LaraCart\Coupons\Fixed('10OFF', 10);
@@ -135,6 +165,9 @@ class CouponsTest extends Orchestra\Testbench\TestCase
         }
     }
 
+    /**
+     * Test if we can set a coupon on an item
+     */
     public function testSetDiscountOnItem()
     {
         $item = $this->addItem();
