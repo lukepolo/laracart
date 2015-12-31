@@ -17,7 +17,11 @@
 
 Install the package through [Composer](http://getcomposer.org/). Edit your project's `composer.json` file by adding:
 
-    composer require lukepolo/laracart
+    {
+	    "require": {
+	        "lukepolo/laracart": "1.0.*"
+	    }
+    }
 
 Include Service Providers / Facade in `app/config/app.php`:
 
