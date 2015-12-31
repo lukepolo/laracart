@@ -4,27 +4,27 @@ class MagicFunctionsTest extends Orchestra\Testbench\TestCase
 {
     use \LukePOLO\LaraCart\Tests\LaraCartTestTrait;
 
-    public function getTest()
+    public function testGet()
     {
         $item = $this->addItem();
 
         $this->assertEquals('option_1', $item->b_test);
     }
 
-    public function setTest()
+    public function testSet()
     {
         $item = $this->addItem();
 
-        $this->test_option = 123;
+        $item->test_option = 123;
 
         $this->assertEquals(123, $item->test_option);
     }
 
-    public function issetTest()
+    public function testIsset()
     {
         $item = $this->addItem();
 
-        $this->assertEquals(true, isset($item->option_1));
+        $this->assertEquals(true, isset($item->b_test));
         $this->assertEquals(false, isset($item->testtestestestsetset));
     }
 }
