@@ -84,8 +84,8 @@ Look through the configuration options and change as needed
 
 ```php
     // Sometimes you want to give a cart some kind of attributes , such as labels
-    LaraCart::addAttribute('label', 'Luke's Cart');
-    LaraCart::updateAttribute('label', 'Not Luke's Cart');
+    LaraCart::addAttribute('label', "Luke's Cart");
+    LaraCart::updateAttribute('label', "Not Luke's Cart");
     LaraCart::removeAttribute('label');
 
     // Gets all the attributes
