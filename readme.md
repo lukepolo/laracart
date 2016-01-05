@@ -10,8 +10,8 @@
 * Taxation
 * Multiple Cart Instances
 * Coupons / Discounts
-* Fees ex: delivery fees
-* Price includes sub price attributes of items
+* Fees ex: delivery fee, service charges
+* Totals / sub totals includes sub items / option prices
 
 ## Installation
 
@@ -52,9 +52,7 @@ Look through the configuration options and change as needed
 * [Exceptions](#exceptions)
 * [Events](#events)
 
-
 ## Usage
-
 
 **Adding an Item to the cart**
 
@@ -232,7 +230,6 @@ The cart also has events build in:
 | laracart.removeItem($itemHash)      | When a item is removed from the cart |
 | laracart.empty($cartInstance)      | When a cart is emptied |
 | laracart.destroy($cartInstance)      | When a cart is destroyed |
-
 
 License
 ----
