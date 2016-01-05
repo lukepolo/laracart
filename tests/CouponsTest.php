@@ -109,14 +109,17 @@ class CouponsTest extends Orchestra\Testbench\TestCase
      */
     public function testCheckMinAmount()
     {
-        $fixedCoupon = new LukePOLO\LaraCart\Coupons\Fixed('10OFF', 10);
+        $fixedCoupon = new LukePOLO\LaraCart\Coupons\Fixed('10OFF', 10, [
+            'addOptions' => 1
+        ]);
+
         $this->laracart->addCoupon($fixedCoupon);
 
         $coupon = $this->laracart->findCoupon('10OFF');
 
         $this->assertEquals(true, $coupon->checkMinAmount(0));
         $this->assertEquals(false, $coupon->checkMinAmount(100, false));
-
+        $this->assertEquals(1, $coupon->addOptions);
         try {
             $coupon->checkMinAmount(100);
         } catch (\LukePOLO\LaraCart\Exceptions\CouponException $e) {

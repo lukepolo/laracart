@@ -149,36 +149,6 @@ class CartItem
     }
 
     /**
-     * Updates an items properties
-     *
-     * @param $key
-     * @param $value
-     *
-     * @throws InvalidQuantity | InvalidPrice
-     *
-     * @return string $itemHash
-     */
-    public function update($key, $value)
-    {
-        switch ($key) {
-            case LaraCart::QTY:
-                if (is_int($value) === false) {
-                    throw new InvalidQuantity();
-                }
-                break;
-            case LaraCart::PRICE:
-                if (is_numeric($value) === false || preg_match('/\.(\d){3}/', $value)) {
-                    throw new InvalidPrice();
-                }
-                break;
-        }
-
-        $this->$key = $value;
-
-        return $this->generateHash();
-    }
-
-    /**
      * Gets the sub total of the item based on the qty with or without tax in the proper format
      *
      * @param bool $tax
