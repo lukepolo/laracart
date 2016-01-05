@@ -85,6 +85,7 @@ class LaraCartTest extends Orchestra\Testbench\TestCase
         $this->addItem();
 
         $this->laracart->setInstance('test');
+
         $this->addItem();
 
         $cart = $this->laracart->get('test');
@@ -92,6 +93,8 @@ class LaraCartTest extends Orchestra\Testbench\TestCase
         $this->assertEquals(1, $cart->count());
 
         $this->laracart->destroyCart();
+
+        $cart = $this->laracart->get('test');
 
         $this->assertEquals(0, $cart->count());
 
