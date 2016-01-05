@@ -165,7 +165,6 @@ interface LaraCartContract
     public function getCoupons();
 
     /**
-     * // TODO - badly named
      * Finds a specific coupon in the cart
      *
      * @param $code
@@ -174,7 +173,6 @@ interface LaraCartContract
     public function findCoupon($code);
 
     /**
-     * // todo - badly named
      * Applies a coupon to the cart
      *
      * @param CouponContract $coupon
