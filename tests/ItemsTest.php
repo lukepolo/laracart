@@ -51,6 +51,18 @@ class ItemsTest extends Orchestra\Testbench\TestCase
     }
 
     /**
+     * Test updating the item
+     */
+    public function testUpdateItem()
+    {
+        $item = $this->addItem();
+
+        $this->laracart->updateItem($item->getHash(), 'qty', 4);
+
+        $this->assertEquals(4, $item->qty);
+    }
+
+    /**
      * Test getting all the items from the cart
      */
     public function testGetItems()
