@@ -179,5 +179,11 @@ class CouponsTest extends Orchestra\Testbench\TestCase
         $coupon->setDiscountOnItem($item, '10OFF');
 
         $this->assertEquals('10OFF', $item->code);
+
+        $this->laracart->removeCoupon('10OFF');
+
+        $this->assertNull($item->code);
+        $this->assertNull($item->discount);
+        $this->assertNull($item->couponInfo);
     }
 }

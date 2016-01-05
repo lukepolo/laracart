@@ -225,37 +225,6 @@ class LaraCart implements LaraCartContract
     }
 
     /**
-     * Updates an items attributes
-     *
-     * @param $itemHash
-     * @param $key
-     * @param $value
-     *
-     * @return CartItem
-     *
-     * @throws Exceptions\InvalidPrice
-     * @throws Exceptions\InvalidQuantity
-     */
-    public function updateItem($itemHash, $key, $value)
-    {
-        if (empty($item = $this->getItem($itemHash)) === false) {
-            $item->update($key, $value);
-        }
-
-        $newHash = $item->generateHash();
-
-        \Event::fire(
-            'laracart.updateItem',
-            [
-                'item' => $item,
-                'newHash' => $newHash,
-            ]
-        );
-
-        return $item;
-    }
-
-    /**
      * Removes a CartItem based on the itemHash
      *
      * @param $itemHash

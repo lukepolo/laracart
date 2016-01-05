@@ -3,6 +3,7 @@
 namespace LukePOLO\LaraCart\Facades;
 
 use Illuminate\Support\Facades\Facade;
+use LukePOLO\LaraCart\Contracts\LaraCartContract;
 
 /**
  * Class LaraCart
@@ -19,6 +20,6 @@ class LaraCart extends Facade
      */
     protected static function getFacadeAccessor()
     {
-        return 'laracart';
+        return LaraCartContract::class;
     }
 }

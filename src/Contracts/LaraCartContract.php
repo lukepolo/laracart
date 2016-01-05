@@ -132,17 +132,6 @@ interface LaraCartContract
     public function addItem(CartItem $cartItem);
 
     /**
-     * Updates an items attributes
-     *
-     * @param $itemHash
-     * @param $key
-     * @param $value
-     *
-     * @return CartItem
-     */
-    public function updateItem($itemHash, $key, $value);
-
-    /**
      * Removes a CartItem based on the itemHash
      *
      * @param $itemHash

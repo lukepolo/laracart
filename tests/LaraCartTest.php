@@ -36,6 +36,28 @@ class LaraCartTest extends Orchestra\Testbench\TestCase
         $this->assertEquals('$25.54', $this->laracart->formatMoney('25.544'));
     }
 
+    public function testGetAttributes()
+    {
+        $this->laracart->setAttribute('test1', 1);
+        $this->laracart->setAttribute('test2', 2);
+
+        $this->assertCount(2, $attributes = $this->laracart->getAttributes());
+
+        $this->assertEquals(1, $attributes['test1']);
+        $this->assertEquals(2, $attributes['test2']);
+    }
+
+    public function testRemoveAttribute()
+    {
+        $this->laracart->setAttribute('test1', 1);
+
+        $this->assertEquals(1, $this->laracart->getAttribute('test1'));
+
+        $this->laracart->removeAttribute('test1');
+
+        $this->assertNull($this->laracart->getAttribute('test1'));
+    }
+
     /**
      * Testing if the item count matches
      */

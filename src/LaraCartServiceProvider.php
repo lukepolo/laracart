@@ -12,7 +12,6 @@ use LukePOLO\LaraCart\Contracts\LaraCartContract;
  */
 class LaraCartServiceProvider extends ServiceProvider
 {
-
     /**
      * Perform post-registration booting of services.
      *
