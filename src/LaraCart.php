@@ -289,11 +289,13 @@ class LaraCart implements LaraCartContract
      */
     public function destroyCart()
     {
-        $this->cart = new Cart($this->cart->instance);
+        $instance = $this->cart->instance;
 
-        $this->update();
+        \Session::forget(config('laracart.cache_prefix', 'laracart') . '.' . $instance);
 
-        \Event::fire('laracart.destroy', $this->cart->instance);
+        $this->setInstance('default');
+
+        \Event::fire('laracart.destroy', $instance);
     }
 
     /**
