@@ -51,8 +51,6 @@ class CartItem
         $this->lineItem = $lineItem;
         $this->price = floatval($price);
         $this->tax = config('laracart.tax');
-
-        $this->generateHash();
     }
 
     /**
@@ -75,6 +73,13 @@ class CartItem
         } elseif ($force || empty($this->itemHash) === true) {
             $this->itemHash = app(LaraCart::RANHASH);
         }
+
+        \Event::fire(
+            'laracart.updateItem', [
+                'item' => $this,
+                'newHash' => $this->itemHash
+            ]
+        );
 
         return $this->itemHash;
     }
@@ -126,6 +131,8 @@ class CartItem
     public function removeSubItem($subItemHash)
     {
         unset($this->subItems[$subItemHash]);
+
+        $this->generateHash();
     }
 
     /**

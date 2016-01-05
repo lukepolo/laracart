@@ -229,7 +229,6 @@ The cart also has events build in:
 | laracart.update     | When a the cart is updated to the session |
 | laracart.addItem($cartItem)      | When a item is added to the cart|
 | laracart.updateItem($cartItem)      | When a item is updated|
-| laracart.updateHash($cartItem)      | When a item hash is updated|
 | laracart.removeItem($itemHash)      | When a item is removed from the cart |
 | laracart.empty($cartInstance)      | When a cart is emptied |
 | laracart.destroy($cartInstance)      | When a cart is destroyed |

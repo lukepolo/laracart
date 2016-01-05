@@ -187,8 +187,9 @@ class LaraCart implements LaraCartContract
             $this->getItem($itemHash)->qty += $cartItem->qty;
         } else {
             $this->cart->items[] = $cartItem;
-            \Event::fire('laracart.addItem', $cartItem);
         }
+
+        \Event::fire('laracart.addItem', $cartItem);
 
         $this->update();
 
@@ -222,6 +223,29 @@ class LaraCart implements LaraCartContract
         }
 
         return $items;
+    }
+
+    /**
+     * Updates an items attributes
+     *
+     * @param $itemHash
+     * @param $key
+     * @param $value
+     *
+     * @return CartItem
+     *
+     * @throws Exceptions\InvalidPrice
+     * @throws Exceptions\InvalidQuantity
+     */
+    public function updateItem($itemHash, $key, $value)
+    {
+        if (empty($item = $this->getItem($itemHash)) === false) {
+            $item->$key = $value;
+        }
+
+        $item->generateHash();
+
+        return $item;
     }
 
     /**
