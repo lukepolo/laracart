@@ -410,6 +410,7 @@ class LaraCart implements LaraCartContract
     public function subTotal($tax = false, $format = true, $withDiscount = true)
     {
         $total = 0;
+
         if ($this->count() != 0) {
             foreach ($this->getItems() as $item) {
                 $total += $item->subTotal($tax, false, $withDiscount);
@@ -429,6 +430,7 @@ class LaraCart implements LaraCartContract
     public function count($withItemQty = true)
     {
         $count = 0;
+
         foreach ($this->getItems() as $item) {
             if ($withItemQty) {
                 $count += $item->qty;

@@ -16,7 +16,7 @@ class CartSubItem
     const ITEMS = 'items';
 
     public $locale;
-    public $price = 0;
+
     public $items = [];
     public $internationalFormat;
     private $itemHash;
@@ -26,18 +26,11 @@ class CartSubItem
      */
     public function __construct($options)
     {
-        $this->itemHash = app(LaraCart::HASH, $options);
-        if (isset($options[LaraCart::PRICE])) {
-            $this->price = $options[LaraCart::PRICE];
-            array_forget($options, LaraCart::PRICE);
+        foreach($options as $option => $value) {
+            array_set($this->options, $option, $value);
         }
 
-        if (isset($options[self::ITEMS])) {
-            $this->items = $options[self::ITEMS];
-            array_forget($options, self::ITEMS);
-        }
-
-        $this->options = $options;
+        $this->itemHash = app(LaraCart::HASH, $this->options);
     }
 
     /**

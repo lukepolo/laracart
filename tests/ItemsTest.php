@@ -89,4 +89,63 @@ class ItemsTest extends Orchestra\Testbench\TestCase
 
         $this->assertEmpty($this->laracart->getItem($item->getHash()));
     }
+
+    /**
+     * Test seeing a valid and invalid price
+     */
+    public function testSetPrice()
+    {
+        $item = $this->addItem();
+        $item->price = 3;
+
+        $this->assertEquals(3, $item->price);
+
+        $item->price = 3.52313123;
+        $this->assertEquals(3.52313123, $item->price);
+
+        $item->price = -123123.000;
+        $this->assertEquals(-123123.000, $item->price);
+
+        try {
+            $item->price = 'a';
+            $this->setExpectedException(\LukePOLO\LaraCart\Exceptions\InvalidPrice::class);
+        } catch(\LukePOLO\LaraCart\Exceptions\InvalidPrice $e) {
+            $this->assertEquals('The price must be a valid number', $e->getMessage());
+        }
+    }
+
+    /**
+     * Test seeing a valid and invalid qty
+     */
+    public function testSetQty()
+    {
+        $item = $this->addItem();
+
+        $item->qty = 3;
+        $this->assertEquals(3, $item->qty);
+
+        $item->qty = 1.5;
+        $this->assertEquals(1.5, $item->qty);
+
+        try {
+            $item->qty = 'a';
+            $this->setExpectedException(\LukePOLO\LaraCart\Exceptions\InvalidPrice::class);
+        } catch(\LukePOLO\LaraCart\Exceptions\InvalidQuantity $e) {
+            $this->assertEquals('The quantity must be a valid number', $e->getMessage());
+        }
+
+        try {
+            $item->qty = 'a';
+            $this->setExpectedException(\LukePOLO\LaraCart\Exceptions\InvalidQuantity::class);
+        } catch(\LukePOLO\LaraCart\Exceptions\InvalidQuantity $e) {
+            $this->assertEquals('The quantity must be a valid number', $e->getMessage());
+        }
+
+        try {
+            $item->qty = -1;
+            $this->setExpectedException(\LukePOLO\LaraCart\Exceptions\InvalidQuantity::class);
+        } catch(\LukePOLO\LaraCart\Exceptions\InvalidQuantity $e) {
+            $this->assertEquals('The quantity must be a valid number', $e->getMessage());
+        }
+    }
 }

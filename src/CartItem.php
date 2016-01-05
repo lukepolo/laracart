@@ -2,8 +2,6 @@
 
 namespace LukePOLO\LaraCart;
 
-use LukePOLO\LaraCart\Exceptions\InvalidPrice;
-use LukePOLO\LaraCart\Exceptions\InvalidQuantity;
 use LukePOLO\LaraCart\Traits\CartOptionsMagicMethodsTrait;
 
 /**
@@ -19,10 +17,9 @@ class CartItem
 
     public $id;
     public $tax;
-    public $qty;
+
     public $name;
     public $code;
-    public $price;
     public $locale;
     public $taxable;
     public $lineItem;
@@ -47,7 +44,9 @@ class CartItem
         $this->id = $id;
         $this->qty = $qty;
         $this->name = $name;
-        $this->options = $options;
+        foreach($options as $option => $value) {
+            $this->$option = $value;
+        }
         $this->taxable = $taxable;
         $this->lineItem = $lineItem;
         $this->price = floatval($price);
@@ -140,7 +139,6 @@ class CartItem
     public function getPrice($tax = false, $format = true)
     {
         $price = $this->price * $this->qty;
-
         if ($tax && $this->taxable) {
             $price += $price * $this->tax;
         }
@@ -180,8 +178,8 @@ class CartItem
     public function subItemsTotal($tax = false, $format = true)
     {
         $total = 0;
-        foreach ($this->subItems as $item) {
 
+        foreach ($this->subItems as $item) {
             if (isset($item->price)) {
                 $total += $item->getPrice(false);
             }
