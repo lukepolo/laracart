@@ -2,6 +2,10 @@
 
 namespace LukePOLO\LaraCart\Traits;
 
+use LukePOLO\LaraCart\Exceptions\InvalidPrice;
+use LukePOLO\LaraCart\Exceptions\InvalidQuantity;
+use LukePOLO\LaraCart\LaraCart;
+
 /**
  * Class CartOptionsMagicMethodsTrait
  *
@@ -28,9 +32,24 @@ trait CartOptionsMagicMethodsTrait
      *
      * @param $option
      * @param $value
+     *
+     * @throws InvalidPrice
+     * @throws InvalidQuantity
      */
     public function __set($option, $value)
     {
+        switch ($option) {
+            case LaraCart::QTY:
+                if (!is_numeric($value) || $value < 0) {
+                    throw new InvalidQuantity('The quantity must be a valid number');
+                }
+                break;
+            case LaraCart::PRICE:
+                if (!is_numeric($value)) {
+                    throw new InvalidPrice('The price must be a valid number');
+                }
+                break;
+        }
         array_set($this->options, $option, $value);
     }
 

@@ -225,37 +225,6 @@ class LaraCart implements LaraCartContract
     }
 
     /**
-     * Updates an items attributes
-     *
-     * @param $itemHash
-     * @param $key
-     * @param $value
-     *
-     * @return CartItem
-     *
-     * @throws Exceptions\InvalidPrice
-     * @throws Exceptions\InvalidQuantity
-     */
-    public function updateItem($itemHash, $key, $value)
-    {
-        if (empty($item = $this->getItem($itemHash)) === false) {
-            $item->update($key, $value);
-        }
-
-        $newHash = $item->generateHash();
-
-        \Event::fire(
-            'laracart.updateItem',
-            [
-                'item' => $item,
-                'newHash' => $newHash,
-            ]
-        );
-
-        return $item;
-    }
-
-    /**
      * Removes a CartItem based on the itemHash
      *
      * @param $itemHash
@@ -441,6 +410,7 @@ class LaraCart implements LaraCartContract
     public function subTotal($tax = false, $format = true, $withDiscount = true)
     {
         $total = 0;
+
         if ($this->count() != 0) {
             foreach ($this->getItems() as $item) {
                 $total += $item->subTotal($tax, false, $withDiscount);
@@ -460,6 +430,7 @@ class LaraCart implements LaraCartContract
     public function count($withItemQty = true)
     {
         $count = 0;
+
         foreach ($this->getItems() as $item) {
             if ($withItemQty) {
                 $count += $item->qty;
