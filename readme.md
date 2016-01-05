@@ -1,4 +1,4 @@
-## LaraCart - Laravel 5.1 Shopping Cart Package
+## LaraCart - Laravel Shopping Cart Package
 [![Build Status](https://travis-ci.org/lukepolo/laracart.svg?branch=master)](https://travis-ci.org/lukepolo/laracart) 
 [![Latest Stable Version](https://poser.pugx.org/lukepolo/laracart/v/stable)](https://packagist.org/packages/lukepolo/laracart)
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/lukepolo/laracart/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/lukepolo/laracart/?branch=master)
@@ -14,6 +14,13 @@
 * Coupons / Discounts
 * Fees ex: delivery fee, service charges
 * Totals / sub totals includes sub items / option prices
+
+## Laravel compatibility
+
+ Laravel  | laracart
+:---------|:----------
+ 5.x      | 1.x
+
 
 ## Installation
 
