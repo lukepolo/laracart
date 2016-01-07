@@ -174,7 +174,7 @@ This also includes the prices in the sub items and attributes
 
 ```php
     LaraCart::subTotal($tax = false, $formatted = true);
-    LaraCart::getTotalDiscount($formatted = false);
+    LaraCart::TotalDiscount($formatted = false);
     LaraCart::taxTotal($formatted = false);
     LaraCart::total($formatted = false, $withDiscount = true);
 ```
