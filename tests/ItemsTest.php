@@ -20,6 +20,34 @@ class ItemsTest extends Orchestra\Testbench\TestCase
     }
 
     /**
+     * Tests when we add multiples of the same item it updates the qty properly
+     */
+    public function testItemQtyUpdate()
+    {
+        $item = $this->addItem();
+        $itemHash = $item->getHash();
+        $this->addItem();
+        $this->addItem();
+        $this->addItem();
+        $this->addItem();
+        $this->addItem();
+        $this->addItem();
+
+        $this->assertEquals(7, $item->qty);
+        $this->assertEquals($itemHash, $item->getHash());
+
+        $options = [
+            'a' => 2,
+            'b' => 1
+        ];
+
+        $item = $this->addItem(1, 1, false, $options);
+        $this->addItem(1, 1, false, array_reverse($options));
+
+        $this->assertEquals(2, $item->qty);
+    }
+
+    /**
      * Test if we can add an line item to the cart
      */
     public function testAddLineItem()

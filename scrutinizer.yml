@@ -1,18 +1,29 @@
+before_commands:
+    - 'composer install --prefer-source --no-interaction'
 filter:
-    excluded_paths: [tests/*]
-
-checks:
-    php:
-        remove_extra_empty_lines: true
-        remove_php_closing_tag: true
-        remove_trailing_whitespace: true
-        fix_use_statements:
-            remove_unused: true
-            preserve_multiple: false
-            preserve_blanklines: true
-            order_alphabetically: true
-        fix_php_opening_tag: true
-        fix_linefeed: true
-        fix_line_ending: true
-        fix_identation_4spaces: true
-        fix_doc_comments: true
+        paths:
+            - 'src/*'
+        excluded_paths:
+            - 'build/*'
+            - 'vendor/*'
+            - 'tests/*'
+tools:
+    php_analyzer: true
+    php_mess_detector: true
+    php_code_sniffer:
+        config:
+            standard: PSR2
+    php_code_coverage:
+        config_path: phpunit.xml
+    php_cpd:
+        excluded_dirs:
+            - vendor
+            - tests
+    php_loc:
+        excluded_dirs:
+            - vendor
+            - tests
+    php_pdepend:
+        excluded_dirs:
+            - vendor
+            - tests
