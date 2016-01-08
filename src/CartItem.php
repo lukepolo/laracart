@@ -67,7 +67,7 @@ class CartItem
 
             $cartItemArray = (array)$this;
 
-            ksort($cartItemArray['options']);
+            unset($cartItemArray['options']['qty']);
 
             $this->itemHash = app(LaraCart::HASH, $cartItemArray);
         } elseif ($force || empty($this->itemHash) === true) {
