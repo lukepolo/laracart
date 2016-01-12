@@ -25,6 +25,8 @@ class CartSubItem
      */
     public function __construct($options)
     {
+        $this->options['items'] = [];
+
         foreach($options as $option => $value) {
             array_set($this->options, $option, $value);
         }
