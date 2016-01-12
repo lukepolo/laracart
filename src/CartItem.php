@@ -189,9 +189,7 @@ class CartItem
         $total = 0;
 
         foreach ($this->subItems as $item) {
-            if (isset($item->price)) {
                 $total += $item->getPrice(false);
-            }
         }
 
         $total *= $this->qty;

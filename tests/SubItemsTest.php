@@ -29,7 +29,7 @@ class SubItemsTest extends Orchestra\Testbench\TestCase
     /**
      * Test getting the total from a sub item
      */
-    public function  testSubItemTotal()
+    public function testSubItemTotal()
     {
         $item = $this->addItem();
 
@@ -42,6 +42,22 @@ class SubItemsTest extends Orchestra\Testbench\TestCase
         $this->assertEquals('$2.68', $item->subItemsTotal(true));
         $this->assertEquals('2.50', $item->subItemsTotal(false, false));
         $this->assertEquals('2.68', $item->subItemsTotal(true, false));
+    }
+
+    public function testSubItemItemsTotal()
+    {
+        $item = $this->addItem();
+
+        $subItem = $item->addSubItem([
+            'size' => 'XXL',
+            'items' => [
+                new \LukePOLO\LaraCart\CartItem('10', 'sub item item', 1, 15)
+            ]
+        ]);
+
+        $this->assertEquals(15, $item->subItemsTotal(false, false));
+
+        $this->assertEquals(16, $item->subTotal(false, false));
     }
 
     /**
