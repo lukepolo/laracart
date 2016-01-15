@@ -156,7 +156,7 @@ Look through the configuration options and change as needed
 
 **Adding SubItems**
 
-The reasoning behind sub items is to allow you add addiontal items without the all the nesscary thigns that a regular item needs. For instance if you really wanted the same item but in a differnt size  and that size costs more, you can add it as a subitem so it caculates in the price.
+The reasoning behind sub items is to allow you add addiontal items without the all the nesscary things that a regular item needs. For instance if you really wanted the same item but in a different size and that size costs more, you can add it as a subitem so it caculates in the price.
 
 ```php
     $cartItem->addSubItem([
