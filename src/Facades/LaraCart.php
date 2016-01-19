@@ -20,6 +20,6 @@ class LaraCart extends Facade
      */
     protected static function getFacadeAccessor()
     {
-        return LaraCartContract::class;
+        return 'laracart';
     }
 }
