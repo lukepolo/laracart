@@ -38,15 +38,8 @@ class LaraCartServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->app->singleton(
-            LaraCartContract::class,
-            LaraCart::class
-        );
-
-        $this->app->singleton(
-            'laracart',
-            function ($app) {
-                return $app->make(LaraCartContract::class);
+        $this->app->singleton('laracart', function ($app) {
+                return new LaraCart();
             }
         );
 
