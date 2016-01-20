@@ -147,7 +147,7 @@ class CartItem
      */
     public function getPrice($tax = false, $format = true)
     {
-        $price = $this->price * $this->qty;
+        $price = $this->price + $this->subItemsTotal($tax, false);
         if ($tax && $this->taxable) {
             $price += $price * $this->tax;
         }
@@ -166,7 +166,7 @@ class CartItem
      */
     public function subTotal($tax = false, $format = true, $withDiscount = true)
     {
-        $total = $this->getPrice($tax, false) + $this->subItemsTotal($tax, false);
+        $total = $this->getPrice($tax, false) * $this->qty;
 
         if ($withDiscount) {
             $total -= $this->getDiscount(false);
