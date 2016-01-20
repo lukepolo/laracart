@@ -24,7 +24,11 @@ trait CartOptionsMagicMethodsTrait
      */
     public function __get($option)
     {
-        return array_get($this->options, $option);
+        try {
+            return $this->$option;
+        } catch(\ErrorException $e) {
+            return array_get($this->options, $option);
+        }
     }
 
     /**
@@ -66,7 +70,7 @@ trait CartOptionsMagicMethodsTrait
      */
     public function __isset($option)
     {
-        if (empty($this->options[$option]) === false) {
+        if (!empty($this->options[$option])) {
             return true;
         } else {
             return false;
