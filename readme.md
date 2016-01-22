@@ -158,8 +158,8 @@ The reasoning behind sub items is to allow you add addiontal items without the a
 
 ```php
     $cartItem->addSubItem([
-        'Description' => 'Fries',
-        'Price' => '.75'
+        'description' => 'Fries',
+        'price' => '.75'
     ]);
 
     // To update you can do on the item
