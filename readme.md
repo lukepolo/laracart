@@ -139,7 +139,7 @@ Look through the configuration options and change as needed
 
 ```php
     // $tax = false by default
-    $cartItem->price($tax); // $24.23 | USD 24.23 depending on your settings
+    $cartItem->price($tax, $formatted = true); // $24.23 | USD 24.23 depending on your settings
 ```
 
 **Get the subtotal of the item**
@@ -157,13 +157,16 @@ Look through the configuration options and change as needed
 The reasoning behind sub items is to allow you add addiontal items without the all the nesscary things that a regular item needs. For instance if you really wanted the same item but in a different size and that size costs more, you can add it as a subitem so it caculates in the price.
 
 ```php
-    $cartItem->addSubItem([
-        'description' => 'Fries',
-        'price' => .75
-    ]);
-
-    // To update you can do on the item
-    $cartItem->findSubItem($itemHash)->price = 1.00;
+        $item = \LaraCart::add(2, 'Shirt', 1, 15.99, [
+             'size' => 'XXL'
+         ]);
+ 
+         $item->addSubItem([
+             'description' => 'Extra Cloth Cost',
+             'price' => 3
+         ]);
+ 
+         $item->subTotal(); // $18.99
 ```
 
 **Get the Sub-Total of the cart**
