@@ -68,12 +68,12 @@ Look through the configuration options and change as needed
 ```php
     // Adding an item to the cart
     LaraCart::add(2, 'Shirt', 200, 15.99, [
-        'Size' => 'XL'
+        'size' => 'XL'
     ]);
 
     // If you need line items rather than just updating the qty you can do
     LaraCart::addLine(2, 'Shirt', 200, 15.99, [
-        'Size' => 'XL'
+        'size' => 'XL'
     ]);
 ```
 
@@ -96,6 +96,14 @@ Look through the configuration options and change as needed
     LaraCart::updateItem($itemHash, 'name', 'CheeseBurger w/Bacon');
     LaraCart::updateItem($itemHash, 'qty', 5);
     LaraCart::updateItem($itemHash, 'price', '2.50');
+    LaraCart::updateItem($itemHash, 'tax', '.045');
+    
+    // Or if you have the item object already
+    $item = LaraCart::add(2, 'Shirt', 200, 15.99, [
+        'size' => 'XL'
+    ]);
+    
+    $item->size = 'L';
 ```
 
 **Removing an item**
