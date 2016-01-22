@@ -189,4 +189,23 @@ class ItemsTest extends Orchestra\Testbench\TestCase
             $this->assertEquals('The quantity must be a valid number', $e->getMessage());
         }
     }
+
+    /**
+     * Tests the different taxes on items
+     */
+    public function testDifferentTaxes() {
+
+        $item = $this->addItem();
+
+        $prevHash = $item->getHash();
+
+        $item->tax = .05;
+
+        $this->assertNotEquals($prevHash, $item->getHash());
+
+        $item = $this->addItem();
+        $item->tax = .3;
+
+        $this->assertEquals('2.35', $this->laracart->total(false));
+    }
 }

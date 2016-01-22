@@ -44,11 +44,14 @@ class SubItemsTest extends Orchestra\Testbench\TestCase
         $this->assertEquals('2.68', $item->subItemsTotal(true, false));
     }
 
+    /**
+     * Test the sub items totals
+     */
     public function testSubItemItemsTotal()
     {
         $item = $this->addItem();
 
-        $subItem = $item->addSubItem([
+        $item->addSubItem([
             'size' => 'XXL',
             'items' => [
                 new \LukePOLO\LaraCart\CartItem('10', 'sub item item', 1, 15)

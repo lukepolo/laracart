@@ -15,18 +15,10 @@ class CartItem
 
     protected $itemHash;
 
-    public $id;
-    public $tax;
-
-    public $name;
-    public $code;
-    public $locale;
-    public $taxable;
     public $lineItem;
-    public $discount = 0;
+    public $taxable;
     public $subItems = [];
     public $couponInfo = [];
-    public $internationalFormat;
 
     /**
      * CartItem constructor.

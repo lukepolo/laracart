@@ -36,6 +36,9 @@ class LaraCartTest extends Orchestra\Testbench\TestCase
         $this->assertEquals('$25.54', $this->laracart->formatMoney('25.544'));
     }
 
+    /**
+     * Test getting the attributes from the cart
+     */
     public function testGetAttributes()
     {
         $this->laracart->setAttribute('test1', 1);
@@ -47,6 +50,9 @@ class LaraCartTest extends Orchestra\Testbench\TestCase
         $this->assertEquals(2, $attributes['test2']);
     }
 
+    /**
+     * Test removing attributes from the cart
+     */
     public function testRemoveAttribute()
     {
         $this->laracart->setAttribute('test1', 1);
@@ -124,4 +130,19 @@ class LaraCartTest extends Orchestra\Testbench\TestCase
 
         $this->assertEquals(1, $cart->count());
     }
+
+    /**
+     * Tests if generating a new hash when we change an option
+     */
+    public function testGeneratingHashes() {
+
+        $item = $this->addItem();
+
+        $prevHash = $item->getHash();
+
+        $item->name = 'NEW NAME';
+
+        $this->assertNotEquals($prevHash, $item->getHash());
+    }
+
 }
