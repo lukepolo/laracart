@@ -44,7 +44,6 @@ class CartItem
         foreach($options as $option => $value) {
             $this->$option = $value;
         }
-
     }
 
     /**
