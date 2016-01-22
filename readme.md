@@ -95,8 +95,8 @@ Look through the configuration options and change as needed
 ```php
     LaraCart::updateItem($itemHash, 'name', 'CheeseBurger w/Bacon');
     LaraCart::updateItem($itemHash, 'qty', 5);
-    LaraCart::updateItem($itemHash, 'price', '2.50');
-    LaraCart::updateItem($itemHash, 'tax', '.045');
+    LaraCart::updateItem($itemHash, 'price', 2.50);
+    LaraCart::updateItem($itemHash, 'tax', .045);
     
     // Or if you have the item object already
     $item = LaraCart::add(2, 'Shirt', 200, 15.99, [
@@ -159,7 +159,7 @@ The reasoning behind sub items is to allow you add addiontal items without the a
 ```php
     $cartItem->addSubItem([
         'description' => 'Fries',
-        'price' => '.75'
+        'price' => .75
     ]);
 
     // To update you can do on the item
