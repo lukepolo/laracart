@@ -140,15 +140,13 @@ Look through the configuration options and change as needed
 **Display Item Price with Locale**
 
 ```php
-    // $tax = false by default
-    $cartItem->price($tax, $formatted = true); // $24.23 | USD 24.23 depending on your settings
+    $cartItem->price($tax = false, $formatted = true); // $24.23 | USD 24.23 depending on your settings
 ```
 
 **Get the subtotal of the item**
 
 ```php
-    // $tax = false by default
-    $cartItem->subTotal($tax);
+    $cartItem->subTotal($tax = false);
 
     // Gets the totals for the item options if applicable
     $cartItem->optionsTotal($formatMoney = true);
@@ -176,7 +174,7 @@ The reasoning behind sub items is to allow you add additional items without the 
          'price' => 3
      ]);
     
-     $item->subTotal(); // $18.99
+     $item->subTotal($tax = false); // $18.99
 ```
 
 ## Coupons
