@@ -208,7 +208,6 @@ class ItemsTest extends Orchestra\Testbench\TestCase
 
         $this->assertEquals('2.35', $this->laracart->total(false));
 
-
         $item = $this->addItem(1, 1, true, [
             'tax' => .7
         ]);
