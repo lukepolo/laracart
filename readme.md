@@ -118,6 +118,9 @@ Look through the configuration options and change as needed
     ]);
     
     $item->size = 'L';
+    
+    $item->price($tax = false, $formatted = true); // $4.50 | USD 4.50
+    
 ```
 
 **Cart Attributes**
