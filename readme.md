@@ -60,10 +60,9 @@ Look through the configuration options and change as needed
 * [Currency & Locale](#currency)
 * [Coupons](#coupons)
 * [Fees](#fees)
-* [Exceptions](#exceptions)
 * [Instances](#instances)
+* [Exceptions](#exceptions)
 * [Events](#events)
-* [Advanced Usage](#advanced)
 
 ## Usage
 
@@ -102,18 +101,12 @@ Look through the configuration options and change as needed
     LaraCart::removeItem($item->getHash());
 ```
 
-**Cart Attributes**
+**Cart Items**
 
 ```php
-    // Sometimes you want to give a cart some kind of attributes , such as labels
-    LaraCart::addAttribute('label', "Luke's Cart");
-    LaraCart::updateAttribute('label', "Not Luke's Cart");
-    LaraCart::removeAttribute('label');
-
-    // Gets all the attributes
-    LaraCart::getAttributes();
+    LaraCart::getItems();
+    LaraCart::count($withItemQty = true); // If set to false it will ignore the qty on the items and get the line count
         
-    //Updating an Items Attributes
     LaraCart::updateItem($itemHash, 'name', 'CheeseBurger w/Bacon');
     LaraCart::updateItem($itemHash, 'qty', 5);
     LaraCart::updateItem($itemHash, 'price', 2.50);
@@ -127,6 +120,16 @@ Look through the configuration options and change as needed
     $item->size = 'L';
 ```
 
+**Cart Attributes**
+
+```php
+    LaraCart::addAttribute('label', "Luke's Cart");
+    LaraCart::updateAttribute('label', "Not Luke's Cart");
+    LaraCart::removeAttribute('label');
+
+    // Gets all the attributes
+    LaraCart::getAttributes();
+```
 
 **Emptying / Destroying the Cart**
 
@@ -138,14 +141,7 @@ Look through the configuration options and change as needed
     LaraCart::destroyCart()
 ```
 
-**Cart Contents**
-
-```php
-    LaraCart::getItems();
-    LaraCart::count($withItemQty = true); // If set to false it will ignore the qty on the items and get the line count
-```
-
-**Totals**
+**Cart Totals**
 
 ```php
     LaraCart::subTotal($tax = false, $format = true, $withDiscount = true);
@@ -159,16 +155,16 @@ The reasoning behind sub items is to allow you add additional items without the 
 
 ```php
     $item = \LaraCart::add(2, 'Shirt', 1, 15.99, [
-         'size' => 'XXL'
-     ]);
+        'size' => 'XXL'
+    ]);
     
-     $item->addSubItem([
-         'description' => 'Extra Cloth Cost', // this line is not required!
-         'price' => 3.00
-     ]);
+    $item->addSubItem([
+        'description' => 'Extra Cloth Cost', // this line is not required!
+        'price' => 3.00
+    ]);
     
-     $item->subTotal($tax = false); // $18.99
-     $item->subItemsTotal($tax = false, $formatMoney = true); // $3.00
+    $item->subTotal($tax = false); // $18.99
+    $item->subItemsTotal($tax = false, $formatMoney = true); // $3.00
 ```
 
 ## Currency & Locale
@@ -203,13 +199,11 @@ Fees allow you to add extra charges to the cart for various reasons ex: delivery
 ```
 
 ## Instances
-Instances is a way that we can use multiple carts within the same session. By using:
+Instances is a way that we can use multiple carts within the same session. Each following request reuse the last instance of the cart set
 
 ```php
     LaraCart::setInstance('yourInstanceName');
 ```
-Will switch to that instance of the cart. Each following request reuse the last instance of the cart set
-
 
 ## Exceptions
 LaraCart packages can throw the following exceptions:
