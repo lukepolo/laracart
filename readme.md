@@ -57,7 +57,7 @@ Look through the configuration options and change as needed
 
 * [Usage](#usage)
 * [SubItems](#subitems)
-* [Currency & Locale](#currency)
+* [Currency & Locale](#currency--locale)
 * [Coupons](#coupons)
 * [Fees](#fees)
 * [Instances](#instances)
