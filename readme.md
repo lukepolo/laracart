@@ -156,9 +156,7 @@ Look through the configuration options and change as needed
 
 ```php
     $cartItem->subTotal($tax = false);
-
-    // Gets the totals for the item options if applicable
-    $cartItem->optionsTotal($formatMoney = true);
+    $cartItem->subItemsTotal($tax = false, $formatMoney = true);
 ```
 
 **Get the Sub-Total of the cart**
