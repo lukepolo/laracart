@@ -156,8 +156,6 @@ Look through the configuration options and change as needed
 
 **Get the Sub-Total of the cart**
 
-This also includes the prices in the sub items and attributes
-
 ```php
     LaraCart::subTotal($tax = false, $formatted = true);
     LaraCart::totalDiscount($formatted = false);
