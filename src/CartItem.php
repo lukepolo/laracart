@@ -36,13 +36,14 @@ class CartItem
         $this->id = $id;
         $this->qty = $qty;
         $this->name = $name;
-        foreach($options as $option => $value) {
-            $this->$option = $value;
-        }
         $this->taxable = $taxable;
         $this->lineItem = $lineItem;
         $this->price = floatval($price);
         $this->tax = config('laracart.tax');
+
+        foreach($options as $option => $value) {
+            $this->$option = $value;
+        }
     }
 
     /**
