@@ -66,17 +66,7 @@ Look through the configuration options and change as needed
 **Adding an Item to the cart**
 
 ```php
-    // First way we can just add like this
-    LaraCart::add(1, 'Burger', 5, 2.00, [
-        // Notice this is an array of arrays,
-        // this allows us to further expand the cart functions to the options
-        [
-            'Description' => 'Bacon',
-            'Price' => 1.00
-        ]
-    ]);
-
-    // You can also do simple arrays for convenience
+    // Adding an item to the cart
     LaraCart::add(2, 'Shirt', 200, 15.99, [
         'Size' => 'XL'
     ]);
