@@ -28,6 +28,7 @@ Install the package through [Composer](http://getcomposer.org/). Edit your proje
 
     {
 	    "require": {
+	        ........,
 	        "lukepolo/laracart": "1.0.*"
 	    }
     }
@@ -168,34 +169,34 @@ This also includes the prices in the sub items and attributes
 The reasoning behind sub items is to allow you add additional items without the all the necessary things that a regular item needs. For instance if you really wanted the same item but in a different size and that size costs more, you can add it as a sub item so it calculates in the price.
 
 ```php
-        $item = \LaraCart::add(2, 'Shirt', 1, 15.99, [
-             'size' => 'XXL'
-         ]);
- 
-         $item->addSubItem([
-             'description' => 'Extra Cloth Cost', // this line is not required!
-             'price' => 3
-         ]);
- 
-         $item->subTotal(); // $18.99
+    $item = \LaraCart::add(2, 'Shirt', 1, 15.99, [
+         'size' => 'XXL'
+     ]);
+    
+     $item->addSubItem([
+         'description' => 'Extra Cloth Cost', // this line is not required!
+         'price' => 3
+     ]);
+    
+     $item->subTotal(); // $18.99
 ```
 
 ## Coupons
 Adding coupons could never be easier, currenlty there are a set of coupons inside LaraCart. To create new types of coupons just create a copy of one of the existing coupons and modify it!
 
 ```php
-$coupon = new \LukePOLO\LaraCart\Coupons\Fixed($coupon->CouponCode, $coupon->CouponValue, [
-    'description' => $coupon->Description
-]);
-
-LaraCart::addCoupon($coupon);
-
-// To remove
-LaraCart::removeCoupon($code);
-
-// Couppons themeslves also have nifty formatting options , for instance Fixed value coupons can have a money format
-$fixedCoupon->getValue(); // $2.50
-$percentCoupon->getValue; // 15%
+    $coupon = new \LukePOLO\LaraCart\Coupons\Fixed($coupon->CouponCode, $coupon->CouponValue, [
+        'description' => $coupon->Description
+    ]);
+    
+    LaraCart::addCoupon($coupon);
+    
+    // To remove
+    LaraCart::removeCoupon($code);
+    
+    // Couppons themeslves also have nifty formatting options , for instance Fixed value coupons can have a money format
+    $fixedCoupon->getValue(); // $2.50
+    $percentCoupon->getValue; // 15%
 ```
 
 ## Fees
@@ -203,10 +204,8 @@ $percentCoupon->getValue; // 15%
 Fees allow you to add extra charges to the cart for various reasons ex: delivery fees.
 
 ```php
-
-LaraCart::addFee('deliveryFee', 5, $taxable =  false, $options = []);
-LaraCart::removeFee('deliveryFee');
-
+    LaraCart::addFee('deliveryFee', 5, $taxable =  false, $options = []);
+    LaraCart::removeFee('deliveryFee');
 ```
 
 ## Instances
