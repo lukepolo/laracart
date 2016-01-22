@@ -57,16 +57,17 @@ Look through the configuration options and change as needed
 
 * [Usage](#usage)
 * [SubItems](#subitems)
-* [Instances](#instances)
+* [Currency & Locale](#currency)
 * [Coupons](#coupons)
 * [Fees](#fees)
 * [Exceptions](#exceptions)
+* [Instances](#instances)
 * [Events](#events)
 * [Advanced Usage](#advanced)
 
 ## Usage
 
-**Adding an Item to the cart**
+**Adding Items**
 
 ```php
     // Adding an item to the cart
@@ -80,12 +81,25 @@ Look through the configuration options and change as needed
     ]);
     
     // Also you can have your item not taxed
-    LaraCart::addLine(2, 'Shirt', 200, 15.99, [
+    $item = LaraCart::addLine(2, 'Shirt', 200, 15.99, [
         'size' => 'XL'
         ]
         $taxable = false
     );
-    
+```
+
+**Item Hashes**
+
+```php
+    $item = LaraCart::add(2, 'Shirt', 200, 15.99, [
+         'size' => 'XL'
+    ]);
+     
+    $itemHash = $item->getHash();
+   
+    // That way we can find / remove from the cart
+    LaraCart::findItem($itemHash);
+    LaraCart::removeItem($item->getHash());
 ```
 
 **Cart Attributes**
@@ -98,12 +112,8 @@ Look through the configuration options and change as needed
 
     // Gets all the attributes
     LaraCart::getAttributes();
-
-```
-
-**Updating an Items Attributes**
-
-```php
+        
+    //Updating an Items Attributes
     LaraCart::updateItem($itemHash, 'name', 'CheeseBurger w/Bacon');
     LaraCart::updateItem($itemHash, 'qty', 5);
     LaraCart::updateItem($itemHash, 'price', 2.50);
@@ -117,52 +127,28 @@ Look through the configuration options and change as needed
     $item->size = 'L';
 ```
 
-**Removing an item**
 
-```php
-    LaraCart::removeItem($itemHash);
-```
-
-**Empty / Destroying the Cart**
+**Emptying / Destroying the Cart**
 
 ```php
     // Empty will only empty the contents
     LaraCart::emptyCart()
 
-    // Destroy will remove the entire instance of the cart including coupons ect.
+    // Destroy will remove the entire instance of the cart including coupons / fees etc.
     LaraCart::destroyCart()
 ```
 
-**Get the contents of the cart**
+**Cart Contents**
 
 ```php
     LaraCart::getItems();
-    LaraCart::findItem($itemHash);
+    LaraCart::count($withItemQty = true); // If set to false it will ignore the qty on the items and get the line count
 ```
 
-**Gets the total number of items in the cart**
+**Totals**
 
 ```php
-    LaraCart::count();
-```
-
-**Display Item Price with Locale**
-
-```php
-    $cartItem->price($tax = false, $formatted = true); // $24.23 | USD 24.23 depending on your settings
-```
-
-**Get the subtotal of the item**
-
-```php
-    $cartItem->subTotal($tax = false);
-    $cartItem->subItemsTotal($tax = false, $formatMoney = true);
-```
-
-**Get the Sub-Total of the cart**
-
-```php
-    LaraCart::subTotal($tax = false, $formatted = true);
+    LaraCart::subTotal($tax = false, $format = true, $withDiscount = true);
     LaraCart::totalDiscount($formatted = false);
     LaraCart::taxTotal($formatted = false);
     LaraCart::total($formatted = false, $withDiscount = true);
@@ -178,10 +164,19 @@ The reasoning behind sub items is to allow you add additional items without the 
     
      $item->addSubItem([
          'description' => 'Extra Cloth Cost', // this line is not required!
-         'price' => 3
+         'price' => 3.00
      ]);
     
      $item->subTotal($tax = false); // $18.99
+     $item->subItemsTotal($tax = false, $formatMoney = true); // $3.00
+```
+
+## Currency & Locale
+Laracart comes built in with a currency / locale display. To configure just checkout the config.php. You can set to show the locale (USD) or the currency ($)
+
+```php
+    $item->price($tax = false, $formatted = true); // $4.50 | USD 4.50
+    LaraCart::total() // $24.23 | USD 24.23
 ```
 
 ## Coupons
@@ -200,7 +195,6 @@ Adding coupons could never be easier, currently there are a set of coupons insid
 ```
 
 ## Fees
-
 Fees allow you to add extra charges to the cart for various reasons ex: delivery fees.
 
 ```php
@@ -234,8 +228,8 @@ The cart also has events build in:
 | -------------------- | --------------------------------------- |
 | laracart.new      | When a new cart is started |
 | laracart.update     | When a the cart is updated to the session |
-| laracart.addItem($cartItem)      | When a item is added to the cart|
-| laracart.updateItem($cartItem)      | When a item is updated|
+| laracart.addItem($item)      | When a item is added to the cart|
+| laracart.updateItem($item)      | When a item is updated|
 | laracart.removeItem($itemHash)      | When a item is removed from the cart |
 | laracart.empty($cartInstance)      | When a cart is emptied |
 | laracart.destroy($cartInstance)      | When a cart is destroyed |
