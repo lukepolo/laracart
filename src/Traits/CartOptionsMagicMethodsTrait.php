@@ -42,10 +42,6 @@ trait CartOptionsMagicMethodsTrait
      */
     public function __set($option, $value)
     {
-        if(is_callable(array($this, 'generateHash'))) {
-           $this->generateHash();
-        }
-
         switch ($option) {
             case LaraCart::QTY:
                 if (!is_numeric($value) || $value < 0) {
@@ -59,6 +55,10 @@ trait CartOptionsMagicMethodsTrait
                 break;
         }
         array_set($this->options, $option, $value);
+
+        if(is_callable(array($this, 'generateHash'))) {
+            $this->generateHash();
+        }
     }
 
     /**

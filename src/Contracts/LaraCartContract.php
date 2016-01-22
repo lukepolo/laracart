@@ -3,6 +3,9 @@
 namespace LukePOLO\LaraCart\Contracts;
 
 use LukePOLO\LaraCart\CartItem;
+use LukePOLO\LaraCart\LaraCart;
+use LukePOLO\LaraCart\Exceptions\InvalidPrice;
+use LukePOLO\LaraCart\Exceptions\InvalidQuantity;
 
 /**
  * Interface LaraCartContract
@@ -16,9 +19,10 @@ interface LaraCartContract
      *
      * @param string $instance
      *
-     * @return mixed
+     * @return LaraCart
      */
     public function setInstance($instance = 'default');
+
 
     /**
      * Gets the instance in the session
@@ -29,23 +33,6 @@ interface LaraCartContract
      */
     public function get($instance = 'default');
 
-    /**
-     * Updates cart session
-     */
-    public function update();
-
-    /**
-     *
-     * Formats the number into a money format based on the locale and international formats
-     *
-     * @param $number
-     * @param $locale
-     * @param $internationalFormat
-     * @param $format
-     *
-     * @return string
-     */
-    public function formatMoney($number, $locale = null, $internationalFormat = null, $format = true);
 
     /**
      * Gets an an attribute from the cart
@@ -73,11 +60,62 @@ interface LaraCartContract
     public function setAttribute($attribute, $value);
 
     /**
+     * Updates cart session
+     */
+    public function update();
+
+    /**
      * Removes an attribute from the cart
      *
      * @param $attribute
      */
     public function removeAttribute($attribute);
+
+    /**
+     * Creates a CartItem and then adds it to cart
+     *
+     * @param string|int $itemID
+     * @param null $name
+     * @param int $qty
+     * @param string $price
+     * @param array $options
+     * @param bool|true $taxable
+     *
+     * @return CartItem
+     */
+    public function addLine($itemID, $name = null, $qty = 1, $price = '0.00', $options = [], $taxable = true);
+
+    /**
+     * Creates a CartItem and then adds it to cart
+     *
+     * @param $itemID
+     * @param null $name
+     * @param int $qty
+     * @param string $price
+     * @param array $options
+     * @param bool|false $taxable
+     * @param bool|false $lineItem
+     *
+     * @return CartItem
+     */
+    public function add(
+        $itemID,
+        $name = null,
+        $qty = 1,
+        $price = '0.00',
+        $options = [],
+        $taxable = true,
+        $lineItem = false
+    );
+
+    /**
+     * Adds the cartItem into the cart session
+     *
+     * @param CartItem $cartItem
+     *
+     * @return CartItem
+     */
+    public function addItem(CartItem $cartItem);
 
     /**
      * Finds a cartItem based on the itemHash
@@ -95,41 +133,20 @@ interface LaraCartContract
      */
     public function getItems();
 
-    /**
-     * Creates a CartItem and then adds it to cart
-     *
-     * @param $itemID
-     * @param null $name
-     * @param int $qty
-     * @param string $price
-     * @param array $options
-     * @param bool|false $lineItem
-     *
-     * @return CartItem
-     */
-    public function add($itemID, $name = null, $qty = 1, $price = '0.00', $options = [], $lineItem = false);
 
     /**
-     * Creates a CartItem and then adds it to cart
+     * Updates an items attributes
      *
-     * @param string|int $itemID
-     * @param null $name
-     * @param int $qty
-     * @param string $price
-     * @param array $options
-     *
-     * @return string CartItem
-     */
-    public function addLine($itemID, $name = null, $qty = 1, $price = '0.00', $options = []);
-
-    /**
-     * Adds the cartItem into the cart session
-     *
-     * @param $cartItem
+     * @param $itemHash
+     * @param $key
+     * @param $value
      *
      * @return CartItem
+     *
+     * @throws InvalidPrice
+     * @throws InvalidQuantity
      */
-    public function addItem(CartItem $cartItem);
+    public function updateItem($itemHash, $key, $value);
 
     /**
      * Removes a CartItem based on the itemHash
@@ -137,15 +154,6 @@ interface LaraCartContract
      * @param $itemHash
      */
     public function removeItem($itemHash);
-
-    /**
-     * Get the count based on qty, or number of unique items
-     *
-     * @param bool $withItemQty
-     *
-     * @return int
-     */
-    public function count($withItemQty = true);
 
     /**
      * Empties the carts items
@@ -196,13 +204,6 @@ interface LaraCartContract
     public function getFee($name);
 
     /**
-     * Getes all the fees on the cart object
-     *
-     * @return mixed
-     */
-    public function getFees();
-
-    /**
      * Allows to charge for additional fees that may or may not be taxable
      * ex - service fee , delivery fee, tips
      *
@@ -221,24 +222,6 @@ interface LaraCartContract
     public function removeFee($name);
 
     /**
-     * Gets all the fee totals
-     *
-     * @param bool|true $format
-     *
-     * @return string
-     */
-    public function feeTotals($format = true);
-
-    /**
-     * Gets the total amount discounted
-     *
-     * @param bool|true $format
-     *
-     * @return int|string
-     */
-    public function totalDiscount($format = true);
-
-    /**
      * Gets the total tax for the cart
      *
      * @param bool|true $format
@@ -248,22 +231,70 @@ interface LaraCartContract
     public function taxTotal($format = true);
 
     /**
+     * Gets the total of the cart with or without tax
+     *
+     * @param boolean $format
+     * @param boolean $withDiscount
+     *
+     * @return string
+     */
+    public function total($format = true, $withDiscount = true);
+
+    /**
      * Gets the subtotal of the cart with or without tax
      *
      * @param bool|false $tax
-     * @param bool|true $format
-     * @param bool|true $withDiscount
+     * @param boolean $format
+     * @param boolean $withDiscount
      *
      * @return string
      */
     public function subTotal($tax = false, $format = true, $withDiscount = true);
 
     /**
-     * Gets the total of the cart with or without tax
+     * Get the count based on qty, or number of unique items
      *
-     * @param bool|true $format
-     * @param bool|true $withDiscount
+     * @param bool $withItemQty
+     *
+     * @return int
+     */
+    public function count($withItemQty = true);
+
+    /**
+     *
+     * Formats the number into a money format based on the locale and international formats
+     *
+     * @param $number
+     * @param $locale
+     * @param $internationalFormat
+     * @param $format
+     *
      * @return string
      */
-    public function total($format = true, $withDiscount = true);
+    public function formatMoney($number, $locale = null, $internationalFormat = null, $format = true);
+
+    /**
+     * Gets all the fee totals
+     *
+     * @param boolean $format
+     *
+     * @return string
+     */
+    public function feeTotals($format = true);
+
+    /**
+     * Getes all the fees on the cart object
+     *
+     * @return mixed
+     */
+    public function getFees();
+
+    /**
+     * Gets the total amount discounted
+     *
+     * @param bool|true $format
+     *
+     * @return int|string
+     */
+    public function totalDiscount($format = true);
 }
