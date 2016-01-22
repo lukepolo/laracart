@@ -172,6 +172,7 @@ Laracart comes built in with a currency / locale display. To configure just chec
 
 ```php
     $item->price($tax = false, $formatted = true); // $4.50 | USD 4.50
+    
     LaraCart::total() // $24.23 | USD 24.23
 ```
 
