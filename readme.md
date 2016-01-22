@@ -55,6 +55,7 @@ Look through the configuration options and change as needed
 ## Overview
 
 * [Usage](#usage)
+* [SubItems](#subitems)
 * [Instances](#instances)
 * [Coupons](#coupons)
 * [Fees](#fees)
@@ -152,23 +153,6 @@ Look through the configuration options and change as needed
     $cartItem->optionsTotal($formatMoney = true);
 ```
 
-**Adding SubItems**
-
-The reasoning behind sub items is to allow you add addiontal items without the all the nesscary things that a regular item needs. For instance if you really wanted the same item but in a different size and that size costs more, you can add it as a subitem so it caculates in the price.
-
-```php
-        $item = \LaraCart::add(2, 'Shirt', 1, 15.99, [
-             'size' => 'XXL'
-         ]);
- 
-         $item->addSubItem([
-             'description' => 'Extra Cloth Cost',
-             'price' => 3
-         ]);
- 
-         $item->subTotal(); // $18.99
-```
-
 **Get the Sub-Total of the cart**
 
 This also includes the prices in the sub items and attributes
@@ -178,6 +162,22 @@ This also includes the prices in the sub items and attributes
     LaraCart::totalDiscount($formatted = false);
     LaraCart::taxTotal($formatted = false);
     LaraCart::total($formatted = false, $withDiscount = true);
+```
+
+## SubItems
+The reasoning behind sub items is to allow you add additional items without the all the necessary things that a regular item needs. For instance if you really wanted the same item but in a different size and that size costs more, you can add it as a sub item so it calculates in the price.
+
+```php
+        $item = \LaraCart::add(2, 'Shirt', 1, 15.99, [
+             'size' => 'XXL'
+         ]);
+ 
+         $item->addSubItem([
+             'description' => 'Extra Cloth Cost', // this line is not required!
+             'price' => 3
+         ]);
+ 
+         $item->subTotal(); // $18.99
 ```
 
 
@@ -190,7 +190,7 @@ Instances is a way that we can use multiple carts within the same session. By us
 Will switch to that instance of the cart. Each following request reuse the last instance of the cart set
 
 ## Coupons
-Adding coupons could never be easier, currenlty there are a set of coupons inside LaraCart. To create new types of coupons just create a copy of one of the existing coupons and modifiy it!
+Adding coupons could never be easier, currenlty there are a set of coupons inside LaraCart. To create new types of coupons just create a copy of one of the existing coupons and modify it!
 
 ```php
 $coupon = new \LukePOLO\LaraCart\Coupons\Fixed($coupon->CouponCode, $coupon->CouponValue, [
