@@ -139,7 +139,7 @@ Look through the configuration options and change as needed
 
 ```php
     // $tax = false by default
-    $cartItem->getPrice($tax); // $24.23 | USD 24.23 depending on your settings
+    $cartItem->price($tax); // $24.23 | USD 24.23 depending on your settings
 ```
 
 **Get the subtotal of the item**

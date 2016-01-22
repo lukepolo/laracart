@@ -51,16 +51,29 @@ class CartSubItem
      *
      * @return mixed
      */
-    public function getPrice($format = true)
+    public function price($format = true)
     {
         $price = $this->price;
 
         if(isset($this->items)) {
             foreach ($this->items as $item) {
-                $price += $item->getPrice(false, false) + $item->subItemsTotal(false, false);
+                $price += $item->price(false, false) + $item->subItemsTotal(false, false);
             }
         }
 
         return \App::make(LaraCart::SERVICE)->formatMoney($price, $this->locale, $this->internationalFormat, $format);
+    }
+
+    /**
+     * Gets the formatted price
+     * @deprecated deprecated since version 1.0.13
+     *
+     * @param bool|true $format
+     *
+     * @return mixed
+     */
+    public function getPrice($format = true)
+    {
+        return $this->price($format);
     }
 }

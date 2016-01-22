@@ -138,7 +138,7 @@ class CartItem
      *
      * @return float|string
      */
-    public function getPrice($tax = false, $format = true)
+    public function price($tax = false, $format = true)
     {
         $price = $this->price + $this->subItemsTotal($tax, false);
         if ($tax && $this->taxable) {
@@ -146,6 +146,19 @@ class CartItem
         }
 
         return \App::make(LaraCart::SERVICE)->formatMoney($price, $this->locale, $this->internationalFormat, $format);
+    }
+
+    /**
+     * Gets the formatted price
+     * @deprecated deprecated since version 1.0.13
+     *
+     * @param bool|true $format
+     *
+     * @return mixed
+     */
+    public function getPrice($tax = false, $format = true)
+    {
+        return $this->price($tax, $format);
     }
 
     /**
@@ -159,7 +172,7 @@ class CartItem
      */
     public function subTotal($tax = false, $format = true, $withDiscount = true)
     {
-        $total = $this->getPrice($tax, false) * $this->qty;
+        $total = $this->price($tax, false) * $this->qty;
 
         if ($withDiscount) {
             $total -= $this->getDiscount(false);
@@ -182,7 +195,7 @@ class CartItem
         $total = 0;
 
         foreach ($this->subItems as $item) {
-                $total += $item->getPrice(false);
+                $total += $item->price(false);
         }
 
         $total *= $this->qty;
