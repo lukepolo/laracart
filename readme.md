@@ -199,7 +199,7 @@ Adding coupons could never be easier, currently there are a set of coupons insid
     // To remove
     LaraCart::removeCoupon($code);
     
-    // Couppons themeslves also have nifty formatting options , for instance Fixed value coupons can have a money format
+    // Couppons themselves also have nifty formatting options , for instance Fixed value coupons can have a money format
     $fixedCoupon->getValue(); // $2.50
     $percentCoupon->getValue; // 15%
 ```
