@@ -180,15 +180,6 @@ The reasoning behind sub items is to allow you add additional items without the 
          $item->subTotal(); // $18.99
 ```
 
-
-## Instances
-Instances is a way that we can use multiple carts within the same session. By using:
-
-```php
-    LaraCart::setInstance('yourInstanceName');
-```
-Will switch to that instance of the cart. Each following request reuse the last instance of the cart set
-
 ## Coupons
 Adding coupons could never be easier, currenlty there are a set of coupons inside LaraCart. To create new types of coupons just create a copy of one of the existing coupons and modify it!
 
@@ -217,6 +208,15 @@ LaraCart::addFee('deliveryFee', 5, $taxable =  false, $options = []);
 LaraCart::removeFee('deliveryFee');
 
 ```
+
+## Instances
+Instances is a way that we can use multiple carts within the same session. By using:
+
+```php
+    LaraCart::setInstance('yourInstanceName');
+```
+Will switch to that instance of the cart. Each following request reuse the last instance of the cart set
+
 
 ## Exceptions
 LaraCart packages can throw the following exceptions:
