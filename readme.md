@@ -11,7 +11,7 @@
 * Multiple cart instances
 * Fees  such as a delivery fee
 * Taxation on a the item level
-* Price displays currency and locale
+* Prices display currency and locale
 * Endless item chaining for complex systems
 * Totals of all items within the item chains
 
