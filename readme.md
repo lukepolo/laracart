@@ -5,15 +5,15 @@
 [![Test Coverage](https://codeclimate.com/github/lukepolo/laracart/badges/coverage.svg)](https://codeclimate.com/github/lukepolo/laracart/coverage)
 [![Total Downloads](https://poser.pugx.org/lukepolo/laracart/downloads)](https://packagist.org/packages/lukepolo/laracart) [![License](https://poser.pugx.org/lukepolo/laracart/license)](https://packagist.org/packages/lukepolo/laracart)
 
-
 ## Features
-* Display Currency / Locale
-* Easy Session Based Usage
-* Taxation
-* Multiple Cart Instances
-* Coupons / Discounts
-* Fees ex: delivery fee, service charges
-* Totals / sub totals includes sub items / option prices
+* Coupons
+* Session Based System
+* Multiple cart instances
+* Fees  such as a delivery fee
+* Taxation on a the item level
+* Price displays currency and locale
+* Endless item chaining for complex systems
+* Totals of all items within the item chains
 
 ## Laravel compatibility
 
@@ -62,6 +62,7 @@ Look through the configuration options and change as needed
 * [Fees](#fees)
 * [Exceptions](#exceptions)
 * [Events](#events)
+* [Advanced Usage](#advanced)
 
 ## Usage
 
@@ -186,7 +187,7 @@ The reasoning behind sub items is to allow you add additional items without the 
 ```
 
 ## Coupons
-Adding coupons could never be easier, currenlty there are a set of coupons inside LaraCart. To create new types of coupons just create a copy of one of the existing coupons and modify it!
+Adding coupons could never be easier, currently there are a set of coupons inside LaraCart. To create new types of coupons just create a copy of one of the existing coupons and modify it!
 
 ```php
     $coupon = new \LukePOLO\LaraCart\Coupons\Fixed($coupon->CouponCode, $coupon->CouponValue, [
