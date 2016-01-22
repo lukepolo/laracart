@@ -163,7 +163,7 @@ The reasoning behind sub items is to allow you add addiontal items without the a
     ]);
 
     // To update you can do on the item
-    $cartItem->findSubItem($itemHash)->update('price') = 1.00;
+    $cartItem->findSubItem($itemHash)->price = 1.00;
 ```
 
 **Get the Sub-Total of the cart**
