@@ -9,7 +9,7 @@
 * Coupons
 * Session Based System
 * Multiple cart instances
-* Fees  such as a delivery fee
+* Fees such as a delivery fee
 * Taxation on a the item level
 * Prices display currency and locale
 * Endless item chaining for complex systems
@@ -45,7 +45,7 @@ Include the Facade :
 	'LaraCart' => LukePOLO\LaraCart\Facades\LaraCart::class,
 ```
 
-Copy over the configuration file by running the command :
+Copy over the configuration file by running the command:
 
 ```
     php artisan vendor:publish
@@ -97,7 +97,7 @@ Look through the configuration options and change as needed
     $itemHash = $item->getHash();
    
     // That way we can find / remove from the cart
-    LaraCart::findItem($itemHash);
+    LaraCart::getItem($itemHash);
     LaraCart::removeItem($item->getHash());
 ```
 
