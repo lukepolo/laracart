@@ -82,7 +82,7 @@ Look through the configuration options and change as needed
     // Also you can have your item not taxed
     $item = LaraCart::addLine(2, 'Shirt', 200, 15.99, [
         'size' => 'XL'
-        ]
+        ],
         $taxable = false
     );
 ```
