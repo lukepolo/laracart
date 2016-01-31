@@ -126,12 +126,17 @@ Look through the configuration options and change as needed
 **Cart Attributes**
 
 ```php
-    LaraCart::addAttribute('label', "Luke's Cart");
-    LaraCart::updateAttribute('label', "Not Luke's Cart");
-    LaraCart::removeAttribute('label');
-
-    // Gets all the attributes
+    // Set or update an attribute's value
+    LaraCart::setAttribute('label', "Luke's Cart");
+    
+    // Get a specific attribute's value
+    LaraCart::getAttribute('label');
+    
+    // Get all the attributes
     LaraCart::getAttributes();
+    
+    // Remove an attribute
+    LaraCart::removeAttribute('label');
 ```
 
 **Emptying / Destroying the Cart**
