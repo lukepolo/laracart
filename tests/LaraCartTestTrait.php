@@ -14,7 +14,7 @@ trait LaraCartTestTrait
     public function setUp()
     {
         parent::setUp();
-        $this->laracart = new \LukePOLO\LaraCart\LaraCart($this->session);
+        $this->laracart = new \LukePOLO\LaraCart\LaraCart($this->session, $this->events);
     }
 
     /**
@@ -25,6 +25,7 @@ trait LaraCartTestTrait
     protected function getEnvironmentSetUp($app)
     {
         $this->session = $app['session'];
+        $this->events = $app['events'];
         // Setup default database to use sqlite :memory:
         $app['config']->set('laracart.tax', '.07');
     }

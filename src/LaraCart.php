@@ -2,6 +2,7 @@
 
 namespace LukePOLO\LaraCart;
 
+use Illuminate\Contracts\Events\Dispatcher;
 use Illuminate\Session\SessionManager;
 use LukePOLO\LaraCart\Contracts\CouponContract;
 use LukePOLO\LaraCart\Contracts\LaraCartContract;
@@ -21,16 +22,20 @@ class LaraCart implements LaraCartContract
 
     public $cart;
 
-    private $session;
+    protected $session;
+    protected $events;
 
     /**
      * LaraCart constructor.
-     * 
+     *
      * @param SessionManager $session
+     * @param Dispatcher $events
      */
-    public function __construct(SessionManager $session)
+    public function __construct(SessionManager $session, Dispatcher $events)
     {
         $this->session = $session;
+        $this->events = $events;
+
         $this->setInstance($this->session->get('laracart.instance', 'default'));
     }
 
@@ -47,7 +52,7 @@ class LaraCart implements LaraCartContract
 
         $this->session->set('laracart.instance', $instance);
 
-        \Event::fire('laracart.new');
+        $this->events->fire('laracart.new');
 
         return $this;
     }
@@ -111,7 +116,7 @@ class LaraCart implements LaraCartContract
     {
         $this->session->set(config('laracart.cache_prefix', 'laracart') . '.' . $this->cart->instance, $this->cart);
 
-        \Event::fire('laracart.update', $this->cart);
+        $this->events->fire('laracart.update', $this->cart);
     }
 
     /**
@@ -197,7 +202,7 @@ class LaraCart implements LaraCartContract
             $this->cart->items[] = $cartItem;
         }
 
-        \Event::fire('laracart.addItem', $cartItem);
+        $this->events->fire('laracart.addItem', $cartItem);
 
         $this->update();
 
@@ -270,7 +275,7 @@ class LaraCart implements LaraCartContract
             }
         }
 
-        \Event::fire('laracart.removeItem', $itemHash);
+        $this->events->fire('laracart.removeItem', $itemHash);
     }
 
     /**
@@ -282,7 +287,7 @@ class LaraCart implements LaraCartContract
 
         $this->update();
 
-        \Event::fire('laracart.empty', $this->cart->instance);
+        $this->events->fire('laracart.empty', $this->cart->instance);
     }
 
     /**
@@ -296,7 +301,7 @@ class LaraCart implements LaraCartContract
 
         $this->setInstance('default');
 
-        \Event::fire('laracart.destroy', $instance);
+        $this->events->fire('laracart.destroy', $instance);
     }
 
     /**
