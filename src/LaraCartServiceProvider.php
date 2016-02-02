@@ -3,7 +3,6 @@
 namespace LukePOLO\LaraCart;
 
 use Illuminate\Support\ServiceProvider;
-use LukePOLO\LaraCart\Contracts\LaraCartContract;
 
 /**
  * Class LaraCartServiceProvider
@@ -39,7 +38,7 @@ class LaraCartServiceProvider extends ServiceProvider
     public function register()
     {
         $this->app->singleton(LaraCart::SERVICE, function ($app) {
-                return new LaraCart();
+                return new LaraCart($app['session']);
             }
         );
 

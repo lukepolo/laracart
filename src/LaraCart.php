@@ -2,6 +2,7 @@
 
 namespace LukePOLO\LaraCart;
 
+use Illuminate\Session\SessionManager;
 use LukePOLO\LaraCart\Contracts\CouponContract;
 use LukePOLO\LaraCart\Contracts\LaraCartContract;
 
@@ -20,12 +21,17 @@ class LaraCart implements LaraCartContract
 
     public $cart;
 
+    private $session;
+
     /**
      * LaraCart constructor.
+     * 
+     * @param SessionManager $session
      */
-    public function __construct()
+    public function __construct(SessionManager $session)
     {
-        $this->setInstance(\Session::get('laracart.instance', 'default'));
+        $this->session = $session;
+        $this->setInstance($this->session->get('laracart.instance', 'default'));
     }
 
     /**
@@ -39,7 +45,7 @@ class LaraCart implements LaraCartContract
     {
         $this->get($instance);
 
-        \Session::set('laracart.instance', $instance);
+        $this->session->set('laracart.instance', $instance);
 
         \Event::fire('laracart.new');
 
@@ -55,7 +61,7 @@ class LaraCart implements LaraCartContract
      */
     public function get($instance = 'default')
     {
-        if (empty($this->cart = \Session::get(config('laracart.cache_prefix', 'laracart') . '.' . $instance))) {
+        if (empty($this->cart = $this->session->get(config('laracart.cache_prefix', 'laracart') . '.' . $instance))) {
             $this->cart = new Cart($instance);
         }
 
@@ -103,7 +109,7 @@ class LaraCart implements LaraCartContract
      */
     public function update()
     {
-        \Session::set(config('laracart.cache_prefix', 'laracart') . '.' . $this->cart->instance, $this->cart);
+        $this->session->set(config('laracart.cache_prefix', 'laracart') . '.' . $this->cart->instance, $this->cart);
 
         \Event::fire('laracart.update', $this->cart);
     }
@@ -286,7 +292,7 @@ class LaraCart implements LaraCartContract
     {
         $instance = $this->cart->instance;
 
-        \Session::forget(config('laracart.cache_prefix', 'laracart') . '.' . $instance);
+        $this->session->forget(config('laracart.cache_prefix', 'laracart') . '.' . $instance);
 
         $this->setInstance('default');
 
