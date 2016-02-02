@@ -16,8 +16,8 @@ class CartSubItem
     const ITEMS = 'items';
 
     public $locale;
-
     public $internationalFormat;
+
     private $itemHash;
 
     /**
