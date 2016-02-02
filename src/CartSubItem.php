@@ -49,13 +49,13 @@ class CartSubItem
      *
      * @param bool|true $format
      *
-     * @return mixed
+     * @return string
      */
     public function price($format = true)
     {
         $price = $this->price;
 
-        if(isset($this->items)) {
+        if (isset($this->items)) {
             foreach ($this->items as $item) {
                 $price += $item->price(false, false) + $item->subItemsTotal(false, false);
             }
@@ -70,7 +70,7 @@ class CartSubItem
      *
      * @param bool|true $format
      *
-     * @return mixed
+     * @return string
      */
     public function getPrice($format = true)
     {
