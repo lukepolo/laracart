@@ -159,7 +159,7 @@ class LaraCart implements LaraCartContract
         $taxable = true,
         $lineItem = false
     ) {
-        return $this->addItem(
+        $item = $this->addItem(
             new CartItem(
                 $itemID,
                 $name,
@@ -170,6 +170,8 @@ class LaraCart implements LaraCartContract
                 $lineItem
             )
         );
+
+        return $this->getItem($item->getHash());
     }
 
     /**
