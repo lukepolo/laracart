@@ -541,9 +541,9 @@ class LaraCart implements LaraCartContract
     /**
      * Gets the total amount discounted
      *
-     * @param bool|true $format
+     * @param boolean $format
      *
-     * @return int|string
+     * @return string
      */
     public function totalDiscount($format = true)
     {

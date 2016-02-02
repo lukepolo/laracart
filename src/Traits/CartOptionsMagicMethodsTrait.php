@@ -26,7 +26,7 @@ trait CartOptionsMagicMethodsTrait
     {
         try {
             return $this->$option;
-        } catch(\ErrorException $e) {
+        } catch (\ErrorException $e) {
             return array_get($this->options, $option);
         }
     }

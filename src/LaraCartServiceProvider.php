@@ -37,21 +37,21 @@ class LaraCartServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->app->singleton(LaraCart::SERVICE, function ($app) {
+        $this->app->singleton(LaraCart::SERVICE, function($app) {
                 return new LaraCart($app['session'], $app['events']);
             }
         );
 
         $this->app->bind(
             LaraCart::HASH,
-            function ($app, $data) {
+            function($app, $data) {
                 return md5(json_encode($data));
             }
         );
 
         $this->app->bind(
             LaraCart::RANHASH,
-            function () {
+            function() {
                 return str_random(40);
             }
         );

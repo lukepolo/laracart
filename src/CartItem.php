@@ -27,10 +27,10 @@ class CartItem
      *
      * @param $id
      * @param $name
-     * @param $qty
-     * @param $price
+     * @param integer $qty
+     * @param string $price
      * @param array $options
-     * @param bool|true $taxable
+     * @param boolean $taxable
      * @param bool|false $lineItem
      */
     public function __construct($id, $name, $qty, $price, $options = [], $taxable = true, $lineItem = false)
@@ -107,7 +107,7 @@ class CartItem
      *
      * @param array $subItem
      *
-     * @return string $itemHash
+     * @return CartSubItem $itemHash
      */
     public function addSubItem(array $subItem)
     {
@@ -138,7 +138,7 @@ class CartItem
      * @param bool $tax
      * @param bool $format
      *
-     * @return float|string
+     * @return string
      */
     public function price($tax = false, $format = true)
     {
@@ -156,7 +156,7 @@ class CartItem
      *
      * @param bool|true $format
      *
-     * @return mixed
+     * @return string
      */
     public function getPrice($tax = false, $format = true)
     {
@@ -170,7 +170,7 @@ class CartItem
      * @param bool $format
      * @param bool $withDiscount
      *
-     * @return float|string
+     * @return string
      */
     public function subTotal($tax = false, $format = true, $withDiscount = true)
     {
@@ -188,9 +188,9 @@ class CartItem
      * Gets the totals for the options
      *
      * @param bool|false $tax
-     * @param bool|true $format
+     * @param boolean $format
      *
-     * @return int|mixed|string
+     * @return string
      */
     public function subItemsTotal($tax = false, $format = true)
     {
@@ -213,9 +213,9 @@ class CartItem
     /**
      * Gets the discount of an item
      *
-     * @param bool|true $format
+     * @param boolean $format
      *
-     * @return mixed|null|string
+     * @return string
      */
     public function getDiscount($format = true)
     {
