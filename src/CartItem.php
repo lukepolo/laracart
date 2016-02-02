@@ -145,7 +145,7 @@ class CartItem
             $price += $price * $this->tax;
         }
 
-        return \App::make(LaraCart::SERVICE)->formatMoney($price, $this->locale, $this->internationalFormat, $format);
+        return LaraCart::formatMoney($price, $this->locale, $this->internationalFormat, $format);
     }
 
     /**
@@ -178,7 +178,7 @@ class CartItem
             $total -= $this->getDiscount(false);
         }
 
-        return \App::make(LaraCart::SERVICE)->formatMoney($total, $this->locale, $this->internationalFormat, $format);
+        return LaraCart::formatMoney($total, $this->locale, $this->internationalFormat, $format);
     }
 
 
@@ -205,7 +205,7 @@ class CartItem
             $total = $total + ($total * $this->tax);
         }
 
-        return \App::make(LaraCart::SERVICE)->formatMoney($total, $this->locale, $this->internationalFormat, $format);
+        return LaraCart::formatMoney($total, $this->locale, $this->internationalFormat, $format);
     }
 
     /**
@@ -217,7 +217,7 @@ class CartItem
      */
     public function getDiscount($format = true)
     {
-        return \App::make(LaraCart::SERVICE)->formatMoney(
+        return LaraCart::formatMoney(
             $this->discount,
             $this->locale,
             $this->internationalFormat,

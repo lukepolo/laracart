@@ -61,7 +61,7 @@ class CartSubItem
             }
         }
 
-        return \App::make(LaraCart::SERVICE)->formatMoney($price, $this->locale, $this->internationalFormat, $format);
+        return LaraCart::formatMoney($price, $this->locale, $this->internationalFormat, $format);
     }
 
     /**
