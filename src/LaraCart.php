@@ -352,7 +352,7 @@ class LaraCart implements LaraCartContract
             if (isset($item->code) && $item->code == $code) {
                 $item->code = null;
                 $item->discount = null;
-                $item->couponInfo = null;
+                $item->couponInfo = [];
             }
         }
 
@@ -411,7 +411,6 @@ class LaraCart implements LaraCartContract
     public function taxTotal($format = true)
     {
         $totalTax = 0;
-
         $discounted = 0;
         $totalDiscount = $this->totalDiscount(false);
 
@@ -420,11 +419,10 @@ class LaraCart implements LaraCartContract
                 if ($discounted >= $totalDiscount) {
                     $totalTax += $item->tax();
                 } else {
-                    $itemPrice = $item->price(false);
+                    $itemPrice = $item->subTotal(false);
+
                     if (($discounted + $itemPrice) > $totalDiscount) {
-                        $tempItem = clone $item;
-                        $tempItem->price = $totalDiscount - $discounted;
-                        $totalTax += $tempItem->tax();
+                        $totalTax += $item->tax($totalDiscount - $discounted);
                     }
 
                     $discounted += $itemPrice;
@@ -570,7 +568,9 @@ class LaraCart implements LaraCartContract
         $total = 0;
 
         foreach ($this->cart->coupons as $coupon) {
-            $total += $coupon->discount();
+            if($coupon->appliedToCart) {
+                $total += $coupon->discount();
+            }
         }
 
         return $this->formatMoney($total, null, null, $format);

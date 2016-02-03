@@ -144,8 +144,11 @@ class CartItem
      */
     public function price($format = true)
     {
-        return LaraCart::formatMoney($this->price + $this->subItemsTotal(false), $this->locale,
-            $this->internationalFormat, $format);
+        return LaraCart::formatMoney(
+            $this->price + $this->subItemsTotal(false),
+            $this->locale,
+            $this->internationalFormat, $format
+        );
     }
 
     /**
@@ -210,12 +213,12 @@ class CartItem
      *
      * @return int|mixed
      */
-    public function tax()
+    public function tax($amountNotTaxable = 0)
     {
         $tax = 0;
 
         if ($this->taxable) {
-            return $this->tax * ($this->price(false) - $this->getDiscount(false));
+            return $this->tax * ($this->subTotal(false) - $amountNotTaxable);
         }
 
         return $tax;

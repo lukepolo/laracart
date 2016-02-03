@@ -14,6 +14,8 @@ use LukePOLO\LaraCart\LaraCart;
  */
 trait CouponTrait
 {
+    public $appliedToCart = true;
+
     use CartOptionsMagicMethodsTrait;
 
     /**
@@ -121,6 +123,7 @@ trait CouponTrait
      */
     public function setDiscountOnItem(CartItem $item)
     {
+        $this->appliedToCart = false;
         $item->code = $this->code;
         $item->discount = $this->discount();
         $item->couponInfo = $this->options;
