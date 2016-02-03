@@ -150,7 +150,7 @@ class ItemsTest extends Orchestra\Testbench\TestCase
         try {
             $item->price = 'a';
             $this->setExpectedException(\LukePOLO\LaraCart\Exceptions\InvalidPrice::class);
-        } catch(\LukePOLO\LaraCart\Exceptions\InvalidPrice $e) {
+        } catch (\LukePOLO\LaraCart\Exceptions\InvalidPrice $e) {
             $this->assertEquals('The price must be a valid number', $e->getMessage());
         }
     }
@@ -171,21 +171,21 @@ class ItemsTest extends Orchestra\Testbench\TestCase
         try {
             $item->qty = 'a';
             $this->setExpectedException(\LukePOLO\LaraCart\Exceptions\InvalidPrice::class);
-        } catch(\LukePOLO\LaraCart\Exceptions\InvalidQuantity $e) {
+        } catch (\LukePOLO\LaraCart\Exceptions\InvalidQuantity $e) {
             $this->assertEquals('The quantity must be a valid number', $e->getMessage());
         }
 
         try {
             $item->qty = 'a';
             $this->setExpectedException(\LukePOLO\LaraCart\Exceptions\InvalidQuantity::class);
-        } catch(\LukePOLO\LaraCart\Exceptions\InvalidQuantity $e) {
+        } catch (\LukePOLO\LaraCart\Exceptions\InvalidQuantity $e) {
             $this->assertEquals('The quantity must be a valid number', $e->getMessage());
         }
 
         try {
             $item->qty = -1;
             $this->setExpectedException(\LukePOLO\LaraCart\Exceptions\InvalidQuantity::class);
-        } catch(\LukePOLO\LaraCart\Exceptions\InvalidQuantity $e) {
+        } catch (\LukePOLO\LaraCart\Exceptions\InvalidQuantity $e) {
             $this->assertEquals('The quantity must be a valid number', $e->getMessage());
         }
     }
@@ -193,7 +193,8 @@ class ItemsTest extends Orchestra\Testbench\TestCase
     /**
      * Tests the different taxes on items
      */
-    public function testDifferentTaxes() {
+    public function testDifferentTaxes()
+    {
 
         $item = $this->addItem();
 

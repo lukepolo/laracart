@@ -417,7 +417,7 @@ class LaraCart implements LaraCartContract
 
         if ($this->count() != 0) {
             foreach ($this->getItems() as $item) {
-                if($discounted >= $totalDiscount) {
+                if ($discounted >= $totalDiscount) {
                     $totalTax += $item->tax();
                 } else {
                     $discounted += $item->price(false);

@@ -53,7 +53,7 @@ trait LaraCartTestTrait
      */
     private function addItem($qty = 1, $price = 1, $taxable = true, $options = [])
     {
-        if(empty($options)) {
+        if (empty($options)) {
             $options = [
                 'b_test' => 'option_1',
                 'a_test' => 'option_2',

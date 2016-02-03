@@ -3,9 +3,9 @@
 namespace LukePOLO\LaraCart\Contracts;
 
 use LukePOLO\LaraCart\CartItem;
-use LukePOLO\LaraCart\LaraCart;
 use LukePOLO\LaraCart\Exceptions\InvalidPrice;
 use LukePOLO\LaraCart\Exceptions\InvalidQuantity;
+use LukePOLO\LaraCart\LaraCart;
 
 /**
  * Interface LaraCartContract

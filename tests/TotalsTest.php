@@ -23,7 +23,7 @@ class TotalsTest extends Orchestra\Testbench\TestCase
         $this->assertEquals('$10.00', $this->laracart->totalDiscount());
         $this->assertEquals(10, $this->laracart->totalDiscount(false));
 
-        $this->assertEquals(0 , $this->laracart->total(false));
+        $this->assertEquals(0, $this->laracart->total(false));
     }
 
     /**

@@ -20,7 +20,8 @@ class LaraCartTest extends Orchestra\Testbench\TestCase
      */
     public function testSetInstance()
     {
-        $this->assertNotEquals(new \LukePOLO\LaraCart\LaraCart($this->session, $this->events), $this->laracart->setInstance('test'));
+        $this->assertNotEquals(new \LukePOLO\LaraCart\LaraCart($this->session, $this->events),
+            $this->laracart->setInstance('test'));
     }
 
     /**
@@ -134,7 +135,8 @@ class LaraCartTest extends Orchestra\Testbench\TestCase
     /**
      * Tests if generating a new hash when we change an option
      */
-    public function testGeneratingHashes() {
+    public function testGeneratingHashes()
+    {
 
         $item = $this->addItem();
 
