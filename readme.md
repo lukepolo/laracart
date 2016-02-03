@@ -14,6 +14,7 @@
 * Prices display currency and locale
 * Endless item chaining for complex systems
 * Totals of all items within the item chains
+* Item Model Relation at a global and item level
 
 ## Laravel compatibility
 
@@ -56,6 +57,7 @@ Look through the configuration options and change as needed
 ## Overview
 
 * [Usage](#usage)
+* [Item Model Relations](#item-model-relations)
 * [SubItems](#subitems)
 * [Currency & Locale](#currency--locale)
 * [Coupons](#coupons)
@@ -157,6 +159,23 @@ Look through the configuration options and change as needed
     LaraCart::taxTotal($formatted = false);
     LaraCart::total($formatted = false, $withDiscount = true);
 ```
+## Item Model Relation
+
+You set a default model relation to an item by setting it in your config 'item_model'. This will fetch your model
+based on the items id stored in the cart. - ex. Model::findOrFail($id)
+
+```php
+    // returns the associated model
+    $item->getModel()
+
+    // You can also set it directly on the item
+    $item = \LaraCart::add(2, 'Shirt', 1, 15.99, [
+        'size' => 'XXL'
+    ]);
+
+    $item->setModel(\LukePOLO\LaraCart\Tests\Models\TestItem::class);
+
+```
 
 ## SubItems
 The reasoning behind sub items is to allow you add additional items without the all the necessary things that a regular item needs. For instance if you really wanted the same item but in a different size and that size costs more, you can add it as a sub item so it calculates in the price.
@@ -176,7 +195,7 @@ The reasoning behind sub items is to allow you add additional items without the 
 ```
 
 ## Currency & Locale
-Laracart comes built in with a currency / locale display. To configure just checkout the config.php. You can set to show the locale (USD) or the currency ($)
+LaraCart comes built in with a currency / locale display. To configure just checkout the config.php. You can set to show the locale (USD) or the currency ($)
 
 ```php
     $item->price($formatted = true); // $4.50 | USD 4.50
@@ -217,11 +236,12 @@ Instances is a way that we can use multiple carts within the same session. Each 
 ## Exceptions
 LaraCart packages can throw the following exceptions:
 
-| Exception                             | Reason                                                                           |
+| Exception                             | Reason                                                                            |
 | ------------------------------------- | --------------------------------------------------------------------------------- |
 | *InvalidPrice*       | When trying to give an item a non currency format   |
 | *InvalidQuantity*    | When trying to give an item a non-integer for a quantity  |
 | *CouponException*    | When a coupon either is expired or an invalid amount |
+| *ModelNotFound*      | When you try to relate a model that does not exist |
 
 ## Events
 
