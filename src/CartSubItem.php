@@ -16,8 +16,8 @@ class CartSubItem
     const ITEMS = 'items';
 
     public $locale;
-
     public $internationalFormat;
+
     private $itemHash;
 
     /**
@@ -49,19 +49,19 @@ class CartSubItem
      *
      * @param bool|true $format
      *
-     * @return mixed
+     * @return string
      */
     public function price($format = true)
     {
         $price = $this->price;
 
-        if(isset($this->items)) {
+        if (isset($this->items)) {
             foreach ($this->items as $item) {
                 $price += $item->price(false, false) + $item->subItemsTotal(false, false);
             }
         }
 
-        return \App::make(LaraCart::SERVICE)->formatMoney($price, $this->locale, $this->internationalFormat, $format);
+        return LaraCart::formatMoney($price, $this->locale, $this->internationalFormat, $format);
     }
 
     /**
@@ -70,7 +70,7 @@ class CartSubItem
      *
      * @param bool|true $format
      *
-     * @return mixed
+     * @return string
      */
     public function getPrice($format = true)
     {

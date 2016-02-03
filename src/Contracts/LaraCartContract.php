@@ -271,7 +271,7 @@ interface LaraCartContract
      *
      * @return string
      */
-    public function formatMoney($number, $locale = null, $internationalFormat = null, $format = true);
+    public static function formatMoney($number, $locale = null, $internationalFormat = null, $format = true);
 
     /**
      * Gets all the fee totals

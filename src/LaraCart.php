@@ -2,6 +2,8 @@
 
 namespace LukePOLO\LaraCart;
 
+use Illuminate\Contracts\Events\Dispatcher;
+use Illuminate\Session\SessionManager;
 use LukePOLO\LaraCart\Contracts\CouponContract;
 use LukePOLO\LaraCart\Contracts\LaraCartContract;
 
@@ -20,12 +22,21 @@ class LaraCart implements LaraCartContract
 
     public $cart;
 
+    protected $session;
+    protected $events;
+
     /**
      * LaraCart constructor.
+     *
+     * @param SessionManager $session
+     * @param Dispatcher $events
      */
-    public function __construct()
+    public function __construct(SessionManager $session, Dispatcher $events)
     {
-        $this->setInstance(\Session::get('laracart.instance', 'default'));
+        $this->session = $session;
+        $this->events = $events;
+
+        $this->setInstance($this->session->get('laracart.instance', 'default'));
     }
 
     /**
@@ -39,9 +50,9 @@ class LaraCart implements LaraCartContract
     {
         $this->get($instance);
 
-        \Session::set('laracart.instance', $instance);
+        $this->session->set('laracart.instance', $instance);
 
-        \Event::fire('laracart.new');
+        $this->events->fire('laracart.new');
 
         return $this;
     }
@@ -55,7 +66,7 @@ class LaraCart implements LaraCartContract
      */
     public function get($instance = 'default')
     {
-        if (empty($this->cart = \Session::get(config('laracart.cache_prefix', 'laracart') . '.' . $instance))) {
+        if (empty($this->cart = $this->session->get(config('laracart.cache_prefix', 'laracart') . '.' . $instance))) {
             $this->cart = new Cart($instance);
         }
 
@@ -103,9 +114,9 @@ class LaraCart implements LaraCartContract
      */
     public function update()
     {
-        \Session::set(config('laracart.cache_prefix', 'laracart') . '.' . $this->cart->instance, $this->cart);
+        $this->session->set(config('laracart.cache_prefix', 'laracart') . '.' . $this->cart->instance, $this->cart);
 
-        \Event::fire('laracart.update', $this->cart);
+        $this->events->fire('laracart.update', $this->cart);
     }
 
     /**
@@ -191,7 +202,7 @@ class LaraCart implements LaraCartContract
             $this->cart->items[] = $cartItem;
         }
 
-        \Event::fire('laracart.addItem', $cartItem);
+        $this->events->fire('laracart.addItem', $cartItem);
 
         $this->update();
 
@@ -264,7 +275,7 @@ class LaraCart implements LaraCartContract
             }
         }
 
-        \Event::fire('laracart.removeItem', $itemHash);
+        $this->events->fire('laracart.removeItem', $itemHash);
     }
 
     /**
@@ -276,7 +287,7 @@ class LaraCart implements LaraCartContract
 
         $this->update();
 
-        \Event::fire('laracart.empty', $this->cart->instance);
+        $this->events->fire('laracart.empty', $this->cart->instance);
     }
 
     /**
@@ -286,11 +297,11 @@ class LaraCart implements LaraCartContract
     {
         $instance = $this->cart->instance;
 
-        \Session::forget(config('laracart.cache_prefix', 'laracart') . '.' . $instance);
+        $this->session->forget(config('laracart.cache_prefix', 'laracart') . '.' . $instance);
 
         $this->setInstance('default');
 
-        \Event::fire('laracart.destroy', $instance);
+        $this->events->fire('laracart.destroy', $instance);
     }
 
     /**
@@ -479,7 +490,7 @@ class LaraCart implements LaraCartContract
      *
      * @return string
      */
-    public function formatMoney($number, $locale = null, $internationalFormat = null, $format = true)
+    public static function formatMoney($number, $locale = null, $internationalFormat = null, $format = true)
     {
         $number = number_format($number, 2, '.', '');
 
@@ -530,9 +541,9 @@ class LaraCart implements LaraCartContract
     /**
      * Gets the total amount discounted
      *
-     * @param bool|true $format
+     * @param boolean $format
      *
-     * @return int|string
+     * @return string
      */
     public function totalDiscount($format = true)
     {

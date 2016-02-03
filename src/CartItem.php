@@ -15,20 +15,22 @@ class CartItem
 
     protected $itemHash;
 
-    public $lineItem;
+    public $locale;
     public $taxable;
+    public $lineItem;
     public $subItems = [];
     public $couponInfo = [];
+    public $internationalFormat;
 
     /**
      * CartItem constructor.
      *
      * @param $id
      * @param $name
-     * @param $qty
-     * @param $price
+     * @param integer $qty
+     * @param string $price
      * @param array $options
-     * @param bool|true $taxable
+     * @param boolean $taxable
      * @param bool|false $lineItem
      */
     public function __construct($id, $name, $qty, $price, $options = [], $taxable = true, $lineItem = false)
@@ -69,7 +71,7 @@ class CartItem
             $this->itemHash = app(LaraCart::RANHASH);
         }
 
-        \Event::fire(
+        app('events')->fire(
             'laracart.updateItem', [
                 'item' => $this,
                 'newHash' => $this->itemHash
@@ -105,7 +107,7 @@ class CartItem
      *
      * @param array $subItem
      *
-     * @return string $itemHash
+     * @return CartSubItem $itemHash
      */
     public function addSubItem(array $subItem)
     {
@@ -136,7 +138,7 @@ class CartItem
      * @param bool $tax
      * @param bool $format
      *
-     * @return float|string
+     * @return string
      */
     public function price($tax = false, $format = true)
     {
@@ -145,7 +147,7 @@ class CartItem
             $price += $price * $this->tax;
         }
 
-        return \App::make(LaraCart::SERVICE)->formatMoney($price, $this->locale, $this->internationalFormat, $format);
+        return LaraCart::formatMoney($price, $this->locale, $this->internationalFormat, $format);
     }
 
     /**
@@ -154,7 +156,7 @@ class CartItem
      *
      * @param bool|true $format
      *
-     * @return mixed
+     * @return string
      */
     public function getPrice($tax = false, $format = true)
     {
@@ -168,7 +170,7 @@ class CartItem
      * @param bool $format
      * @param bool $withDiscount
      *
-     * @return float|string
+     * @return string
      */
     public function subTotal($tax = false, $format = true, $withDiscount = true)
     {
@@ -178,7 +180,7 @@ class CartItem
             $total -= $this->getDiscount(false);
         }
 
-        return \App::make(LaraCart::SERVICE)->formatMoney($total, $this->locale, $this->internationalFormat, $format);
+        return LaraCart::formatMoney($total, $this->locale, $this->internationalFormat, $format);
     }
 
 
@@ -186,9 +188,9 @@ class CartItem
      * Gets the totals for the options
      *
      * @param bool|false $tax
-     * @param bool|true $format
+     * @param boolean $format
      *
-     * @return int|mixed|string
+     * @return string
      */
     public function subItemsTotal($tax = false, $format = true)
     {
@@ -205,19 +207,19 @@ class CartItem
             $total = $total + ($total * $this->tax);
         }
 
-        return \App::make(LaraCart::SERVICE)->formatMoney($total, $this->locale, $this->internationalFormat, $format);
+        return LaraCart::formatMoney($total, $this->locale, $this->internationalFormat, $format);
     }
 
     /**
      * Gets the discount of an item
      *
-     * @param bool|true $format
+     * @param boolean $format
      *
-     * @return mixed|null|string
+     * @return string
      */
     public function getDiscount($format = true)
     {
-        return \App::make(LaraCart::SERVICE)->formatMoney(
+        return LaraCart::formatMoney(
             $this->discount,
             $this->locale,
             $this->internationalFormat,
