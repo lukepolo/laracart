@@ -43,7 +43,7 @@ class CartItem
         $this->price = floatval($price);
         $this->tax = config('laracart.tax');
 
-        foreach($options as $option => $value) {
+        foreach ($options as $option => $value) {
             $this->$option = $value;
         }
     }
@@ -61,9 +61,9 @@ class CartItem
             $this->itemHash = null;
 
             $cartItemArray = (array)$this;
-            
+
             unset($cartItemArray['options']['qty']);
-            
+
             ksort($cartItemArray['options']);
 
             $this->itemHash = app(LaraCart::HASH, $cartItemArray);
@@ -141,7 +141,8 @@ class CartItem
      */
     public function price($format = true)
     {
-        return LaraCart::formatMoney($this->price + $this->subItemsTotal(false), $this->locale, $this->internationalFormat, $format);
+        return LaraCart::formatMoney($this->price + $this->subItemsTotal(false), $this->locale,
+            $this->internationalFormat, $format);
     }
 
     /**
@@ -210,7 +211,7 @@ class CartItem
     {
         $tax = 0;
 
-        if($this->taxable) {
+        if ($this->taxable) {
             return $this->tax * $this->price(false);
         }
 
