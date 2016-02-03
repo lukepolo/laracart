@@ -64,6 +64,9 @@ class SubItemsTest extends Orchestra\Testbench\TestCase
         $this->assertEquals(14, $item->getPrice(false, false));
     }
 
+    /**
+     * Testing totals for sub sub items
+     */
     public function testSubItemsSubItemsTotal()
     {
         $item = $this->addItem(1, 11);
@@ -87,6 +90,7 @@ class SubItemsTest extends Orchestra\Testbench\TestCase
         $this->assertEquals(14, $item->subTotal(false, false));
         $this->assertEquals(14, $item->getPrice(false, false));
     }
+
     /**
      * Test adding an item on a sub item
      */
