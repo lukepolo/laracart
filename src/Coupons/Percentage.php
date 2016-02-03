@@ -3,6 +3,7 @@
 namespace LukePOLO\LaraCart\Coupons;
 
 use LukePOLO\LaraCart\Contracts\CouponContract;
+use LukePOLO\LaraCart\LaraCart;
 use LukePOLO\LaraCart\Traits\CouponTrait;
 
 /**
@@ -46,8 +47,8 @@ class Percentage implements CouponContract
      */
     public function discount()
     {
-        return \App::make(\LukePOLO\Laracart\LaraCart::SERVICE)->formatMoney(
-            \App::make(\LukePOLO\Laracart\LaraCart::SERVICE)->total(false, false) * $this->value,
+        return LaraCart::formatMoney(
+            app(LaraCart::SERVICE)->subTotal(false) * $this->value,
             null,
             null,
             false

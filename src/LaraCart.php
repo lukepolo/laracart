@@ -410,8 +410,20 @@ class LaraCart implements LaraCartContract
      */
     public function taxTotal($format = true)
     {
-        $totalTax = $this->total(false, false) - $this->subTotal(false, false, false) - $this->feeTotals(false);
+        $totalTax = 0;
 
+        $discounted = 0;
+        $totalDiscount = $this->totalDiscount(false);
+
+        if ($this->count() != 0) {
+            foreach ($this->getItems() as $item) {
+                if($discounted >= $totalDiscount) {
+                    $totalTax += $item->tax();
+                } else {
+                    $discounted += $item->price(false);
+                }
+            }
+        }
 
         return $this->formatMoney($totalTax, null, null, $format);
     }
@@ -426,11 +438,13 @@ class LaraCart implements LaraCartContract
      */
     public function total($format = true, $withDiscount = true)
     {
-        $total = $this->subTotal(true, false, false) + $this->feeTotals(false);
+        $total = $this->subTotal(false) + $this->feeTotals(false);
 
         if ($withDiscount) {
             $total -= $this->totalDiscount(false);
         }
+
+        $total += $this->taxTotal(false);
 
         return $this->formatMoney($total, null, null, $format);
     }
@@ -438,19 +452,18 @@ class LaraCart implements LaraCartContract
     /**
      * Gets the subtotal of the cart with or without tax
      *
-     * @param bool|false $tax
      * @param boolean $format
      * @param boolean $withDiscount
      *
      * @return string
      */
-    public function subTotal($tax = false, $format = true, $withDiscount = true)
+    public function subTotal($format = true, $withDiscount = true)
     {
         $total = 0;
 
         if ($this->count() != 0) {
             foreach ($this->getItems() as $item) {
-                $total += $item->subTotal($tax, false, $withDiscount);
+                $total += $item->subTotal(false, $withDiscount);
             }
         }
 

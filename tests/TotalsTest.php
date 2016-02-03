@@ -12,6 +12,8 @@ class TotalsTest extends Orchestra\Testbench\TestCase
      */
     public function testTotalDiscount()
     {
+        $this->addItem(1, 10);
+
         $fixedCoupon = new LukePOLO\LaraCart\Coupons\Fixed(
             '10OFF', 10
         );
@@ -20,6 +22,8 @@ class TotalsTest extends Orchestra\Testbench\TestCase
 
         $this->assertEquals('$10.00', $this->laracart->totalDiscount());
         $this->assertEquals(10, $this->laracart->totalDiscount(false));
+
+        $this->assertEquals(0 , $this->laracart->total(false));
     }
 
     /**
@@ -54,11 +58,11 @@ class TotalsTest extends Orchestra\Testbench\TestCase
         $item = $this->addItem(1, 24);
 
         $this->assertEquals('$24.00', $this->laracart->subTotal());
-        $this->assertEquals('24.00', $this->laracart->subTotal(false, false));
+        $this->assertEquals('24.00', $this->laracart->subTotal(false));
 
         $item->qty = 5;
 
-        $this->assertEquals('120.00', $this->laracart->subTotal(false, false));
+        $this->assertEquals('120.00', $this->laracart->subTotal(false));
     }
 
     /**
@@ -96,7 +100,7 @@ class TotalsTest extends Orchestra\Testbench\TestCase
 
         $item->qty = 5;
 
-        $this->assertEquals('11.00', $this->laracart->subTotal(false, false));
+        $this->assertEquals('11.00', $this->laracart->subTotal(false));
         $this->assertEquals('11.07', $this->laracart->total(false));
     }
 }

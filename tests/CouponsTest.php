@@ -23,7 +23,7 @@ class CouponsTest extends Orchestra\Testbench\TestCase
         $this->assertEquals($percentCoupon, $this->laracart->findCoupon('10%OFF'));
 
         $this->assertEquals('10%', $percentCoupon->displayValue());
-        $this->assertEquals('.32', $percentCoupon->discount());
+        $this->assertEquals('.30', $percentCoupon->discount());
 
         $this->assertCount(1, $this->laracart->getCoupons());
     }
@@ -33,11 +33,13 @@ class CouponsTest extends Orchestra\Testbench\TestCase
      */
     public function testAddFixedCoupon()
     {
-        $this->addItem();
-
         $fixedCoupon = new LukePOLO\LaraCart\Coupons\Fixed('10OFF', 10);
 
         $this->laracart->addCoupon($fixedCoupon);
+
+        $this->assertEquals('0', $fixedCoupon->discount());
+
+        $this->addItem(1, 20);
 
         $this->assertEquals('$10.00', $fixedCoupon->displayValue());
         $this->assertEquals('10', $fixedCoupon->discount());
