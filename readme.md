@@ -119,7 +119,7 @@ Look through the configuration options and change as needed
     
     $item->size = 'L';
     
-    $item->price($tax = false, $formatted = true); // $4.50 | USD 4.50
+    $item->price($formatted = true); // $4.50 | USD 4.50
     
 ```
 
@@ -152,7 +152,7 @@ Look through the configuration options and change as needed
 **Cart Totals**
 
 ```php
-    LaraCart::subTotal($tax = false, $format = true, $withDiscount = true);
+    LaraCart::subTotal($format = true, $withDiscount = true);
     LaraCart::totalDiscount($formatted = false);
     LaraCart::taxTotal($formatted = false);
     LaraCart::total($formatted = false, $withDiscount = true);
@@ -171,15 +171,15 @@ The reasoning behind sub items is to allow you add additional items without the 
         'price' => 3.00
     ]);
     
-    $item->subTotal($tax = false); // $18.99
-    $item->subItemsTotal($tax = false, $formatMoney = true); // $3.00
+    $item->subTotal(); // $18.99
+    $item->subItemsTotal($formatMoney = true); // $3.00
 ```
 
 ## Currency & Locale
 Laracart comes built in with a currency / locale display. To configure just checkout the config.php. You can set to show the locale (USD) or the currency ($)
 
 ```php
-    $item->price($tax = false, $formatted = true); // $4.50 | USD 4.50
+    $item->price($formatted = true); // $4.50 | USD 4.50
     
     LaraCart::total() // $24.23 | USD 24.23
 ```

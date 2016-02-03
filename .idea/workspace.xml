@@ -2,15 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="319e60c2-ed67-4541-8866-639f4faa0221" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/CartItem.php" afterPath="$PROJECT_DIR$/src/CartItem.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Contracts/LaraCartContract.php" afterPath="$PROJECT_DIR$/src/Contracts/LaraCartContract.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Coupons/Fixed.php" afterPath="$PROJECT_DIR$/src/Coupons/Fixed.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Coupons/Percentage.php" afterPath="$PROJECT_DIR$/src/Coupons/Percentage.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/LaraCart.php" afterPath="$PROJECT_DIR$/src/LaraCart.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/tests/CouponsTest.php" afterPath="$PROJECT_DIR$/tests/CouponsTest.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/tests/ItemsTest.php" afterPath="$PROJECT_DIR$/tests/ItemsTest.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/tests/SubItemsTest.php" afterPath="$PROJECT_DIR$/tests/SubItemsTest.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/tests/TotalsTest.php" afterPath="$PROJECT_DIR$/tests/TotalsTest.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/readme.md" afterPath="$PROJECT_DIR$/readme.md" />
     </list>
     <ignored path="laracart.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -35,8 +28,18 @@
       <file leaf-file-name="LaraCart.php" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/LaraCart.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-16.875">
-              <caret line="426" column="0" selection-start-line="426" selection-start-column="0" selection-end-line="426" selection-end-column="0" />
+            <state vertical-scroll-proportion="-17.5">
+              <caret line="428" column="5" selection-start-line="403" selection-start-column="3" selection-end-line="428" selection-end-column="5" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="readme.md" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/readme.md">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.36894274">
+              <caret line="156" column="28" selection-start-line="156" selection-start-column="28" selection-end-line="156" selection-end-column="28" />
               <folding />
             </state>
           </provider>
@@ -72,11 +75,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="TotalsTest.php" pinned="false" current-in-tab="true">
+      <file leaf-file-name="TotalsTest.php" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/tests/TotalsTest.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.30784708">
-              <caret line="25" column="60" selection-start-line="25" selection-start-column="60" selection-end-line="25" selection-end-column="60" />
+            <state vertical-scroll-proportion="-9.375">
+              <caret line="15" column="0" selection-start-line="15" selection-start-column="0" selection-end-line="15" selection-end-column="0" />
               <folding />
             </state>
           </provider>
@@ -127,9 +130,10 @@
         <option value="$PROJECT_DIR$/tests/ItemsTest.php" />
         <option value="$PROJECT_DIR$/tests/SubItemsTest.php" />
         <option value="$PROJECT_DIR$/src/Coupons/Fixed.php" />
-        <option value="$PROJECT_DIR$/src/LaraCart.php" />
         <option value="$PROJECT_DIR$/tests/CouponsTest.php" />
         <option value="$PROJECT_DIR$/tests/TotalsTest.php" />
+        <option value="$PROJECT_DIR$/src/LaraCart.php" />
+        <option value="$PROJECT_DIR$/readme.md" />
       </list>
     </option>
   </component>
@@ -309,7 +313,7 @@
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.46728972" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.42990655" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.42990655" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
@@ -529,14 +533,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/LaraCart.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-16.875">
-          <caret line="426" column="0" selection-start-line="426" selection-start-column="0" selection-end-line="426" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/tests/CouponsTest.php">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="-6.25">
@@ -555,8 +551,24 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/tests/TotalsTest.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.30784708">
-          <caret line="25" column="60" selection-start-line="25" selection-start-column="60" selection-end-line="25" selection-end-column="60" />
+        <state vertical-scroll-proportion="-9.375">
+          <caret line="15" column="0" selection-start-line="15" selection-start-column="0" selection-end-line="15" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/LaraCart.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-17.5">
+          <caret line="428" column="5" selection-start-line="403" selection-start-column="3" selection-end-line="428" selection-end-column="5" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/readme.md">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.36894274">
+          <caret line="156" column="28" selection-start-line="156" selection-start-column="28" selection-end-line="156" selection-end-column="28" />
           <folding />
         </state>
       </provider>
