@@ -215,16 +215,16 @@ class ItemsTest extends Orchestra\Testbench\TestCase
         $this->assertEquals('1.70', $item->subTotal(true, false));
     }
 
-
     /*
      * Test that an item can be found by the value of an option
      */
-    public function testFindingAnItemByOptionSucceeds() {
-
+    public function testFindingAnItemByOptionSucceeds() 
+    {
         $this->addItem(1, 1, true, [
             'key1' => 'matching',
             'key2' => 'value1',
         ]);
+        
         $this->addItem(1, 1, true, [
             'key1' => 'notmatching',
             'key2' => 'value2',
@@ -232,14 +232,13 @@ class ItemsTest extends Orchestra\Testbench\TestCase
 
         $this->assertCount(1, $this->laracart->find(['key1' => 'matching']));
         $this->assertCount(1, $this->laracart->find(['key2' => 'value2']));
-
     }
 
     /*
      * Test that an item is not found by the value of an option when it does not exist
      */
-    public function testFindingAnItemByOptionFails() {
-
+    public function testFindingAnItemByOptionFails() 
+    {
         $this->addItem(1, 1, true, [
             'key1' => 'notmatching',
         ]);
@@ -249,14 +248,13 @@ class ItemsTest extends Orchestra\Testbench\TestCase
         ]);
 
         $this->assertCount(0, $this->laracart->find(['key1' => 'matching']));
-
     }
 
     /*
      * Test that multiple matching items are found by the value of an option 
      */
-    public function testFindingAnItemReturnsMultipleMatches() {
-
+    public function testFindingAnItemReturnsMultipleMatches() 
+    {
         $this->addItem(1, 1, true, [
             'key1' => 'matching',
             'key2' => 'value1',
@@ -277,17 +275,16 @@ class ItemsTest extends Orchestra\Testbench\TestCase
     /*
      * Test that an multiple matching items are found by the value of an option 
      */
-    public function testFindingAnItemOnAnEmptyCartReturnsNoMatches() {
-
+    public function testFindingAnItemOnAnEmptyCartReturnsNoMatches() 
+    {
         $this->assertCount(0, $this->laracart->find(['key1' => 'matching']));
-
     }
 
     /*
      * Test an item is returned when finding multiple criteria 
      */
-    public function testFindingAnItemWithMultipleCriteria() {
-
+    public function testFindingAnItemWithMultipleCriteria() 
+    {
         $this->addItem(1, 1, true, [
             'key1' => 'value1',
             'key2' => 'value2',
@@ -302,14 +299,13 @@ class ItemsTest extends Orchestra\Testbench\TestCase
         $this->assertCount(1, $this->laracart->find(['key1' => 'value1', 'key2' => 'value2']));
         $this->assertCount(0, $this->laracart->find(['key1' => 'value2', 'key2' => 'value2']));
         $this->assertCount(2, $this->laracart->find(['key1' => 'value1']));
-
     }
 
     /*
      * Test an item is found searching by name
      */
-    public function testFindingAnItemByName() {
-
+    public function testFindingAnItemByName() 
+    {
         $this->laracart->add('item1234', 'My Item', 1, 2, [
             'key1' => 'value1',
             'key2' => 'value2',
@@ -322,7 +318,6 @@ class ItemsTest extends Orchestra\Testbench\TestCase
 
         $this->assertCount(1, $this->laracart->find(['name' => 'My Item']));
         $this->assertCount(0, $this->laracart->find(['name' => 'My Item', 'key2' => 'nomatch']));
-
     }
 
 }
