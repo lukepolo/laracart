@@ -145,19 +145,6 @@ class CartItem
     }
 
     /**
-     * Gets the formatted price
-     * @deprecated deprecated since version 1.0.13
-     *
-     * @param bool|true $format
-     *
-     * @return string
-     */
-    public function getPrice($format = true)
-    {
-        return $this->price($format);
-    }
-
-    /**
      * Gets the sub total of the item based on the qty with or without tax in the proper format
      *
      * @param bool $format

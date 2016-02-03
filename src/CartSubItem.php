@@ -63,17 +63,4 @@ class CartSubItem
 
         return LaraCart::formatMoney($price, $this->locale, $this->internationalFormat, $format);
     }
-
-    /**
-     * Gets the formatted price
-     * @deprecated deprecated since version 1.0.13
-     *
-     * @param bool|true $format
-     *
-     * @return string
-     */
-    public function getPrice($format = true)
-    {
-        return $this->price($format);
-    }
 }
