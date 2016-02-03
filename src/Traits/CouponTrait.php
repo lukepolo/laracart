@@ -5,6 +5,7 @@ namespace LukePOLO\LaraCart\Traits;
 use Carbon\Carbon;
 use LukePOLO\LaraCart\CartItem;
 use LukePOLO\LaraCart\Exceptions\CouponException;
+use LukePOLO\LaraCart\Exceptions\InvalidPrice;
 use LukePOLO\LaraCart\LaraCart;
 
 /**
@@ -120,12 +121,18 @@ trait CouponTrait
      * Sets a discount to an item with what code was used and the discount amount
      *
      * @param CartItem $item
+     * @param $discountAmount
+     *
+     * @throws InvalidPrice
      */
-    public function setDiscountOnItem(CartItem $item)
+    public function setDiscountOnItem(CartItem $item, $discountAmount)
     {
+        if(!is_numeric($discountAmount)) {
+            throw new InvalidPrice();
+        }
         $this->appliedToCart = false;
         $item->code = $this->code;
-        $item->discount = $this->discount();
+        $item->discount = $discountAmount;
         $item->couponInfo = $this->options;
     }
 }

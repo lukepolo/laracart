@@ -193,7 +193,7 @@ class CouponsTest extends Orchestra\Testbench\TestCase
 
         $this->assertEquals('53.50', $this->laracart->total(false));
 
-        $coupon->setDiscountOnItem($item, '10OFF');
+        $coupon->setDiscountOnItem($item, 10.00);
         $this->assertEquals('10OFF', $item->code);
 
 
