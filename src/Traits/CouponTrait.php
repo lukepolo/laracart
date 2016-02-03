@@ -122,7 +122,7 @@ trait CouponTrait
     public function setDiscountOnItem(CartItem $item)
     {
         $item->code = $this->code;
-        $item->discount = $this->discount();
+        $item->discount = $this->discount;
         $item->couponInfo = $this->options;
     }
 }

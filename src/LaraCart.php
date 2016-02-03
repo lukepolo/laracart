@@ -423,9 +423,7 @@ class LaraCart implements LaraCartContract
                     $itemPrice = $item->price(false);
                     if (($discounted + $itemPrice) > $totalDiscount) {
                         $tempItem = clone $item;
-
                         $tempItem->price = $totalDiscount - $discounted;
-
                         $totalTax += $tempItem->tax();
                     }
 

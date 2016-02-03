@@ -215,7 +215,7 @@ class CartItem
         $tax = 0;
 
         if ($this->taxable) {
-            return $this->tax * $this->price(false);
+            return $this->tax * ($this->price(false) - $this->getDiscount(false));
         }
 
         return $tax;
