@@ -57,7 +57,7 @@ class CartSubItem
 
         if (isset($this->items)) {
             foreach ($this->items as $item) {
-                $price += $item->price(false, false);
+                $price += $item->price(false);
             }
         }
 

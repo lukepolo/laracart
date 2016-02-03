@@ -26,6 +26,8 @@ class CouponsTest extends Orchestra\Testbench\TestCase
         $this->assertEquals('.30', $percentCoupon->discount());
 
         $this->assertCount(1, $this->laracart->getCoupons());
+
+        $this->assertEquals(.02, $this->laracart->taxTotal(false));
     }
 
     /**
@@ -45,6 +47,9 @@ class CouponsTest extends Orchestra\Testbench\TestCase
         $this->assertEquals('10', $fixedCoupon->discount());
 
         $this->assertEquals($fixedCoupon, $this->laracart->findCoupon('10OFF'));
+
+        $this->assertEquals('.7', $this->laracart->taxTotal(false));
+
     }
 
     /**
