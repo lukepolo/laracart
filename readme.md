@@ -29,7 +29,7 @@ Install the package through [Composer](http://getcomposer.org/). Edit your proje
     {
 	    "require": {
 	        ........,
-	        "lukepolo/laracart": "1.0.*"
+	        "lukepolo/laracart": "1.1.*"
 	    }
     }
 
