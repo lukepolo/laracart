@@ -201,12 +201,17 @@ class CartItem
         );
     }
 
+    /**
+     * Gets the tax for the item
+     *
+     * @return int|mixed
+     */
     public function tax()
     {
         $tax = 0;
 
         if($this->taxable) {
-            return $this->tax * $this->price;
+            return $this->tax * $this->price(false);
         }
 
         return $tax;
