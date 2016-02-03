@@ -159,14 +159,14 @@ Look through the configuration options and change as needed
     LaraCart::taxTotal($formatted = false);
     LaraCart::total($formatted = false, $withDiscount = true);
 ```
-## Item Model Relation
+## Item Model Relations
 
 You set a default model relation to an item by setting it in your config 'item_model'. This will fetch your model
 based on the items id stored in the cart. - ex. Model::findOrFail($id)
 
 ```php
     // returns the associated model
-    $item->getModel()
+    $item->getModel();
 
     // You can also set it directly on the item
     $item = \LaraCart::add(2, 'Shirt', 1, 15.99, [
