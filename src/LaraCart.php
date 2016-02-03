@@ -542,7 +542,7 @@ class LaraCart implements LaraCartContract
     }
 
     /**
-     * Getes all the fees on the cart object
+     * Gets all the fees on the cart object
      *
      * @return mixed
      */
