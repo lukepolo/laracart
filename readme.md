@@ -57,8 +57,8 @@ Look through the configuration options and change as needed
 ## Overview
 
 * [Usage](#usage)
-* [Item Model Relations](#item-model-relations)
 * [SubItems](#subitems)
+* [Item Model Relations](#item-model-relations)
 * [Currency & Locale](#currency--locale)
 * [Coupons](#coupons)
 * [Fees](#fees)
@@ -159,6 +159,24 @@ Look through the configuration options and change as needed
     LaraCart::taxTotal($formatted = false);
     LaraCart::total($formatted = false, $withDiscount = true);
 ```
+
+## SubItems
+The reasoning behind sub items is to allow you add additional items without the all the necessary things that a regular item needs. For instance if you really wanted the same item but in a different size and that size costs more, you can add it as a sub item so it calculates in the price.
+
+```php
+    $item = \LaraCart::add(2, 'Shirt', 1, 15.99, [
+        'size' => 'XXL'
+    ]);
+    
+    $item->addSubItem([
+        'description' => 'Extra Cloth Cost', // this line is not required!
+        'price' => 3.00
+    ]);
+    
+    $item->subTotal(); // $18.99
+    $item->subItemsTotal($formatMoney = true); // $3.00
+```
+
 ## Item Model Relations
 
 You set a default model relation to an item by setting it in your config ``` item_mode ```
@@ -176,23 +194,6 @@ You set a default model relation to an item by setting it in your config ``` ite
 
     $item->setModel(\LukePOLO\LaraCart\Tests\Models\TestItem::class);
 
-```
-
-## SubItems
-The reasoning behind sub items is to allow you add additional items without the all the necessary things that a regular item needs. For instance if you really wanted the same item but in a different size and that size costs more, you can add it as a sub item so it calculates in the price.
-
-```php
-    $item = \LaraCart::add(2, 'Shirt', 1, 15.99, [
-        'size' => 'XXL'
-    ]);
-    
-    $item->addSubItem([
-        'description' => 'Extra Cloth Cost', // this line is not required!
-        'price' => 3.00
-    ]);
-    
-    $item->subTotal(); // $18.99
-    $item->subItemsTotal($formatMoney = true); // $3.00
 ```
 
 ## Currency & Locale
