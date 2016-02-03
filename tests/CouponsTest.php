@@ -194,8 +194,16 @@ class CouponsTest extends Orchestra\Testbench\TestCase
         $this->assertEquals('53.50', $this->laracart->total(false));
 
         $coupon->setDiscountOnItem($item, 10.00);
+
         $this->assertEquals('10OFF', $item->code);
 
+
+        try {
+            $coupon->setDiscountOnItem($item, 'abc');
+            $this->setExpectedException(\LukePOLO\LaraCart\Exceptions\InvalidPrice::class);
+        } catch (\LukePOLO\LaraCart\Exceptions\InvalidPrice $e) {
+            $this->assertEquals('You must use a discount amount.', $e->getMessage());
+        }
 
         $item = $this->addItem();
 
