@@ -161,10 +161,7 @@ Look through the configuration options and change as needed
 ```
 ## Item Model Relations
 
-You set a default model relation to an item by setting it in your config
-```
-    item_model
-```
+You set a default model relation to an item by setting it in your config ``` item_mode ```
 
 ``` This will fetch your model based on the items id stored in the cart. ``` ``` - ex. Model::findOrFail($id) ```
 
