@@ -3,9 +3,9 @@
 namespace LukePOLO\LaraCart\Contracts;
 
 use LukePOLO\LaraCart\CartItem;
-use LukePOLO\LaraCart\LaraCart;
 use LukePOLO\LaraCart\Exceptions\InvalidPrice;
 use LukePOLO\LaraCart\Exceptions\InvalidQuantity;
+use LukePOLO\LaraCart\LaraCart;
 
 /**
  * Interface LaraCartContract
@@ -243,13 +243,12 @@ interface LaraCartContract
     /**
      * Gets the subtotal of the cart with or without tax
      *
-     * @param bool|false $tax
      * @param boolean $format
      * @param boolean $withDiscount
      *
      * @return string
      */
-    public function subTotal($tax = false, $format = true, $withDiscount = true);
+    public function subTotal($format = true, $withDiscount = true);
 
     /**
      * Get the count based on qty, or number of unique items

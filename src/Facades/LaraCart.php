@@ -3,7 +3,6 @@
 namespace LukePOLO\LaraCart\Facades;
 
 use Illuminate\Support\Facades\Facade;
-use LukePOLO\LaraCart\Contracts\LaraCartContract;
 
 /**
  * Class LaraCart

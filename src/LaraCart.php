@@ -14,16 +14,16 @@ use LukePOLO\LaraCart\Contracts\LaraCartContract;
  */
 class LaraCart implements LaraCartContract
 {
-    const SERVICE = 'laracart';
     const QTY = 'qty';
-    const PRICE = 'price';
     const HASH = 'generateCartHash';
+    const PRICE = 'price';
+    const SERVICE = 'laracart';
     const RANHASH = 'generateRandomCartItemHash';
 
-    public $cart;
-
-    protected $session;
     protected $events;
+    protected $session;
+
+    public $cart;
 
     /**
      * LaraCart constructor.
@@ -352,7 +352,7 @@ class LaraCart implements LaraCartContract
             if (isset($item->code) && $item->code == $code) {
                 $item->code = null;
                 $item->discount = null;
-                $item->couponInfo = null;
+                $item->couponInfo = [];
             }
         }
 
@@ -410,8 +410,25 @@ class LaraCart implements LaraCartContract
      */
     public function taxTotal($format = true)
     {
-        $totalTax = $this->total(false, false) - $this->subTotal(false, false, false) - $this->feeTotals(false);
+        $totalTax = 0;
+        $discounted = 0;
+        $totalDiscount = $this->totalDiscount(false);
 
+        if ($this->count() != 0) {
+            foreach ($this->getItems() as $item) {
+                if ($discounted >= $totalDiscount) {
+                    $totalTax += $item->tax();
+                } else {
+                    $itemPrice = $item->subTotal(false);
+
+                    if (($discounted + $itemPrice) > $totalDiscount) {
+                        $totalTax += $item->tax($totalDiscount - $discounted);
+                    }
+
+                    $discounted += $itemPrice;
+                }
+            }
+        }
 
         return $this->formatMoney($totalTax, null, null, $format);
     }
@@ -426,11 +443,13 @@ class LaraCart implements LaraCartContract
      */
     public function total($format = true, $withDiscount = true)
     {
-        $total = $this->subTotal(true, false, false) + $this->feeTotals(false);
+        $total = $this->subTotal(false) + $this->feeTotals(false);
 
         if ($withDiscount) {
             $total -= $this->totalDiscount(false);
         }
+
+        $total += $this->taxTotal(false);
 
         return $this->formatMoney($total, null, null, $format);
     }
@@ -438,19 +457,18 @@ class LaraCart implements LaraCartContract
     /**
      * Gets the subtotal of the cart with or without tax
      *
-     * @param bool|false $tax
      * @param boolean $format
      * @param boolean $withDiscount
      *
      * @return string
      */
-    public function subTotal($tax = false, $format = true, $withDiscount = true)
+    public function subTotal($format = true, $withDiscount = true)
     {
         $total = 0;
 
         if ($this->count() != 0) {
             foreach ($this->getItems() as $item) {
-                $total += $item->subTotal($tax, false, $withDiscount);
+                $total += $item->subTotal(false, $withDiscount);
             }
         }
 
@@ -529,7 +547,7 @@ class LaraCart implements LaraCartContract
     }
 
     /**
-     * Getes all the fees on the cart object
+     * Gets all the fees on the cart object
      *
      * @return mixed
      */
@@ -550,7 +568,9 @@ class LaraCart implements LaraCartContract
         $total = 0;
 
         foreach ($this->cart->coupons as $coupon) {
-            $total += $coupon->discount();
+            if($coupon->appliedToCart) {
+                $total += $coupon->discount();
+            }
         }
 
         return $this->formatMoney($total, null, null, $format);

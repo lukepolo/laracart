@@ -27,7 +27,7 @@ class CartSubItem
     {
         $this->options['items'] = [];
 
-        foreach($options as $option => $value) {
+        foreach ($options as $option => $value) {
             array_set($this->options, $option, $value);
         }
 
@@ -57,23 +57,10 @@ class CartSubItem
 
         if (isset($this->items)) {
             foreach ($this->items as $item) {
-                $price += $item->price(false, false);
+                $price += $item->price(false);
             }
         }
 
         return LaraCart::formatMoney($price, $this->locale, $this->internationalFormat, $format);
-    }
-
-    /**
-     * Gets the formatted price
-     * @deprecated deprecated since version 1.0.13
-     *
-     * @param bool|true $format
-     *
-     * @return string
-     */
-    public function getPrice($format = true)
-    {
-        return $this->price($format);
     }
 }

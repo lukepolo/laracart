@@ -2,6 +2,7 @@
 
 namespace LukePOLO\LaraCart;
 
+use LukePOLO\LaraCart\Exceptions\ModelNotFound;
 use LukePOLO\LaraCart\Traits\CartOptionsMagicMethodsTrait;
 
 /**
@@ -14,6 +15,7 @@ class CartItem
     use CartOptionsMagicMethodsTrait;
 
     protected $itemHash;
+    protected $itemModel;
 
     public $locale;
     public $taxable;
@@ -42,8 +44,9 @@ class CartItem
         $this->lineItem = $lineItem;
         $this->price = floatval($price);
         $this->tax = config('laracart.tax');
+        $this->itemModel = config('laracart.item_model');
 
-        foreach($options as $option => $value) {
+        foreach ($options as $option => $value) {
             $this->$option = $value;
         }
     }
@@ -61,9 +64,9 @@ class CartItem
             $this->itemHash = null;
 
             $cartItemArray = (array)$this;
-            
+
             unset($cartItemArray['options']['qty']);
-            
+
             ksort($cartItemArray['options']);
 
             $this->itemHash = app(LaraCart::HASH, $cartItemArray);
@@ -135,46 +138,30 @@ class CartItem
     /**
      * Gets the price of the item with or without tax, with the proper format
      *
-     * @param bool $tax
      * @param bool $format
      *
      * @return string
      */
-    public function price($tax = false, $format = true)
+    public function price($format = true)
     {
-        $price = $this->price + $this->subItemsTotal($tax, false);
-        if ($tax && $this->taxable) {
-            $price += $price * $this->tax;
-        }
-
-        return LaraCart::formatMoney($price, $this->locale, $this->internationalFormat, $format);
-    }
-
-    /**
-     * Gets the formatted price
-     * @deprecated deprecated since version 1.0.13
-     *
-     * @param bool|true $format
-     *
-     * @return string
-     */
-    public function getPrice($tax = false, $format = true)
-    {
-        return $this->price($tax, $format);
+        return LaraCart::formatMoney(
+            $this->price + $this->subItemsTotal(false),
+            $this->locale,
+            $this->internationalFormat, $format
+        );
     }
 
     /**
      * Gets the sub total of the item based on the qty with or without tax in the proper format
      *
-     * @param bool $tax
      * @param bool $format
      * @param bool $withDiscount
      *
      * @return string
      */
-    public function subTotal($tax = false, $format = true, $withDiscount = true)
+    public function subTotal($format = true, $withDiscount = true)
     {
-        $total = $this->price($tax, false) * $this->qty;
+        $total = $this->price(false) * $this->qty;
 
         if ($withDiscount) {
             $total -= $this->getDiscount(false);
@@ -187,12 +174,11 @@ class CartItem
     /**
      * Gets the totals for the options
      *
-     * @param bool|false $tax
      * @param boolean $format
      *
      * @return string
      */
-    public function subItemsTotal($tax = false, $format = true)
+    public function subItemsTotal($format = true)
     {
         $total = 0;
 
@@ -201,11 +187,6 @@ class CartItem
         }
 
         $total *= $this->qty;
-
-
-        if ($tax && $this->taxable) {
-            $total = $total + ($total * $this->tax);
-        }
 
         return LaraCart::formatMoney($total, $this->locale, $this->internationalFormat, $format);
     }
@@ -225,5 +206,48 @@ class CartItem
             $this->internationalFormat,
             $format
         );
+    }
+
+    /**
+     * Gets the tax for the item
+     *
+     * @return int|mixed
+     */
+    public function tax($amountNotTaxable = 0)
+    {
+        $tax = 0;
+
+        if ($this->taxable) {
+            return $this->tax * ($this->subTotal(false) - $amountNotTaxable);
+        }
+
+        return $tax;
+    }
+
+    /**
+     * Sets the related model to the item
+     *
+     * @param $itemModel
+     *
+     * @throws ModelNotFound
+     */
+    public function setModel($itemModel)
+    {
+        if(!class_exists($itemModel)) {
+            throw new ModelNotFound();
+        }
+        $this->itemModel = $itemModel;
+    }
+
+    /**
+     * Returns a Model
+     *
+     * @throws
+     */
+    public function getModel()
+    {
+        $itemModel = new $this->itemModel;
+
+        return $itemModel->findOrFail($this->id);
     }
 }
