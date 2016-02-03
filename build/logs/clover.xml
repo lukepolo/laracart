@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1454515715">
-  <project timestamp="1454515715">
+<coverage generated="1454515963">
+  <project timestamp="1454515963">
     <package name="LukePOLO\LaraCart">
       <file name="/home/vagrant/Code/laracart/src/Cart.php">
         <class name="Cart" namespace="LukePOLO\LaraCart" fullPackage="LukePOLO" package="LukePOLO">
@@ -70,30 +70,30 @@
         <line num="130" type="stmt" count="1"/>
         <line num="132" type="stmt" count="1"/>
         <line num="133" type="stmt" count="1"/>
-        <line num="142" type="method" name="price" crap="1" count="12"/>
-        <line num="144" type="stmt" count="12"/>
-        <line num="168" type="method" name="subTotal" crap="2" count="11"/>
-        <line num="170" type="stmt" count="11"/>
-        <line num="172" type="stmt" count="11"/>
-        <line num="173" type="stmt" count="11"/>
+        <line num="142" type="method" name="price" crap="1" count="10"/>
+        <line num="144" type="stmt" count="10"/>
+        <line num="155" type="method" name="subTotal" crap="2" count="10"/>
+        <line num="157" type="stmt" count="10"/>
+        <line num="159" type="stmt" count="10"/>
+        <line num="160" type="stmt" count="10"/>
+        <line num="163" type="stmt" count="10"/>
+        <line num="174" type="method" name="subItemsTotal" crap="2" count="11"/>
         <line num="176" type="stmt" count="11"/>
-        <line num="187" type="method" name="subItemsTotal" crap="2" count="13"/>
-        <line num="189" type="stmt" count="13"/>
-        <line num="191" type="stmt" count="13"/>
-        <line num="192" type="stmt" count="3"/>
-        <line num="195" type="stmt" count="13"/>
-        <line num="197" type="stmt" count="13"/>
-        <line num="207" type="method" name="getDiscount" crap="1" count="11"/>
-        <line num="209" type="stmt" count="11"/>
-        <line num="210" type="stmt" count="11"/>
-        <line num="211" type="stmt" count="11"/>
-        <line num="212" type="stmt" count="11"/>
-        <line num="217" type="method" name="tax" crap="2" count="4"/>
-        <line num="219" type="stmt" count="4"/>
-        <line num="221" type="stmt" count="4"/>
-        <line num="222" type="stmt" count="4"/>
-        <line num="225" type="stmt" count="1"/>
-        <metrics loc="227" ncloc="144" classes="1" methods="11" coveredmethods="11" conditionals="0" coveredconditionals="0" statements="50" coveredstatements="50" elements="61" coveredelements="61"/>
+        <line num="178" type="stmt" count="11"/>
+        <line num="179" type="stmt" count="3"/>
+        <line num="182" type="stmt" count="11"/>
+        <line num="184" type="stmt" count="11"/>
+        <line num="194" type="method" name="getDiscount" crap="1" count="10"/>
+        <line num="196" type="stmt" count="10"/>
+        <line num="197" type="stmt" count="10"/>
+        <line num="198" type="stmt" count="10"/>
+        <line num="199" type="stmt" count="10"/>
+        <line num="204" type="method" name="tax" crap="2" count="4"/>
+        <line num="206" type="stmt" count="4"/>
+        <line num="208" type="stmt" count="4"/>
+        <line num="209" type="stmt" count="4"/>
+        <line num="212" type="stmt" count="1"/>
+        <metrics loc="214" ncloc="139" classes="1" methods="11" coveredmethods="11" conditionals="0" coveredconditionals="0" statements="50" coveredstatements="50" elements="61" coveredelements="61"/>
       </file>
       <file name="/home/vagrant/Code/laracart/src/CartSubItem.php">
         <class name="CartSubItem" namespace="LukePOLO\LaraCart" fullPackage="LukePOLO" package="LukePOLO">
@@ -107,13 +107,13 @@
         <line num="35" type="stmt" count="6"/>
         <line num="42" type="method" name="getHash" crap="1" count="6"/>
         <line num="44" type="stmt" count="6"/>
-        <line num="54" type="method" name="price" crap="3" count="4"/>
-        <line num="56" type="stmt" count="4"/>
-        <line num="58" type="stmt" count="4"/>
-        <line num="59" type="stmt" count="3"/>
-        <line num="60" type="stmt" count="3"/>
-        <line num="64" type="stmt" count="4"/>
-        <metrics loc="79" ncloc="51" classes="1" methods="3" coveredmethods="3" conditionals="0" coveredconditionals="0" statements="11" coveredstatements="11" elements="14" coveredelements="14"/>
+        <line num="54" type="method" name="price" crap="3" count="3"/>
+        <line num="56" type="stmt" count="3"/>
+        <line num="58" type="stmt" count="3"/>
+        <line num="59" type="stmt" count="2"/>
+        <line num="60" type="stmt" count="2"/>
+        <line num="64" type="stmt" count="3"/>
+        <metrics loc="66" ncloc="46" classes="1" methods="3" coveredmethods="3" conditionals="0" coveredconditionals="0" statements="11" coveredstatements="11" elements="14" coveredelements="14"/>
       </file>
       <file name="/home/vagrant/Code/laracart/src/LaraCart.php">
         <class name="LaraCart" namespace="LukePOLO\LaraCart" fullPackage="LukePOLO" package="LukePOLO">
@@ -252,14 +252,14 @@
         <line num="486" type="stmt" count="13"/>
         <line num="488" type="stmt" count="13"/>
         <line num="492" type="stmt" count="17"/>
-        <line num="506" type="method" name="formatMoney" crap="5" count="23"/>
-        <line num="508" type="stmt" count="23"/>
-        <line num="510" type="stmt" count="23"/>
-        <line num="511" type="stmt" count="16"/>
-        <line num="513" type="stmt" count="16"/>
-        <line num="514" type="stmt" count="16"/>
-        <line num="517" type="stmt" count="16"/>
-        <line num="520" type="stmt" count="23"/>
+        <line num="506" type="method" name="formatMoney" crap="5" count="21"/>
+        <line num="508" type="stmt" count="21"/>
+        <line num="510" type="stmt" count="21"/>
+        <line num="511" type="stmt" count="15"/>
+        <line num="513" type="stmt" count="15"/>
+        <line num="514" type="stmt" count="15"/>
+        <line num="517" type="stmt" count="15"/>
+        <line num="520" type="stmt" count="21"/>
         <line num="530" type="method" name="feeTotals" crap="3" count="6"/>
         <line num="532" type="stmt" count="6"/>
         <line num="534" type="stmt" count="6"/>
@@ -403,9 +403,9 @@
         <line num="59" type="stmt" count="34"/>
         <line num="60" type="stmt" count="33"/>
         <line num="62" type="stmt" count="34"/>
-        <line num="71" type="method" name="__isset" crap="2" count="6"/>
-        <line num="73" type="stmt" count="6"/>
-        <line num="74" type="stmt" count="5"/>
+        <line num="71" type="method" name="__isset" crap="2" count="5"/>
+        <line num="73" type="stmt" count="5"/>
+        <line num="74" type="stmt" count="4"/>
         <line num="76" type="stmt" count="2"/>
         <metrics loc="79" ncloc="51" classes="1" methods="3" coveredmethods="3" conditionals="0" coveredconditionals="0" statements="18" coveredstatements="18" elements="21" coveredelements="21"/>
       </file>
@@ -453,6 +453,6 @@
       <line num="10" type="stmt" count="50"/>
       <metrics loc="58" ncloc="13" classes="0" methods="0" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="1" coveredstatements="1" elements="1" coveredelements="1"/>
     </file>
-    <metrics files="17" loc="1806" ncloc="1000" classes="14" methods="68" coveredmethods="66" conditionals="0" coveredconditionals="0" statements="281" coveredstatements="276" elements="349" coveredelements="342"/>
+    <metrics files="17" loc="1780" ncloc="990" classes="14" methods="68" coveredmethods="66" conditionals="0" coveredconditionals="0" statements="281" coveredstatements="276" elements="349" coveredelements="342"/>
   </project>
 </coverage>

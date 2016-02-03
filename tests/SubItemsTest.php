@@ -59,7 +59,7 @@ class SubItemsTest extends Orchestra\Testbench\TestCase
         $this->assertEquals(3, $item->subItemsTotal(false));
 
         $this->assertEquals(14, $item->subTotal(false));
-        $this->assertEquals(14, $item->getPrice(false));
+        $this->assertEquals(14, $item->price(false));
     }
 
     /**
@@ -86,7 +86,7 @@ class SubItemsTest extends Orchestra\Testbench\TestCase
         $this->assertEquals(3, $item->subItemsTotal(false));
 
         $this->assertEquals(14, $item->subTotal(false));
-        $this->assertEquals(14, $item->getPrice(false));
+        $this->assertEquals(14, $item->price(false));
     }
 
     /**
@@ -109,7 +109,7 @@ class SubItemsTest extends Orchestra\Testbench\TestCase
         $this->containsOnlyInstancesOf(LukePOLO\LaraCart\CartItem::class, $subItem->items);
 
 
-        $this->assertEquals('$12.50', $subItem->getPrice());
+        $this->assertEquals('$12.50', $subItem->price());
     }
 
     /**
