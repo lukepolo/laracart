@@ -14,16 +14,16 @@ use LukePOLO\LaraCart\Contracts\LaraCartContract;
  */
 class LaraCart implements LaraCartContract
 {
-    const SERVICE = 'laracart';
     const QTY = 'qty';
-    const PRICE = 'price';
     const HASH = 'generateCartHash';
+    const PRICE = 'price';
+    const SERVICE = 'laracart';
     const RANHASH = 'generateRandomCartItemHash';
 
-    public $cart;
-
-    protected $session;
     protected $events;
+    protected $session;
+
+    public $cart;
 
     /**
      * LaraCart constructor.
