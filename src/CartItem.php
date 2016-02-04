@@ -200,8 +200,14 @@ class CartItem
      */
     public function getDiscount($format = true)
     {
+        $amount = 0;
+
+        if(app('laracart')->findCoupon($this->code)) {
+            $amount = $this->discount;
+        }
+
         return LaraCart::formatMoney(
-            $this->discount,
+            $amount,
             $this->locale,
             $this->internationalFormat,
             $format
