@@ -7,7 +7,8 @@ namespace LukePOLO\LaraCart\Tests\Models;
  *
  * @package LukePOLO\LaraCart\Tests\Models
  */
-class TestItem {
+class TestItem
+{
 
     public $id = 'itemID';
     public $name = 'Test Item';

@@ -127,7 +127,7 @@ trait CouponTrait
      */
     public function setDiscountOnItem(CartItem $item, $discountAmount)
     {
-        if(!is_numeric($discountAmount)) {
+        if (!is_numeric($discountAmount)) {
             throw new InvalidPrice('You must use a discount amount.');
         }
         $this->appliedToCart = false;

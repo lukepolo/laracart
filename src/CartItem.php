@@ -202,7 +202,7 @@ class CartItem
     {
         $amount = 0;
 
-        if(app('laracart')->findCoupon($this->code)) {
+        if (app('laracart')->findCoupon($this->code)) {
             $amount = $this->discount;
         }
 
@@ -239,7 +239,7 @@ class CartItem
      */
     public function setModel($itemModel)
     {
-        if(!class_exists($itemModel)) {
+        if (!class_exists($itemModel)) {
             throw new ModelNotFound();
         }
         $this->itemModel = $itemModel;

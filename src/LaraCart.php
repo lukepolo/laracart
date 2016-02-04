@@ -568,7 +568,7 @@ class LaraCart implements LaraCartContract
         $total = 0;
 
         foreach ($this->cart->coupons as $coupon) {
-            if($coupon->appliedToCart) {
+            if ($coupon->appliedToCart) {
                 $total += $coupon->discount();
             }
         }
