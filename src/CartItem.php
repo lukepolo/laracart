@@ -100,7 +100,6 @@ class CartItem
     {
         foreach ($data as $key => $value) {
             if ($this->$key !== $value) {
-                // all search criteria must match
                 return false;
             }
         }
