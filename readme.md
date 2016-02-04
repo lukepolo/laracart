@@ -1,10 +1,17 @@
-## LaraCart - Laravel Shopping Cart Package
+## LaraCart 1.1.0 - Laravel Shopping Cart Package
 [![Build Status](https://travis-ci.org/lukepolo/laracart.svg?branch=master)](https://travis-ci.org/lukepolo/laracart) 
 [![Latest Stable Version](https://poser.pugx.org/lukepolo/laracart/v/stable)](https://packagist.org/packages/lukepolo/laracart)
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/lukepolo/laracart/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/lukepolo/laracart/?branch=master)
 [![Test Coverage](https://codeclimate.com/github/lukepolo/laracart/badges/coverage.svg)](https://codeclimate.com/github/lukepolo/laracart/coverage)
 [![Total Downloads](https://poser.pugx.org/lukepolo/laracart/downloads)](https://packagist.org/packages/lukepolo/laracart) [![License](https://poser.pugx.org/lukepolo/laracart/license)](https://packagist.org/packages/lukepolo/laracart)
 
+##Ugrade to 1.1
+   https://github.com/lukepolo/laracart/releases/tag/1.1.0
+```
+   subTotal(false, false) now becomes subTotal(false). 
+   getPrice(false, false) now becomes  getPrice(false)
+   subItemsTotal(false, false) now becomes subItemsTotal(false)
+```
 ## Features
 * Coupons
 * Session Based System
