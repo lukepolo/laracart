@@ -209,6 +209,24 @@ class LaraCart implements LaraCartContract
         return $cartItem;
     }
 
+    /*
+     * Find items in the cart matching a data set
+     *
+     * @return array
+     */
+    public function find($data)
+    {
+        $matches = [];
+
+        foreach ($this->getItems() as $item) {
+            if ($item->find($data)) {
+                $matches[] = $item;
+            }
+        }
+
+        return $matches;
+    }
+
     /**
      * Finds a cartItem based on the itemHash
      *

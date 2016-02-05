@@ -129,7 +129,12 @@ Look through the configuration options and change as needed
     $item->size = 'L';
     
     $item->price($formatted = true); // $4.50 | USD 4.50
-    
+
+    // Search for items in the cart by an option
+    $matches = LaraCart::find(['size' => 'XL']);
+
+    // Search for items in the cart by multiple options
+    $matches = LaraCart::find(['size' => 'XL', 'name' => 'Shirt']);
 ```
 
 **Cart Attributes**
