@@ -5,7 +5,7 @@
 [![Test Coverage](https://codeclimate.com/github/lukepolo/laracart/badges/coverage.svg)](https://codeclimate.com/github/lukepolo/laracart/coverage)
 [![Total Downloads](https://poser.pugx.org/lukepolo/laracart/downloads)](https://packagist.org/packages/lukepolo/laracart) [![License](https://poser.pugx.org/lukepolo/laracart/license)](https://packagist.org/packages/lukepolo/laracart)
 
-##Ugrade to 1.1
+##Upgrade to 1.1
    https://github.com/lukepolo/laracart/releases/tag/1.1.0
 ```
    subTotal(false, false) now becomes subTotal(false). 
