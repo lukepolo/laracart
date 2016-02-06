@@ -95,6 +95,22 @@ class CartItem
     }
 
     /**
+     * Search for matching options on the item
+     *
+     * @return mixed
+     */
+    public function find($data)
+    {
+        foreach ($data as $key => $value) {
+            if ($this->$key !== $value) {
+                return false;
+            }
+        }
+
+        return $this;
+    }
+
+    /**
      * Finds a sub item by its hash
      *
      * @param $subItemHash
