@@ -430,6 +430,12 @@ class LaraCart implements LaraCartContract
             }
         }
 
+        foreach ($this->getFees() as $fee) {
+            if ($fee->taxable) {
+                $totalTax += $fee->amount * $this->cart->tax;
+            }
+        }
+
         return $this->formatMoney($totalTax, null, null, $format);
     }
 
@@ -538,9 +544,6 @@ class LaraCart implements LaraCartContract
 
         foreach ($this->getFees() as $fee) {
             $feeTotal += $fee->amount;
-            if ($fee->taxable) {
-                $feeTotal += $fee->amount * $this->cart->tax;
-            }
         }
 
         return $this->formatMoney($feeTotal, null, null, $format);

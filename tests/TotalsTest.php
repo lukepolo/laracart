@@ -83,8 +83,11 @@ class TotalsTest extends Orchestra\Testbench\TestCase
     {
         $this->laracart->addFee('test_2', 1, true);
 
-        $this->assertEquals('$1.07', $this->laracart->feeTotals());
-        $this->assertEquals('1.07', $this->laracart->feeTotals(false));
+        $this->assertEquals('$1.00', $this->laracart->feeTotals());
+        $this->assertEquals(1, $this->laracart->feeTotals(false));
+
+        $this->assertEquals("$0.07", $this->laracart->taxTotal());
+        $this->assertEquals("0.07", $this->laracart->taxTotal(false));
     }
 
     /**
