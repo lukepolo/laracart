@@ -137,8 +137,8 @@ class TotalsTest extends Orchestra\Testbench\TestCase
         $this->laracart->addFee('test', $priceFee, true, $tax);
 
         $this->assertEquals('2.40', $this->laracart->feeTotals(false, true));
-        $this->assertEquals('6.00', $this->laracart->subTotal(false, true, true));
-        $this->assertEquals('8.40', $this->laracart->total(false));
+        $this->assertEquals('5.00', $this->laracart->subTotal(false, true, false));
+        $this->assertEquals('7.40', $this->laracart->total(false));
     }
 
     /**
@@ -172,7 +172,7 @@ class TotalsTest extends Orchestra\Testbench\TestCase
 
         $this->assertEquals('2.00', $this->laracart->feeTotals(false));
         $this->assertEquals('5.00', $this->laracart->subTotal(false));
-        $this->assertEquals('8.00', $this->laracart->total(false));
+        $this->assertEquals('7.00', $this->laracart->total(false));
     }
 
     /**
@@ -188,8 +188,8 @@ class TotalsTest extends Orchestra\Testbench\TestCase
         $item = $this->addItem(1, $priceItem, true, ['tax' => $taxItem]);
         $this->laracart->addFee('test', $priceFee, true, $taxFee);
 
-        $this->assertEquals('2.40', $this->laracart->feeTotals(false, true));
+        $this->assertEquals('2.14', $this->laracart->feeTotals(false, true));
         $this->assertEquals('6.00', $this->laracart->subTotal(false, true, true));
-        $this->assertEquals('8.40', $this->laracart->total(false));
+        $this->assertEquals('8.14', $this->laracart->total(false));
     }
 }
