@@ -398,11 +398,12 @@ class LaraCart implements LaraCartContract
      * @param $name
      * @param $amount
      * @param bool|false $taxable
+     * @param int   $tax
      * @param array $options
      */
-    public function addFee($name, $amount, $taxable = false, Array $options = [])
+    public function addFee($name, $amount, $taxable = false, $tax = 0, array $options = [])
     {
-        array_set($this->cart->fees, $name, new CartFee($amount, $taxable, $options));
+        array_set($this->cart->fees, $name, new CartFee($amount, $taxable, $tax, $options));
 
         $this->update();
     }
@@ -450,7 +451,7 @@ class LaraCart implements LaraCartContract
 
         foreach ($this->getFees() as $fee) {
             if ($fee->taxable) {
-                $totalTax += $fee->amount * $this->cart->tax;
+                $totalTax += $fee->amount * $fee->tax;
             }
         }
 
@@ -483,16 +484,20 @@ class LaraCart implements LaraCartContract
      *
      * @param boolean $format
      * @param boolean $withDiscount
+     * @param boolean $withTax
      *
      * @return string
      */
-    public function subTotal($format = true, $withDiscount = true)
+    public function subTotal($format = true, $withDiscount = true, $withTax = false)
     {
         $total = 0;
 
         if ($this->count() != 0) {
             foreach ($this->getItems() as $item) {
-                $total += $item->subTotal(false, $withDiscount);
+                $total += $item->subTotal(false, $withDiscount, $withTax);
+                if ($withTax) {
+                    $total += $item->subTotal(false, $withDiscount, $withTax) * $item->tax;
+                }
             }
         }
 
@@ -557,12 +562,16 @@ class LaraCart implements LaraCartContract
      *
      * @return string
      */
-    public function feeTotals($format = true)
+    public function feeTotals($format = true, $withTax = false)
     {
         $feeTotal = 0;
 
         foreach ($this->getFees() as $fee) {
             $feeTotal += $fee->amount;
+
+            if ($withTax && $fee->taxable && $fee->tax > 0) {
+                $feeTotal += $fee->amount * $fee->tax;
+            }
         }
 
         return $this->formatMoney($feeTotal, null, null, $format);

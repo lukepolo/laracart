@@ -106,4 +106,32 @@ class TotalsTest extends Orchestra\Testbench\TestCase
         $this->assertEquals('11.00', $this->laracart->subTotal(false));
         $this->assertEquals('11.07', $this->laracart->total(false));
     }
+
+    public function testTotalTaxableFees()
+    {
+        $tax = .20;
+        $priceItem = 5;
+        $priceFee = 2;
+
+        $item = $this->addItem(1, $priceItem, true, ['tax' => $tax]);
+        $this->laracart->addFee('test', $priceFee, true, $tax);
+
+        $this->assertEquals('2.40', $this->laracart->feeTotals(false, true));
+        $this->assertEquals('6.00', $this->laracart->subTotal(false, true, true));
+        $this->assertEquals('8.40', $this->laracart->total(false));
+    }
+
+    public function testTotalNotTaxableFees()
+    {
+        $tax = .20;
+        $priceItem = 5;
+        $priceFee = 2;
+
+        $item = $this->addItem(1, $priceItem, true, ['tax' => $tax]);
+        $this->laracart->addFee('test', $priceFee, false);
+
+        $this->assertEquals('2.00', $this->laracart->feeTotals(false));
+        $this->assertEquals('5.00', $this->laracart->subTotal(false));
+        $this->assertEquals('8.00', $this->laracart->total(false));
+    }
 }

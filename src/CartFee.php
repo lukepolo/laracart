@@ -16,6 +16,7 @@ class CartFee
     public $locale;
     public $amount;
     public $taxable;
+    public $tax;
     public $internationalFormat;
 
     /**
@@ -23,12 +24,14 @@ class CartFee
      *
      * @param $amount
      * @param $taxable
+     * @param $tax
      * @param array $options
      */
-    public function __construct($amount, $taxable, $options = [])
+    public function __construct($amount, $taxable = false, $tax = 0, $options = [])
     {
         $this->amount = floatval($amount);
         $this->taxable = $taxable;
+        $this->tax = $this->taxable ? $tax == 0 ? config('laracart.tax') : $tax : $tax;
         $this->options = $options;
     }
 
