@@ -466,7 +466,7 @@ class LaraCart implements LaraCartContract
      *
      * @return string
      */
-    public function total($format = true, $withDiscount = true)
+    public function total($format = true, $withDiscount = true, $withTax = true)
     {
         $total = $this->subTotal(false) + $this->feeTotals(false);
 
@@ -474,7 +474,9 @@ class LaraCart implements LaraCartContract
             $total -= $this->totalDiscount(false);
         }
 
-        $total += $this->taxTotal(false);
+        if ($withTax) {
+            $total += $this->taxTotal(false);
+        }
 
         return $this->formatMoney($total, null, null, $format);
     }
