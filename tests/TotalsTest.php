@@ -81,7 +81,7 @@ class TotalsTest extends Orchestra\Testbench\TestCase
      */
     public function testTaxableFees()
     {
-        $this->laracart->addFee('test_2', 1, true);
+        $this->laracart->addFee('test_2', 1, true, ['tax' => 0.07]);
 
         $this->assertEquals('$1.00', $this->laracart->feeTotals());
         $this->assertEquals(1, $this->laracart->feeTotals(false));
@@ -105,5 +105,91 @@ class TotalsTest extends Orchestra\Testbench\TestCase
 
         $this->assertEquals('11.00', $this->laracart->subTotal(false));
         $this->assertEquals('11.07', $this->laracart->total(false));
+    }
+
+    /**
+     * Test taxable item with taxable fees.
+     */
+    public function testTotalTaxableItemTaxableFees()
+    {
+        $tax = .20;
+        $priceItem = 5;
+        $priceFee = 2;
+
+        $item = $this->addItem(1, $priceItem, true, ['tax' => $tax]);
+        $this->laracart->addFee('test', $priceFee, true, ['tax' => $tax]);
+
+        $this->assertEquals('2.40', $this->laracart->feeTotals(false, true));
+        $this->assertEquals('5.00', $this->laracart->subTotal(false, true));
+        $this->assertEquals('8.40', $this->laracart->total(false));
+    }
+
+    /**
+     * Test NOT taxable item with taxable fees.
+     */
+    public function testTotalNotTaxableItemTaxableFees()
+    {
+        $tax = .20;
+        $priceItem = 5;
+        $priceFee = 2;
+
+        $item = $this->addItem(1, $priceItem, false);
+        $this->laracart->addFee('test', $priceFee, true, ['tax' => $tax]);
+
+        $this->assertEquals('2.40', $this->laracart->feeTotals(false, true));
+        $this->assertEquals('5.00', $this->laracart->subTotal(false, true));
+        $this->assertEquals('7.40', $this->laracart->total(false));
+    }
+
+    /**
+     * Test taxable item with NOT taxable fees.
+     */
+    public function testTotalTaxableItemNotTaxableFees()
+    {
+        $tax = .20;
+        $priceItem = 5;
+        $priceFee = 2;
+
+        $item = $this->addItem(1, $priceItem, true, ['tax' => $tax]);
+        $this->laracart->addFee('test', $priceFee, false);
+
+        $this->assertEquals('2.00', $this->laracart->feeTotals(false));
+        $this->assertEquals('5.00', $this->laracart->subTotal(false));
+        $this->assertEquals('8.00', $this->laracart->total(false));
+    }
+
+    /**
+     * Test NOT taxable item with NOT taxable fees.
+     */
+    public function testTotalNotTaxableItemNotTaxableFees()
+    {
+        $tax = .20;
+        $priceItem = 5;
+        $priceFee = 2;
+
+        $item = $this->addItem(1, $priceItem, false);
+        $this->laracart->addFee('test', $priceFee, false);
+
+        $this->assertEquals('2.00', $this->laracart->feeTotals(false));
+        $this->assertEquals('5.00', $this->laracart->subTotal(false));
+        $this->assertEquals('7.00', $this->laracart->total(false));
+    }
+
+    /**
+     * Test NOT taxable item with taxable fees.
+     */
+    public function testTotalDifferentTaxItemAndFees()
+    {
+        $taxItem = .20;
+        $taxFee = .07;
+        $priceItem = 5;
+        $priceFee = 2;
+
+        $item = $this->addItem(1, $priceItem, true, ['tax' => $taxItem]);
+        $this->laracart->addFee('test', $priceFee, true, ['tax' => $taxFee]);
+
+        $this->assertEquals('2.14', $this->laracart->feeTotals(false, true));
+        $this->assertEquals('5.00', $this->laracart->subTotal(false, true));
+        $this->assertEquals('8.14', $this->laracart->total(false));
     }
 }

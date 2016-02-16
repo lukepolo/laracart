@@ -400,7 +400,7 @@ class LaraCart implements LaraCartContract
      * @param bool|false $taxable
      * @param array $options
      */
-    public function addFee($name, $amount, $taxable = false, Array $options = [])
+    public function addFee($name, $amount, $taxable = false, array $options = [])
     {
         array_set($this->cart->fees, $name, new CartFee($amount, $taxable, $options));
 
@@ -450,7 +450,7 @@ class LaraCart implements LaraCartContract
 
         foreach ($this->getFees() as $fee) {
             if ($fee->taxable) {
-                $totalTax += $fee->amount * $this->cart->tax;
+                $totalTax += $fee->amount * $fee->tax;
             }
         }
 
@@ -465,7 +465,7 @@ class LaraCart implements LaraCartContract
      *
      * @return string
      */
-    public function total($format = true, $withDiscount = true)
+    public function total($format = true, $withDiscount = true, $withTax = true)
     {
         $total = $this->subTotal(false) + $this->feeTotals(false);
 
@@ -473,7 +473,9 @@ class LaraCart implements LaraCartContract
             $total -= $this->totalDiscount(false);
         }
 
-        $total += $this->taxTotal(false);
+        if ($withTax) {
+            $total += $this->taxTotal(false);
+        }
 
         return $this->formatMoney($total, null, null, $format);
     }
@@ -557,12 +559,16 @@ class LaraCart implements LaraCartContract
      *
      * @return string
      */
-    public function feeTotals($format = true)
+    public function feeTotals($format = true, $withTax = false)
     {
         $feeTotal = 0;
 
         foreach ($this->getFees() as $fee) {
             $feeTotal += $fee->amount;
+
+            if ($withTax && $fee->taxable && $fee->tax > 0) {
+                $feeTotal += $fee->amount * $fee->tax;
+            }
         }
 
         return $this->formatMoney($feeTotal, null, null, $format);
