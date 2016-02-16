@@ -16,7 +16,7 @@ class CartFee
     public $locale;
     public $amount;
     public $taxable;
-    public $tax = 0;
+    public $tax;
     public $internationalFormat;
 
     /**
@@ -31,7 +31,7 @@ class CartFee
     {
         $this->amount = floatval($amount);
         $this->taxable = $taxable;
-        $this->tax = $this->taxable ? $tax == 0 ? config('laracart.tax') : $tax : $tax;
+        $this->tax = isset($options['tax']) ? $options['tax'] == 0 ? config('laracart.tax') : $options['tax'] : config('laracart.tax');
         $this->options = $options;
     }
 

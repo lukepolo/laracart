@@ -210,10 +210,9 @@ interface LaraCartContract
      * @param $name
      * @param $amount
      * @param bool|false $taxable
-     * @param int|null $tax
      * @param array $options
      */
-    public function addFee($name, $amount, $taxable = false, $tax = null, array $options = []);
+    public function addFee($name, $amount, $taxable = false, array $options = []);
 
     /**
      * Reemoves a fee from the fee array

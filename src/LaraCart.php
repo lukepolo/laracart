@@ -398,12 +398,11 @@ class LaraCart implements LaraCartContract
      * @param $name
      * @param $amount
      * @param bool|false $taxable
-     * @param int   $tax
      * @param array $options
      */
-    public function addFee($name, $amount, $taxable = false, $tax = 0, array $options = [])
+    public function addFee($name, $amount, $taxable = false, array $options = [])
     {
-        array_set($this->cart->fees, $name, new CartFee($amount, $taxable, $tax, $options));
+        array_set($this->cart->fees, $name, new CartFee($amount, $taxable, $options));
 
         $this->update();
     }
@@ -486,7 +485,6 @@ class LaraCart implements LaraCartContract
      *
      * @param boolean $format
      * @param boolean $withDiscount
-     * @param boolean $withTax
      *
      * @return string
      */
