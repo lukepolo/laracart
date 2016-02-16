@@ -16,7 +16,7 @@ class CartFee
     public $locale;
     public $amount;
     public $taxable;
-    public $tax;
+    public $tax = 0;
     public $internationalFormat;
 
     /**
@@ -27,7 +27,7 @@ class CartFee
      * @param $tax
      * @param array $options
      */
-    public function __construct($amount, $taxable = false, $tax = 0, $options = [])
+    public function __construct($amount, $taxable = false, $options = [])
     {
         $this->amount = floatval($amount);
         $this->taxable = $taxable;

@@ -490,16 +490,13 @@ class LaraCart implements LaraCartContract
      *
      * @return string
      */
-    public function subTotal($format = true, $withDiscount = true, $withTax = false)
+    public function subTotal($format = true, $withDiscount = true)
     {
         $total = 0;
 
         if ($this->count() != 0) {
             foreach ($this->getItems() as $item) {
-                $total += $item->subTotal(false, $withDiscount, $withTax);
-                if ($withTax) {
-                    $total += $item->subTotal(false, $withDiscount, $withTax) * $item->tax;
-                }
+                $total += $item->subTotal(false, $withDiscount);
             }
         }
 
