@@ -5,14 +5,6 @@
 [![Test Coverage](https://codeclimate.com/github/lukepolo/laracart/badges/coverage.svg)](https://codeclimate.com/github/lukepolo/laracart/coverage)
 [![Total Downloads](https://poser.pugx.org/lukepolo/laracart/downloads)](https://packagist.org/packages/lukepolo/laracart) [![License](https://poser.pugx.org/lukepolo/laracart/license)](https://packagist.org/packages/lukepolo/laracart)
 
-##Upgrade to 1.2
-   https://github.com/lukepolo/laracart/releases/tag/1.1.0
-```
-   addFee($name, $amount, $taxable = false, array $options = []) now becomes addFee($name, $amount, $taxable = false, $tax = 0, array $options = []) (with standalone tax rate)
-   subTotal($format = true, $withDiscount = true) now becomes subTotal($format = true, $withDiscount = true, $withTax = false) (added the ability to have tax or not)
-   feeTotals($format = true) now becomes feeTotals($format = true, $withTax = false) (added the ability to have tax or not)
-```
-
 ##Upgrade to 1.1
    https://github.com/lukepolo/laracart/releases/tag/1.1.0
 ```
