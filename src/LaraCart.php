@@ -218,7 +218,7 @@ class LaraCart implements LaraCartContract
      */
     public function increment($itemHash)
     {
-        $item = array_get($this->getItems(), $itemHash);
+        $item = $this->getItem($itemHash);
         $item->qty++;
         $this->update();
 
@@ -234,14 +234,14 @@ class LaraCart implements LaraCartContract
      */
     public function decrement($itemHash)
     {
-        $item = array_get($this->getItems(), $itemHash);
+        $item = $this->getItem($itemHash);
         if ($item->qty > 1) {
             $item->qty--;
+            $this->update();
 
             return $item;
         }
         $this->removeItem($itemHash);
-
         $this->update();
 
         return null;
