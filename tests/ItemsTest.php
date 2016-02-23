@@ -20,6 +20,43 @@ class ItemsTest extends Orchestra\Testbench\TestCase
     }
 
     /**
+     * Test if we can increment a quantity to an item
+     */
+    public function testIncrementItem()
+    {
+        $item = $this->addItem();
+        $itemHash = $item->getHash();
+        $this->laracart->increment($itemHash);
+
+        $this->assertEquals(2, $this->laracart->count());
+    }
+
+    /**
+     * Test if we can decrement a quantity to an item
+     */
+    public function testDecrementItem()
+    {
+        $item = $this->addItem();
+        $itemHash = $item->getHash();
+        $this->laracart->increment($itemHash);
+        $this->laracart->decrement($itemHash);
+
+        $this->assertEquals(1, $this->laracart->count());
+    }
+
+    /**
+     * Test if we can decrement an item with a quantity of 1 (= delete item)
+     */
+    public function testDecrementUniqueItem()
+    {
+        $item = $this->addItem();
+        $itemHash = $item->getHash();
+        $this->laracart->decrement($itemHash);
+
+        $this->assertEquals(null, $this->laracart->getItem($itemHash));
+    }
+
+    /**
      * Tests when we add multiples of the same item it updates the qty properly
      */
     public function testItemQtyUpdate()
