@@ -220,6 +220,7 @@ class LaraCart implements LaraCartContract
     {
         $item = array_get($this->getItems(), $itemHash);
         $item->qty++;
+        $this->update();
 
         return $item;
     }
@@ -239,8 +240,9 @@ class LaraCart implements LaraCartContract
 
             return $item;
         }
-
         $this->removeItem($itemHash);
+
+        $this->update();
 
         return null;
     }
