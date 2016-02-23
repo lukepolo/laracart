@@ -209,6 +209,42 @@ class LaraCart implements LaraCartContract
         return $cartItem;
     }
 
+    /**
+     * Increment the quantity of a cartItem based on the itemHash
+     *
+     * @param $itemHash
+     *
+     * @return CartItem | null
+     */
+    public function increment($itemHash)
+    {
+        $item = array_get($this->getItems(), $itemHash);
+        $item->qty++;
+
+        return $item;
+    }
+
+    /**
+     * Decrement the quantity of a cartItem based on the itemHash
+     *
+     * @param $itemHash
+     *
+     * @return CartItem | null
+     */
+    public function decrement($itemHash)
+    {
+        $item = array_get($this->getItems(), $itemHash);
+        if ($item->qty > 1) {
+            $item->qty--;
+
+            return $item;
+        }
+
+        $this->removeItem($itemHash);
+
+        return null;
+    }
+
     /*
      * Find items in the cart matching a data set
      *
