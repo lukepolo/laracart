@@ -28,6 +28,11 @@ class LaraCartServiceProvider extends ServiceProvider
             __DIR__ . '/config/laracart.php',
             'laracart'
         );
+
+        $this->publishes([
+                __DIR__.'/database/migrations/' => database_path('migrations')
+            ], 'migrations'
+        );
     }
 
     /**
@@ -38,7 +43,7 @@ class LaraCartServiceProvider extends ServiceProvider
     public function register()
     {
         $this->app->singleton(LaraCart::SERVICE, function ($app) {
-            return new LaraCart($app['session'], $app['events']);
+            return new LaraCart($app['session'], $app['events'], $app['auth']);
         }
         );
 

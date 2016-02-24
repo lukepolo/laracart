@@ -2,6 +2,7 @@
 
 namespace LukePOLO\LaraCart;
 
+use Illuminate\Auth\AuthManager;
 use Illuminate\Contracts\Events\Dispatcher;
 use Illuminate\Session\SessionManager;
 use LukePOLO\LaraCart\Contracts\CouponContract;
@@ -22,6 +23,7 @@ class LaraCart implements LaraCartContract
 
     protected $events;
     protected $session;
+    protected $authManager;
 
     public $cart;
 
@@ -31,10 +33,11 @@ class LaraCart implements LaraCartContract
      * @param SessionManager $session
      * @param Dispatcher $events
      */
-    public function __construct(SessionManager $session, Dispatcher $events)
+    public function __construct(SessionManager $session, Dispatcher $events, AuthManager $authManager)
     {
         $this->session = $session;
         $this->events = $events;
+        $this->authManager = $authManager;
 
         $this->setInstance($this->session->get('laracart.instance', 'default'));
     }
@@ -66,11 +69,41 @@ class LaraCart implements LaraCartContract
      */
     public function get($instance = 'default')
     {
+        if(config('laracart.cross_devices', false)) {
+            if(!empty($cartSessionID = $this->authManager->user()->cart_session_id)) {
+                $this->session->setId($cartSessionID);
+                $this->session->start();
+            }
+        }
+
         if (empty($this->cart = $this->session->get(config('laracart.cache_prefix', 'laracart') . '.' . $instance))) {
             $this->cart = new Cart($instance);
         }
 
         return $this;
+    }
+
+    function cast($destination, $sourceObject)
+    {
+        if (is_string($destination)) {
+            $destination = new $destination();
+        }
+        $sourceReflection = new \ReflectionObject($sourceObject);
+        $destinationReflection = new \ReflectionObject($destination);
+        $sourceProperties = $sourceReflection->getProperties();
+        foreach ($sourceProperties as $sourceProperty) {
+            $sourceProperty->setAccessible(true);
+            $name = $sourceProperty->getName();
+            $value = $sourceProperty->getValue($sourceObject);
+            if ($destinationReflection->hasProperty($name)) {
+                $propDest = $destinationReflection->getProperty($name);
+                $propDest->setAccessible(true);
+                $propDest->setValue($destination,$value);
+            } else {
+                $destination->$name = $value;
+            }
+        }
+        return $destination;
     }
 
     /**
@@ -115,6 +148,13 @@ class LaraCart implements LaraCartContract
     public function update()
     {
         $this->session->set(config('laracart.cache_prefix', 'laracart') . '.' . $this->cart->instance, $this->cart);
+
+        if(config('laracart.cross_devices', false)) {
+            $this->authManager->user()->update([
+                'cart_session_id',
+                $this->session->getId()
+            ]);
+        }
 
         $this->events->fire('laracart.update', $this->cart);
     }
@@ -182,6 +222,8 @@ class LaraCart implements LaraCartContract
             )
         );
 
+        $this->update();
+
         return $this->getItem($item->getHash());
     }
 
@@ -203,8 +245,6 @@ class LaraCart implements LaraCartContract
         }
 
         $this->events->fire('laracart.addItem', $cartItem);
-
-        $this->update();
 
         return $cartItem;
     }
@@ -314,6 +354,8 @@ class LaraCart implements LaraCartContract
 
         $item->generateHash();
 
+        $this->update();
+
         return $item;
     }
 
@@ -332,6 +374,8 @@ class LaraCart implements LaraCartContract
         }
 
         $this->events->fire('laracart.removeItem', $itemHash);
+
+        $this->update();
     }
 
     /**
@@ -358,6 +402,8 @@ class LaraCart implements LaraCartContract
         $this->setInstance('default');
 
         $this->events->fire('laracart.destroy', $instance);
+
+        $this->update();
     }
 
     /**
