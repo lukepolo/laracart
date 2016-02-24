@@ -12,7 +12,7 @@ class AddCartSessionIdToUsersTable extends Migration
      */
     public function up()
     {
-        if (!(Sche::hasColumn('users', 'cart_session_id'))) {
+        if (!(Schema::hasColumn('users', 'cart_session_id'))) {
             Schema::table('users', function (Blueprint $table) {
                 $table->string('cart_session_id')->default(null);
             });
