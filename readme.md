@@ -253,6 +253,11 @@ Instances is a way that we can use multiple carts within the same session. Each 
 LaraCart has a baked in cross device support. You must have the LaraCart database migrations and migrate. You may have to modify the migration based on the connection.
 Also you must be using the auth manager to check for logins.
 
+To enable just change it in your config!
+```php
+    'cross_devices' => true        
+```
+
 ## Exceptions
 LaraCart packages can throw the following exceptions:
 
