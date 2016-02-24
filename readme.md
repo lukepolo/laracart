@@ -15,6 +15,7 @@
 ## Features
 * Coupons
 * Session Based System
+* Cross Device Support
 * Multiple cart instances
 * Fees such as a delivery fee
 * Taxation on a the item level
@@ -56,7 +57,7 @@ Include the Facade :
 Copy over the configuration file by running the command:
 
 ```
-    php artisan vendor:publish
+    php artisan vendor:publish --provider='LukePOLO\LaraCart\LaraCartServiceProvider' 
 ```
 
 Look through the configuration options and change as needed
@@ -70,6 +71,7 @@ Look through the configuration options and change as needed
 * [Coupons](#coupons)
 * [Fees](#fees)
 * [Instances](#instances)
+* [Cross Device Support](#cross-device-support)
 * [Exceptions](#exceptions)
 * [Events](#events)
 
@@ -191,7 +193,7 @@ The reasoning behind sub items is to allow you add additional items without the 
 
 ## Item Model Relations
 
-You can set a default model relation to an item by setting it in your config ``` item_mode ```
+You can set a default model relation to an item by setting it in your config ``` item_model ```
 
 ``` This will fetch your model based on the items id stored in the cart. ``` ``` - ex. Model::findOrFail($id) ```
 
@@ -245,6 +247,15 @@ Instances is a way that we can use multiple carts within the same session. Each 
 
 ```php
     LaraCart::setInstance('yourInstanceName');
+```
+
+## Cross Device Support
+LaraCart has a baked in cross device support. You must have the LaraCart database migrations and migrate. You may have to modify the migration based on the connection.
+Also you must be using the auth manager to check for logins.
+
+To enable just change it in your config!
+```php
+    'cross_devices' => true        
 ```
 
 ## Exceptions
