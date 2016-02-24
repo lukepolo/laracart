@@ -71,7 +71,7 @@ Look through the configuration options and change as needed
 * [Coupons](#coupons)
 * [Fees](#fees)
 * [Instances](#instances)
-* [Cross Device Support](#cross-device)
+* [Cross Device Support](#cross-device-support)
 * [Exceptions](#exceptions)
 * [Events](#events)
 
