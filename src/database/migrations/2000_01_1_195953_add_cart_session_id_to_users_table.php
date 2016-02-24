@@ -1,7 +1,7 @@
 <?php
 
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
 
 class AddCartSessionIdToUsersTable extends Migration
 {
@@ -12,7 +12,7 @@ class AddCartSessionIdToUsersTable extends Migration
      */
     public function up()
     {
-        if (!(Schema::hasColumn('users', 'cart_session_id'))) {
+        if (!(Sche::hasColumn('users', 'cart_session_id'))) {
             Schema::table('users', function (Blueprint $table) {
                 $table->string('cart_session_id')->default(null);
             });

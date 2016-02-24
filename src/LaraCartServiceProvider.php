@@ -30,8 +30,8 @@ class LaraCartServiceProvider extends ServiceProvider
         );
 
         $this->publishes([
-                __DIR__.'/database/migrations/' => database_path('migrations')
-            ], 'migrations'
+            __DIR__ . '/database/migrations/' => database_path('migrations')
+        ], 'migrations'
         );
     }
 
