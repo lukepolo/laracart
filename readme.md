@@ -193,7 +193,7 @@ The reasoning behind sub items is to allow you add additional items without the 
 
 ## Item Model Relations
 
-You can set a default model relation to an item by setting it in your config ``` item_mode ```
+You can set a default model relation to an item by setting it in your config ``` item_model ```
 
 ``` This will fetch your model based on the items id stored in the cart. ``` ``` - ex. Model::findOrFail($id) ```
 
