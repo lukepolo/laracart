@@ -128,10 +128,8 @@ class LaraCart implements LaraCartContract
         $this->session->set(config('laracart.cache_prefix', 'laracart') . '.' . $this->cart->instance, $this->cart);
 
         if (config('laracart.cross_devices', false)) {
-            $this->authManager->user()->update([
-                'cart_session_id',
-                $this->session->getId()
-            ]);
+            $this->authManager->user()->cart_session_id = $this->session->getId();
+            $this->authManager->user()->save();
         }
 
         $this->events->fire('laracart.update', $this->cart);
