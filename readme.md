@@ -15,6 +15,7 @@
 ## Features
 * Coupons
 * Session Based System
+* Cross Device Support
 * Multiple cart instances
 * Fees such as a delivery fee
 * Taxation on a the item level
@@ -56,7 +57,7 @@ Include the Facade :
 Copy over the configuration file by running the command:
 
 ```
-    php artisan vendor:publish
+    php artisan vendor:publish --provider='LukePOLO\LaraCart\LaraCartServiceProvider' 
 ```
 
 Look through the configuration options and change as needed
@@ -70,6 +71,7 @@ Look through the configuration options and change as needed
 * [Coupons](#coupons)
 * [Fees](#fees)
 * [Instances](#instances)
+* [Cross Device Support](#cross-device)
 * [Exceptions](#exceptions)
 * [Events](#events)
 
@@ -246,6 +248,10 @@ Instances is a way that we can use multiple carts within the same session. Each 
 ```php
     LaraCart::setInstance('yourInstanceName');
 ```
+
+## Cross Device Support
+LaraCart has a baked in cross device support. You must have the LaraCart database migrations and migrate. You may have to modify the migration based on the connection.
+Also you must be using the auth manager to check for logins.
 
 ## Exceptions
 LaraCart packages can throw the following exceptions:
