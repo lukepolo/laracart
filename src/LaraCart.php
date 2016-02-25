@@ -46,6 +46,8 @@ class LaraCart implements LaraCartContract
     }
 
     /**
+     * Gets all current instances inside the session
+     *
      * @return mixed
      */
     public function getInstances()
