@@ -23,6 +23,18 @@ class LaraCartTest extends Orchestra\Testbench\TestCase
         $this->assertNotEquals(new \LukePOLO\LaraCart\LaraCart($this->session, $this->events, $this->authManager), $this->laracart->setInstance('test'));
     }
 
+
+    public function testGetInstances()
+    {
+        $this->laracart->setInstance('test');
+        $this->laracart->setInstance('test');
+        $this->laracart->setInstance('test');
+        $this->laracart->setInstance('test-2');
+        $this->laracart->setInstance('test-3');
+
+        $this->assertCount(4, $this->laracart->getInstances());
+    }
+
     /**
      * Testing the money format function
      */

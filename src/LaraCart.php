@@ -52,9 +52,7 @@ class LaraCart implements LaraCartContract
      */
     public function getInstances()
     {
-        return $this->session->get($this->prefix . '.instances', [
-            'default'
-        ]);
+        return $this->session->get($this->prefix . '.instances', []);
     }
 
     /**
@@ -70,6 +68,9 @@ class LaraCart implements LaraCartContract
 
         $this->session->set($this->prefix . '.instance', $instance);
 
+        if (!in_array($instance, $this->getInstances())) {
+            $this->session->push($this->prefix . '.instances', $instance);
+        }
         $this->events->fire('laracart.new');
 
         return $this;
@@ -93,7 +94,6 @@ class LaraCart implements LaraCartContract
 
         if (empty($this->cart = $this->session->get($this->prefix . '.' . $instance))) {
             $this->cart = new Cart($instance);
-            $this->session->push($this->prefix . '.instances', $instance);
         }
 
         return $this;
