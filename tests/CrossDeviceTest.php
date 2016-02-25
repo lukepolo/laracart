@@ -31,4 +31,18 @@ class CrossDeviceTest extends Orchestra\Testbench\TestCase
 
         $this->assertEquals($newCart->count(false), $this->count(false));
     }
+
+    /**
+     * Testing to make sure the session gets saved to the model
+     */
+    public function testSaveCartSessionID()
+    {
+        $this->app['config']->set('laracart.cross_devices', true);
+        $user = new \LukePOLO\LaraCart\Tests\Models\User();
+        $this->authManager->login($user);
+
+        $this->addItem();
+
+        $this->assertEquals($this->session->getId(), $this->authManager->user()->cart_session_id);
+    }
 }
