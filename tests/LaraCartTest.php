@@ -23,7 +23,17 @@ class LaraCartTest extends Orchestra\Testbench\TestCase
         $this->assertNotEquals(new \LukePOLO\LaraCart\LaraCart($this->session, $this->events, $this->authManager), $this->laracart->setInstance('test'));
     }
 
+    /**
+     * Test to make sure we get default instance
+     */
+    public function testGetInstancesDefault()
+    {
+        $this->assertEquals('default', $this->laracart->getInstances()[0]);
+    }
 
+    /**
+     * Test to make sure we can get instances
+     */
     public function testGetInstances()
     {
         $this->laracart->setInstance('test');

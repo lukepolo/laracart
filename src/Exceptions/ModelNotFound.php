@@ -9,4 +9,5 @@ namespace LukePOLO\LaraCart\Exceptions;
  */
 class ModelNotFound extends \Exception
 {
+
 }

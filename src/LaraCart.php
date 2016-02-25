@@ -85,7 +85,7 @@ class LaraCart implements LaraCartContract
      */
     public function get($instance = 'default')
     {
-        if (config('laracart.cross_devices', false)) {
+        if (config('laracart.cross_devices', false) && $this->authManager->check()) {
             if (!empty($cartSessionID = $this->authManager->user()->cart_session_id)) {
                 $this->session->setId($cartSessionID);
                 $this->session->start();
@@ -142,7 +142,7 @@ class LaraCart implements LaraCartContract
     {
         $this->session->set($this->prefix . '.' . $this->cart->instance, $this->cart);
 
-        if (config('laracart.cross_devices', false)) {
+        if (config('laracart.cross_devices', false) && $this->authManager->check()) {
             $this->authManager->user()->cart_session_id = $this->session->getId();
             $this->authManager->user()->save();
         }

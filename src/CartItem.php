@@ -256,7 +256,7 @@ class CartItem
     public function setModel($itemModel)
     {
         if (!class_exists($itemModel)) {
-            throw new ModelNotFound();
+            throw new ModelNotFound('Could not find relation model');
         }
         $this->itemModel = $itemModel;
     }
