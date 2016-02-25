@@ -24,6 +24,7 @@ class LaraCart implements LaraCartContract
     protected $events;
     protected $session;
     protected $authManager;
+    protected $prefix;
 
     public $cart;
 
@@ -39,8 +40,19 @@ class LaraCart implements LaraCartContract
         $this->session = $session;
         $this->events = $events;
         $this->authManager = $authManager;
+        $this->prefix = config('laracart.cache_prefix', 'laracart');
 
-        $this->setInstance($this->session->get('laracart.instance', 'default'));
+        $this->setInstance($this->session->get($this->prefix . '.instance', 'default'));
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getInstances()
+    {
+        return $this->session->get($this->prefix . '.instances', [
+            'default'
+        ]);
     }
 
     /**
@@ -54,7 +66,7 @@ class LaraCart implements LaraCartContract
     {
         $this->get($instance);
 
-        $this->session->set('laracart.instance', $instance);
+        $this->session->set($this->prefix . '.instance', $instance);
 
         $this->events->fire('laracart.new');
 
@@ -77,8 +89,9 @@ class LaraCart implements LaraCartContract
             }
         }
 
-        if (empty($this->cart = $this->session->get(config('laracart.cache_prefix', 'laracart') . '.' . $instance))) {
+        if (empty($this->cart = $this->session->get($this->prefix . '.' . $instance))) {
             $this->cart = new Cart($instance);
+            $this->session->push($this->prefix . '.instances', $instance);
         }
 
         return $this;
@@ -125,7 +138,7 @@ class LaraCart implements LaraCartContract
      */
     public function update()
     {
-        $this->session->set(config('laracart.cache_prefix', 'laracart') . '.' . $this->cart->instance, $this->cart);
+        $this->session->set($this->prefix . '.' . $this->cart->instance, $this->cart);
 
         if (config('laracart.cross_devices', false)) {
             $this->authManager->user()->cart_session_id = $this->session->getId();
@@ -263,9 +276,11 @@ class LaraCart implements LaraCartContract
         return null;
     }
 
-    /*
+    /**
      * Find items in the cart matching a data set
      *
+     *
+     * param $data
      * @return array
      */
     public function find($data)
@@ -373,7 +388,7 @@ class LaraCart implements LaraCartContract
     {
         $instance = $this->cart->instance;
 
-        $this->session->forget(config('laracart.cache_prefix', 'laracart') . '.' . $instance);
+        $this->session->forget($this->prefix . '.' . $instance);
 
         $this->setInstance('default');
 
