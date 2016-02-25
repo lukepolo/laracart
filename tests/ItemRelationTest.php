@@ -1,5 +1,7 @@
 <?php
 
+use LukePOLO\LaraCart\Exceptions\ModelNotFound;
+
 /**
  * Class LaraCartTest
  */
@@ -21,5 +23,17 @@ class ItemRelationTest extends Orchestra\Testbench\TestCase
         $this->assertEquals(\LukePOLO\LaraCart\Tests\Models\TestItem::class, $item->itemModel);
 
         $this->assertEquals('itemID', $item->getModel()->id);
+    }
+
+    public function testItemRelationModelException()
+    {
+        $item = $this->addItem();
+
+        try {
+            $item->setModel('asdfasdf');
+            $this->setExpectedException(ModelNotFound::class);
+        } catch (ModelNotFound $e) {
+            $this->assertEquals('Could not find relation model', $e->getMessage());
+        }
     }
 }

@@ -14,6 +14,7 @@ trait LaraCartTestTrait
     public function setUp()
     {
         parent::setUp();
+
         $this->laracart = new \LukePOLO\LaraCart\LaraCart($this->session, $this->events, $this->authManager);
     }
 
@@ -27,6 +28,8 @@ trait LaraCartTestTrait
         $this->session = $app['session'];
         $this->events = $app['events'];
         $this->authManager = $app['auth'];
+
+        $app['config']->set('database.default', 'testing');
 
         // Setup default database to use sqlite :memory:
         $app['config']->set('laracart.tax', '.07');

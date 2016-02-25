@@ -52,9 +52,7 @@ class LaraCart implements LaraCartContract
      */
     public function getInstances()
     {
-        return $this->session->get($this->prefix . '.instances', [
-            'default'
-        ]);
+        return $this->session->get($this->prefix . '.instances', []);
     }
 
     /**
@@ -70,6 +68,9 @@ class LaraCart implements LaraCartContract
 
         $this->session->set($this->prefix . '.instance', $instance);
 
+        if (!in_array($instance, $this->getInstances())) {
+            $this->session->push($this->prefix . '.instances', $instance);
+        }
         $this->events->fire('laracart.new');
 
         return $this;
@@ -84,7 +85,7 @@ class LaraCart implements LaraCartContract
      */
     public function get($instance = 'default')
     {
-        if (config('laracart.cross_devices', false)) {
+        if (config('laracart.cross_devices', false) && $this->authManager->check()) {
             if (!empty($cartSessionID = $this->authManager->user()->cart_session_id)) {
                 $this->session->setId($cartSessionID);
                 $this->session->start();
@@ -93,7 +94,6 @@ class LaraCart implements LaraCartContract
 
         if (empty($this->cart = $this->session->get($this->prefix . '.' . $instance))) {
             $this->cart = new Cart($instance);
-            $this->session->push($this->prefix . '.instances', $instance);
         }
 
         return $this;
@@ -142,7 +142,7 @@ class LaraCart implements LaraCartContract
     {
         $this->session->set($this->prefix . '.' . $this->cart->instance, $this->cart);
 
-        if (config('laracart.cross_devices', false)) {
+        if (config('laracart.cross_devices', false) && $this->authManager->check()) {
             $this->authManager->user()->cart_session_id = $this->session->getId();
             $this->authManager->user()->save();
         }

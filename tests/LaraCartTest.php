@@ -12,7 +12,8 @@ class LaraCartTest extends Orchestra\Testbench\TestCase
      */
     public function testGetInstance()
     {
-        $this->assertEquals(new \LukePOLO\LaraCart\LaraCart($this->session, $this->events, $this->authManager), $this->laracart->get());
+        $this->assertEquals(new \LukePOLO\LaraCart\LaraCart($this->session, $this->events, $this->authManager),
+            $this->laracart->get());
     }
 
     /**
@@ -20,7 +21,30 @@ class LaraCartTest extends Orchestra\Testbench\TestCase
      */
     public function testSetInstance()
     {
-        $this->assertNotEquals(new \LukePOLO\LaraCart\LaraCart($this->session, $this->events, $this->authManager), $this->laracart->setInstance('test'));
+        $this->assertNotEquals(new \LukePOLO\LaraCart\LaraCart($this->session, $this->events, $this->authManager),
+            $this->laracart->setInstance('test'));
+    }
+
+    /**
+     * Test to make sure we get default instance
+     */
+    public function testGetInstancesDefault()
+    {
+        $this->assertEquals('default', $this->laracart->getInstances()[0]);
+    }
+
+    /**
+     * Test to make sure we can get instances
+     */
+    public function testGetInstances()
+    {
+        $this->laracart->setInstance('test');
+        $this->laracart->setInstance('test');
+        $this->laracart->setInstance('test');
+        $this->laracart->setInstance('test-2');
+        $this->laracart->setInstance('test-3');
+
+        $this->assertCount(4, $this->laracart->getInstances());
     }
 
     /**
