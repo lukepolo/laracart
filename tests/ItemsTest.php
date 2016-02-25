@@ -301,7 +301,7 @@ class ItemsTest extends Orchestra\Testbench\TestCase
     /*
      * Test that multiple matching items are found by the value of an option
      */
-    public function testFindingAnItemReturnsMultipleMatches() 
+    public function testFindingAnItemReturnsMultipleMatches()
     {
         $item1 = $this->addItem(1, 1, true, [
             'key1' => 'matching',

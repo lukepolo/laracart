@@ -14,13 +14,14 @@ class CrossDeviceTest extends Orchestra\Testbench\TestCase
     public function testMigrations()
     {
         $this->artisan('migrate', [
-            '--realpath' => realpath(__DIR__.'/../migrations'),
+            '--realpath' => realpath(__DIR__ . '/../migrations'),
         ]);
 
         $this->beforeApplicationDestroyed(function () {
             $this->artisan('migrate:rollback');
         });
     }
+
     /**
      *  Test getting the old session
      */
