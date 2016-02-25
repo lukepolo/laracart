@@ -112,6 +112,23 @@ Look through the configuration options and change as needed
     LaraCart::removeItem($item->getHash());
 ```
 
+**Increment Item's quantity**
+
+```php
+    // Given we have an item in cart
+    $item = LaraCart::add(2, 'Shirt', 200, 15.99, [
+         'size' => 'XL'
+    ]);
+
+    $itemHash = $item->getHash();
+
+    // We increment the quantity of the item in cart
+    LaraCart::increment($itemHash);
+
+    // We decrement the quantity of the item in cart
+    LaraCart::decrement($itemHash);
+```
+
 **Cart Items**
 
 ```php
