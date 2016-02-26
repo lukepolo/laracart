@@ -16,6 +16,7 @@ class CartItem
 
     protected $itemHash;
     protected $itemModel;
+    protected $itemModelRelations;
 
     public $locale;
     public $taxable;
@@ -250,15 +251,18 @@ class CartItem
      * Sets the related model to the item
      *
      * @param $itemModel
+     * @param array $relations
      *
      * @throws ModelNotFound
      */
-    public function setModel($itemModel)
+    public function setModel($itemModel, $relations = [])
     {
         if (!class_exists($itemModel)) {
             throw new ModelNotFound('Could not find relation model');
         }
+
         $this->itemModel = $itemModel;
+        $this->itemModelRelations = $relations;
     }
 
     /**
@@ -270,6 +274,6 @@ class CartItem
     {
         $itemModel = new $this->itemModel;
 
-        return $itemModel->findOrFail($this->id);
+        return $itemModel->with($this->itemModelRelations)->findOrFail($this->id);
     }
 }

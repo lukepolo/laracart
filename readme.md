@@ -223,7 +223,8 @@ You can set a default model relation to an item by setting it in your config ```
         'size' => 'XXL'
     ]);
 
-    $item->setModel(\LukePOLO\LaraCart\Tests\Models\TestItem::class);
+    // The second paramater allows you to relate other models with your item model
+    $item->setModel(\LukePOLO\LaraCart\Tests\Models\TestItem::class, array $modelRelations);
 
 ```
 
