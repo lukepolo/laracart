@@ -46,6 +46,7 @@ class CartItem
         $this->price = floatval($price);
         $this->tax = config('laracart.tax');
         $this->itemModel = config('laracart.item_model');
+        $this->itemModelRelations = config('laracart.item_model_relations');
 
         foreach ($options as $option => $value) {
             $this->$option = $value;
