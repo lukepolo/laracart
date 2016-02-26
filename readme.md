@@ -247,6 +247,9 @@ Instances is a way that we can use multiple carts within the same session. Each 
 
 ```php
     LaraCart::setInstance('yourInstanceName');
+    
+    // Also you can get all the isntances in the session
+    LaraCart::getInstances();
 ```
 
 ## Cross Device Support
