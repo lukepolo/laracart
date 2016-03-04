@@ -238,7 +238,7 @@ LaraCart comes built in with a currency / locale display. To configure just chec
 ```
 
 ## Coupons
-Adding coupons could never be easier, currently there are a set of coupons inside LaraCart. To create new types of coupons just create a copy of one of the existing coupons and modify it!
+Adding coupons could never be easier, currently there are a set of coupons inside LaraCart coupon folder. To create new types of coupons just create a copy of one of the existing coupons and modify it!
 
 ```php
     $coupon = new \LukePOLO\LaraCart\Coupons\Fixed($coupon->CouponCode, $coupon->CouponValue, [
