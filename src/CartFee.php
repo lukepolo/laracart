@@ -24,7 +24,6 @@ class CartFee
      *
      * @param $amount
      * @param $taxable
-     * @param $tax
      * @param array $options
      */
     public function __construct($amount, $taxable = false, $options = [])

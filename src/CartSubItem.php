@@ -7,6 +7,9 @@ use LukePOLO\LaraCart\Traits\CartOptionsMagicMethodsTrait;
 /**
  * Class CartItemOption
  *
+ * @property float price
+ * @property array options
+ *
  * @package LukePOLO\LaraCart
  */
 class CartSubItem
