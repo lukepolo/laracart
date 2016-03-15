@@ -5,7 +5,7 @@ namespace LukePOLO\LaraCart\Tests\Models;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
 /**
- * Class TestItem
+ * Class User
  *
  * @package LukePOLO\LaraCart\Tests\Models
  */

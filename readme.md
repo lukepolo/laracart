@@ -23,6 +23,7 @@
 * Endless item chaining for complex systems
 * Totals of all items within the item chains
 * Item Model Relation at a global and item level
+* Quickly insert items with your own item models 
 
 ## Laravel compatibility
 
@@ -226,6 +227,13 @@ You can set a default model relation to an item by setting it in your config ```
     // The second paramater allows you to relate other models with your item model
     $item->setModel(\LukePOLO\LaraCart\Tests\Models\TestItem::class, array $modelRelations);
 
+```
+
+You can also can easily insert your items with a simple command when using associated models!
+``` You will need to set this up in the config file ``` 
+
+```php
+    $item = \LaraCart::add($itemModel);
 ```
 
 ## Currency & Locale

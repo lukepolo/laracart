@@ -255,7 +255,7 @@ class ItemsTest extends Orchestra\Testbench\TestCase
         $this->assertEquals('4.05', $this->laracart->total(false));
     }
 
-    /*
+    /**
      * Test that an item can be found by the value of an option
      */
     public function testFindingAnItemByOptionSucceeds()
@@ -282,7 +282,7 @@ class ItemsTest extends Orchestra\Testbench\TestCase
         $this->assertEquals($item2->getHash(), $result2[0]->getHash());
     }
 
-    /*
+    /**
      * Test that an item is not found by the value of an option when it does not exist
      */
     public function testFindingAnItemByOptionFails()
@@ -298,7 +298,7 @@ class ItemsTest extends Orchestra\Testbench\TestCase
         $this->assertCount(0, $this->laracart->find(['key1' => 'matching']));
     }
 
-    /*
+    /**
      * Test that multiple matching items are found by the value of an option
      */
     public function testFindingAnItemReturnsMultipleMatches()
@@ -326,15 +326,15 @@ class ItemsTest extends Orchestra\Testbench\TestCase
         $this->assertEquals($item2->getHash(), $results[1]->getHash());
     }
 
-    /*
-     * Test that an multiple matching items are found by the value of an option 
+    /**
+     * Test that an multiple matching items are found by the value of an option
      */
     public function testFindingAnItemOnAnEmptyCartReturnsNoMatches()
     {
         $this->assertCount(0, $this->laracart->find(['key1' => 'matching']));
     }
 
-    /*
+    /**
      * Test an item is returned when finding multiple criteria
      */
     public function testFindingAnItemWithMultipleCriteria()
@@ -368,7 +368,7 @@ class ItemsTest extends Orchestra\Testbench\TestCase
         $this->assertEquals($item2->getHash(), $result3[1]->getHash());
     }
 
-    /*
+    /**
      * Test an item is found searching by name
      */
     public function testFindingAnItemByName()
