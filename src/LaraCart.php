@@ -202,7 +202,6 @@ class LaraCart implements LaraCartContract
         $taxable = true,
         $lineItem = false
     ) {
-
         if ($this->isItemModel($itemModel = $itemID)) {
 
             $bindings = config('laracart.item_model_bindings');
