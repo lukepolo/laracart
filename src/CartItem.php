@@ -10,6 +10,7 @@ use LukePOLO\LaraCart\Traits\CartOptionsMagicMethodsTrait;
  *
  * @property int id
  * @property int qty
+ * @property float tax
  * @property float price
  * @property string name
  * @property array options
@@ -33,6 +34,7 @@ class CartItem
     public $locale;
     public $taxable;
     public $lineItem;
+    public $discount = 0;
     public $subItems = [];
     public $couponInfo = [];
     public $internationalFormat;
