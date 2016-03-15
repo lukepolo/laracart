@@ -12,6 +12,12 @@ use LukePOLO\LaraCart\Traits\CartOptionsMagicMethodsTrait;
  */
 class CartItem
 {
+    CONST ITEM_ID = 'id';
+    CONST ITEM_NAME = 'name';
+    CONST ITEM_PRICE = 'price';
+    CONST ITEM_TAXABLE = 'taxable';
+    CONST ITEM_OPTIONS = 'options';
+
     use CartOptionsMagicMethodsTrait;
 
     protected $itemHash;

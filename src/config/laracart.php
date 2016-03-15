@@ -1,6 +1,7 @@
 <?php
 
 return [
+
     /*
     |--------------------------------------------------------------------------
     | The caching prefix used to lookup the cart
@@ -63,6 +64,24 @@ return [
     |
     */
     'item_model' => null,
+
+    /*
+    |--------------------------------------------------------------------------
+    | Binds your data into the correct spots for LaraCart
+    |--------------------------------------------------------------------------
+    |
+    */
+    'item_model_bindings' => [
+        \LukePOLO\LaraCart\CartItem::ITEM_ID => 'id',
+        \LukePOLO\LaraCart\CartItem::ITEM_NAME => 'name',
+        \LukePOLO\LaraCart\CartItem::ITEM_PRICE => 'price',
+        \LukePOLO\LaraCart\CartItem::ITEM_TAXABLE => 'taxable',
+        \LukePOLO\LaraCart\CartItem::ITEM_OPTIONS => [
+            // put columns here for additional options,
+            // these will be merged with options that are passed in
+        ]
+    ],
+
 
     /*
     |--------------------------------------------------------------------------

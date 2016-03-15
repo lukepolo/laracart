@@ -4,6 +4,7 @@ namespace LukePOLO\LaraCart;
 
 use Illuminate\Auth\AuthManager;
 use Illuminate\Contracts\Events\Dispatcher;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Session\SessionManager;
 use LukePOLO\LaraCart\Contracts\CouponContract;
 use LukePOLO\LaraCart\Contracts\LaraCartContract;
@@ -201,17 +202,32 @@ class LaraCart implements LaraCartContract
         $taxable = true,
         $lineItem = false
     ) {
-        $item = $this->addItem(
-            new CartItem(
-                $itemID,
-                $name,
-                $qty,
-                $price,
-                $options,
-                $taxable,
-                $lineItem
-            )
-        );
+
+        if ($this->isItemModel($itemModel = $itemID)) {
+
+            $bindings = config('laracart.item_model_bindings');
+
+            $itemID = $itemModel[$bindings[\LukePOLO\LaraCart\CartItem::ITEM_ID]];
+            $name = $itemModel[$bindings[\LukePOLO\LaraCart\CartItem::ITEM_NAME]];
+
+            if (empty($qty = $name) || !is_int($name)) {
+                $qty = 1;
+            }
+
+            $price = $itemModel[$bindings[\LukePOLO\LaraCart\CartItem::ITEM_PRICE]];
+            $options = $this->getItemModelOptions($itemModel, $bindings[\LukePOLO\LaraCart\CartItem::ITEM_OPTIONS]);
+            $taxable = $itemModel[$bindings[\LukePOLO\LaraCart\CartItem::ITEM_TAXABLE]];
+        }
+
+        $item = $this->addItem(new CartItem(
+            $itemID,
+            $name,
+            $qty,
+            $price,
+            $options,
+            $taxable,
+            $lineItem
+        ));
 
         $this->update();
 
@@ -680,4 +696,43 @@ class LaraCart implements LaraCartContract
 
         return $this->formatMoney($total, null, null, $format);
     }
+
+    /**
+     * Checks to see if its an item model
+     *
+     * @param $itemModel
+     *
+     * @return bool
+     */
+    private function isItemModel($itemModel)
+    {
+        if (is_object($itemModel) && get_class($itemModel) == config('laracart.item_model')) {
+            return true;
+        }
+    }
+
+    /**
+     * Gets the item models options based the config
+     *
+     * @param Model $itemModel
+     * @param array $options
+     *
+     * @return array
+     */
+    private function getItemModelOptions(Model $itemModel, $options = [])
+    {
+        $itemOptions = [];
+        foreach ($options as $option) {
+            $itemOptions[$option] = $itemModel->$option;
+        }
+
+        return array_filter($itemOptions, function ($value) {
+            if ($value !== false && empty($value)) {
+                return false;
+            }
+
+            return true;
+        });
+    }
+
 }

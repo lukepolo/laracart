@@ -12,9 +12,10 @@ use Mockery;
  */
 class TestItem extends Model
 {
-
     public $id = 'itemID';
     public $name = 'Test Item';
+
+    protected $guarded = [];
 
     /**
      * Finds the id of this model
@@ -31,7 +32,7 @@ class TestItem extends Model
     /**
      * Begin querying a model with eager loading.
      *
-     * @param  array|string  $relations
+     * @param  array|string $relations
      * @return \Illuminate\Database\Eloquent\Builder|static
      */
     public static function with($relations)

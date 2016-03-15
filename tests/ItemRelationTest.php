@@ -25,6 +25,9 @@ class ItemRelationTest extends Orchestra\Testbench\TestCase
         $this->assertEquals('itemID', $item->getModel()->id);
     }
 
+    /**
+     * Test for exception if could not find model
+     */
     public function testItemRelationModelException()
     {
         $item = $this->addItem();
@@ -35,5 +38,133 @@ class ItemRelationTest extends Orchestra\Testbench\TestCase
         } catch (ModelNotFound $e) {
             $this->assertEquals('Could not find relation model', $e->getMessage());
         }
+    }
+
+    /**
+     * Testing adding a item model
+     */
+    public function testAddItemModel()
+    {
+        $this->app['config']->set('laracart.item_model', \LukePOLO\LaraCart\Tests\Models\TestItem::class);
+
+        $this->app['config']->set('laracart.item_model_bindings', [
+            \LukePOLO\LaraCart\CartItem::ITEM_ID => 'id',
+            \LukePOLO\LaraCart\CartItem::ITEM_NAME => 'name',
+            \LukePOLO\LaraCart\CartItem::ITEM_PRICE => 'price',
+            \LukePOLO\LaraCart\CartItem::ITEM_TAXABLE => 'taxable',
+            \LukePOLO\LaraCart\CartItem::ITEM_OPTIONS => [
+                'tax'
+            ]
+        ]);
+
+        $item = new \LukePOLO\LaraCart\Tests\Models\TestItem([
+            'price' => 5000.01, // absurd!
+            'taxable' => false,
+            'tax' => '.5'
+        ]);
+
+        $item = $this->laracart->add($item);
+
+        $this->assertEquals($item, $this->laracart->getItem($item->getHash()));
+
+        $this->assertEquals($item->id, 'itemID');
+        $this->assertEquals($item->name, 'Test Item');
+        $this->assertEquals($item->qty, 1);
+        $this->assertEquals($item->tax, '.5');
+        $this->assertEquals($item->price, 5000.01);
+        $this->assertEquals($item->taxable, false);
+    }
+
+    /**
+     * gtesting multiple item models at once
+     */
+    public function testAddMultipleItemModel()
+    {
+        $this->app['config']->set('laracart.item_model', \LukePOLO\LaraCart\Tests\Models\TestItem::class);
+
+        $this->app['config']->set('laracart.item_model_bindings', [
+            \LukePOLO\LaraCart\CartItem::ITEM_ID => 'id',
+            \LukePOLO\LaraCart\CartItem::ITEM_NAME => 'name',
+            \LukePOLO\LaraCart\CartItem::ITEM_PRICE => 'price',
+            \LukePOLO\LaraCart\CartItem::ITEM_TAXABLE => 'taxable',
+            \LukePOLO\LaraCart\CartItem::ITEM_OPTIONS => [
+                'tax'
+            ]
+        ]);
+
+        $item = new \LukePOLO\LaraCart\Tests\Models\TestItem([
+            'price' => 5000.01, // absurd!
+            'taxable' => false,
+            'tax' => '.5'
+        ]);
+
+        $this->laracart->add($item);
+        $item = $this->laracart->add($item);
+
+        $this->assertEquals(2, $this->laracart->getItem($item->getHash())->qty);
+    }
+
+    /**
+     * Testing adding a model to a line item
+     */
+    public function testAddItemModelLine()
+    {
+        $this->app['config']->set('laracart.item_model', \LukePOLO\LaraCart\Tests\Models\TestItem::class);
+
+        $this->app['config']->set('laracart.item_model_bindings', [
+            \LukePOLO\LaraCart\CartItem::ITEM_ID => 'id',
+            \LukePOLO\LaraCart\CartItem::ITEM_NAME => 'name',
+            \LukePOLO\LaraCart\CartItem::ITEM_PRICE => 'price',
+            \LukePOLO\LaraCart\CartItem::ITEM_TAXABLE => 'taxable',
+            \LukePOLO\LaraCart\CartItem::ITEM_OPTIONS => [
+                'tax'
+            ]
+        ]);
+
+        $item = new \LukePOLO\LaraCart\Tests\Models\TestItem([
+            'price' => 5000.01, // absurd!
+            'taxable' => false,
+            'tax' => '.5'
+        ]);
+
+        $item = $this->laracart->addLine($item);
+
+        $this->assertEquals($item, $this->laracart->getItem($item->getHash()));
+
+        $this->assertEquals($item->id, 'itemID');
+        $this->assertEquals($item->name, 'Test Item');
+        $this->assertEquals($item->qty, 1);
+        $this->assertEquals($item->tax, '.5');
+        $this->assertEquals($item->price, 5000.01);
+        $this->assertEquals($item->taxable, false);
+    }
+
+    /**
+     * Testing adding multiple item models per row
+     */
+    public function testAddMultipleItemModelLine()
+    {
+        $this->app['config']->set('laracart.item_model', \LukePOLO\LaraCart\Tests\Models\TestItem::class);
+
+        $this->app['config']->set('laracart.item_model_bindings', [
+            \LukePOLO\LaraCart\CartItem::ITEM_ID => 'id',
+            \LukePOLO\LaraCart\CartItem::ITEM_NAME => 'name',
+            \LukePOLO\LaraCart\CartItem::ITEM_PRICE => 'price',
+            \LukePOLO\LaraCart\CartItem::ITEM_TAXABLE => 'taxable',
+            \LukePOLO\LaraCart\CartItem::ITEM_OPTIONS => [
+                'tax'
+            ]
+        ]);
+
+        $item = new \LukePOLO\LaraCart\Tests\Models\TestItem([
+            'price' => 5000.01, // absurd!
+            'taxable' => false,
+            'tax' => '.5'
+        ]);
+
+        $this->laracart->addLine($item);
+        $item = $this->laracart->addLine($item);
+
+        $this->assertEquals(1, $this->laracart->getItem($item->getHash())->qty);
     }
 }
