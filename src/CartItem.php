@@ -17,11 +17,11 @@ use LukePOLO\LaraCart\Traits\CartOptionsMagicMethodsTrait;
  */
 class CartItem
 {
-    CONST ITEM_ID = 'id';
-    CONST ITEM_NAME = 'name';
-    CONST ITEM_PRICE = 'price';
-    CONST ITEM_TAXABLE = 'taxable';
-    CONST ITEM_OPTIONS = 'options';
+    const ITEM_ID = 'id';
+    const ITEM_NAME = 'name';
+    const ITEM_PRICE = 'price';
+    const ITEM_TAXABLE = 'taxable';
+    const ITEM_OPTIONS = 'options';
 
     use CartOptionsMagicMethodsTrait;
 
