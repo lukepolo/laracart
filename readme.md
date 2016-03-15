@@ -229,9 +229,11 @@ You can set a default model relation to an item by setting it in your config ```
 
 ```
 
+You can also can easily insert your items with a simple command when using associated models!
+``` You will need to set this up in the config file ``` 
+
 ```php
-    // You can also can easily insert your items with a simple command when using associated models!
-    $item = \LaraCart::add($itemModel, $qty = 1);
+    $item = \LaraCart::add($itemModel);
 ```
 
 ## Currency & Locale
