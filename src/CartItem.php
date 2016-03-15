@@ -8,6 +8,7 @@ use LukePOLO\LaraCart\Traits\CartOptionsMagicMethodsTrait;
 /**
  * Class CartItem
  *
+ * @property int id
  * @property int qty
  * @property float price
  * @property string name
