@@ -113,6 +113,35 @@ class SubItemsTest extends Orchestra\Testbench\TestCase
     }
 
     /**
+     * Test adding an item on a sub item
+     */
+    public function testAddSubItemItemsWithQty()
+    {
+        $item = $this->addItem();
+
+        $subItem = $item->addSubItem([
+            'size' => 'XXL',
+            'price' => 2.50,
+            'items' => [
+                new \LukePOLO\LaraCart\CartItem('itemId', 'test item', 1, 10)
+            ]
+        ]);
+
+        $this->assertInternalType('array', $subItem->items);
+
+        $this->containsOnlyInstancesOf(LukePOLO\LaraCart\CartItem::class, $subItem->items);
+
+
+        $this->assertEquals('$12.50', $subItem->price());
+
+        $this->assertEquals('13.50', $this->laracart->subTotal(false));
+
+        $item->qty = 2;
+
+        $this->assertEquals('27.00', $this->laracart->subTotal(false));
+    }
+
+    /**
      * Test removing sub items
      */
     public function testRemoveSubItem()

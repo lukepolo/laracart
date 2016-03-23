@@ -218,8 +218,6 @@ class CartItem
             $total += $subItem->price(false);
         }
 
-        $total *= $this->qty;
-
         return LaraCart::formatMoney($total, $this->locale, $this->internationalFormat, $format);
     }
 

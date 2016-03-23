@@ -9,6 +9,7 @@ use LukePOLO\LaraCart\Traits\CartOptionsMagicMethodsTrait;
  *
  * @property float price
  * @property array options
+ * @property array items
  *
  * @package LukePOLO\LaraCart
  */
