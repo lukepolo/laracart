@@ -12,8 +12,7 @@ class LaraCartTest extends Orchestra\Testbench\TestCase
      */
     public function testGetInstance()
     {
-        $this->assertEquals(new \LukePOLO\LaraCart\LaraCart($this->session, $this->events, $this->authManager),
-            $this->laracart->get());
+        $this->assertEquals(new \LukePOLO\LaraCart\LaraCart($this->session, $this->events, $this->authManager), $this->app->make('laracart'));
     }
 
     /**
