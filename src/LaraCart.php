@@ -472,7 +472,7 @@ class LaraCart implements LaraCartContract
     }
 
     /**
-     * Gets a speific fee from the fees array
+     * Gets a specific fee from the fees array
      *
      * @param $name
      *
@@ -500,13 +500,26 @@ class LaraCart implements LaraCartContract
     }
 
     /**
-     * Reemoves a fee from the fee array
+     * Removes a fee from the fee array
      *
      * @param $name
      */
     public function removeFee($name)
     {
         array_forget($this->cart->fees, $name);
+
+        $this->update();
+    }
+
+    /**
+     * Removes all the fees set in the cart
+     *
+     */
+    public function removeFees()
+    {
+        unset($this->cart->fees);
+
+        $this->cart->fees = [];
 
         $this->update();
     }
