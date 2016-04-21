@@ -381,7 +381,7 @@ class LaraCart implements LaraCartContract
             }
         }
 
-        $this->events->fire('laracart.removeItem', $itemHash);
+        $this->events->fire('laracart.removeItem', $item);
 
         $this->update();
     }
