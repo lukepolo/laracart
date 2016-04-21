@@ -517,8 +517,6 @@ class LaraCart implements LaraCartContract
      */
     public function removeFees()
     {
-        unset($this->cart->fees);
-
         $this->cart->fees = [];
 
         $this->update();
