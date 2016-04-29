@@ -258,7 +258,15 @@ Adding coupons could never be easier, currently there are a set of coupons insid
     
     $fixedCoupon->getValue(); // $2.50
     $percentCoupon->getValue; // 15%
+    The $coupon->couponValue 
 ```
+
+Coupon and Values Available
+
+| Coupon Type | Description | Class | Example of Value |
+| -------------------- | --------------------------------------- |
+| Fixed Amount Off | A fixed amount off of the final total | LukePOLO\LaraCart\Coupons\Fixed | 5 ($5 off) |
+| Percentage Off | A percetnage off based on the final total | LukePOLO\LaraCart\Coupons\Percentage | .10 (10% off)|
 
 ## Fees
 Fees allow you to add extra charges to the cart for various reasons ex: delivery fees.
