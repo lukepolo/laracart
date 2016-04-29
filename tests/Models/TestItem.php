@@ -15,6 +15,10 @@ class TestItem extends Model
     public $id = 'itemID';
     public $name = 'Test Item';
 
+    public $price = 5000.0100000000002;
+    public $taxable = false;
+    public $tax = '.5';
+
     protected $guarded = [];
 
     /**
@@ -24,7 +28,7 @@ class TestItem extends Model
      *
      * @return $this
      */
-    public function findOrFail($id)
+    public function find($id)
     {
         return Mockery::mock(new static);
     }

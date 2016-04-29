@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Session\SessionManager;
 use LukePOLO\LaraCart\Contracts\CouponContract;
 use LukePOLO\LaraCart\Contracts\LaraCartContract;
+use LukePOLO\LaraCart\Exceptions\ModelNotFound;
 
 /**
  * Class LaraCart
@@ -16,18 +17,18 @@ use LukePOLO\LaraCart\Contracts\LaraCartContract;
  */
 class LaraCart implements LaraCartContract
 {
-    const QTY = 'qty';
-    const HASH = 'generateCartHash';
-    const PRICE = 'price';
     const SERVICE = 'laracart';
+    const HASH = 'generateCartHash';
     const RANHASH = 'generateRandomCartItemHash';
 
     protected $events;
     protected $session;
     protected $authManager;
-    protected $prefix;
 
     public $cart;
+    public $prefix;
+    public $itemModel;
+    public $itemModelRelations;
 
     /**
      * LaraCart constructor.
@@ -42,6 +43,8 @@ class LaraCart implements LaraCartContract
         $this->events = $events;
         $this->authManager = $authManager;
         $this->prefix = config('laracart.cache_prefix', 'laracart');
+        $this->itemModel = config('laracart.item_model', null);
+        $this->itemModelRelations = config('laracart.item_model_relations', []);
 
         $this->setInstance($this->session->get($this->prefix . '.instance', 'default'));
     }
@@ -147,7 +150,7 @@ class LaraCart implements LaraCartContract
             $this->authManager->user()->cart_session_id = $this->session->getId();
             $this->authManager->user()->save();
         }
-        
+
         $this->session->save();
 
         $this->events->fire('laracart.update', $this->cart);
@@ -194,6 +197,8 @@ class LaraCart implements LaraCartContract
      * @param bool|false $lineItem
      *
      * @return CartItem
+     *
+     * @throws ModelNotFound
      */
     public function add(
         $itemID,
@@ -204,7 +209,19 @@ class LaraCart implements LaraCartContract
         $taxable = true,
         $lineItem = false
     ) {
-        if ($this->isItemModel($itemModel = $itemID)) {
+
+        if (!empty(config('laracart.item_model'))) {
+
+            $itemModel = $itemID;
+
+            if (!$this->isItemModel($itemModel)) {
+                $itemModel = new $this->itemModel;
+                $itemModel->with($this->itemModelRelations)->find($itemID);
+            }
+
+            if (empty($itemModel)) {
+                throw new ModelNotFound('Could not find the item '.$itemID);
+            }
 
             $bindings = config('laracart.item_model_bindings');
 
@@ -735,7 +752,7 @@ class LaraCart implements LaraCartContract
     {
         $itemOptions = [];
         foreach ($options as $option) {
-            $itemOptions[$option] = $itemModel->$option;
+            $itemOptions[$option] = $this->getFromModel($itemModel, $option);
         }
 
         return array_filter($itemOptions, function ($value) {
@@ -745,6 +762,31 @@ class LaraCart implements LaraCartContract
 
             return true;
         });
+    }
+
+    /**
+     * Gets a option from the model
+     *
+     * @param Model $itemModel
+     * @param $attr
+     * @param null $defaultValue
+     * 
+     * @return Model|null
+     */
+    private function getFromModel(Model $itemModel, $attr, $defaultValue = null)
+    {
+        $variable = $itemModel;
+
+        if (!empty($attr)) {
+            foreach (explode('.', $attr) as $attr) {
+                $variable = array_get($variable, $attr);
+            }
+        }
+
+        if (empty($variable)) {
+            $variable = $defaultValue;
+        }
+        return $variable;
     }
 
 }

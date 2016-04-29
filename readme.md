@@ -219,11 +219,6 @@ You can set a default model relation to an item by setting it in your config ```
     // returns the associated model
     $item->getModel();
 
-    // You can also set it directly on the item
-    $item = \LaraCart::add(2, 'Shirt', 1, 15.99, [
-        'size' => 'XXL'
-    ]);
-
     // The second paramater allows you to relate other models with your item model
     $item->setModel(\LukePOLO\LaraCart\Tests\Models\TestItem::class, array $modelRelations);
 
@@ -233,7 +228,17 @@ You can also can easily insert your items with a simple command when using assoc
 ``` You will need to set this up in the config file ``` 
 
 ```php
+    $item = \LaraCart::add($itemID = 123123123);
     $item = \LaraCart::add($itemModel);
+```
+
+Item Model Bindings are also available in the config
+```php
+    // We will look at the more adavnce part of item options, for instance you can do
+    \LukePOLO\LaraCart\CartItem::ITEM_OPTIONS => [
+        'your_key' => 'price_relation.value' // this will go to the price relation then get the value!
+        'your_other_key' => 'price_relation.another_relation.value' // This also works
+    ]
 ```
 
 ## Currency & Locale
@@ -258,7 +263,15 @@ Adding coupons could never be easier, currently there are a set of coupons insid
     
     $fixedCoupon->getValue(); // $2.50
     $percentCoupon->getValue; // 15%
+    The $coupon->couponValue 
 ```
+
+Coupon and Values Available
+
+| Coupon Type | Description | Class | Example of Value |
+| -------------------- | --------------------------------------- |
+| Fixed Amount Off | A fixed amount off of the final total | LukePOLO\LaraCart\Coupons\Fixed | 5 ($5 off) |
+| Percentage Off | A percetnage off based on the final total | LukePOLO\LaraCart\Coupons\Percentage | .10 (10% off)|
 
 ## Fees
 Fees allow you to add extra charges to the cart for various reasons ex: delivery fees.
@@ -296,6 +309,7 @@ LaraCart packages can throw the following exceptions:
 | *InvalidQuantity*    | When trying to give an item a non-integer for a quantity  |
 | *CouponException*    | When a coupon either is expired or an invalid amount |
 | *ModelNotFound*      | When you try to relate a model that does not exist |
+| *InvalidTaxableValue* | Either a tax value is invalid or taxable is not a boolean|
 
 ## Events
 

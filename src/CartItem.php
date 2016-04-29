@@ -14,12 +14,15 @@ use LukePOLO\LaraCart\Traits\CartOptionsMagicMethodsTrait;
  * @property float price
  * @property string name
  * @property array options
+ * @property boolean taxable
  *
  * @package LukePOLO\LaraCart
  */
 class CartItem
 {
     const ITEM_ID = 'id';
+    const ITEM_QTY = 'qty';
+    const ITEM_TAX = 'tax';
     const ITEM_NAME = 'name';
     const ITEM_PRICE = 'price';
     const ITEM_TAXABLE = 'taxable';
@@ -32,7 +35,6 @@ class CartItem
     protected $itemModelRelations;
 
     public $locale;
-    public $taxable;
     public $lineItem;
     public $discount = 0;
     public $subItems = [];
@@ -281,12 +283,18 @@ class CartItem
     /**
      * Returns a Model
      *
-     * @throws
+     * @throws ModelNotFound
      */
     public function getModel()
     {
         $itemModel = new $this->itemModel;
 
-        return $itemModel->with($this->itemModelRelations)->findOrFail($this->id);
+        $itemModel->with($this->itemModelRelations)->find($this->id);
+
+        if(empty($itemModel)) {
+            throw new ModelNotFound('Could not find the item model for '.$this->id);
+        }
+
+        return $itemModel;
     }
 }

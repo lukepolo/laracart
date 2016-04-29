@@ -41,6 +41,46 @@ class ItemRelationTest extends Orchestra\Testbench\TestCase
     }
 
     /**
+     * Testing adding via item id
+     */
+    public function testAddItemID()
+    {
+        $this->laracart->itemModel = \LukePOLO\LaraCart\Tests\Models\TestItem::class;
+        $this->laracart->item_model_bindings = [
+            \LukePOLO\LaraCart\CartItem::ITEM_ID => 'id',
+            \LukePOLO\LaraCart\CartItem::ITEM_NAME => 'name',
+            \LukePOLO\LaraCart\CartItem::ITEM_PRICE => 'price',
+            \LukePOLO\LaraCart\CartItem::ITEM_TAXABLE => 'taxable',
+            \LukePOLO\LaraCart\CartItem::ITEM_OPTIONS => [
+                'tax'
+            ]
+        ];
+
+        $this->app['config']->set('laracart.item_model', \LukePOLO\LaraCart\Tests\Models\TestItem::class);
+
+        $this->app['config']->set('laracart.item_model_bindings', [
+            \LukePOLO\LaraCart\CartItem::ITEM_ID => 'id',
+            \LukePOLO\LaraCart\CartItem::ITEM_NAME => 'name',
+            \LukePOLO\LaraCart\CartItem::ITEM_PRICE => 'price',
+            \LukePOLO\LaraCart\CartItem::ITEM_TAXABLE => 'taxable',
+            \LukePOLO\LaraCart\CartItem::ITEM_OPTIONS => [
+                'tax'
+            ]
+        ]);
+
+        $item = $this->laracart->add('123123');
+
+        $this->assertEquals($item, $this->laracart->getItem($item->getHash()));
+
+        $this->assertEquals($item->id, 'itemID');
+        $this->assertEquals($item->name, 'Test Item');
+        $this->assertEquals($item->qty, 1);
+        $this->assertEquals($item->tax, '.5');
+        $this->assertEquals($item->price, 5000.01);
+        $this->assertEquals($item->taxable, false);
+    }
+    
+    /**
      * Testing adding a item model
      */
     public function testAddItemModel()
