@@ -283,12 +283,18 @@ class CartItem
     /**
      * Returns a Model
      *
-     * @throws
+     * @throws ModelNotFound
      */
     public function getModel()
     {
         $itemModel = new $this->itemModel;
 
-        return $itemModel->with($this->itemModelRelations)->findOrFail($this->id);
+        $itemModel->with($this->itemModelRelations)->find($this->id);
+
+        if(empty($itemModel)) {
+            throw new ModelNotFound('Could not find the item model for '.$this->id);
+        }
+
+        return $itemModel;
     }
 }

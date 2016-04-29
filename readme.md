@@ -219,11 +219,6 @@ You can set a default model relation to an item by setting it in your config ```
     // returns the associated model
     $item->getModel();
 
-    // You can also set it directly on the item
-    $item = \LaraCart::add(2, 'Shirt', 1, 15.99, [
-        'size' => 'XXL'
-    ]);
-
     // The second paramater allows you to relate other models with your item model
     $item->setModel(\LukePOLO\LaraCart\Tests\Models\TestItem::class, array $modelRelations);
 
@@ -233,6 +228,7 @@ You can also can easily insert your items with a simple command when using assoc
 ``` You will need to set this up in the config file ``` 
 
 ```php
+    $item = \LaraCart::add($itemID = 123123123);
     $item = \LaraCart::add($itemModel);
 ```
 
