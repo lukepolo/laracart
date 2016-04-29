@@ -147,6 +147,8 @@ class LaraCart implements LaraCartContract
             $this->authManager->user()->cart_session_id = $this->session->getId();
             $this->authManager->user()->save();
         }
+        
+        $this->session->save();
 
         $this->events->fire('laracart.update', $this->cart);
     }
