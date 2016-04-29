@@ -56,11 +56,12 @@ trait CartOptionsMagicMethodsTrait
                     throw new InvalidPrice('The price must be a valid number');
                 }
                 break;
-            case CartItem::ITEM_TAX:
-                if (!is_numeric($value) || $value > 1) {
-                    throw new InvalidTaxableValue('The tax must be a float less than 1');
-                }
-                break;
+//            Bad code , will need to look at later
+//            case CartItem::ITEM_TAX:
+//                if (!is_numeric($value) || $value > 1) {
+//                    throw new InvalidTaxableValue('The tax must be a float less than 1');
+//                }
+//                break;
             case CartItem::ITEM_TAXABLE:
                 if(!is_bool($value)) {
                     throw new InvalidTaxableValue('The taxable option must be a boolean');
