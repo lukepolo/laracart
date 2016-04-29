@@ -2,8 +2,10 @@
 
 namespace LukePOLO\LaraCart\Traits;
 
+use LukePOLO\LaraCart\CartItem;
 use LukePOLO\LaraCart\Exceptions\InvalidPrice;
 use LukePOLO\LaraCart\Exceptions\InvalidQuantity;
+use LukePOLO\LaraCart\Exceptions\InvalidTaxableValue;
 use LukePOLO\LaraCart\LaraCart;
 
 /**
@@ -39,18 +41,29 @@ trait CartOptionsMagicMethodsTrait
      *
      * @throws InvalidPrice
      * @throws InvalidQuantity
+     * @throws InvalidTaxableValue
      */
     public function __set($option, $value)
     {
         switch ($option) {
-            case LaraCart::QTY:
+            case CartItem::ITEM_QTY:
                 if (!is_numeric($value) || $value < 0) {
                     throw new InvalidQuantity('The quantity must be a valid number');
                 }
                 break;
-            case LaraCart::PRICE:
+            case CartItem::ITEM_PRICE:
                 if (!is_numeric($value)) {
                     throw new InvalidPrice('The price must be a valid number');
+                }
+                break;
+            case CartItem::ITEM_TAX:
+                if (!is_numeric($value) || $value > 1) {
+                    throw new InvalidTaxableValue('The tax must be a float less than 1');
+                }
+                break;
+            case CartItem::ITEM_TAXABLE:
+                if(!is_bool($value)) {
+                    throw new InvalidTaxableValue('The taxable option must be a boolean');
                 }
                 break;
         }

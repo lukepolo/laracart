@@ -79,6 +79,8 @@ return [
         \LukePOLO\LaraCart\CartItem::ITEM_OPTIONS => [
             // put columns here for additional options,
             // these will be merged with options that are passed in
+            // e.x
+            // tax => .07
         ]
     ],
 

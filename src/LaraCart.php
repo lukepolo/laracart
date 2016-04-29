@@ -16,10 +16,8 @@ use LukePOLO\LaraCart\Contracts\LaraCartContract;
  */
 class LaraCart implements LaraCartContract
 {
-    const QTY = 'qty';
-    const HASH = 'generateCartHash';
-    const PRICE = 'price';
     const SERVICE = 'laracart';
+    const HASH = 'generateCartHash';
     const RANHASH = 'generateRandomCartItemHash';
 
     protected $events;
@@ -147,7 +145,7 @@ class LaraCart implements LaraCartContract
             $this->authManager->user()->cart_session_id = $this->session->getId();
             $this->authManager->user()->save();
         }
-        
+
         $this->session->save();
 
         $this->events->fire('laracart.update', $this->cart);

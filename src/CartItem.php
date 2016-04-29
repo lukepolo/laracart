@@ -14,12 +14,15 @@ use LukePOLO\LaraCart\Traits\CartOptionsMagicMethodsTrait;
  * @property float price
  * @property string name
  * @property array options
+ * @property boolean taxable
  *
  * @package LukePOLO\LaraCart
  */
 class CartItem
 {
     const ITEM_ID = 'id';
+    const ITEM_QTY = 'qty';
+    const ITEM_TAX = 'tax';
     const ITEM_NAME = 'name';
     const ITEM_PRICE = 'price';
     const ITEM_TAXABLE = 'taxable';
@@ -32,7 +35,6 @@ class CartItem
     protected $itemModelRelations;
 
     public $locale;
-    public $taxable;
     public $lineItem;
     public $discount = 0;
     public $subItems = [];
