@@ -232,6 +232,15 @@ You can also can easily insert your items with a simple command when using assoc
     $item = \LaraCart::add($itemModel);
 ```
 
+Item Model Bindings are also available in the config
+```php
+    // We will look at the more adavnce part of item options, for instance you can do
+    \LukePOLO\LaraCart\CartItem::ITEM_OPTIONS => [
+        'your_key' => 'price_relation.value' // this will go to the price relation then get the value!
+        'your_other_key' => 'price_relation.another_relation.value' // This also works
+    ]
+```
+
 ## Currency & Locale
 LaraCart comes built in with a currency / locale display. To configure just checkout the config.php. You can set to show the locale (USD) or the currency ($)
 

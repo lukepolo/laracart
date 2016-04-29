@@ -752,7 +752,7 @@ class LaraCart implements LaraCartContract
     {
         $itemOptions = [];
         foreach ($options as $option) {
-            $itemOptions[$option] = $itemModel->$option;
+            $itemOptions[$option] = $this->getFromModel($itemModel, $option);
         }
 
         return array_filter($itemOptions, function ($value) {
@@ -762,6 +762,31 @@ class LaraCart implements LaraCartContract
 
             return true;
         });
+    }
+
+    /**
+     * Gets a option from the model
+     *
+     * @param Model $itemModel
+     * @param $attr
+     * @param null $defaultValue
+     * 
+     * @return Model|null
+     */
+    private function getFromModel(Model $itemModel, $attr, $defaultValue = null)
+    {
+        $variable = $itemModel;
+
+        if (!empty($attr)) {
+            foreach (explode('.', $attr) as $attr) {
+                $variable = array_get($variable, $attr);
+            }
+        }
+
+        if (empty($variable)) {
+            $variable = $defaultValue;
+        }
+        return $variable;
     }
 
 }
