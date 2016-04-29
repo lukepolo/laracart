@@ -309,6 +309,7 @@ LaraCart packages can throw the following exceptions:
 | *InvalidQuantity*    | When trying to give an item a non-integer for a quantity  |
 | *CouponException*    | When a coupon either is expired or an invalid amount |
 | *ModelNotFound*      | When you try to relate a model that does not exist |
+| *InvalidTaxableValue* | Either a tax value is invalid or taxable is not a boolean|
 
 ## Events
 
