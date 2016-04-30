@@ -220,7 +220,7 @@ class LaraCart implements LaraCartContract
             }
 
             if (empty($itemModel)) {
-                throw new ModelNotFound('Could not find the item '.$itemID);
+                throw new ModelNotFound('Could not find the item ' . $itemID);
             }
 
             $bindings = config('laracart.item_model_bindings');
@@ -770,7 +770,7 @@ class LaraCart implements LaraCartContract
      * @param Model $itemModel
      * @param $attr
      * @param null $defaultValue
-     * 
+     *
      * @return Model|null
      */
     private function getFromModel(Model $itemModel, $attr, $defaultValue = null)

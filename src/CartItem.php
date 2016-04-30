@@ -291,8 +291,8 @@ class CartItem
 
         $itemModel->with($this->itemModelRelations)->find($this->id);
 
-        if(empty($itemModel)) {
-            throw new ModelNotFound('Could not find the item model for '.$this->id);
+        if (empty($itemModel)) {
+            throw new ModelNotFound('Could not find the item model for ' . $this->id);
         }
 
         return $itemModel;
