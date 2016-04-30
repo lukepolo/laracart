@@ -35,7 +35,7 @@ class LaraCartServiceProvider extends ServiceProvider
         if (!$this->migrationHasAlreadyBeenPublished()) {
             $timestamp = date('Y_m_d_His', time());
             $this->publishes([
-                __DIR__ . '/../resources/migrations/add_cart_session_id_to_users_table.php.stub' => database_path('migrations/' . $timestamp . '_add_cart_session_id_to_users_table.php'),
+                __DIR__ . '/database/migrations/add_cart_session_id_to_users_table.php.stub' => database_path('migrations/' . $timestamp . '_add_cart_session_id_to_users_table.php'),
             ], 'migrations');
         }
     }
