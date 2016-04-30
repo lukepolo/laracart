@@ -18,24 +18,18 @@ class LaraCartServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        $this->publishes(
-            [
-                __DIR__ . '/config/laracart.php' => config_path('laracart.php'),
-            ]
-        );
+        $this->publishes([
+            __DIR__ . '/config/laracart.php' => config_path('laracart.php'),
+        ]);
 
         $this->mergeConfigFrom(
             __DIR__ . '/config/laracart.php',
             'laracart'
         );
 
-        /*
-         * Publish migration if not published yet
-         */
         if (!$this->migrationHasAlreadyBeenPublished()) {
-            $timestamp = date('Y_m_d_His', time());
             $this->publishes([
-                __DIR__ . '/../resources/migrations/add_cart_session_id_to_users_table.php.stub' => database_path('migrations/' . $timestamp . '_add_cart_session_id_to_users_table.php'),
+                __DIR__ . '/database/migrations/add_cart_session_id_to_users_table.php.stub' => database_path('migrations/' . date('Y_m_d_His') . '_add_cart_session_id_to_users_table.php'),
             ], 'migrations');
         }
     }
@@ -68,11 +62,14 @@ class LaraCartServiceProvider extends ServiceProvider
     }
 
     /**
+     * Checks to see if the migration has already been published
+     *
      * @return bool
      */
     protected function migrationHasAlreadyBeenPublished()
     {
-        $files = glob(database_path('/migrations/*_add_cart_session_id_to_users_table.php'));
+        $files = glob(database_path('migrations/*_add_cart_session_id_to_users_table.php'));
+
         return count($files) > 0;
     }
 }
