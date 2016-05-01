@@ -215,8 +215,7 @@ class LaraCart implements LaraCartContract
             $itemModel = $itemID;
 
             if (!$this->isItemModel($itemModel)) {
-                $itemModel = new $this->itemModel;
-                $itemModel->with($this->itemModelRelations)->find($itemID);
+                $itemModel = (new $this->itemModel)->with($this->itemModelRelations)->find($itemID);
             }
 
             if (empty($itemModel)) {
@@ -234,7 +233,7 @@ class LaraCart implements LaraCartContract
 
             $price = $itemModel[$bindings[\LukePOLO\LaraCart\CartItem::ITEM_PRICE]];
             $options = $this->getItemModelOptions($itemModel, $bindings[\LukePOLO\LaraCart\CartItem::ITEM_OPTIONS]);
-            $taxable = $itemModel[$bindings[\LukePOLO\LaraCart\CartItem::ITEM_TAXABLE]];
+            $taxable = $itemModel[$bindings[\LukePOLO\LaraCart\CartItem::ITEM_TAXABLE]] ? true : false;
         }
 
         $item = $this->addItem(new CartItem(
