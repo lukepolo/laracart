@@ -348,7 +348,7 @@ class LaraCart implements LaraCartContract
      *
      * @return array
      */
-    public function getItems()
+    public function getItems($collectable = false)
     {
         $items = [];
         if (isset($this->cart->items) === true) {
@@ -356,6 +356,8 @@ class LaraCart implements LaraCartContract
                 $items[$item->getHash()] = $item;
             }
         }
+        return $collectable? collect($items):$items;
+    }
 
         return $items;
     }
