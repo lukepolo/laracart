@@ -289,7 +289,7 @@ class CartItem
     {
         $itemModel = new $this->itemModel;
 
-        $itemModel->with($this->itemModelRelations)->find($this->id);
+        $itemModel = $itemModel->with($this->itemModelRelations)->find($this->id);
 
         if (empty($itemModel)) {
             throw new ModelNotFound('Could not find the item model for ' . $this->id);
