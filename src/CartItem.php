@@ -287,9 +287,7 @@ class CartItem
      */
     public function getModel()
     {
-        $itemModel = new $this->itemModel;
-
-        $itemModel->with($this->itemModelRelations)->find($this->id);
+        $itemModel = (new $this->itemModel)->with($this->itemModelRelations)->find($this->id);
 
         if (empty($itemModel)) {
             throw new ModelNotFound('Could not find the item model for ' . $this->id);
