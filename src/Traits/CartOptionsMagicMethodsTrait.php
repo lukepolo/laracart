@@ -6,7 +6,6 @@ use LukePOLO\LaraCart\CartItem;
 use LukePOLO\LaraCart\Exceptions\InvalidPrice;
 use LukePOLO\LaraCart\Exceptions\InvalidQuantity;
 use LukePOLO\LaraCart\Exceptions\InvalidTaxableValue;
-use LukePOLO\LaraCart\LaraCart;
 
 /**
  * Class CartOptionsMagicMethodsTrait
@@ -62,7 +61,7 @@ trait CartOptionsMagicMethodsTrait
                 }
                 break;
             case CartItem::ITEM_TAXABLE:
-                if (!is_bool($value)) {
+                if (!is_bool($value) && $value != 0 && $value != 1) {
                     throw new InvalidTaxableValue('The taxable option must be a boolean');
                 }
                 break;
