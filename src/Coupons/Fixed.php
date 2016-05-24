@@ -36,9 +36,12 @@ class Fixed implements CouponContract
     /**
      * Gets the discount amount
      *
+     * @param $throwErrors boolean this allows us to capture errors in our code if we wish,
+     * that way we can spit out why the coupon has failed
+     *
      * @return string
      */
-    public function discount()
+    public function discount($throwErrors = false)
     {
         $total = app(LaraCart::SERVICE)->subTotal(false) - $this->value;
 

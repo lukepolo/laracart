@@ -48,7 +48,7 @@ trait CouponTrait
     }
 
     /**
-     * Checks the minimum amount needed to apply the coupon
+     * Checks the minimum subtotal needed to apply the coupon
      *
      * @param $minAmount
      * @param $throwErrors
