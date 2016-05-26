@@ -157,10 +157,30 @@ class SubItemsTest extends Orchestra\Testbench\TestCase
 
         $this->assertEquals($subItem, $item->findSubItem($subItemHash));
 
-
         $item->removeSubItem($subItemHash);
 
         $this->assertEquals(null, $item->findSubItem($subItemHash));
 
     }
+
+    /**
+     * Test to make sure taxable flag is working for total tax
+     */
+    public function testAddSubItemItemsSubItemsTax()
+    {
+        $item = $this->addItem();
+
+        $item->addSubItem([
+            'size' => 'XXL',
+            'price' => 2.50,
+            'items' => [
+                new \LukePOLO\LaraCart\CartItem('itemId', 'test item', 1, 10, [], false)
+            ]
+        ]);
+
+        $this->assertEquals(13.50, $item->price(false));
+
+        $this->assertEquals("0.25", $this->laracart->taxTotal(false));
+    }
+
 }

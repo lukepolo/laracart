@@ -144,7 +144,7 @@ class CartItem
      *
      * @param array $subItem
      *
-     * @return CartSubItem $itemHash
+     * @return CartSubItem
      */
     public function addSubItem(array $subItem)
     {
@@ -173,13 +173,14 @@ class CartItem
      * Gets the price of the item with or without tax, with the proper format
      *
      * @param bool $format
+     * @param bool $taxedItemsOnly
      *
      * @return string
      */
-    public function price($format = true)
+    public function price($format = true, $taxedItemsOnly = false)
     {
         return LaraCart::formatMoney(
-            $this->price + $this->subItemsTotal(false),
+            $this->price + $this->subItemsTotal(false, $taxedItemsOnly),
             $this->locale,
             $this->internationalFormat, $format
         );
@@ -190,12 +191,13 @@ class CartItem
      *
      * @param bool $format
      * @param bool $withDiscount
+     * @param bool $taxedItemsOnly
      *
      * @return string
      */
-    public function subTotal($format = true, $withDiscount = true)
+    public function subTotal($format = true, $withDiscount = true, $taxedItemsOnly = false)
     {
-        $total = $this->price(false) * $this->qty;
+        $total = $this->price(false, $taxedItemsOnly) * $this->qty;
 
         if ($withDiscount) {
             $total -= $this->getDiscount(false);
@@ -209,15 +211,16 @@ class CartItem
      * Gets the totals for the options
      *
      * @param boolean $format
+     * @param bool $taxedItemsOnly
      *
      * @return string
      */
-    public function subItemsTotal($format = true)
+    public function subItemsTotal($format = true, $taxedItemsOnly = false)
     {
         $total = 0;
 
         foreach ($this->subItems as $subItem) {
-            $total += $subItem->price(false);
+            $total += $subItem->price(false, $taxedItemsOnly);
         }
 
         return LaraCart::formatMoney($total, $this->locale, $this->internationalFormat, $format);
@@ -256,7 +259,7 @@ class CartItem
         $tax = 0;
 
         if ($this->taxable) {
-            return $this->tax * ($this->subTotal(false) - $amountNotTaxable);
+            return $this->tax * ($this->subTotal(false, true, true) - $amountNotTaxable);
         }
 
         return $tax;
