@@ -62,7 +62,7 @@ class CartSubItem
 
         if (isset($this->items)) {
             foreach ($this->items as $item) {
-                if($taxedItemsOnly && !$item->taxable) {
+                if ($taxedItemsOnly && !$item->taxable) {
                     continue;
                 }
                 $price += $item->price(false);

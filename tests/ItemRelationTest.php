@@ -79,7 +79,7 @@ class ItemRelationTest extends Orchestra\Testbench\TestCase
         $this->assertEquals($item->price, 5000.01);
         $this->assertEquals($item->taxable, false);
     }
-    
+
     /**
      * Testing adding a item model
      */

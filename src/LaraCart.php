@@ -233,7 +233,8 @@ class LaraCart implements LaraCartContract
 
             $price = $itemModel[$bindings[\LukePOLO\LaraCart\CartItem::ITEM_PRICE]];
 
-            $options = array_merge($options, $this->getItemModelOptions($itemModel, $bindings[\LukePOLO\LaraCart\CartItem::ITEM_OPTIONS]));
+            $options = array_merge($options,
+                $this->getItemModelOptions($itemModel, $bindings[\LukePOLO\LaraCart\CartItem::ITEM_OPTIONS]));
 
             $taxable = $itemModel[$bindings[\LukePOLO\LaraCart\CartItem::ITEM_TAXABLE]] ? true : false;
         }
