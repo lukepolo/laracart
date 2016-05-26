@@ -252,6 +252,8 @@ class CartItem
     /**
      * Gets the tax for the item
      *
+     * @param int $amountNotTaxable
+     *
      * @return int|mixed
      */
     public function tax($amountNotTaxable = 0)
@@ -259,7 +261,7 @@ class CartItem
         $tax = 0;
 
         if ($this->taxable) {
-            return $this->tax * ($this->subTotal(false, true, true) - $amountNotTaxable);
+            return $this->tax * ($this->subTotal(false, config('laracart.discountTaxable', true), true) - $amountNotTaxable);
         }
 
         return $tax;
