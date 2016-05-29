@@ -571,16 +571,11 @@ class LaraCart implements LaraCartContract
 
         if ($this->count() != 0) {
             foreach ($this->getItems() as $item) {
-                if ($discounted >= $totalDiscount) {
-                    $totalTax += $item->tax();
-                } else {
-                    $itemPrice = $item->subTotal(false);
-
-                    if (($discounted + $itemPrice) > $totalDiscount) {
-                        $totalTax += $item->tax($totalDiscount - $discounted);
-                    }
-
-                    $discounted += $itemPrice;
+                if (count($item->subItems) > 0) {
+                    $totalTax += $this->getSubItemTotal($item, $totalTax, $discounted, $totalDiscount);
+                }
+                if ($item->taxable) {
+                    $totalTax += $item->price * $item->tax;
                 }
             }
         }
@@ -804,4 +799,40 @@ class LaraCart implements LaraCartContract
         return $variable;
     }
 
+    /**
+     * Gets the taxTotal for subitems recursive call.
+     *
+     * @param $itemList
+     * @param $totalTax
+     * @param $discounted
+     * @param $totalDiscount
+     * @return mixed
+     */
+    private function getSubItemTotal($itemList, $totalTax, $discounted, $totalDiscount)
+    {
+        if (count($itemList->subItems) > 0) {
+            foreach ($itemList->subItems as $subItems) {
+                foreach ($subItems->items as $item) {
+                    if ($item->taxable) {
+                        if ($discounted >= $totalDiscount) {
+                            $totalTax += $item->tax();
+                        } else {
+                            $itemPrice = $item->subTotal(false);
+
+                            if (($discounted + $itemPrice) > $totalDiscount) {
+                                $totalTax += $item->tax($totalDiscount - $discounted);
+                            }
+                            $discounted += $itemPrice;
+                        }
+                    }
+
+                    if (count($item->subItems) > 0) {
+                        $this->getSubItemTotal($item->subItems, $totalTax, $discounted, $totalDiscount);
+                    }
+                }
+            }
+        }
+
+        return $totalTax;
+    }
 }
