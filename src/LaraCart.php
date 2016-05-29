@@ -492,6 +492,19 @@ class LaraCart implements LaraCartContract
         $this->update();
     }
 
+    public function removeCoupons()
+    {
+        foreach ($this->getItems() as $item) {
+            $item->code = null;
+            $item->discount = null;
+            $item->couponInfo = [];
+        }
+
+        $this->cart->coupons = [];
+
+        $this->update();
+    }
+
     /**
      * Gets a specific fee from the fees array
      *
