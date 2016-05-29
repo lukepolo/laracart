@@ -197,7 +197,6 @@ class CouponsTest extends Orchestra\Testbench\TestCase
 
         $this->assertEquals('10OFF', $item->code);
 
-
         try {
             $coupon->setDiscountOnItem($item, 'abc');
             $this->setExpectedException(\LukePOLO\LaraCart\Exceptions\InvalidPrice::class);
@@ -226,6 +225,22 @@ class CouponsTest extends Orchestra\Testbench\TestCase
      */
     public function testRemoveCoupons()
     {
+        $item = $this->addItem(2, 30);
+
+        $fixedCoupon = new LukePOLO\LaraCart\Coupons\Fixed('10OFF', 10);
+
+        $this->laracart->addCoupon($fixedCoupon);
+
+        $coupon = $this->laracart->findCoupon('10OFF');
+
+        $coupon->setDiscountOnItem($item, 10.00);
+
+        $this->assertEquals('10OFF', $item->code);
+
+        $this->laracart->removeCoupons();
+
+        $this->assertEmpty($this->laracart->getCoupons());
+
         $fixedCoupon = new LukePOLO\LaraCart\Coupons\Fixed('10OFF', 10);
         $this->laracart->addCoupon($fixedCoupon);
 
