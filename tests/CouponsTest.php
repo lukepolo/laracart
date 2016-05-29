@@ -197,7 +197,6 @@ class CouponsTest extends Orchestra\Testbench\TestCase
 
         $this->assertEquals('10OFF', $item->code);
 
-
         try {
             $coupon->setDiscountOnItem($item, 'abc');
             $this->setExpectedException(\LukePOLO\LaraCart\Exceptions\InvalidPrice::class);
@@ -219,7 +218,51 @@ class CouponsTest extends Orchestra\Testbench\TestCase
         $this->assertNull($item->code);
         $this->assertEquals(0, $item->discount);
         $this->assertCount(0, $item->couponInfo);
+    }
 
+    /**
+     * Test if we can remove all coupons from the cart
+     */
+    public function testRemoveCoupons()
+    {
+        $item = $this->addItem(2, 30);
 
+        $fixedCoupon = new LukePOLO\LaraCart\Coupons\Fixed('10OFF', 10);
+
+        $this->laracart->addCoupon($fixedCoupon);
+
+        $coupon = $this->laracart->findCoupon('10OFF');
+
+        $coupon->setDiscountOnItem($item, 10.00);
+
+        $this->assertEquals('10OFF', $item->code);
+
+        $this->laracart->removeCoupons();
+
+        $this->assertEmpty($this->laracart->getCoupons());
+
+        $fixedCoupon = new LukePOLO\LaraCart\Coupons\Fixed('10OFF', 10);
+        $this->laracart->addCoupon($fixedCoupon);
+
+        $this->assertEquals($fixedCoupon, $this->laracart->findCoupon('10OFF'));
+
+        $this->laracart->removeCoupons();
+
+        $this->assertEmpty($this->laracart->findCoupon('10OFF'));
+
+        $cart = $this->laracart->get()->cart;
+        $cart->multipleCoupons = true;
+
+        $fixedCouponOne = new LukePOLO\LaraCart\Coupons\Fixed('10OFF', 10);
+        $fixedCouponTwo = new LukePOLO\LaraCart\Coupons\Fixed('5OFF', 5);
+
+        $this->laracart->addCoupon($fixedCouponOne);
+        $this->laracart->addCoupon($fixedCouponTwo);
+
+        $this->assertCount(2, $this->laracart->getCoupons());
+
+        $this->laracart->removeCoupons();
+
+        $this->assertEmpty($this->laracart->getCoupons());
     }
 }
