@@ -742,6 +742,8 @@ class LaraCart implements LaraCartContract
         if (is_object($itemModel) && get_class($itemModel) == config('laracart.item_model')) {
             return true;
         }
+
+        return false;
     }
 
     /**

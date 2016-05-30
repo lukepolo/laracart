@@ -33,6 +33,7 @@ class TestItem extends Model
         if($id == 'fail') {
             return null;
         }
+        
         return Mockery::mock(new static);
     }
 

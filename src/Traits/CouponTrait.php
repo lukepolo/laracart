@@ -69,7 +69,7 @@ trait CouponTrait
     /**
      * Gets the failed message for a coupon
      * 
-     * @return string
+     * @return null|string
      */
     public function getFailedMessage()
     {
@@ -78,6 +78,8 @@ trait CouponTrait
         } catch (CouponException $e) {
             return $e->getMessage();
         }
+
+        return null;
     }
 
     /**
