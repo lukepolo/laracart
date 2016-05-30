@@ -41,7 +41,7 @@ trait CouponTrait
         try {
             $this->discount(true);
 
-            return 'Coupon Applied';
+            return config('laracart.coupon_applied_message', 'Coupon Applied');
         } catch (CouponException $e) {
             return $e->getMessage();
         }

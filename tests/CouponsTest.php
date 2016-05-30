@@ -109,6 +109,10 @@ class CouponsTest extends Orchestra\Testbench\TestCase
         $this->laracart->addCoupon($fixedCoupon);
 
         $this->assertEquals('Coupon Applied', $this->laracart->findCoupon('10OFF')->getMessage());
+
+        $this->app['config']->set('laracart.coupon_applied_message', 'Your coupon has been applied');
+
+        $this->assertEquals('Your coupon has been applied', $this->laracart->findCoupon('10OFF')->getMessage());
     }
 
     /**
