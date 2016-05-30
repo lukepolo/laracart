@@ -176,6 +176,6 @@ class LaraCartTest extends Orchestra\Testbench\TestCase
     public function getFacadeName()
     {
         $facade = new \LukePOLO\LaraCart\Facades\LaraCart();
-        $this->assertEquals('laracart', $facade->getFacadeAccessor());
+        $this->assertEquals('laracart', $facade::getFacadeAccessor());
     }
 }

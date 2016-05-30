@@ -11,7 +11,6 @@ use Illuminate\Support\Facades\Facade;
  */
 class LaraCart extends Facade
 {
-
     /**
      * Get the registered name of the component.
      *
