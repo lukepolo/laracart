@@ -39,7 +39,7 @@ trait CouponTrait
     public function getMessage()
     {
         try {
-            $this->discount();
+            $this->discount(true);
 
             return 'Coupon Applied';
         } catch (CouponException $e) {

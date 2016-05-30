@@ -1,5 +1,7 @@
 <?php
 
+use LukePOLO\LaraCart\Exceptions\InvalidTaxableValue;
+
 /**
  * Class MagicFunctionsTest
  */
@@ -27,6 +29,23 @@ class MagicFunctionsTest extends Orchestra\Testbench\TestCase
         $item->test_option = 123;
 
         $this->assertEquals(123, $item->test_option);
+
+        try {
+            $item->tax = 2;
+            $this->setExpectedException(InvalidTaxableValue::class);
+        } catch (InvalidTaxableValue $e) {
+            $this->assertEquals('The tax must be a float less than 1', $e->getMessage());
+        }
+
+        try {
+            $item->taxable = 123123;
+            $this->setExpectedException(InvalidTaxableValue::class);
+        } catch (InvalidTaxableValue $e) {
+            $this->assertEquals('The taxable option must be a boolean', $e->getMessage());
+        }
+
+        $item->taxable = 1;
+        $item->taxable = 0;
     }
 
     /**

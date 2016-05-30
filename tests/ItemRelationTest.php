@@ -23,6 +23,14 @@ class ItemRelationTest extends Orchestra\Testbench\TestCase
         $this->assertEquals(\LukePOLO\LaraCart\Tests\Models\TestItem::class, $item->itemModel);
 
         $this->assertEquals('itemID', $item->getModel()->id);
+
+        try {
+            $item->id = 'fail';
+            $item->getModel();
+            $this->setExpectedException(ModelNotFound::class);
+        } catch (ModelNotFound $e) {
+            $this->assertEquals('Could not find the item model for fail', $e->getMessage());
+        }
     }
 
     /**

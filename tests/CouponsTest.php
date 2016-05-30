@@ -265,4 +265,16 @@ class CouponsTest extends Orchestra\Testbench\TestCase
 
         $this->assertEmpty($this->laracart->getCoupons());
     }
+
+    /**
+     *  Testing getting the message on a coupon
+     */
+    public function testCouponMessage()
+    {
+        $item = $this->addItem(2, 30);
+
+        $fixedCoupon = new \LukePOLO\LaraCart\Tests\Coupons\Fixed('10OFF', 10);
+
+        $this->assertEquals('Sorry, you must have at least 100 dollars!', $fixedCoupon->getMessage());
+    }
 }

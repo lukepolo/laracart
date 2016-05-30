@@ -783,13 +783,10 @@ class LaraCart implements LaraCartContract
 
         if (!empty($attr)) {
             foreach (explode('.', $attr) as $attr) {
-                $variable = array_get($variable, $attr);
+                $variable = array_get($variable, $attr, $defaultValue);
             }
         }
-
-        if (empty($variable)) {
-            $variable = $defaultValue;
-        }
+        
         return $variable;
     }
 

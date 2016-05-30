@@ -30,6 +30,9 @@ class TestItem extends Model
      */
     public function find($id)
     {
+        if($id == 'fail') {
+            return null;
+        }
         return Mockery::mock(new static);
     }
 

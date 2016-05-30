@@ -170,4 +170,12 @@ class LaraCartTest extends Orchestra\Testbench\TestCase
         $this->assertNotEquals($prevHash, $item->getHash());
     }
 
+    /**
+     * Tests the facade
+     */
+    public function getFacadeName()
+    {
+        $facade = new \LukePOLO\LaraCart\Facades\LaraCart();
+        $this->assertEquals('laracart', $facade->getFacadeAccessor());
+    }
 }
