@@ -479,29 +479,18 @@ class LaraCart implements LaraCartContract
      */
     public function removeCoupon($code)
     {
-        foreach ($this->getItems() as $item) {
-            if (isset($item->code) && $item->code == $code) {
-                $item->code = null;
-                $item->discount = null;
-                $item->couponInfo = [];
-            }
-        }
-
+        $this->removeCouponFromItems($code);
         array_forget($this->cart->coupons, $code);
-
         $this->update();
     }
 
+    /**
+     * Removes all coupons from the cart
+     */
     public function removeCoupons()
     {
-        foreach ($this->getItems() as $item) {
-            $item->code = null;
-            $item->discount = null;
-            $item->couponInfo = [];
-        }
-
+        $this->removeCouponFromItems();
         $this->cart->coupons = [];
-
         $this->update();
     }
 
@@ -804,4 +793,19 @@ class LaraCart implements LaraCartContract
         return $variable;
     }
 
+    /**
+     * Removes a coupon from the item
+     *
+     * @param null $code
+     */
+    private function removeCouponFromItems($code = null)
+    {
+        foreach ($this->getItems() as $item) {
+            if (isset($item->code) && (empty($code) || $item->code == $code)) {
+                $item->code = null;
+                $item->discount = null;
+                $item->couponInfo = [];
+            }
+        }
+    }
 }
