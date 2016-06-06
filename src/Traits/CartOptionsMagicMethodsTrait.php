@@ -15,7 +15,7 @@ use LukePOLO\LaraCart\Exceptions\InvalidTaxableValue;
 trait CartOptionsMagicMethodsTrait
 {
     use CartHelpers;
-    
+
     public $options = [];
 
     /**
@@ -68,6 +68,7 @@ trait CartOptionsMagicMethodsTrait
                 }
                 break;
         }
+
         array_set($this->options, $option, $value);
 
         if (is_callable(array($this, 'generateHash'))) {

@@ -102,6 +102,7 @@ trait CartTotals
     /**
      * Gets the total of the cart with or without tax
      * @param boolean $withDiscount
+     * @param bool $withTax
      * @return string
      */
     public function total($withDiscount = true, $withTax = true)

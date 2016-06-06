@@ -15,71 +15,6 @@ use LukePOLO\LaraCart\Exceptions\ModelNotFound;
 trait CartItems
 {
     /**
-     * Creates a CartItem and then adds it to cart
-     * @param $itemID
-     * @param null $name
-     * @param int $qty
-     * @param string $price
-     * @param array $options
-     * @param bool|false $taxable
-     * @param bool|false $lineItem
-     * @return CartItem
-     * @throws ModelNotFound
-     */
-    public function add(
-        $itemID,
-        $name = null,
-        $qty = 1,
-        $price = '0.00',
-        $options = [],
-        $taxable = true,
-        $lineItem = false
-    ) {
-
-        if (!empty(config('laracart.item_model'))) {
-
-            $itemModel = $itemID;
-
-            if (!$this->isItemModel($itemModel)) {
-                $itemModel = (new $this->itemModel)->with($this->itemModelRelations)->find($itemID);
-            }
-
-            if (empty($itemModel)) {
-                throw new ModelNotFound('Could not find the item ' . $itemID);
-            }
-
-            $bindings = config('laracart.item_model_bindings');
-
-            $itemID = $itemModel[$bindings[CartItem::ITEM_ID]];
-            $name = $itemModel[$bindings[CartItem::ITEM_NAME]];
-
-            if (empty($qty = $name) || !is_int($name)) {
-                $qty = 1;
-            }
-
-            $price = $itemModel[$bindings[CartItem::ITEM_PRICE]];
-
-            $options = array_merge($options, $this->getItemModelOptions($itemModel, $bindings[CartItem::ITEM_OPTIONS]));
-
-            $taxable = $itemModel[$bindings[CartItem::ITEM_TAXABLE]] ? true : false;
-        }
-
-        $item = $this->addItem(new CartItem(
-            $itemID,
-            $name,
-            $qty,
-            $price,
-            $options,
-            $taxable,
-            $lineItem
-        ));
-
-        $this->update();
-
-        return $this->getItem($item->getHash());
-    }
-
-    /**
      * Adds the cartItem into the cart session
      * @param CartItem $cartItem
      * @return CartItem
@@ -101,17 +36,79 @@ trait CartItems
 
     /**
      * Creates a CartItem and then adds it to cart
+     * @param $itemID
+     * @param null $name
+     * @param int $qty
+     * @param string $price
+     * @param array $options
+     * @return CartItem
+     * @throws ModelNotFound
+     */
+    public function add($itemID, $name = null, $qty = 1, $price = '0.00', $options = [])
+    {
+
+        $item = $this->addItem(new CartItem($itemID, $name, $qty, $price, $options));
+
+        $this->update();
+
+        return $this->getItem($item->getHash());
+    }
+
+    /**
+     * Creates a CartItem and then adds it to cart
+     * @param $itemID
+     * @param null $name
+     * @param int $qty
+     * @param string $price
+     * @param array $options
+     * @return CartItem
+     * @throws ModelNotFound
+     */
+    public function addNonTaxableItem($itemID, $name = null, $qty = 1, $price = '0.00', $options = [])
+    {
+
+        $item = $this->addItem(new CartItem($itemID, $name, $qty, $price, $options, false));
+
+        $this->update();
+
+        return $this->getItem($item->getHash());
+    }
+
+
+    /**
+     * Creates a CartItem and then adds it to cart
      * @param string|int $itemID
      * @param null $name
      * @param int $qty
      * @param string $price
      * @param array $options
-     * @param bool|true $taxable
      * @return CartItem
      */
-    public function addLine($itemID, $name = null, $qty = 1, $price = '0.00', array $options = [], $taxable = true)
+    public function addLine($itemID, $name = null, $qty = 1, $price = '0.00', array $options = [])
     {
-        return $this->add($itemID, $name, $qty, $price, $options, $taxable, true);
+        $item = $this->addItem(new CartItem($itemID, $name, $qty, $price, $options, true, false));
+
+        $this->update();
+
+        return $this->getItem($item->getHash());
+    }
+
+    /**
+     * Creates a CartItem and then adds it to cart
+     * @param string|int $itemID
+     * @param null $name
+     * @param int $qty
+     * @param string $price
+     * @param array $options
+     * @return CartItem
+     */
+    public function addNonTaxableLine($itemID, $name = null, $qty = 1, $price = '0.00', array $options = [])
+    {
+        $item = $this->addItem(new CartItem($itemID, $name, $qty, $price, $options, false, false));
+
+        $this->update();
+
+        return $this->getItem($item->getHash());
     }
 
     /**

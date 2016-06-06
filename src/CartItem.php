@@ -2,6 +2,7 @@
 
 namespace LukePOLO\LaraCart;
 
+use Illuminate\Database\Eloquent\Model;
 use LukePOLO\LaraCart\Exceptions\ModelNotFound;
 use LukePOLO\LaraCart\Traits\CartOptionsMagicMethodsTrait;
 
@@ -52,6 +53,11 @@ class CartItem
     public function __construct($id, $name, $qty, $price, array $options = [], $taxable = true, $lineItem = false)
     {
         $this->id = $id;
+
+        if (!empty(config('laracart.item_model'))) {
+            $this->bindModelToItem();
+        }
+
         $this->qty = $qty;
         $this->name = $name;
         $this->taxable = $taxable;
@@ -266,5 +272,28 @@ class CartItem
         }
 
         return $itemModel;
+    }
+
+    /**
+     * Binds the data model to the item passed in
+     * @throws ModelNotFound
+     */
+    private function bindModelToItem()
+    {
+        if (!$this->isItemModel($this->id)) {
+            $itemModel = (new $this->itemModel)->with($this->itemModelRelations)->find($this->id);
+        }
+
+        if (empty($itemModel)) {
+            throw new ModelNotFound('Could not find the item ' . $this->id);
+        }
+
+        $bindings = config('laracart.item_model_bindings');
+
+        $this->id = $itemModel[$bindings[CartItem::ITEM_ID]];
+        $this->name = $itemModel[$bindings[CartItem::ITEM_NAME]];
+        $this->price = $itemModel[$bindings[CartItem::ITEM_PRICE]];
+        $this->options = $this->getItemModelOptions($itemModel, $bindings[CartItem::ITEM_OPTIONS]);
+        $this->taxable = $itemModel[$bindings[CartItem::ITEM_TAXABLE]] ? true : false;
     }
 }
