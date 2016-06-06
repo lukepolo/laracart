@@ -8,20 +8,19 @@ use Illuminate\Session\SessionManager;
 use LukePOLO\LaraCart\Contracts\LaraCartContract;
 use LukePOLO\LaraCart\Traits\CartCoupons;
 use LukePOLO\LaraCart\Traits\CartFees;
+use LukePOLO\LaraCart\Traits\CartHelpers;
 use LukePOLO\LaraCart\Traits\CartItems;
 use LukePOLO\LaraCart\Traits\CartTotals;
 
 /**
  * Class LaraCart
- *
  * @package LukePOLO\LaraCart
  */
 class LaraCart implements LaraCartContract
 {
-    use CartCoupons, CartFees, CartItems, CartTotals;
+    use CartCoupons, CartFees, CartItems, CartTotals, CartHelpers;
+
     const SERVICE = 'laracart';
-    const HASH = 'generateCartHash';
-    const RANHASH = 'generateRandomCartItemHash';
 
     protected $events;
     protected $session;
@@ -31,33 +30,6 @@ class LaraCart implements LaraCartContract
     public $prefix;
     public $itemModel;
     public $itemModelRelations;
-
-    /**
-     * // TODO - this really should just be a helper
-     * Formats the number into a money format based on the locale and international formats
-     * @param $number
-     * @param $locale
-     * @param $internationalFormat
-     * @param $format
-     * @return string
-     */
-    public static function formatMoney($number, $locale = null, $internationalFormat = null, $format = true)
-    {
-        $number = number_format($number, 2, '.', '');
-
-        if ($format) {
-            setlocale(LC_MONETARY, null);
-            setlocale(LC_MONETARY, empty($locale) ? config('laracart.locale', 'en_US.UTF-8') : $locale);
-
-            if (empty($internationalFormat) === true) {
-                $internationalFormat = config('laracart.international_format', false);
-            }
-
-            $number = money_format($internationalFormat ? '%i' : '%n', $number);
-        }
-
-        return $number;
-    }
 
     /**
      * LaraCart constructor.

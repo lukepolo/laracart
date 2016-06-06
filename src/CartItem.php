@@ -7,7 +7,6 @@ use LukePOLO\LaraCart\Traits\CartOptionsMagicMethodsTrait;
 
 /**
  * Class CartItem
- *
  * @property int id
  * @property int qty
  * @property float tax
@@ -15,7 +14,6 @@ use LukePOLO\LaraCart\Traits\CartOptionsMagicMethodsTrait;
  * @property string name
  * @property array options
  * @property boolean taxable
- *
  * @package LukePOLO\LaraCart
  */
 class CartItem
@@ -43,7 +41,6 @@ class CartItem
 
     /**
      * CartItem constructor.
-     *
      * @param $id
      * @param $name
      * @param integer $qty
@@ -71,9 +68,7 @@ class CartItem
 
     /**
      * Generates a hash based on the cartItem array
-     *
      * @param bool $force
-     *
      * @return string itemHash
      */
     public function generateHash($force = false)
@@ -87,9 +82,9 @@ class CartItem
 
             ksort($cartItemArray['options']);
 
-            $this->itemHash = app(LaraCart::HASH, $cartItemArray);
+            $this->itemHash = $this->hash($cartItemArray);
         } elseif ($force || empty($this->itemHash) === true) {
-            $this->itemHash = app(LaraCart::RANHASH);
+            $this->itemHash = $this->randomHash();
         }
 
         app('events')->fire(
@@ -104,7 +99,6 @@ class CartItem
 
     /**
      * Gets the hash for the item
-     *
      * @return mixed
      */
     public function getHash()
@@ -114,7 +108,6 @@ class CartItem
 
     /**
      * Search for matching options on the item
-     *
      * @return mixed
      */
     public function find($data)
@@ -130,7 +123,6 @@ class CartItem
 
     /**
      * Finds a sub item by its hash
-     *
      * @param $subItemHash
      * @return mixed
      */
@@ -141,9 +133,7 @@ class CartItem
 
     /**
      * Adds an sub item to a item
-     *
      * @param array $subItem
-     *
      * @return CartSubItem
      */
     public function addSubItem(array $subItem)
@@ -159,7 +149,6 @@ class CartItem
 
     /**
      * Removes a sub item from the item
-     *
      * @param $subItemHash
      */
     public function removeSubItem($subItemHash)
@@ -171,15 +160,13 @@ class CartItem
 
     /**
      * Gets the price of the item with or without tax, with the proper format
-     *
      * @param bool $format
      * @param bool $taxedItemsOnly
-     *
      * @return string
      */
     public function price($format = true, $taxedItemsOnly = false)
     {
-        return LaraCart::formatMoney(
+        return $this->formatMoney(
             $this->price + $this->subItemsTotal(false, $taxedItemsOnly),
             $this->locale,
             $this->internationalFormat, $format
@@ -188,11 +175,9 @@ class CartItem
 
     /**
      * Gets the sub total of the item based on the qty with or without tax in the proper format
-     *
      * @param bool $format
      * @param bool $withDiscount
      * @param bool $taxedItemsOnly
-     *
      * @return string
      */
     public function subTotal($format = true, $withDiscount = true, $taxedItemsOnly = false)
@@ -203,16 +188,14 @@ class CartItem
             $total -= $this->getDiscount(false);
         }
 
-        return LaraCart::formatMoney($total, $this->locale, $this->internationalFormat, $format);
+        return $this->formatMoney($total, $this->locale, $this->internationalFormat, $format);
     }
 
 
     /**
      * Gets the totals for the options
-     *
      * @param boolean $format
      * @param bool $taxedItemsOnly
-     *
      * @return string
      */
     public function subItemsTotal($format = true, $taxedItemsOnly = false)
@@ -223,14 +206,12 @@ class CartItem
             $total += $subItem->price(false, $taxedItemsOnly);
         }
 
-        return LaraCart::formatMoney($total, $this->locale, $this->internationalFormat, $format);
+        return $this->formatMoney($total, $this->locale, $this->internationalFormat, $format);
     }
 
     /**
      * Gets the discount of an item
-     *
      * @param boolean $format
-     *
      * @return string
      */
     public function getDiscount($format = true)
@@ -241,7 +222,7 @@ class CartItem
             $amount = $this->discount;
         }
 
-        return LaraCart::formatMoney(
+        return $this->formatMoney(
             $amount,
             $this->locale,
             $this->internationalFormat,
@@ -251,9 +232,7 @@ class CartItem
 
     /**
      * Gets the tax for the item
-     *
      * @param int $amountNotTaxable
-     *
      * @return int|mixed
      */
     public function tax($amountNotTaxable = 0)
@@ -270,10 +249,8 @@ class CartItem
 
     /**
      * Sets the related model to the item
-     *
      * @param $itemModel
      * @param array $relations
-     *
      * @throws ModelNotFound
      */
     public function setModel($itemModel, $relations = [])
@@ -288,7 +265,6 @@ class CartItem
 
     /**
      * Returns a Model
-     *
      * @throws ModelNotFound
      */
     public function getModel()

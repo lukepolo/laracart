@@ -14,6 +14,8 @@ use LukePOLO\LaraCart\Exceptions\InvalidTaxableValue;
  */
 trait CartOptionsMagicMethodsTrait
 {
+    use CartHelpers;
+    
     public $options = [];
 
     /**

@@ -122,7 +122,7 @@ trait CouponTrait
             return $discount;
         } else {
             if ($throwErrors) {
-                throw new CouponException('This has a max discount of ' . \App::make(\LukePOLO\Laracart\LaraCart::SERVICE)->formatMoney($maxDiscount));
+                throw new CouponException('This has a max discount of ' . $this->formatMoney($maxDiscount));
             } else {
                 return $maxDiscount;
             }

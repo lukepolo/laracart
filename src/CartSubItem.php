@@ -6,11 +6,9 @@ use LukePOLO\LaraCart\Traits\CartOptionsMagicMethodsTrait;
 
 /**
  * Class CartItemOption
- *
  * @property float price
  * @property array options
  * @property array items
- *
  * @package LukePOLO\LaraCart
  */
 class CartSubItem
@@ -25,6 +23,7 @@ class CartSubItem
     private $itemHash;
 
     /**
+     * CartSubItem constructor.
      * @param $options
      */
     public function __construct($options)
@@ -35,12 +34,11 @@ class CartSubItem
             array_set($this->options, $option, $value);
         }
 
-        $this->itemHash = app(LaraCart::HASH, $this->options);
+        $this->itemHash = $this->hash($this->options);
     }
 
     /**
      * Gets the hash for the item
-     *
      * @return mixed
      */
     public function getHash()
@@ -50,10 +48,8 @@ class CartSubItem
 
     /**
      * Gets the formatted price
-     *
      * @param bool|true $format
      * @param bool $taxedItemsOnly
-     *
      * @return string
      */
     public function price($format = true, $taxedItemsOnly = true)
@@ -69,6 +65,6 @@ class CartSubItem
             }
         }
 
-        return LaraCart::formatMoney($price, $this->locale, $this->internationalFormat, $format);
+        return $this->formatMoney($price, $this->locale, $this->internationalFormat, $format);
     }
 }
