@@ -6,14 +6,12 @@ use Illuminate\Support\ServiceProvider;
 
 /**
  * Class LaraCartServiceProvider
- *
  * @package LukePOLO\LaraCart
  */
 class LaraCartServiceProvider extends ServiceProvider
 {
     /**
      * Perform post-registration booting of services.
-     *
      * @return void
      */
     public function boot()
@@ -36,7 +34,6 @@ class LaraCartServiceProvider extends ServiceProvider
 
     /**
      * Register the service provider.
-     *
      * @return void
      */
     public function register()

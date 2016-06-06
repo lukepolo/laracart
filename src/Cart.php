@@ -4,7 +4,6 @@ namespace LukePOLO\LaraCart;
 
 /**
  * Class Cart
- *
  * @package LukePOLO\LaraCart
  */
 class Cart

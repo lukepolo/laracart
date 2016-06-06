@@ -6,7 +6,6 @@ use LukePOLO\LaraCart\CartFee;
 
 /**
  * Class CartItems
- *
  * @package LukePOLO\LaraCart\Traits
  */
 trait CartFees
@@ -48,7 +47,7 @@ trait CartFees
     /**
      * Removes a fee from the fee array
      * @param $name
-     * return void
+     * @return void
      */
     public function removeFee($name)
     {
@@ -59,7 +58,7 @@ trait CartFees
 
     /**
      * Removes all the fees set in the cart
-     * return void
+     * @return void
      */
     public function removeFees()
     {

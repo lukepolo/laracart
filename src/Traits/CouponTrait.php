@@ -10,7 +10,6 @@ use LukePOLO\LaraCart\LaraCart;
 
 /**
  * Class CouponTrait
- *
  * @package LukePOLO\LaraCart\Traits
  */
 trait CouponTrait
@@ -24,7 +23,6 @@ trait CouponTrait
 
     /**
      * Sets all the options for the coupon
-     *
      * @param $options
      */
     public function setOptions($options)
@@ -50,9 +48,7 @@ trait CouponTrait
 
     /**
      * Get the reason why a coupon has failed to apply
-     *
      * @deprecated 1.3
-     *
      * @return string
      */
     public function getMessage()
@@ -68,7 +64,6 @@ trait CouponTrait
 
     /**
      * Gets the failed message for a coupon
-     * 
      * @return null|string
      */
     public function getFailedMessage()
@@ -84,10 +79,8 @@ trait CouponTrait
 
     /**
      * Checks the minimum subtotal needed to apply the coupon
-     *
      * @param $minAmount
      * @param $throwErrors
-     *
      * @return bool
      * @throws CouponException
      */
@@ -108,11 +101,9 @@ trait CouponTrait
 
     /**
      * Returns either the max discount or the discount applied based on what is passed through
-     *
      * @param $maxDiscount
      * @param $discount
      * @param $throwErrors
-     *
      * @return mixed
      * @throws CouponException
      */
@@ -131,11 +122,9 @@ trait CouponTrait
 
     /**
      * Checks to see if the times are valid for the coupon
-     *
      * @param Carbon $startDate
      * @param Carbon $endDate
      * @param $throwErrors
-     *
      * @return bool
      * @throws CouponException
      */
@@ -154,10 +143,8 @@ trait CouponTrait
 
     /**
      * Sets a discount to an item with what code was used and the discount amount
-     *
      * @param CartItem $item
      * @param $discountAmount
-     *
      * @throws InvalidPrice
      */
     public function setDiscountOnItem(CartItem $item, $discountAmount)

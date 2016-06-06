@@ -10,7 +10,6 @@ use LukePOLO\LaraCart\Exceptions\ModelNotFound;
 
 /**
  * Class CartItems
- *
  * @package LukePOLO\LaraCart\Traits
  */
 trait CartItems
@@ -167,7 +166,7 @@ trait CartItems
     /**
      * Removes a CartItem based on the itemHash
      * @param $itemHash
-     * return void
+     * @return void
      */
     public function removeItem($itemHash)
     {

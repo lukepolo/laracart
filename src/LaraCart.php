@@ -133,7 +133,7 @@ class LaraCart implements LaraCartContract
     /**
      * Removes an attribute from the cart
      * @param $attribute
-     * return void
+     * @return void
      */
     public function removeAttribute($attribute)
     {
@@ -144,7 +144,7 @@ class LaraCart implements LaraCartContract
 
     /**
      * Updates cart session
-     * return void
+     * @return void
      */
     public function update()
     {
@@ -201,7 +201,7 @@ class LaraCart implements LaraCartContract
 
     /**
      * Empties the carts items
-     * return void
+     * @return void
      */
     public function emptyCart()
     {
@@ -214,7 +214,7 @@ class LaraCart implements LaraCartContract
 
     /**
      * Completely destroys cart and anything associated with it
-     * return void
+     * @return void
      */
     public function destroyCart()
     {

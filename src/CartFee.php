@@ -6,7 +6,6 @@ use LukePOLO\LaraCart\Traits\CartOptionsMagicMethodsTrait;
 
 /**
  * Class CartFee
- *
  * @package LukePOLO\LaraCart
  */
 class CartFee
@@ -21,7 +20,6 @@ class CartFee
 
     /**
      * CartFee constructor.
-     *
      * @param $amount
      * @param $taxable
      * @param array $options
@@ -36,7 +34,6 @@ class CartFee
 
     /**
      * Gets the formatted amount
-     *
      * @return string
      */
     public function getAmount()

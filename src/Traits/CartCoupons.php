@@ -14,7 +14,7 @@ trait CartCoupons
     /**
      * Applies a coupon to the cart
      * @param CouponContract $coupon
-     * return void
+     * @return void
      */
     public function addCoupon(CouponContract $coupon)
     {
@@ -49,7 +49,7 @@ trait CartCoupons
     /**
      * Removes a coupon in the cart
      * @param $code
-     * return void
+     * @return void
      */
     public function removeCoupon($code)
     {
@@ -60,7 +60,7 @@ trait CartCoupons
 
     /**
      * Removes all coupons from the cart
-     * return void
+     * @return void
      */
     public function removeCoupons()
     {
