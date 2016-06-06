@@ -54,7 +54,7 @@ trait CartOptionsMagicMethodsTrait
                 break;
             case CartItem::ITEM_PRICE:
                 if (!is_numeric($value)) {
-                    throw new InvalidPrice('The price must be a valid number');
+                    throw new InvalidPrice('The price must be a valid amount');
                 }
                 break;
             case CartItem::ITEM_TAX:

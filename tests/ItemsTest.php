@@ -198,7 +198,7 @@ class ItemsTest extends Orchestra\Testbench\TestCase
             $item->price = 'a';
             $this->setExpectedException(\LukePOLO\LaraCart\Exceptions\InvalidPrice::class);
         } catch (\LukePOLO\LaraCart\Exceptions\InvalidPrice $e) {
-            $this->assertEquals('The price must be a valid number', $e->getMessage());
+            $this->assertEquals('The price must be a valid amount', $e->getMessage());
         }
     }
 

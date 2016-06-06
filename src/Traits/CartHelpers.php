@@ -11,7 +11,7 @@ use LukePOLO\LaraCart\CartMoneyFormatter;
 trait CartHelpers
 {
     /**
-     * Formats the number into a money format based on the locale and international formats
+     * Formats the amount into a money format based on the locale and international formats
      * @param $amount
      * @param $locale
      * @param $internationalFormat
