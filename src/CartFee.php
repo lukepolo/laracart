@@ -21,13 +21,12 @@ class CartFee
     /**
      * CartFee constructor.
      * @param $amount
-     * @param $taxable
      * @param array $options
      */
-    public function __construct($amount, $taxable = false, $options = [])
+    public function __construct($amount, $options = [])
     {
         $this->amount = floatval($amount);
-        $this->taxable = $taxable;
+        $this->taxable = isset($options['taxable']) ? $options['taxable'] : true;
         $this->tax = isset($options['tax']) ? $options['tax'] == 0 ? config('laracart.tax') : $options['tax'] : config('laracart.tax');
         $this->options = $options;
     }

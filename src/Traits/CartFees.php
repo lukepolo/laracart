@@ -11,16 +11,29 @@ use LukePOLO\LaraCart\CartFee;
 trait CartFees
 {
     /**
-     * Allows to charge for additional fees that may or may not be taxable : ex - service fee , delivery fee, tips
+     * Adding a fee
      * @param $name
      * @param $amount
-     * @param bool|false $taxable
      * @param array $options
      */
-    public function addFee($name, $amount, $taxable = false, array $options = [])
+    public function addFee($name, $amount, array $options = [])
     {
-        array_set($this->cart->fees, $name, new CartFee($amount, $taxable, $options));
+        array_set($this->cart->fees, $name, new CartFee($amount, $options));
 
+        $this->update();
+    }
+
+    /**
+     * Adding a non-taxable fee
+     * @param $name
+     * @param $amount
+     * @param array $options
+     */
+    public function addNonTaxableFee($name, $amount, array $options = [])
+    {
+        $options['taxable'] = false;
+
+        array_set($this->cart->fees, $name, new CartFee($amount, $options));
         $this->update();
     }
 
