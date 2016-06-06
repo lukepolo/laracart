@@ -74,13 +74,12 @@ trait CouponTrait
 
         if ($laraCart->subTotal(false, false, false) >= $minAmount) {
             return true;
-        } else {
-            if ($throwErrors) {
-                throw new CouponException('You must have at least a total of ' . $laraCart->formatMoney($minAmount));
-            } else {
-                return false;
-            }
         }
+
+        if ($throwErrors) {
+            throw new CouponException('You must have at least a total of ' . $laraCart->formatMoney($minAmount));
+        }
+        return false;
     }
 
     /**
@@ -95,13 +94,12 @@ trait CouponTrait
     {
         if ($maxDiscount == 0 || $maxDiscount > $discount) {
             return $discount;
-        } else {
-            if ($throwErrors) {
-                throw new CouponException('This has a max discount of ' . $this->formatMoney($maxDiscount));
-            } else {
-                return $maxDiscount;
-            }
         }
+
+        if ($throwErrors) {
+            throw new CouponException('This has a max discount of ' . $this->formatMoney($maxDiscount));
+        }
+        return $maxDiscount;
     }
 
     /**
@@ -116,13 +114,12 @@ trait CouponTrait
     {
         if (Carbon::now()->between($startDate, $endDate)) {
             return true;
-        } else {
-            if ($throwErrors) {
-                throw new CouponException('This coupon has expired');
-            } else {
-                return false;
-            }
         }
+
+        if ($throwErrors) {
+            throw new CouponException('This coupon has expired');
+        }
+        return false;
     }
 
     /**

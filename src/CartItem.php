@@ -49,7 +49,7 @@ class CartItem
      * @param boolean $taxable
      * @param bool|false $lineItem
      */
-    public function __construct($id, $name, $qty, $price, $options = [], $taxable = true, $lineItem = false)
+    public function __construct($id, $name, $qty, $price, array $options = [], $taxable = true, $lineItem = false)
     {
         $this->id = $id;
         $this->qty = $qty;
@@ -253,7 +253,7 @@ class CartItem
      * @param array $relations
      * @throws ModelNotFound
      */
-    public function setModel($itemModel, $relations = [])
+    public function setModel($itemModel, array $relations = [])
     {
         if (!class_exists($itemModel)) {
             throw new ModelNotFound('Could not find relation model');

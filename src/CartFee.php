@@ -23,7 +23,7 @@ class CartFee
      * @param $amount
      * @param array $options
      */
-    public function __construct($amount, $options = [])
+    public function __construct($amount, array $options = [])
     {
         $this->amount = floatval($amount);
         $this->taxable = isset($options['taxable']) ? $options['taxable'] : true;

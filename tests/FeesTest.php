@@ -55,7 +55,7 @@ class FeesTest extends Orchestra\Testbench\TestCase
 
         $this->laracart->removeFee('testFeeOne');
 
-        $this->assertEquals('$0.00', $this->laracart->getFee('testFeeOne')->getAmount());
+        $this->assertNull($this->laracart->getFee('testFeeOne'));
     }
 
     /**

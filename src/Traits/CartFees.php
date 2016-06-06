@@ -44,7 +44,7 @@ trait CartFees
      */
     public function getFee($name)
     {
-        return array_get($this->cart->fees, $name, new CartFee(null, false));
+        return array_get($this->cart->fees, $name);
     }
 
     /**

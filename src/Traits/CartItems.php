@@ -109,7 +109,7 @@ trait CartItems
      * @param bool|true $taxable
      * @return CartItem
      */
-    public function addLine($itemID, $name = null, $qty = 1, $price = '0.00', $options = [], $taxable = true)
+    public function addLine($itemID, $name = null, $qty = 1, $price = '0.00', array $options = [], $taxable = true)
     {
         return $this->add($itemID, $name, $qty, $price, $options, $taxable, true);
     }
@@ -152,7 +152,7 @@ trait CartItems
      */
     public function updateItem($itemHash, $key, $value)
     {
-        if (empty($item = $this->getItem($itemHash)) === false) {
+        if (!empty($item = $this->getItem($itemHash))) {
             $item->$key = $value;
         }
 
@@ -244,7 +244,7 @@ trait CartItems
      * @param array $options
      * @return array
      */
-    private function getItemModelOptions(Model $itemModel, $options = [])
+    private function getItemModelOptions(Model $itemModel, array $options = [])
     {
         $itemOptions = [];
         foreach ($options as $option) {
