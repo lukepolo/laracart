@@ -2,6 +2,7 @@
 
 namespace LukePOLO\LaraCart\Coupons;
 
+use LukePOLO\LaraCart\CartMoneyFormatter;
 use LukePOLO\LaraCart\Contracts\CouponContract;
 use LukePOLO\LaraCart\LaraCart;
 use LukePOLO\LaraCart\Traits\CouponTrait;
@@ -38,13 +39,13 @@ class Fixed implements CouponContract
      */
     public function discount($throwErrors = false)
     {
-        $total = app(LaraCart::SERVICE)->subTotal(false) - $this->value;
+        $total = app(LaraCart::SERVICE)->subTotal(false)->amount() - $this->value;
 
         if ($total < 0) {
             return 0;
         }
 
-        return $this->value;
+        return new CartMoneyFormatter($this->value);
     }
 
     /**
@@ -55,10 +56,6 @@ class Fixed implements CouponContract
      */
     public function displayValue($locale = null, $internationalFormat = null)
     {
-        return $this->formatMoney(
-            $this->discount(),
-            $locale,
-            $internationalFormat
-        );
+        return $this->discount();
     }
 }

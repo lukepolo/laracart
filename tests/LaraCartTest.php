@@ -54,7 +54,7 @@ class LaraCartTest extends Orchestra\Testbench\TestCase
     {
         $this->assertEquals('$25.00', $this->laracart->formatMoney('25.00'));
         $this->assertEquals('USD 25.00', $this->laracart->formatMoney('25.00', null, true));
-        $this->assertEquals('25.00', $this->laracart->formatMoney('25.00', null, null, false));
+        $this->assertEquals('25.00', $this->laracart->formatMoney('25.00')->amount());
 
         $this->assertEquals('$25.56', $this->laracart->formatMoney('25.555'));
         $this->assertEquals('$25.54', $this->laracart->formatMoney('25.544'));

@@ -160,61 +160,53 @@ class CartItem
 
     /**
      * Gets the price of the item with or without tax, with the proper format
-     * @param bool $format
      * @param bool $taxedItemsOnly
      * @return string
      */
-    public function price($format = true, $taxedItemsOnly = false)
+    public function price($taxedItemsOnly = false)
     {
-        return $this->formatMoney(
-            $this->price + $this->subItemsTotal(false, $taxedItemsOnly),
-            $this->locale,
-            $this->internationalFormat, $format
-        );
+        return $this->formatMoney($this->price + $this->subItemsTotal($taxedItemsOnly)->amount(), $this->locale, $this->internationalFormat);
     }
 
     /**
      * Gets the sub total of the item based on the qty with or without tax in the proper format
-     * @param bool $format
      * @param bool $withDiscount
      * @param bool $taxedItemsOnly
      * @return string
      */
-    public function subTotal($format = true, $withDiscount = true, $taxedItemsOnly = false)
+    public function subTotal($withDiscount = true, $taxedItemsOnly = false)
     {
-        $total = $this->price(false, $taxedItemsOnly) * $this->qty;
+        $total = $this->price($taxedItemsOnly)->amount() * $this->qty;
 
         if ($withDiscount) {
-            $total -= $this->getDiscount(false);
+            $total -= $this->getDiscount()->amount();
         }
 
-        return $this->formatMoney($total, $this->locale, $this->internationalFormat, $format);
+        return $this->formatMoney($total, $this->locale, $this->internationalFormat);
     }
 
 
     /**
      * Gets the totals for the options
-     * @param boolean $format
      * @param bool $taxedItemsOnly
      * @return string
      */
-    public function subItemsTotal($format = true, $taxedItemsOnly = false)
+    public function subItemsTotal($taxedItemsOnly = false)
     {
         $total = 0;
 
         foreach ($this->subItems as $subItem) {
-            $total += $subItem->price(false, $taxedItemsOnly);
+            $total += $subItem->price($taxedItemsOnly)->amount();
         }
 
-        return $this->formatMoney($total, $this->locale, $this->internationalFormat, $format);
+        return $this->formatMoney($total, $this->locale, $this->internationalFormat);
     }
 
     /**
      * Gets the discount of an item
-     * @param boolean $format
      * @return string
      */
-    public function getDiscount($format = true)
+    public function getDiscount()
     {
         $amount = 0;
 
@@ -225,8 +217,7 @@ class CartItem
         return $this->formatMoney(
             $amount,
             $this->locale,
-            $this->internationalFormat,
-            $format
+            $this->internationalFormat
         );
     }
 
@@ -240,8 +231,7 @@ class CartItem
         $tax = 0;
 
         if ($this->taxable) {
-            return $this->tax * ($this->subTotal(false, config('laracart.discountTaxable', true),
-                    true) - $amountNotTaxable);
+            return $this->tax * ($this->subTotal(config('laracart.discountTaxable', true), true)->amount() - $amountNotTaxable);
         }
 
         return $tax;

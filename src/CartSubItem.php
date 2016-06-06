@@ -48,11 +48,10 @@ class CartSubItem
 
     /**
      * Gets the formatted price
-     * @param bool|true $format
      * @param bool $taxedItemsOnly
      * @return string
      */
-    public function price($format = true, $taxedItemsOnly = true)
+    public function price($taxedItemsOnly = true)
     {
         $price = $this->price;
 
@@ -61,10 +60,10 @@ class CartSubItem
                 if ($taxedItemsOnly && !$item->taxable) {
                     continue;
                 }
-                $price += $item->price(false);
+                $price += $item->price(false)->amount();
             }
         }
 
-        return $this->formatMoney($price, $this->locale, $this->internationalFormat, $format);
+        return $this->formatMoney($price, $this->locale, $this->internationalFormat);
     }
 }

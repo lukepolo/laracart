@@ -2,6 +2,8 @@
 
 namespace LukePOLO\LaraCart\Traits;
 
+use LukePOLO\LaraCart\CartMoneyFormatter;
+
 /**
  * Class CartHelpers
  * @package LukePOLO\LaraCart\Traits
@@ -10,28 +12,14 @@ trait CartHelpers
 {
     /**
      * Formats the number into a money format based on the locale and international formats
-     * @param $number
+     * @param $amount
      * @param $locale
      * @param $internationalFormat
-     * @param $format
-     * @return string
+     * @return CartMoneyFormatter
      */
-    public static function formatMoney($number, $locale = null, $internationalFormat = null, $format = true)
+    public static function formatMoney($amount, $locale = null, $internationalFormat = null)
     {
-        $number = number_format($number, 2, '.', '');
-
-        if ($format) {
-            setlocale(LC_MONETARY, null);
-            setlocale(LC_MONETARY, empty($locale) ? config('laracart.locale', 'en_US.UTF-8') : $locale);
-
-            if (empty($internationalFormat) === true) {
-                $internationalFormat = config('laracart.international_format', false);
-            }
-
-            $number = money_format($internationalFormat ? '%i' : '%n', $number);
-        }
-
-        return $number;
+        return new CartMoneyFormatter($amount, $locale, $internationalFormat);
     }
 
     /**

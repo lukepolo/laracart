@@ -162,8 +162,8 @@ class ItemsTest extends Orchestra\Testbench\TestCase
         $item = $this->addItem(3, 10);
 
         $this->assertEquals(3, $item->qty);
-        $this->assertEquals(10, $item->price(false));
-        $this->assertEquals(30, $item->subTotal(false));
+        $this->assertEquals(10, $item->price()->amount());
+        $this->assertEquals(30, $item->subTotal()->amount());
     }
 
     /**
@@ -254,7 +254,7 @@ class ItemsTest extends Orchestra\Testbench\TestCase
         $item = $this->addItem();
         $item->tax = .3;
 
-        $this->assertEquals('2.35', $this->laracart->total(false));
+        $this->assertEquals('2.35', $this->laracart->total()->amount());
 
         $item = $this->addItem(1, 1, true, [
             'tax' => .7
@@ -262,7 +262,7 @@ class ItemsTest extends Orchestra\Testbench\TestCase
 
         $this->assertEquals('.70', $item->tax());
 
-        $this->assertEquals('4.05', $this->laracart->total(false));
+        $this->assertEquals('4.05', $this->laracart->total()->amount());
     }
 
     /**

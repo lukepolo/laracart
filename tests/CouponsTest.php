@@ -23,11 +23,12 @@ class CouponsTest extends Orchestra\Testbench\TestCase
         $this->assertEquals($percentCoupon, $this->laracart->findCoupon('10%OFF'));
 
         $this->assertEquals('10%', $percentCoupon->displayValue());
-        $this->assertEquals('.30', $percentCoupon->discount());
+
+        $this->assertEquals('.30', $percentCoupon->discount()->amount());
 
         $this->assertCount(1, $this->laracart->getCoupons());
 
-        $this->assertEquals(.19, $this->laracart->taxTotal(false));
+        $this->assertEquals(.19, $this->laracart->taxTotal()->amount());
     }
 
     /**
@@ -44,11 +45,10 @@ class CouponsTest extends Orchestra\Testbench\TestCase
         $this->addItem(1, 20);
 
         $this->assertEquals('$10.00', $fixedCoupon->displayValue());
-        $this->assertEquals('10', $fixedCoupon->discount());
+        $this->assertEquals('10', $fixedCoupon->discount()->amount());
 
         $this->assertEquals($fixedCoupon, $this->laracart->findCoupon('10OFF'));
-
-        $this->assertEquals('.7', $this->laracart->taxTotal(false));
+        $this->assertEquals('.7', $this->laracart->taxTotal()->amount());
 
     }
 
@@ -199,7 +199,7 @@ class CouponsTest extends Orchestra\Testbench\TestCase
 
         $coupon = $this->laracart->findCoupon('10OFF');
 
-        $this->assertEquals('53.50', $this->laracart->total(false));
+        $this->assertEquals('53.50', $this->laracart->total()->amount());
 
         $coupon->setDiscountOnItem($item, 10.00);
 
@@ -214,14 +214,14 @@ class CouponsTest extends Orchestra\Testbench\TestCase
 
         $item = $this->addItem();
 
-        $this->assertEquals('54.57', $this->laracart->total(false));
+        $this->assertEquals('54.57', $this->laracart->total()->amount());
 
         $this->app['config']->set('laracart.discountTaxable', false);
-        $this->assertEquals('55.27', $this->laracart->total(false));
+        $this->assertEquals('55.27', $this->laracart->total()->amount());
 
         $this->laracart->removeCoupon('10OFF');
 
-        $this->assertEquals('65.27', $this->laracart->total(false));
+        $this->assertEquals('65.27', $this->laracart->total()->amount());
 
         $this->assertNull($item->code);
         $this->assertEquals(0, $item->discount);
