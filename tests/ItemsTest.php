@@ -15,7 +15,7 @@ class ItemsTest extends Orchestra\Testbench\TestCase
         $this->addItem();
         $this->addItem();
 
-        $this->assertEquals(1, $this->laracart->count(false));
+        $this->assertEquals(1, $this->laracart->itemRows());
         $this->assertEquals(2, $this->laracart->count());
     }
 
@@ -112,7 +112,7 @@ class ItemsTest extends Orchestra\Testbench\TestCase
             ]
         );
 
-        $this->assertEquals(2, $this->laracart->count(false));
+        $this->assertEquals(2, $this->laracart->itemRows());
         $this->assertEquals(3, $this->laracart->count());
     }
 

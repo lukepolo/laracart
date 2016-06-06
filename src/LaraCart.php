@@ -133,7 +133,7 @@ class LaraCart implements LaraCartContract
     /**
      * Removes an attribute from the cart
      * @param $attribute
-     * @return void
+     * return void
      */
     public function removeAttribute($attribute)
     {
@@ -144,7 +144,7 @@ class LaraCart implements LaraCartContract
 
     /**
      * Updates cart session
-     * @return void
+     * return void
      */
     public function update()
     {
@@ -161,32 +161,35 @@ class LaraCart implements LaraCartContract
     }
 
     /**
-     * Get the count based on qty, or number of unique items
-     * @param bool $withItemQty
+     * Get the count based on qty
      * @return int
      */
-    public function count($withItemQty = true)
+    public function count()
     {
         $count = 0;
 
         foreach ($this->getItems() as $item) {
-            if ($withItemQty) {
-                $count += $item->qty;
-            } else {
-                $count++;
-            }
+            $count += $item->qty;
         }
 
         return $count;
     }
 
     /**
+     * Get the the number of item rows in the cart
+     * @return int
+     */
+    public function itemRows()
+    {
+        return count($this->getItems());
+    }
+
+    /**
      * Find items in the cart matching a data set
-     * param $data
-     * @param $data
+     * @param $data array
      * @return array
      */
-    public function find($data)
+    public function find(array $data)
     {
         $matches = [];
 
@@ -201,7 +204,7 @@ class LaraCart implements LaraCartContract
 
     /**
      * Empties the carts items
-     * @return void
+     * return void
      */
     public function emptyCart()
     {
@@ -214,7 +217,7 @@ class LaraCart implements LaraCartContract
 
     /**
      * Completely destroys cart and anything associated with it
-     * @return void
+     * return void
      */
     public function destroyCart()
     {

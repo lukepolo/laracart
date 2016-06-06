@@ -36,15 +36,15 @@ class CrossDeviceTest extends Orchestra\Testbench\TestCase
 
         $user = new \LukePOLO\LaraCart\Tests\Models\User();
 
-        $this->assertEquals(0, $newCart->count(false));
-        $this->assertEquals(1, $this->count(false));
+        $this->assertEquals(0, $newCart->itemRows());
+        $this->assertEquals(1, $this->count());
 
         $user->cart_session_id = $this->session->getId();
         $this->authManager->login($user);
 
         $newCart->get();
 
-        $this->assertEquals($newCart->count(false), $this->count(false));
+        $this->assertEquals($newCart->itemRows(), $this->count());
     }
 
     /**

@@ -96,7 +96,7 @@ class LaraCartTest extends Orchestra\Testbench\TestCase
         $this->addItem(2);
 
         $this->assertEquals(2, $this->laracart->count());
-        $this->assertEquals(1, $this->laracart->count(false));
+        $this->assertEquals(1, $this->laracart->itemRows());
     }
 
     /**
