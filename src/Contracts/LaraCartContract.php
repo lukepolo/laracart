@@ -9,7 +9,6 @@ use LukePOLO\LaraCart\LaraCart;
 
 /**
  * Interface LaraCartContract
- *
  * @package LukePOLO\LaraCart
  */
 interface LaraCartContract

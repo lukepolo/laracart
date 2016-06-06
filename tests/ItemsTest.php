@@ -26,9 +26,14 @@ class ItemsTest extends Orchestra\Testbench\TestCase
     {
         $item = $this->addItem();
         $itemHash = $item->getHash();
-        $this->laracart->increment($itemHash);
+        $this->laracart->increaseQty($itemHash);
 
         $this->assertEquals(2, $this->laracart->count());
+
+        $this->laracart->increaseQty($itemHash, 2);
+
+        $this->assertEquals(4, $this->laracart->count());
+
     }
 
     /**
@@ -38,10 +43,15 @@ class ItemsTest extends Orchestra\Testbench\TestCase
     {
         $item = $this->addItem();
         $itemHash = $item->getHash();
-        $this->laracart->increment($itemHash);
-        $this->laracart->decrement($itemHash);
+        $this->laracart->increaseQty($itemHash);
+        $this->laracart->decreaseQty($itemHash);
 
         $this->assertEquals(1, $this->laracart->count());
+
+        $this->laracart->increaseQty($itemHash, 4);
+        $this->laracart->decreaseQty($itemHash, 3);
+
+        $this->assertEquals(2, $this->laracart->count());
     }
 
     /**
@@ -51,7 +61,7 @@ class ItemsTest extends Orchestra\Testbench\TestCase
     {
         $item = $this->addItem();
         $itemHash = $item->getHash();
-        $this->laracart->decrement($itemHash);
+        $this->laracart->decreaseQty($itemHash);
 
         $this->assertEquals(null, $this->laracart->getItem($itemHash));
     }

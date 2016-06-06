@@ -8,7 +8,6 @@ use LukePOLO\LaraCart\Traits\CouponTrait;
 
 /**
  * Class Percentage
- *
  * @package LukePOLO\LaraCart\Coupons
  */
 
@@ -25,10 +24,8 @@ class Percentage implements CouponContract
 
     /**
      * Percentage constructor.
-     *
      * @param $code
      * @param $value
-     *
      * @param array $options
      */
     public function __construct($code, $value, $options = [])
@@ -41,10 +38,7 @@ class Percentage implements CouponContract
 
     /**
      * Gets the discount amount
-     *
-     * @param $throwErrors boolean this allows us to capture errors in our code if we wish,
-     * that way we can spit out why the coupon has failed
-     *
+     * @param $throwErrors boolean this allows us to capture errors in our code if we wish, that way we can spit out why the coupon has failed
      * @return string
      */
     public function discount($throwErrors = false)
@@ -57,8 +51,8 @@ class Percentage implements CouponContract
         );
     }
 
-
     /**
+     * Displays the value in a percentage
      * @return mixed
      */
     public function displayValue()

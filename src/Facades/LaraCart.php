@@ -6,7 +6,6 @@ use Illuminate\Support\Facades\Facade;
 
 /**
  * Class LaraCart
- *
  * @package LukePOLO\LaraCart\Facades
  */
 class LaraCart extends Facade
