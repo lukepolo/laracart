@@ -296,4 +296,18 @@ class CartItem
         $this->options = $this->getItemModelOptions($itemModel, $bindings[CartItem::ITEM_OPTIONS]);
         $this->taxable = $itemModel[$bindings[CartItem::ITEM_TAXABLE]] ? true : false;
     }
+
+    /**
+     * Checks to see if its an item model
+     * @param $itemModel
+     * @return bool
+     */
+    private function isItemModel($itemModel)
+    {
+        if (is_object($itemModel) && get_class($itemModel) == config('laracart.item_model')) {
+            return true;
+        }
+
+        return false;
+    }
 }

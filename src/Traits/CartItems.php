@@ -86,7 +86,7 @@ trait CartItems
      */
     public function addLine($itemID, $name = null, $qty = 1, $price = '0.00', array $options = [])
     {
-        $item = $this->addItem(new CartItem($itemID, $name, $qty, $price, $options, true, false));
+        $item = $this->addItem(new CartItem($itemID, $name, $qty, $price, $options, true, true));
 
         $this->update();
 
@@ -104,7 +104,7 @@ trait CartItems
      */
     public function addNonTaxableLine($itemID, $name = null, $qty = 1, $price = '0.00', array $options = [])
     {
-        $item = $this->addItem(new CartItem($itemID, $name, $qty, $price, $options, false, false));
+        $item = $this->addItem(new CartItem($itemID, $name, $qty, $price, $options, false, true));
 
         $this->update();
 
@@ -254,19 +254,5 @@ trait CartItems
             }
             return true;
         });
-    }
-
-    /**
-     * Checks to see if its an item model
-     * @param $itemModel
-     * @return bool
-     */
-    private function isItemModel($itemModel)
-    {
-        if (is_object($itemModel) && get_class($itemModel) == config('laracart.item_model')) {
-            return true;
-        }
-
-        return false;
     }
 }

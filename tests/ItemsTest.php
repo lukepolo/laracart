@@ -88,8 +88,8 @@ class ItemsTest extends Orchestra\Testbench\TestCase
             'b' => 1
         ];
 
-        $item = $this->addItem(1, 1, false, $options);
-        $this->addItem(1, 1, false, array_reverse($options));
+        $item = $this->addNonTaxableItem(1, 1, $options);
+        $this->addNonTaxableItem(1, 1, array_reverse($options));
 
         $this->assertEquals(2, $item->qty);
     }
@@ -256,7 +256,7 @@ class ItemsTest extends Orchestra\Testbench\TestCase
 
         $this->assertEquals('2.35', $this->laracart->total()->amount());
 
-        $item = $this->addItem(1, 1, true, [
+        $item = $this->addItem(1, 1, [
             'tax' => .7
         ]);
 
@@ -270,12 +270,12 @@ class ItemsTest extends Orchestra\Testbench\TestCase
      */
     public function testFindingAnItemByOptionSucceeds()
     {
-        $item1 = $this->addItem(1, 1, true, [
+        $item1 = $this->addItem(1, 1, [
             'key1' => 'matching',
             'key2' => 'value1',
         ]);
 
-        $item2 = $this->addItem(1, 1, true, [
+        $item2 = $this->addItem(1, 1, [
             'key1' => 'notmatching',
             'key2' => 'value2',
         ]);
@@ -297,11 +297,11 @@ class ItemsTest extends Orchestra\Testbench\TestCase
      */
     public function testFindingAnItemByOptionFails()
     {
-        $this->addItem(1, 1, true, [
+        $this->addItem(1, 1, [
             'key1' => 'notmatching',
         ]);
 
-        $this->addItem(1, 1, true, [
+        $this->addItem(1, 1, [
             'key2' => 'notmatching',
         ]);
 
@@ -313,17 +313,17 @@ class ItemsTest extends Orchestra\Testbench\TestCase
      */
     public function testFindingAnItemReturnsMultipleMatches()
     {
-        $item1 = $this->addItem(1, 1, true, [
+        $item1 = $this->addItem(1, 1, [
             'key1' => 'matching',
             'key2' => 'value1',
         ]);
 
-        $item2 = $this->addItem(1, 1, true, [
+        $item2 = $this->addItem(1, 1, [
             'key1' => 'matching',
             'key2' => 'value2',
         ]);
 
-        $item3 = $this->addItem(1, 1, true, [
+        $item3 = $this->addItem(1, 1, [
             'key1' => 'nomatch',
         ]);
 
@@ -349,12 +349,12 @@ class ItemsTest extends Orchestra\Testbench\TestCase
      */
     public function testFindingAnItemWithMultipleCriteria()
     {
-        $item1 = $this->addItem(1, 1, true, [
+        $item1 = $this->addItem(1, 1, [
             'key1' => 'value1',
             'key2' => 'value2',
         ]);
 
-        $item2 = $this->addItem(1, 1, true, [
+        $item2 = $this->addItem(1, 1, [
             'key1' => 'value1',
             'key2' => 'value3',
         ]);
@@ -388,7 +388,7 @@ class ItemsTest extends Orchestra\Testbench\TestCase
             'key2' => 'value2',
         ]);
 
-        $item2 = $this->addItem(1, 1, true, [
+        $item2 = $this->addItem(1, 1, [
             'key1' => 'value1',
             'key2' => 'value3',
         ]);

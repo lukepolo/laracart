@@ -96,7 +96,7 @@ class TotalsTest extends Orchestra\Testbench\TestCase
     public function testTaxableItems()
     {
         $this->addItem();
-        $item = $this->addItem(1, 2, false);
+        $item = $this->addNonTaxableItem(1, 2);
 
         $this->assertEquals('$3.07', $this->laracart->total());
         $this->assertEquals('3.07', $this->laracart->total()->amount());
@@ -116,7 +116,7 @@ class TotalsTest extends Orchestra\Testbench\TestCase
         $priceItem = 5;
         $priceFee = 2;
 
-        $item = $this->addItem(1, $priceItem, true, ['tax' => $tax]);
+        $item = $this->addItem(1, $priceItem, ['tax' => $tax]);
         $this->laracart->addFee('test', $priceFee, ['tax' => $tax]);
 
         $this->assertEquals('2.40', $this->laracart->feeTotals(true)->amount());
@@ -133,7 +133,7 @@ class TotalsTest extends Orchestra\Testbench\TestCase
         $priceItem = 5;
         $priceFee = 2;
 
-        $item = $this->addItem(1, $priceItem, false);
+        $item = $this->addNonTaxableItem(1, $priceItem);
         $this->laracart->addFee('test', $priceFee, ['tax' => $tax]);
 
         $this->assertEquals('2.40', $this->laracart->feeTotals(true)->amount());
@@ -150,7 +150,7 @@ class TotalsTest extends Orchestra\Testbench\TestCase
         $priceItem = 5;
         $priceFee = 2;
 
-        $item = $this->addItem(1, $priceItem, true, ['tax' => $tax]);
+        $item = $this->addItem(1, $priceItem, ['tax' => $tax]);
         $this->laracart->addNonTaxableFee('test', $priceFee);
 
         $this->assertEquals('2.00', $this->laracart->feeTotals(false)->amount());
@@ -167,7 +167,7 @@ class TotalsTest extends Orchestra\Testbench\TestCase
         $priceItem = 5;
         $priceFee = 2;
 
-        $item = $this->addItem(1, $priceItem, false);
+        $item = $this->addNonTaxableItem(1, $priceItem);
         $this->laracart->addNonTaxableFee('test', $priceFee);
 
         $this->assertEquals('2.00', $this->laracart->feeTotals()->amount());
@@ -185,7 +185,7 @@ class TotalsTest extends Orchestra\Testbench\TestCase
         $priceItem = 5;
         $priceFee = 2;
 
-        $item = $this->addItem(1, $priceItem, true, ['tax' => $taxItem]);
+        $item = $this->addItem(1, $priceItem, ['tax' => $taxItem]);
         $this->laracart->addFee('test', $priceFee, ['tax' => $taxFee]);
 
         $this->assertEquals('2.14', $this->laracart->feeTotals(true)->amount());

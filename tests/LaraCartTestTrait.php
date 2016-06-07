@@ -51,12 +51,11 @@ trait LaraCartTestTrait
      *
      * @param int $qty
      * @param int $price
-     * @param bool $taxable
      * @param array $options
      *
      * @return mixed
      */
-    private function addItem($qty = 1, $price = 1, $taxable = true, $options = [])
+    private function addItem($qty = 1, $price = 1, $options = [])
     {
         if (empty($options)) {
             $options = [
@@ -69,8 +68,33 @@ trait LaraCartTestTrait
             'Testing Item',
             $qty,
             $price,
-            $options,
-            $taxable
+            $options
+        );
+    }
+
+    /**
+     * Easy way to add an item for many tests
+     *
+     * @param int $qty
+     * @param int $price
+     * @param array $options
+     *
+     * @return mixed
+     */
+    private function addNonTaxableItem($qty = 1, $price = 1, $options = [])
+    {
+        if (empty($options)) {
+            $options = [
+                'b_test' => 'option_1',
+                'a_test' => 'option_2',
+            ];
+        }
+        return $this->laracart->addNonTaxableItem(
+            'itemID',
+            'Testing Item',
+            $qty,
+            $price,
+            $options
         );
     }
 }
