@@ -54,6 +54,7 @@ class ItemRelationTest extends Orchestra\Testbench\TestCase
     public function testAddItemID()
     {
         $this->laracart->itemModel = \LukePOLO\LaraCart\Tests\Models\TestItem::class;
+
         $this->laracart->item_model_bindings = [
             \LukePOLO\LaraCart\CartItem::ITEM_ID => 'id',
             \LukePOLO\LaraCart\CartItem::ITEM_NAME => 'name',
@@ -81,11 +82,10 @@ class ItemRelationTest extends Orchestra\Testbench\TestCase
         try {
             $this->laracart->add('fail');
         } catch (ModelNotFound $e) {
-            $this->assertEquals('Could not find the item fail', $e->getMessage());
+            $this->assertEquals('Could not find the item model for fail', $e->getMessage());
         }
 
         $this->assertEquals($item, $this->laracart->getItem($item->getHash()));
-
         $this->assertEquals($item->id, 'itemID');
         $this->assertEquals($item->name, 'Test Item');
         $this->assertEquals($item->qty, 1);

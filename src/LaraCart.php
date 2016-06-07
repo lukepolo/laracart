@@ -43,8 +43,6 @@ class LaraCart implements LaraCartContract
         $this->events = $events;
         $this->authManager = $authManager;
         $this->prefix = config('laracart.cache_prefix', 'laracart');
-        $this->itemModel = config('laracart.item_model', null);
-        $this->itemModelRelations = config('laracart.item_model_relations', []);
 
         $this->setInstance($this->session->get($this->prefix . '.instance', 'default'));
     }

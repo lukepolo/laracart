@@ -53,11 +53,6 @@ class CartItem
     public function __construct($id, $name, $qty, $price, array $options = [], $taxable = true, $lineItem = false)
     {
         $this->id = $id;
-
-        if (!empty(config('laracart.item_model'))) {
-            $this->bindModelToItem();
-        }
-
         $this->qty = $qty;
         $this->name = $name;
         $this->taxable = $taxable;
@@ -69,6 +64,10 @@ class CartItem
 
         foreach ($options as $option => $value) {
             $this->$option = $value;
+        }
+
+        if (!empty(config('laracart.item_model'))) {
+            $this->bindModelToItem($id);
         }
     }
 
@@ -89,7 +88,7 @@ class CartItem
             ksort($cartItemArray['options']);
 
             $this->itemHash = $this->hash($cartItemArray);
-        } elseif ($force || empty($this->itemHash) === true) {
+        } elseif ($force || empty($this->itemHash)) {
             $this->itemHash = $this->randomHash();
         }
 
@@ -171,7 +170,8 @@ class CartItem
      */
     public function price($taxedItemsOnly = false)
     {
-        return $this->formatMoney($this->price + $this->subItemsTotal($taxedItemsOnly)->amount(), $this->locale, $this->internationalFormat);
+        return $this->formatMoney($this->price + $this->subItemsTotal($taxedItemsOnly)->amount(), $this->locale,
+            $this->internationalFormat);
     }
 
     /**
@@ -237,7 +237,8 @@ class CartItem
         $tax = 0;
 
         if ($this->taxable) {
-            return $this->tax * ($this->subTotal(config('laracart.discountTaxable', true), true)->amount() - $amountNotTaxable);
+            return $this->tax * ($this->subTotal(config('laracart.discountTaxable', true),
+                    true)->amount() - $amountNotTaxable);
         }
 
         return $tax;
@@ -275,29 +276,6 @@ class CartItem
     }
 
     /**
-     * Binds the data model to the item passed in
-     * @throws ModelNotFound
-     */
-    private function bindModelToItem()
-    {
-        if (!$this->isItemModel($this->id)) {
-            $itemModel = (new $this->itemModel)->with($this->itemModelRelations)->find($this->id);
-        }
-
-        if (empty($itemModel)) {
-            throw new ModelNotFound('Could not find the item ' . $this->id);
-        }
-
-        $bindings = config('laracart.item_model_bindings');
-
-        $this->id = $itemModel[$bindings[CartItem::ITEM_ID]];
-        $this->name = $itemModel[$bindings[CartItem::ITEM_NAME]];
-        $this->price = $itemModel[$bindings[CartItem::ITEM_PRICE]];
-        $this->options = $this->getItemModelOptions($itemModel, $bindings[CartItem::ITEM_OPTIONS]);
-        $this->taxable = $itemModel[$bindings[CartItem::ITEM_TAXABLE]] ? true : false;
-    }
-
-    /**
      * Checks to see if its an item model
      * @param $itemModel
      * @return bool
@@ -309,5 +287,69 @@ class CartItem
         }
 
         return false;
+    }
+
+    /**
+     * Gets a option from the model
+     * @param Model $itemModel
+     * @param $attr
+     * @param null $defaultValue
+     * @return Model|null
+     */
+    private function getFromModel(Model $itemModel, $attr, $defaultValue = null)
+    {
+        $variable = $itemModel;
+
+        if (!empty($attr)) {
+            foreach (explode('.', $attr) as $attr) {
+                $variable = array_get($variable, $attr, $defaultValue);
+            }
+        }
+
+        return $variable;
+    }
+
+    /**
+     * Binds the data model to the item passed in
+     * @param $itemModel
+     * @throws ModelNotFound
+     */
+    private function bindModelToItem($itemModel)
+    {
+        $this->itemModel = config('laracart.item_model', null);
+        $this->itemModelRelations = config('laracart.item_model_relations', []);
+
+        if (!$this->isItemModel($itemModel)) {
+            $itemModel = $this->getModel();
+        }
+
+        $bindings = config('laracart.item_model_bindings');
+
+        $this->id = $itemModel[$bindings[CartItem::ITEM_ID]];
+        $this->name = $itemModel[$bindings[CartItem::ITEM_NAME]];
+        $this->price = $itemModel[$bindings[CartItem::ITEM_PRICE]];
+        $this->taxable = $itemModel[$bindings[CartItem::ITEM_TAXABLE]] ? true : false;
+        $this->options = array_merge($this->options, $this->getItemModelOptions($itemModel, $bindings[CartItem::ITEM_OPTIONS]));
+    }
+
+    /**
+     * Gets the item models options based the config
+     * @param Model $itemModel
+     * @param array $options
+     * @return array
+     */
+    private function getItemModelOptions(Model $itemModel, array $options = [])
+    {
+        $itemOptions = [];
+        foreach ($options as $option) {
+            $itemOptions[$option] = $this->getFromModel($itemModel, $option);
+        }
+
+        return array_filter($itemOptions, function ($value) {
+            if ($value !== false && empty($value)) {
+                return false;
+            }
+            return true;
+        });
     }
 }

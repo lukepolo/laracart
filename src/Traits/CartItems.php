@@ -2,7 +2,6 @@
 
 namespace LukePOLO\LaraCart\Traits;
 
-use Illuminate\Database\Eloquent\Model;
 use LukePOLO\LaraCart\CartItem;
 use LukePOLO\LaraCart\Exceptions\InvalidPrice;
 use LukePOLO\LaraCart\Exceptions\InvalidQuantity;
@@ -46,7 +45,6 @@ trait CartItems
      */
     public function add($itemID, $name = null, $qty = 1, $price = '0.00', $options = [])
     {
-
         $item = $this->addItem(new CartItem($itemID, $name, $qty, $price, $options));
 
         $this->update();
@@ -129,7 +127,7 @@ trait CartItems
     {
         $items = [];
 
-        if (isset($this->cart->items) === true) {
+        if (isset($this->cart->items)) {
             foreach ($this->cart->items as $item) {
                 $items[$item->getHash()] = $item;
             }
@@ -213,46 +211,5 @@ trait CartItems
 
         $this->removeItem($itemHash);
         $this->update();
-    }
-
-    /**
-     * Gets a option from the model
-     * @param Model $itemModel
-     * @param $attr
-     * @param null $defaultValue
-     * @return Model|null
-     */
-    private function getFromModel(Model $itemModel, $attr, $defaultValue = null)
-    {
-        $variable = $itemModel;
-
-        if (!empty($attr)) {
-            foreach (explode('.', $attr) as $attr) {
-                $variable = array_get($variable, $attr, $defaultValue);
-            }
-        }
-
-        return $variable;
-    }
-
-    /**
-     * Gets the item models options based the config
-     * @param Model $itemModel
-     * @param array $options
-     * @return array
-     */
-    private function getItemModelOptions(Model $itemModel, array $options = [])
-    {
-        $itemOptions = [];
-        foreach ($options as $option) {
-            $itemOptions[$option] = $this->getFromModel($itemModel, $option);
-        }
-
-        return array_filter($itemOptions, function ($value) {
-            if ($value !== false && empty($value)) {
-                return false;
-            }
-            return true;
-        });
     }
 }
