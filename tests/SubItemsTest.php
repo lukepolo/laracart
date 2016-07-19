@@ -183,4 +183,25 @@ class SubItemsTest extends Orchestra\Testbench\TestCase
         $this->assertEquals("0.25", $this->laracart->taxTotal(false));
     }
 
+    /**
+     * Test Tax in case the item is not taxed but subItems are taxable
+     */
+    public function testAddTaxedSubItemsItemUnTaxed()
+    {
+        $item = $this->addItem(1, 1, false);
+
+        $item->addSubItem([
+            'size' => 'XXL',
+            'price' => 2.50,
+            'taxable' => true,
+            'items' => [
+                new \LukePOLO\LaraCart\CartItem('itemId', 'test item', 1, 10, [], true)
+            ]
+        ]);
+
+        $this->assertEquals(13.50, $item->price(false));
+
+        $this->assertEquals("0.875", $this->laracart->taxTotal(false));
+    }
+
 }
