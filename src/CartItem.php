@@ -99,6 +99,8 @@ class CartItem
             ]
         );
 
+
+
         return $this->itemHash;
     }
 
@@ -153,6 +155,8 @@ class CartItem
         $this->subItems[$subItem->getHash()] = $subItem;
 
         $this->generateHash();
+
+        app('laracart')->update();
 
         return $subItem;
     }
