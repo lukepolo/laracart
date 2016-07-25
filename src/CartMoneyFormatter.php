@@ -37,9 +37,13 @@ class CartMoneyFormatter
         return money_format($this->internationalFormat ? '%i' : '%n', $this->amount());
     }
 
-    public function asInteger()
+    /**
+     * Formats as an integer
+     * @return int
+     */
+    public function asInt()
     {
-        dd($this->number);
+        return (int) ($this->number * 100);
     }
 
     /**

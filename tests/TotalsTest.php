@@ -192,4 +192,11 @@ class TotalsTest extends Orchestra\Testbench\TestCase
         $this->assertEquals('5.00', $this->laracart->subTotal(true)->amount());
         $this->assertEquals('8.14', $this->laracart->total()->amount());
     }
+
+    public function testIntegers()
+    {
+        $item = $this->addItem(1, 451.51);
+
+        $this->assertEquals(45151, $this->laracart->subTotal()->asInt());
+    }
 }
