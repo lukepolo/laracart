@@ -99,8 +99,6 @@ class CartItem
             ]
         );
 
-
-
         return $this->itemHash;
     }
 
