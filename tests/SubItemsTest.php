@@ -231,4 +231,31 @@ class SubItemsTest extends Orchestra\Testbench\TestCase
 
         $this->assertEquals("0.91", $this->laracart->taxTotal(false));
     }
+
+    public function testSearchSubItems()
+    {
+        $item = $this->addItem(2, 2, false);
+
+        $subItem = $item->addSubItem([
+            'size' => 'XXL',
+            'price' => 2.50,
+            'taxable' => true,
+            'items' => [
+                new \LukePOLO\LaraCart\CartItem('itemId', 'test item', 1, 10, [
+                    'amItem' => true
+                ], true)
+            ]
+        ]);
+
+        $this->assertCount(0, $item->searchForSubItem(['size' => 'XL']));
+
+        $itemsFound = $item->searchForSubItem(['size' => 'XXL']);
+
+        $this->assertCount(1, $itemsFound);
+
+        $itemFound =  $itemsFound[0];
+
+        $this->assertEquals($subItem->getHash() , $itemFound->getHash());
+        $this->assertEquals($subItem->size , $itemFound->size);
+    }
 }

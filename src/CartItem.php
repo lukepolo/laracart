@@ -264,7 +264,8 @@ class CartItem
             $amountNotTaxable = $amountNotTaxable + ($this->price * $this->qty);
         }
 
-        return $this->tax * ($this->subTotal(false, config('laracart.discountTaxable', true), true) - $amountNotTaxable);
+        return $this->tax * ($this->subTotal(false, config('laracart.discountTaxable', true),
+                true) - $amountNotTaxable);
     }
 
     /**
@@ -299,5 +300,23 @@ class CartItem
         }
 
         return $itemModel;
+    }
+
+    /**
+     *  A way to find sub items
+     * @param $data
+     * @return array
+     */
+    public function searchForSubItem($data)
+    {
+        $matches = [];
+
+        foreach ($this->subItems as $subItem) {
+            if ($subItem->find($data)) {
+                $matches[] = $subItem;
+            }
+        }
+
+        return $matches;
     }
 }
