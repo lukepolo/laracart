@@ -65,7 +65,7 @@ class CartSubItem
                 if ($taxedItemsOnly && !$item->taxable) {
                     continue;
                 }
-                $price += $item->price(false);
+                $price += $item->price(false, $taxedItemsOnly);
             }
         }
 
