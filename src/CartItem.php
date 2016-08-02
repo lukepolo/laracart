@@ -149,6 +149,8 @@ class CartItem
 
         $this->generateHash();
 
+        app('laracart')->update();
+
         return $subItem;
     }
 
@@ -234,14 +236,11 @@ class CartItem
      */
     public function tax($amountNotTaxable = 0)
     {
-        $tax = 0;
-
-        if ($this->taxable) {
-            return $this->tax * ($this->subTotal(config('laracart.discountTaxable', true),
-                    true)->amount() - $amountNotTaxable);
+        if (!$this->taxable) {
+            $amountNotTaxable = $amountNotTaxable + ($this->price * $this->qty);
         }
 
-        return $tax;
+        return $this->tax * ($this->subTotal(false, config('laracart.discountTaxable', true), true) - $amountNotTaxable);
     }
 
     /**
@@ -276,80 +275,20 @@ class CartItem
     }
 
     /**
-     * Checks to see if its an item model
-     * @param $itemModel
-     * @return bool
-     */
-    private function isItemModel($itemModel)
-    {
-        if (is_object($itemModel) && get_class($itemModel) == config('laracart.item_model')) {
-            return true;
-        }
-
-        return false;
-    }
-
-    /**
-     * Gets a option from the model
-     * @param Model $itemModel
-     * @param $attr
-     * @param null $defaultValue
-     * @return Model|null
-     */
-    private function getFromModel(Model $itemModel, $attr, $defaultValue = null)
-    {
-        $variable = $itemModel;
-
-        if (!empty($attr)) {
-            foreach (explode('.', $attr) as $attr) {
-                $variable = array_get($variable, $attr, $defaultValue);
-            }
-        }
-
-        return $variable;
-    }
-
-    /**
-     * Binds the data model to the item passed in
-     * @param $itemModel
-     * @throws ModelNotFound
-     */
-    private function bindModelToItem($itemModel)
-    {
-        $this->itemModel = config('laracart.item_model', null);
-        $this->itemModelRelations = config('laracart.item_model_relations', []);
-
-        if (!$this->isItemModel($itemModel)) {
-            $itemModel = $this->getModel();
-        }
-
-        $bindings = config('laracart.item_model_bindings');
-
-        $this->id = $itemModel[$bindings[CartItem::ITEM_ID]];
-        $this->name = $itemModel[$bindings[CartItem::ITEM_NAME]];
-        $this->price = $itemModel[$bindings[CartItem::ITEM_PRICE]];
-        $this->taxable = $itemModel[$bindings[CartItem::ITEM_TAXABLE]] ? true : false;
-        $this->options = array_merge($this->options, $this->getItemModelOptions($itemModel, $bindings[CartItem::ITEM_OPTIONS]));
-    }
-
-    /**
-     * Gets the item models options based the config
-     * @param Model $itemModel
-     * @param array $options
+     *  A way to find sub items
+     * @param $data
      * @return array
      */
-    private function getItemModelOptions(Model $itemModel, array $options = [])
+    public function searchForSubItem($data)
     {
-        $itemOptions = [];
-        foreach ($options as $option) {
-            $itemOptions[$option] = $this->getFromModel($itemModel, $option);
+        $matches = [];
+
+        foreach ($this->subItems as $subItem) {
+            if ($subItem->find($data)) {
+                $matches[] = $subItem;
+            }
         }
 
-        return array_filter($itemOptions, function ($value) {
-            if ($value !== false && empty($value)) {
-                return false;
-            }
-            return true;
-        });
+        return $matches;
     }
 }

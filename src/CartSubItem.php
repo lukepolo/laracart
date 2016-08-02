@@ -60,10 +60,25 @@ class CartSubItem
                 if ($taxedItemsOnly && !$item->taxable) {
                     continue;
                 }
-                $price += $item->price(false)->amount();
+                $price += $item->price(false, $taxedItemsOnly);
             }
         }
 
         return $this->formatMoney($price, $this->locale, $this->internationalFormat);
     }
+
+    /**
+     * Search for matching options on the item
+     *
+     * @return mixed
+     */
+    public function find($data)
+    {
+        foreach ($data as $key => $value) {
+            if ($this->$key === $value) {
+                return $this;
+            }
+        }
+    }
+
 }

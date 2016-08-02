@@ -183,4 +183,79 @@ class SubItemsTest extends Orchestra\Testbench\TestCase
         $this->assertEquals("0.25", $this->laracart->taxTotal()->amount());
     }
 
+    /**
+     * Test Tax in case the item is not taxed but subItems are taxable
+     */
+    public function testAddTaxedSubItemsItemUnTaxed()
+    {
+        $item = $this->addItem(2, 2, false);
+
+        // 12.50 * 2
+        $item->addSubItem([
+            'size' => 'XXL',
+            'price' => 2.50,
+            'taxable' => true,
+            'items' => [
+                new \LukePOLO\LaraCart\CartItem('itemId', 'test item', 1, 10, [], true)
+            ]
+        ]);
+
+        $this->assertEquals(14.50, $item->price(false));
+
+        $this->assertEquals(round(25 * .07, 2), $this->laracart->taxTotal(false));
+    }
+
+    /**
+     * Test Tax in case the sub sub item is untaxed but sub item is taxed
+     */
+    public function testAddTaxedSubSubItemUntaxedSubItemTaxed()
+    {
+        $item = $this->addItem(1, 3, true);
+
+        $subItem = new \LukePOLO\LaraCart\CartItem('itemId', 'test sub item', 1, 10, [], true);
+
+        $subItem->addSubItem([
+            'items' => [
+                // not taxable
+                new \LukePOLO\LaraCart\CartItem('itemId', 'test sub sub item', 1, 10, [], false)
+            ]
+        ]);
+
+        $item->addSubItem([
+            'items' => [
+                $subItem
+            ]
+        ]);
+
+        $this->assertEquals(23.00, $item->price(false));
+
+        $this->assertEquals("0.91", $this->laracart->taxTotal(false));
+    }
+
+    public function testSearchSubItems()
+    {
+        $item = $this->addItem(2, 2, false);
+
+        $subItem = $item->addSubItem([
+            'size' => 'XXL',
+            'price' => 2.50,
+            'taxable' => true,
+            'items' => [
+                new \LukePOLO\LaraCart\CartItem('itemId', 'test item', 1, 10, [
+                    'amItem' => true
+                ], true)
+            ]
+        ]);
+
+        $this->assertCount(0, $item->searchForSubItem(['size' => 'XL']));
+
+        $itemsFound = $item->searchForSubItem(['size' => 'XXL']);
+
+        $this->assertCount(1, $itemsFound);
+
+        $itemFound =  $itemsFound[0];
+
+        $this->assertEquals($subItem->getHash() , $itemFound->getHash());
+        $this->assertEquals($subItem->size , $itemFound->size);
+    }
 }
