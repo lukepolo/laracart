@@ -8,11 +8,11 @@ use LukePOLO\LaraCart\Exceptions\InvalidQuantity;
 use LukePOLO\LaraCart\Exceptions\InvalidTaxableValue;
 
 /**
- * Class CartOptionsMagicMethodsTrait
+ * Class CartOptionsMagicMethods
  *
  * @package LukePOLO\LaraCart\Traits
  */
-trait CartOptionsMagicMethodsTrait
+trait CartOptionsMagicMethods
 {
     use CartHelpers;
 

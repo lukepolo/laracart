@@ -9,17 +9,17 @@ use LukePOLO\LaraCart\Exceptions\InvalidPrice;
 use LukePOLO\LaraCart\LaraCart;
 
 /**
- * Class CouponTrait
+ * Class CouponActions
  * @package LukePOLO\LaraCart\Traits
  */
-trait CouponTrait
+trait CouponActions
 {
     /**
      * @var bool
      */
     public $appliedToCart = true;
 
-    use CartOptionsMagicMethodsTrait;
+    use CartOptionsMagicMethods;
 
     /**
      * Sets all the options for the coupon

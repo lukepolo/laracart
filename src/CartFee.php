@@ -2,7 +2,7 @@
 
 namespace LukePOLO\LaraCart;
 
-use LukePOLO\LaraCart\Traits\CartOptionsMagicMethodsTrait;
+use LukePOLO\LaraCart\Traits\CartOptionsMagicMethods;
 
 /**
  * Class CartFee
@@ -10,7 +10,7 @@ use LukePOLO\LaraCart\Traits\CartOptionsMagicMethodsTrait;
  */
 class CartFee
 {
-    use CartOptionsMagicMethodsTrait;
+    use CartOptionsMagicMethods;
 
     public $locale;
     public $amount;

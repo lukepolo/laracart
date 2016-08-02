@@ -5,7 +5,7 @@ namespace LukePOLO\LaraCart\Coupons;
 use LukePOLO\LaraCart\CartMoneyFormatter;
 use LukePOLO\LaraCart\Contracts\CouponContract;
 use LukePOLO\LaraCart\LaraCart;
-use LukePOLO\LaraCart\Traits\CouponTrait;
+use LukePOLO\LaraCart\Traits\CouponActions;
 
 /**
  * Class Fixed
@@ -13,7 +13,7 @@ use LukePOLO\LaraCart\Traits\CouponTrait;
  */
 class Fixed implements CouponContract
 {
-    use CouponTrait;
+    use CouponActions;
 
     public $code;
     public $value;

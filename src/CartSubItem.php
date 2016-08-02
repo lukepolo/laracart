@@ -2,7 +2,7 @@
 
 namespace LukePOLO\LaraCart;
 
-use LukePOLO\LaraCart\Traits\CartOptionsMagicMethodsTrait;
+use LukePOLO\LaraCart\Traits\CartOptionsMagicMethods;
 
 /**
  * Class CartItemOption
@@ -13,7 +13,7 @@ use LukePOLO\LaraCart\Traits\CartOptionsMagicMethodsTrait;
  */
 class CartSubItem
 {
-    use CartOptionsMagicMethodsTrait;
+    use CartOptionsMagicMethods;
 
     const ITEMS = 'items';
 

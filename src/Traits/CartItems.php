@@ -2,6 +2,7 @@
 
 namespace LukePOLO\LaraCart\Traits;
 
+use Illuminate\Database\Eloquent\Model;
 use LukePOLO\LaraCart\CartItem;
 use LukePOLO\LaraCart\Exceptions\InvalidPrice;
 use LukePOLO\LaraCart\Exceptions\InvalidQuantity;
@@ -30,6 +31,8 @@ trait CartItems
 
         $this->events->fire('laracart.addItem', $cartItem);
 
+        $this->update();
+
         return $cartItem;
     }
 
@@ -47,7 +50,19 @@ trait CartItems
     {
         $item = $this->addItem(new CartItem($itemID, $name, $qty, $price, $options));
 
-        $this->update();
+        return $this->getItem($item->getHash());
+    }
+
+    /**
+     * Creates a CartItem and then adds it to cart
+     * @param Model $model
+     * @param int $qty
+     * @param array $options
+     * @return CartItem|null
+     */
+    public function addByModel(Model $model, $qty = 1, $options = [])
+    {
+        $item = $this->addItem(new CartItem($model, null, $qty, null, $options));
 
         return $this->getItem($item->getHash());
     }
@@ -67,8 +82,6 @@ trait CartItems
 
         $item = $this->addItem(new CartItem($itemID, $name, $qty, $price, $options, false));
 
-        $this->update();
-
         return $this->getItem($item->getHash());
     }
 
@@ -86,8 +99,6 @@ trait CartItems
     {
         $item = $this->addItem(new CartItem($itemID, $name, $qty, $price, $options, true, true));
 
-        $this->update();
-
         return $this->getItem($item->getHash());
     }
 
@@ -103,8 +114,6 @@ trait CartItems
     public function addNonTaxableLine($itemID, $name = null, $qty = 1, $price = '0.00', array $options = [])
     {
         $item = $this->addItem(new CartItem($itemID, $name, $qty, $price, $options, false, true));
-
-        $this->update();
 
         return $this->getItem($item->getHash());
     }
@@ -187,6 +196,7 @@ trait CartItems
     {
         $item = $this->getItem($itemHash);
         $item->qty = $item->qty + $qty;
+
         $this->update();
 
         return $item;
@@ -204,6 +214,7 @@ trait CartItems
 
         if ($item->qty > 1) {
             $item->qty = $item->qty - $qty;
+
             $this->update();
 
             return $item;

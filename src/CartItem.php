@@ -2,8 +2,10 @@
 
 namespace LukePOLO\LaraCart;
 
-use LukePOLO\LaraCart\Exceptions\ModelNotFound;
-use LukePOLO\LaraCart\Traits\CartOptionsMagicMethodsTrait;
+use Illuminate\Database\Eloquent\Model;
+use LukePOLO\LaraCart\Traits\Buyable;
+use LukePOLO\LaraCart\Traits\CartOptionsMagicMethods;
+use LukePOLO\LaraCart\Traits\ItemModelBinding;
 
 /**
  * Class CartItem
@@ -18,6 +20,8 @@ use LukePOLO\LaraCart\Traits\CartOptionsMagicMethodsTrait;
  */
 class CartItem
 {
+    use CartOptionsMagicMethods, ItemModelBinding;
+
     const ITEM_ID = 'id';
     const ITEM_QTY = 'qty';
     const ITEM_TAX = 'tax';
@@ -26,11 +30,7 @@ class CartItem
     const ITEM_TAXABLE = 'taxable';
     const ITEM_OPTIONS = 'options';
 
-    use CartOptionsMagicMethodsTrait;
-
     protected $itemHash;
-    protected $itemModel;
-    protected $itemModelRelations;
 
     public $locale;
     public $lineItem;
@@ -58,14 +58,12 @@ class CartItem
         $this->lineItem = $lineItem;
         $this->price = floatval($price);
         $this->tax = config('laracart.tax');
-        $this->itemModel = config('laracart.item_model', null);
-        $this->itemModelRelations = config('laracart.item_model_relations', []);
 
         foreach ($options as $option => $value) {
             $this->$option = $value;
         }
 
-        if (!empty(config('laracart.item_model'))) {
+        if($id instanceof Model && class_uses(Buyable::class)) {
             $this->bindModelToItem($id);
         }
     }
@@ -261,36 +259,5 @@ class CartItem
             $this->locale,
             $this->internationalFormat
         );
-    }
-
-    /**
-     * Sets the related model to the item
-     * @param $itemModel
-     * @param array $relations
-     * @throws ModelNotFound
-     */
-    public function setModel($itemModel, array $relations = [])
-    {
-        if (!class_exists($itemModel)) {
-            throw new ModelNotFound('Could not find relation model');
-        }
-
-        $this->itemModel = $itemModel;
-        $this->itemModelRelations = $relations;
-    }
-
-    /**
-     * Returns a Model
-     * @throws ModelNotFound
-     */
-    public function getModel()
-    {
-        $itemModel = (new $this->itemModel)->with($this->itemModelRelations)->find($this->id);
-
-        if (empty($itemModel)) {
-            throw new ModelNotFound('Could not find the item model for ' . $this->id);
-        }
-
-        return $itemModel;
     }
 }
