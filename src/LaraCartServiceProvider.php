@@ -45,7 +45,6 @@ class LaraCartServiceProvider extends ServiceProvider
 
     /**
      * Checks to see if the migration has already been published
-     *
      * @return bool
      */
     protected function migrationHasAlreadyBeenPublished()

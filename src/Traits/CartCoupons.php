@@ -71,7 +71,6 @@ trait CartCoupons
 
     /**
      * Removes a coupon from the item
-     *
      * @param null $code
      */
     private function removeCouponFromItems($code = null)

@@ -47,6 +47,19 @@ class CartSubItem
     }
 
     /**
+     * Search for matching options on the item
+     * @return mixed
+     */
+    public function find($data)
+    {
+        foreach ($data as $key => $value) {
+            if ($this->$key === $value) {
+                return $this;
+            }
+        }
+    }
+
+    /**
      * Gets the formatted price
      * @param bool $taxedItemsOnly
      * @return string
@@ -66,19 +79,4 @@ class CartSubItem
 
         return $this->formatMoney($price, $this->locale, $this->internationalFormat);
     }
-
-    /**
-     * Search for matching options on the item
-     *
-     * @return mixed
-     */
-    public function find($data)
-    {
-        foreach ($data as $key => $value) {
-            if ($this->$key === $value) {
-                return $this;
-            }
-        }
-    }
-
 }

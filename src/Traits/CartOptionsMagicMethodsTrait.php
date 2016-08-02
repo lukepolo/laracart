@@ -71,6 +71,7 @@ trait CartOptionsMagicMethodsTrait
 
         array_set($this->options, $option, $value);
 
+        // TODO - id like to handle this differently
         if (is_callable(array($this, 'generateHash'))) {
             $this->generateHash();
         }

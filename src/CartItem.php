@@ -2,7 +2,6 @@
 
 namespace LukePOLO\LaraCart;
 
-use Illuminate\Database\Eloquent\Model;
 use LukePOLO\LaraCart\Exceptions\ModelNotFound;
 use LukePOLO\LaraCart\Traits\CartOptionsMagicMethodsTrait;
 
@@ -72,6 +71,7 @@ class CartItem
     }
 
     /**
+     * // TODO - I would like to move this into a helper if possible
      * Generates a hash based on the cartItem array
      * @param bool $force
      * @return string itemHash
@@ -113,6 +113,7 @@ class CartItem
 
     /**
      * Search for matching options on the item
+     * @param $data
      * @return mixed
      */
     public function find($data)
@@ -124,6 +125,24 @@ class CartItem
         }
 
         return $this;
+    }
+
+    /**
+     *  A way to find sub items
+     * @param $data
+     * @return array
+     */
+    public function search($data)
+    {
+        $matches = [];
+
+        foreach ($this->subItems as $subItem) {
+            if ($subItem->find($data)) {
+                $matches[] = $subItem;
+            }
+        }
+
+        return $matches;
     }
 
     /**
@@ -163,6 +182,21 @@ class CartItem
         unset($this->subItems[$subItemHash]);
 
         $this->generateHash();
+    }
+
+    /**
+     * Gets the tax for the item
+     * @param int $amountNotTaxable
+     * @return int|mixed
+     */
+    public function tax($amountNotTaxable = 0)
+    {
+        if (!$this->taxable) {
+            $amountNotTaxable = $amountNotTaxable + ($this->price * $this->qty);
+        }
+
+        return $this->tax * ($this->subTotal(false, config('laracart.discountTaxable', true),
+                true) - $amountNotTaxable);
     }
 
     /**
@@ -230,20 +264,6 @@ class CartItem
     }
 
     /**
-     * Gets the tax for the item
-     * @param int $amountNotTaxable
-     * @return int|mixed
-     */
-    public function tax($amountNotTaxable = 0)
-    {
-        if (!$this->taxable) {
-            $amountNotTaxable = $amountNotTaxable + ($this->price * $this->qty);
-        }
-
-        return $this->tax * ($this->subTotal(false, config('laracart.discountTaxable', true), true) - $amountNotTaxable);
-    }
-
-    /**
      * Sets the related model to the item
      * @param $itemModel
      * @param array $relations
@@ -272,23 +292,5 @@ class CartItem
         }
 
         return $itemModel;
-    }
-
-    /**
-     *  A way to find sub items
-     * @param $data
-     * @return array
-     */
-    public function searchForSubItem($data)
-    {
-        $matches = [];
-
-        foreach ($this->subItems as $subItem) {
-            if ($subItem->find($data)) {
-                $matches[] = $subItem;
-            }
-        }
-
-        return $matches;
     }
 }

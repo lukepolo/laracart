@@ -70,6 +70,7 @@ trait CouponTrait
      */
     public function checkMinAmount($minAmount, $throwErrors = true)
     {
+        // TODO - remove facade
         $laraCart = \App::make(LaraCart::SERVICE);
 
         if ($laraCart->subTotal(false, false)->amount() >= $minAmount) {
@@ -134,6 +135,7 @@ trait CouponTrait
             throw new InvalidPrice('You must use a discount amount.');
         }
         $this->appliedToCart = false;
+        // TODO - if we have multiple coupons this will fail
         $item->code = $this->code;
         $item->discount = $discountAmount;
         $item->couponInfo = $this->options;

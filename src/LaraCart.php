@@ -187,7 +187,7 @@ class LaraCart implements LaraCartContract
      * @param $data array
      * @return array
      */
-    public function find(array $data)
+    public function search(array $data)
     {
         $matches = [];
 
