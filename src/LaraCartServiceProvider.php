@@ -5,9 +5,7 @@ namespace LukePOLO\LaraCart;
 use Illuminate\Support\ServiceProvider;
 
 /**
- * Class LaraCartServiceProvider
- *
- * @package LukePOLO\LaraCart
+ * Class LaraCartServiceProvider.
  */
 class LaraCartServiceProvider extends ServiceProvider
 {
@@ -19,17 +17,17 @@ class LaraCartServiceProvider extends ServiceProvider
     public function boot()
     {
         $this->publishes([
-            __DIR__ . '/config/laracart.php' => config_path('laracart.php'),
+            __DIR__.'/config/laracart.php' => config_path('laracart.php'),
         ]);
 
         $this->mergeConfigFrom(
-            __DIR__ . '/config/laracart.php',
+            __DIR__.'/config/laracart.php',
             'laracart'
         );
 
         if (!$this->migrationHasAlreadyBeenPublished()) {
             $this->publishes([
-                __DIR__ . '/database/migrations/add_cart_session_id_to_users_table.php.stub' => database_path('migrations/' . date('Y_m_d_His') . '_add_cart_session_id_to_users_table.php'),
+                __DIR__.'/database/migrations/add_cart_session_id_to_users_table.php.stub' => database_path('migrations/'.date('Y_m_d_His').'_add_cart_session_id_to_users_table.php'),
             ], 'migrations');
         }
     }
@@ -62,7 +60,7 @@ class LaraCartServiceProvider extends ServiceProvider
     }
 
     /**
-     * Checks to see if the migration has already been published
+     * Checks to see if the migration has already been published.
      *
      * @return bool
      */

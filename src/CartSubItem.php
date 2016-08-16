@@ -5,13 +5,11 @@ namespace LukePOLO\LaraCart;
 use LukePOLO\LaraCart\Traits\CartOptionsMagicMethodsTrait;
 
 /**
- * Class CartItemOption
+ * Class CartItemOption.
  *
  * @property float price
  * @property array options
  * @property array items
- *
- * @package LukePOLO\LaraCart
  */
 class CartSubItem
 {
@@ -39,7 +37,7 @@ class CartSubItem
     }
 
     /**
-     * Gets the hash for the item
+     * Gets the hash for the item.
      *
      * @return mixed
      */
@@ -49,10 +47,10 @@ class CartSubItem
     }
 
     /**
-     * Gets the formatted price
+     * Gets the formatted price.
      *
      * @param bool|true $format
-     * @param bool $taxedItemsOnly
+     * @param bool      $taxedItemsOnly
      *
      * @return string
      */
@@ -73,7 +71,7 @@ class CartSubItem
     }
 
     /**
-     * Search for matching options on the item
+     * Search for matching options on the item.
      *
      * @return mixed
      */
@@ -85,5 +83,4 @@ class CartSubItem
             }
         }
     }
-
 }

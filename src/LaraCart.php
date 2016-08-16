@@ -11,9 +11,7 @@ use LukePOLO\LaraCart\Contracts\LaraCartContract;
 use LukePOLO\LaraCart\Exceptions\ModelNotFound;
 
 /**
- * Class LaraCart
- *
- * @package LukePOLO\LaraCart
+ * Class LaraCart.
  */
 class LaraCart implements LaraCartContract
 {
@@ -34,8 +32,8 @@ class LaraCart implements LaraCartContract
      * LaraCart constructor.
      *
      * @param SessionManager $session
-     * @param Dispatcher $events
-     * @param AuthManager $authManager
+     * @param Dispatcher     $events
+     * @param AuthManager    $authManager
      */
     public function __construct(SessionManager $session, Dispatcher $events, AuthManager $authManager)
     {
@@ -46,21 +44,21 @@ class LaraCart implements LaraCartContract
         $this->itemModel = config('laracart.item_model', null);
         $this->itemModelRelations = config('laracart.item_model_relations', []);
 
-        $this->setInstance($this->session->get($this->prefix . '.instance', 'default'));
+        $this->setInstance($this->session->get($this->prefix.'.instance', 'default'));
     }
 
     /**
-     * Gets all current instances inside the session
+     * Gets all current instances inside the session.
      *
      * @return mixed
      */
     public function getInstances()
     {
-        return $this->session->get($this->prefix . '.instances', []);
+        return $this->session->get($this->prefix.'.instances', []);
     }
 
     /**
-     * Sets and Gets the instance of the cart in the session we should be using
+     * Sets and Gets the instance of the cart in the session we should be using.
      *
      * @param string $instance
      *
@@ -70,10 +68,10 @@ class LaraCart implements LaraCartContract
     {
         $this->get($instance);
 
-        $this->session->set($this->prefix . '.instance', $instance);
+        $this->session->set($this->prefix.'.instance', $instance);
 
         if (!in_array($instance, $this->getInstances())) {
-            $this->session->push($this->prefix . '.instances', $instance);
+            $this->session->push($this->prefix.'.instances', $instance);
         }
         $this->events->fire('laracart.new');
 
@@ -81,7 +79,7 @@ class LaraCart implements LaraCartContract
     }
 
     /**
-     * Gets the instance in the session
+     * Gets the instance in the session.
      *
      * @param string $instance
      *
@@ -96,7 +94,7 @@ class LaraCart implements LaraCartContract
             }
         }
 
-        if (empty($this->cart = $this->session->get($this->prefix . '.' . $instance))) {
+        if (empty($this->cart = $this->session->get($this->prefix.'.'.$instance))) {
             $this->cart = new Cart($instance);
         }
 
@@ -104,7 +102,7 @@ class LaraCart implements LaraCartContract
     }
 
     /**
-     * Gets an an attribute from the cart
+     * Gets an an attribute from the cart.
      *
      * @param $attribute
      * @param $defaultValue
@@ -117,7 +115,7 @@ class LaraCart implements LaraCartContract
     }
 
     /**
-     * Gets all the carts attributes
+     * Gets all the carts attributes.
      *
      * @return mixed
      */
@@ -127,7 +125,7 @@ class LaraCart implements LaraCartContract
     }
 
     /**
-     * Adds an Attribute to the cart
+     * Adds an Attribute to the cart.
      *
      * @param $attribute
      * @param $value
@@ -140,11 +138,11 @@ class LaraCart implements LaraCartContract
     }
 
     /**
-     * Updates cart session
+     * Updates cart session.
      */
     public function update()
     {
-        $this->session->set($this->prefix . '.' . $this->cart->instance, $this->cart);
+        $this->session->set($this->prefix.'.'.$this->cart->instance, $this->cart);
 
         if (config('laracart.cross_devices', false) && $this->authManager->check()) {
             $this->authManager->user()->cart_session_id = $this->session->getId();
@@ -157,7 +155,7 @@ class LaraCart implements LaraCartContract
     }
 
     /**
-     * Removes an attribute from the cart
+     * Removes an attribute from the cart.
      *
      * @param $attribute
      */
@@ -169,14 +167,14 @@ class LaraCart implements LaraCartContract
     }
 
     /**
-     * Creates a CartItem and then adds it to cart
+     * Creates a CartItem and then adds it to cart.
      *
      * @param string|int $itemID
-     * @param null $name
-     * @param int $qty
-     * @param string $price
-     * @param array $options
-     * @param bool|true $taxable
+     * @param null       $name
+     * @param int        $qty
+     * @param string     $price
+     * @param array      $options
+     * @param bool|true  $taxable
      *
      * @return CartItem
      */
@@ -186,19 +184,19 @@ class LaraCart implements LaraCartContract
     }
 
     /**
-     * Creates a CartItem and then adds it to cart
+     * Creates a CartItem and then adds it to cart.
      *
      * @param $itemID
-     * @param null $name
-     * @param int $qty
-     * @param string $price
-     * @param array $options
+     * @param null       $name
+     * @param int        $qty
+     * @param string     $price
+     * @param array      $options
      * @param bool|false $taxable
      * @param bool|false $lineItem
      *
-     * @return CartItem
-     *
      * @throws ModelNotFound
+     *
+     * @return CartItem
      */
     public function add(
         $itemID,
@@ -209,17 +207,15 @@ class LaraCart implements LaraCartContract
         $taxable = true,
         $lineItem = false
     ) {
-
         if (!empty(config('laracart.item_model'))) {
-
             $itemModel = $itemID;
 
             if (!$this->isItemModel($itemModel)) {
-                $itemModel = (new $this->itemModel)->with($this->itemModelRelations)->find($itemID);
+                $itemModel = (new $this->itemModel())->with($this->itemModelRelations)->find($itemID);
             }
 
             if (empty($itemModel)) {
-                throw new ModelNotFound('Could not find the item ' . $itemID);
+                throw new ModelNotFound('Could not find the item '.$itemID);
             }
 
             $bindings = config('laracart.item_model_bindings');
@@ -255,7 +251,7 @@ class LaraCart implements LaraCartContract
     }
 
     /**
-     * Adds the cartItem into the cart session
+     * Adds the cartItem into the cart session.
      *
      * @param CartItem $cartItem
      *
@@ -277,7 +273,7 @@ class LaraCart implements LaraCartContract
     }
 
     /**
-     * Increment the quantity of a cartItem based on the itemHash
+     * Increment the quantity of a cartItem based on the itemHash.
      *
      * @param $itemHash
      *
@@ -293,7 +289,7 @@ class LaraCart implements LaraCartContract
     }
 
     /**
-     * Decrement the quantity of a cartItem based on the itemHash
+     * Decrement the quantity of a cartItem based on the itemHash.
      *
      * @param $itemHash
      *
@@ -310,15 +306,14 @@ class LaraCart implements LaraCartContract
         }
         $this->removeItem($itemHash);
         $this->update();
-
-        return null;
     }
 
     /**
-     * Find items in the cart matching a data set
+     * Find items in the cart matching a data set.
      *
      *
      * param $data
+     *
      * @return array
      */
     public function find($data)
@@ -335,7 +330,7 @@ class LaraCart implements LaraCartContract
     }
 
     /**
-     * Finds a cartItem based on the itemHash
+     * Finds a cartItem based on the itemHash.
      *
      * @param $itemHash
      *
@@ -347,7 +342,7 @@ class LaraCart implements LaraCartContract
     }
 
     /**
-     * Gets all the items within the cart
+     * Gets all the items within the cart.
      *
      * @return array
      */
@@ -364,16 +359,16 @@ class LaraCart implements LaraCartContract
     }
 
     /**
-     * Updates an items attributes
+     * Updates an items attributes.
      *
      * @param $itemHash
      * @param $key
      * @param $value
      *
-     * @return CartItem
-     *
      * @throws Exceptions\InvalidPrice
      * @throws Exceptions\InvalidQuantity
+     *
+     * @return CartItem
      */
     public function updateItem($itemHash, $key, $value)
     {
@@ -389,7 +384,7 @@ class LaraCart implements LaraCartContract
     }
 
     /**
-     * Removes a CartItem based on the itemHash
+     * Removes a CartItem based on the itemHash.
      *
      * @param $itemHash
      */
@@ -408,7 +403,7 @@ class LaraCart implements LaraCartContract
     }
 
     /**
-     * Empties the carts items
+     * Empties the carts items.
      */
     public function emptyCart()
     {
@@ -420,13 +415,13 @@ class LaraCart implements LaraCartContract
     }
 
     /**
-     * Completely destroys cart and anything associated with it
+     * Completely destroys cart and anything associated with it.
      */
     public function destroyCart()
     {
         $instance = $this->cart->instance;
 
-        $this->session->forget($this->prefix . '.' . $instance);
+        $this->session->forget($this->prefix.'.'.$instance);
 
         $this->setInstance('default');
 
@@ -436,7 +431,7 @@ class LaraCart implements LaraCartContract
     }
 
     /**
-     * Gets the coupons for the current cart
+     * Gets the coupons for the current cart.
      *
      * @return array
      */
@@ -446,9 +441,10 @@ class LaraCart implements LaraCartContract
     }
 
     /**
-     * Finds a specific coupon in the cart
+     * Finds a specific coupon in the cart.
      *
      * @param $code
+     *
      * @return mixed
      */
     public function findCoupon($code)
@@ -457,7 +453,7 @@ class LaraCart implements LaraCartContract
     }
 
     /**
-     * Applies a coupon to the cart
+     * Applies a coupon to the cart.
      *
      * @param CouponContract $coupon
      */
@@ -473,7 +469,7 @@ class LaraCart implements LaraCartContract
     }
 
     /**
-     * Removes a coupon in the cart
+     * Removes a coupon in the cart.
      *
      * @param $code
      */
@@ -485,7 +481,7 @@ class LaraCart implements LaraCartContract
     }
 
     /**
-     * Removes all coupons from the cart
+     * Removes all coupons from the cart.
      */
     public function removeCoupons()
     {
@@ -495,7 +491,7 @@ class LaraCart implements LaraCartContract
     }
 
     /**
-     * Gets a specific fee from the fees array
+     * Gets a specific fee from the fees array.
      *
      * @param $name
      *
@@ -508,12 +504,12 @@ class LaraCart implements LaraCartContract
 
     /**
      * Allows to charge for additional fees that may or may not be taxable
-     * ex - service fee , delivery fee, tips
+     * ex - service fee , delivery fee, tips.
      *
      * @param $name
      * @param $amount
      * @param bool|false $taxable
-     * @param array $options
+     * @param array      $options
      */
     public function addFee($name, $amount, $taxable = false, array $options = [])
     {
@@ -523,7 +519,7 @@ class LaraCart implements LaraCartContract
     }
 
     /**
-     * Removes a fee from the fee array
+     * Removes a fee from the fee array.
      *
      * @param $name
      */
@@ -535,8 +531,7 @@ class LaraCart implements LaraCartContract
     }
 
     /**
-     * Removes all the fees set in the cart
-     *
+     * Removes all the fees set in the cart.
      */
     public function removeFees()
     {
@@ -546,7 +541,7 @@ class LaraCart implements LaraCartContract
     }
 
     /**
-     * Gets the total tax for the cart
+     * Gets the total tax for the cart.
      *
      * @param bool|true $format
      *
@@ -584,10 +579,10 @@ class LaraCart implements LaraCartContract
     }
 
     /**
-     * Gets the total of the cart with or without tax
+     * Gets the total of the cart with or without tax.
      *
-     * @param boolean $format
-     * @param boolean $withDiscount
+     * @param bool $format
+     * @param bool $withDiscount
      *
      * @return string
      */
@@ -607,10 +602,10 @@ class LaraCart implements LaraCartContract
     }
 
     /**
-     * Gets the subtotal of the cart with or without tax
+     * Gets the subtotal of the cart with or without tax.
      *
-     * @param boolean $format
-     * @param boolean $withDiscount
+     * @param bool $format
+     * @param bool $withDiscount
      *
      * @return string
      */
@@ -628,7 +623,7 @@ class LaraCart implements LaraCartContract
     }
 
     /**
-     * Get the count based on qty, or number of unique items
+     * Get the count based on qty, or number of unique items.
      *
      * @param bool $withItemQty
      *
@@ -650,8 +645,7 @@ class LaraCart implements LaraCartContract
     }
 
     /**
-     *
-     * Formats the number into a money format based on the locale and international formats
+     * Formats the number into a money format based on the locale and international formats.
      *
      * @param $number
      * @param $locale
@@ -679,9 +673,9 @@ class LaraCart implements LaraCartContract
     }
 
     /**
-     * Gets all the fee totals
+     * Gets all the fee totals.
      *
-     * @param boolean $format
+     * @param bool $format
      *
      * @return string
      */
@@ -701,7 +695,7 @@ class LaraCart implements LaraCartContract
     }
 
     /**
-     * Gets all the fees on the cart object
+     * Gets all the fees on the cart object.
      *
      * @return mixed
      */
@@ -711,9 +705,9 @@ class LaraCart implements LaraCartContract
     }
 
     /**
-     * Gets the total amount discounted
+     * Gets the total amount discounted.
      *
-     * @param boolean $format
+     * @param bool $format
      *
      * @return string
      */
@@ -731,7 +725,7 @@ class LaraCart implements LaraCartContract
     }
 
     /**
-     * Checks to see if its an item model
+     * Checks to see if its an item model.
      *
      * @param $itemModel
      *
@@ -747,7 +741,7 @@ class LaraCart implements LaraCartContract
     }
 
     /**
-     * Gets the item models options based the config
+     * Gets the item models options based the config.
      *
      * @param Model $itemModel
      * @param array $options
@@ -771,7 +765,7 @@ class LaraCart implements LaraCartContract
     }
 
     /**
-     * Gets a option from the model
+     * Gets a option from the model.
      *
      * @param Model $itemModel
      * @param $attr
@@ -788,12 +782,12 @@ class LaraCart implements LaraCartContract
                 $variable = array_get($variable, $attr, $defaultValue);
             }
         }
-        
+
         return $variable;
     }
 
     /**
-     * Removes a coupon from the item
+     * Removes a coupon from the item.
      *
      * @param null $code
      */

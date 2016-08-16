@@ -6,7 +6,7 @@ use LukePOLO\LaraCart\Exceptions\ModelNotFound;
 use LukePOLO\LaraCart\Traits\CartOptionsMagicMethodsTrait;
 
 /**
- * Class CartItem
+ * Class CartItem.
  *
  * @property int id
  * @property int qty
@@ -14,9 +14,7 @@ use LukePOLO\LaraCart\Traits\CartOptionsMagicMethodsTrait;
  * @property float price
  * @property string name
  * @property array options
- * @property boolean taxable
- *
- * @package LukePOLO\LaraCart
+ * @property bool taxable
  */
 class CartItem
 {
@@ -46,10 +44,10 @@ class CartItem
      *
      * @param $id
      * @param $name
-     * @param integer $qty
-     * @param string $price
-     * @param array $options
-     * @param boolean $taxable
+     * @param int        $qty
+     * @param string     $price
+     * @param array      $options
+     * @param bool       $taxable
      * @param bool|false $lineItem
      */
     public function __construct($id, $name, $qty, $price, $options = [], $taxable = true, $lineItem = false)
@@ -70,7 +68,7 @@ class CartItem
     }
 
     /**
-     * Generates a hash based on the cartItem array
+     * Generates a hash based on the cartItem array.
      *
      * @param bool $force
      *
@@ -81,7 +79,7 @@ class CartItem
         if ($this->lineItem === false) {
             $this->itemHash = null;
 
-            $cartItemArray = (array)$this;
+            $cartItemArray = (array) $this;
 
             unset($cartItemArray['options']['qty']);
 
@@ -94,8 +92,8 @@ class CartItem
 
         app('events')->fire(
             'laracart.updateItem', [
-                'item' => $this,
-                'newHash' => $this->itemHash
+                'item'    => $this,
+                'newHash' => $this->itemHash,
             ]
         );
 
@@ -103,7 +101,7 @@ class CartItem
     }
 
     /**
-     * Gets the hash for the item
+     * Gets the hash for the item.
      *
      * @return mixed
      */
@@ -113,7 +111,7 @@ class CartItem
     }
 
     /**
-     * Search for matching options on the item
+     * Search for matching options on the item.
      *
      * @return mixed
      */
@@ -129,9 +127,10 @@ class CartItem
     }
 
     /**
-     * Finds a sub item by its hash
+     * Finds a sub item by its hash.
      *
      * @param $subItemHash
+     *
      * @return mixed
      */
     public function findSubItem($subItemHash)
@@ -140,7 +139,7 @@ class CartItem
     }
 
     /**
-     * Adds an sub item to a item
+     * Adds an sub item to a item.
      *
      * @param array $subItem
      *
@@ -160,7 +159,7 @@ class CartItem
     }
 
     /**
-     * Removes a sub item from the item
+     * Removes a sub item from the item.
      *
      * @param $subItemHash
      */
@@ -172,7 +171,7 @@ class CartItem
     }
 
     /**
-     * Gets the price of the item with or without tax, with the proper format
+     * Gets the price of the item with or without tax, with the proper format.
      *
      * @param bool $format
      * @param bool $taxedItemsOnly
@@ -189,7 +188,7 @@ class CartItem
     }
 
     /**
-     * Gets the sub total of the item based on the qty with or without tax in the proper format
+     * Gets the sub total of the item based on the qty with or without tax in the proper format.
      *
      * @param bool $format
      * @param bool $withDiscount
@@ -208,11 +207,10 @@ class CartItem
         return LaraCart::formatMoney($total, $this->locale, $this->internationalFormat, $format);
     }
 
-
     /**
-     * Gets the totals for the options
+     * Gets the totals for the options.
      *
-     * @param boolean $format
+     * @param bool $format
      * @param bool $taxedItemsOnly
      *
      * @return string
@@ -229,9 +227,9 @@ class CartItem
     }
 
     /**
-     * Gets the discount of an item
+     * Gets the discount of an item.
      *
-     * @param boolean $format
+     * @param bool $format
      *
      * @return string
      */
@@ -252,7 +250,7 @@ class CartItem
     }
 
     /**
-     * Gets the tax for the item
+     * Gets the tax for the item.
      *
      * @param int $amountNotTaxable
      *
@@ -269,7 +267,7 @@ class CartItem
     }
 
     /**
-     * Sets the related model to the item
+     * Sets the related model to the item.
      *
      * @param $itemModel
      * @param array $relations
@@ -287,24 +285,26 @@ class CartItem
     }
 
     /**
-     * Returns a Model
+     * Returns a Model.
      *
      * @throws ModelNotFound
      */
     public function getModel()
     {
-        $itemModel = (new $this->itemModel)->with($this->itemModelRelations)->find($this->id);
+        $itemModel = (new $this->itemModel())->with($this->itemModelRelations)->find($this->id);
 
         if (empty($itemModel)) {
-            throw new ModelNotFound('Could not find the item model for ' . $this->id);
+            throw new ModelNotFound('Could not find the item model for '.$this->id);
         }
 
         return $itemModel;
     }
 
     /**
-     *  A way to find sub items
+     *  A way to find sub items.
+     *
      * @param $data
+     *
      * @return array
      */
     public function searchForSubItem($data)

@@ -1,14 +1,14 @@
 <?php
 
 /**
- * Class ItemsTest
+ * Class ItemsTest.
  */
 class ItemsTest extends Orchestra\Testbench\TestCase
 {
     use \LukePOLO\LaraCart\Tests\LaraCartTestTrait;
 
     /**
-     * Test if we can add an item to the cart
+     * Test if we can add an item to the cart.
      */
     public function testAddItem()
     {
@@ -20,7 +20,7 @@ class ItemsTest extends Orchestra\Testbench\TestCase
     }
 
     /**
-     * Test if we can increment a quantity to an item
+     * Test if we can increment a quantity to an item.
      */
     public function testIncrementItem()
     {
@@ -32,7 +32,7 @@ class ItemsTest extends Orchestra\Testbench\TestCase
     }
 
     /**
-     * Test if we can decrement a quantity to an item
+     * Test if we can decrement a quantity to an item.
      */
     public function testDecrementItem()
     {
@@ -45,7 +45,7 @@ class ItemsTest extends Orchestra\Testbench\TestCase
     }
 
     /**
-     * Test if we can decrement an item with a quantity of 1 (= delete item)
+     * Test if we can decrement an item with a quantity of 1 (= delete item).
      */
     public function testDecrementUniqueItem()
     {
@@ -57,7 +57,7 @@ class ItemsTest extends Orchestra\Testbench\TestCase
     }
 
     /**
-     * Tests when we add multiples of the same item it updates the qty properly
+     * Tests when we add multiples of the same item it updates the qty properly.
      */
     public function testItemQtyUpdate()
     {
@@ -75,7 +75,7 @@ class ItemsTest extends Orchestra\Testbench\TestCase
 
         $options = [
             'a' => 2,
-            'b' => 1
+            'b' => 1,
         ];
 
         $item = $this->addItem(1, 1, false, $options);
@@ -85,7 +85,7 @@ class ItemsTest extends Orchestra\Testbench\TestCase
     }
 
     /**
-     * Test if we can add an line item to the cart
+     * Test if we can add an line item to the cart.
      */
     public function testAddLineItem()
     {
@@ -107,7 +107,7 @@ class ItemsTest extends Orchestra\Testbench\TestCase
     }
 
     /**
-     * Test getting an item from the cart
+     * Test getting an item from the cart.
      */
     public function testGetItem()
     {
@@ -116,7 +116,7 @@ class ItemsTest extends Orchestra\Testbench\TestCase
     }
 
     /**
-     * Test updating the item
+     * Test updating the item.
      */
     public function testUpdateItem()
     {
@@ -128,7 +128,7 @@ class ItemsTest extends Orchestra\Testbench\TestCase
     }
 
     /**
-     * Test getting all the items from the cart
+     * Test getting all the items from the cart.
      */
     public function testGetItems()
     {
@@ -145,7 +145,7 @@ class ItemsTest extends Orchestra\Testbench\TestCase
     }
 
     /**
-     * Test the price and qty based on the item
+     * Test the price and qty based on the item.
      */
     public function testItemPriceAndQty()
     {
@@ -157,7 +157,7 @@ class ItemsTest extends Orchestra\Testbench\TestCase
     }
 
     /**
-     * Test removing an item from the cart
+     * Test removing an item from the cart.
      */
     public function testRemoveItem()
     {
@@ -169,7 +169,7 @@ class ItemsTest extends Orchestra\Testbench\TestCase
     }
 
     /**
-     * Test seeing a valid and invalid price
+     * Test seeing a valid and invalid price.
      */
     public function testSetPrice()
     {
@@ -193,7 +193,7 @@ class ItemsTest extends Orchestra\Testbench\TestCase
     }
 
     /**
-     * Test seeing a valid and invalid qty
+     * Test seeing a valid and invalid qty.
      */
     public function testSetQty()
     {
@@ -228,11 +228,10 @@ class ItemsTest extends Orchestra\Testbench\TestCase
     }
 
     /**
-     * Tests the different taxes on items
+     * Tests the different taxes on items.
      */
     public function testDifferentTaxes()
     {
-
         $item = $this->addItem();
 
         $prevHash = $item->getHash();
@@ -247,7 +246,7 @@ class ItemsTest extends Orchestra\Testbench\TestCase
         $this->assertEquals('2.35', $this->laracart->total(false));
 
         $item = $this->addItem(1, 1, true, [
-            'tax' => .7
+            'tax' => .7,
         ]);
 
         $this->assertEquals('.70', $item->tax());
@@ -256,7 +255,7 @@ class ItemsTest extends Orchestra\Testbench\TestCase
     }
 
     /**
-     * Test that an item can be found by the value of an option
+     * Test that an item can be found by the value of an option.
      */
     public function testFindingAnItemByOptionSucceeds()
     {
@@ -283,7 +282,7 @@ class ItemsTest extends Orchestra\Testbench\TestCase
     }
 
     /**
-     * Test that an item is not found by the value of an option when it does not exist
+     * Test that an item is not found by the value of an option when it does not exist.
      */
     public function testFindingAnItemByOptionFails()
     {
@@ -299,7 +298,7 @@ class ItemsTest extends Orchestra\Testbench\TestCase
     }
 
     /**
-     * Test that multiple matching items are found by the value of an option
+     * Test that multiple matching items are found by the value of an option.
      */
     public function testFindingAnItemReturnsMultipleMatches()
     {
@@ -327,7 +326,7 @@ class ItemsTest extends Orchestra\Testbench\TestCase
     }
 
     /**
-     * Test that an multiple matching items are found by the value of an option
+     * Test that an multiple matching items are found by the value of an option.
      */
     public function testFindingAnItemOnAnEmptyCartReturnsNoMatches()
     {
@@ -335,7 +334,7 @@ class ItemsTest extends Orchestra\Testbench\TestCase
     }
 
     /**
-     * Test an item is returned when finding multiple criteria
+     * Test an item is returned when finding multiple criteria.
      */
     public function testFindingAnItemWithMultipleCriteria()
     {
@@ -369,7 +368,7 @@ class ItemsTest extends Orchestra\Testbench\TestCase
     }
 
     /**
-     * Test an item is found searching by name
+     * Test an item is found searching by name.
      */
     public function testFindingAnItemByName()
     {

@@ -3,9 +3,7 @@
 namespace LukePOLO\LaraCart\Exceptions;
 
 /**
- * Class InvalidPrice
- *
- * @package LukePOLO\LaraCart\Exceptions
+ * Class InvalidPrice.
  */
 class InvalidPrice extends \Exception
 {

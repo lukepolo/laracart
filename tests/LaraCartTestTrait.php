@@ -3,13 +3,12 @@
 namespace LukePOLO\LaraCart\Tests;
 
 /**
- * Class LaraCartTestTrait
- * @package LukePOLO\LaraCart\Tests
+ * Class LaraCartTestTrait.
  */
 trait LaraCartTestTrait
 {
     /**
-     * Setup the test functions with laracart
+     * Setup the test functions with laracart.
      */
     public function setUp()
     {
@@ -19,7 +18,7 @@ trait LaraCartTestTrait
     }
 
     /**
-     * Default tax setup
+     * Default tax setup.
      *
      * @param $app
      */
@@ -36,9 +35,10 @@ trait LaraCartTestTrait
     }
 
     /**
-     * Sets the package providers
+     * Sets the package providers.
      *
      * @param $app
+     *
      * @return array
      */
     protected function getPackageProviders($app)
@@ -47,11 +47,11 @@ trait LaraCartTestTrait
     }
 
     /**
-     * Easy way to add an item for many tests
+     * Easy way to add an item for many tests.
      *
-     * @param int $qty
-     * @param int $price
-     * @param bool $taxable
+     * @param int   $qty
+     * @param int   $price
+     * @param bool  $taxable
      * @param array $options
      *
      * @return mixed
@@ -64,6 +64,7 @@ trait LaraCartTestTrait
                 'a_test' => 'option_2',
             ];
         }
+
         return $this->laracart->add(
             'itemID',
             'Testing Item',

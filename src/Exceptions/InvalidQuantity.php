@@ -3,9 +3,7 @@
 namespace LukePOLO\LaraCart\Exceptions;
 
 /**
- * Class InvalidQuantity
- *
- * @package LukePOLO\LaraCart\Exceptions
+ * Class InvalidQuantity.
  */
 class InvalidQuantity extends \Exception
 {
