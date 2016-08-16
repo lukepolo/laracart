@@ -5,9 +5,7 @@ namespace LukePOLO\LaraCart;
 use LukePOLO\LaraCart\Traits\CartOptionsMagicMethodsTrait;
 
 /**
- * Class CartFee
- *
- * @package LukePOLO\LaraCart
+ * Class CartFee.
  */
 class CartFee
 {
@@ -35,7 +33,7 @@ class CartFee
     }
 
     /**
-     * Gets the formatted amount
+     * Gets the formatted amount.
      *
      * @return string
      */

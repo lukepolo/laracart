@@ -3,9 +3,7 @@
 namespace LukePOLO\LaraCart\Contracts;
 
 /**
- * Interface CouponContract
- *
- * @package LukePOLO\LaraCart\Contracts
+ * Interface CouponContract.
  */
 interface CouponContract
 {
@@ -18,14 +16,14 @@ interface CouponContract
     public function __construct($code, $value);
 
     /**
-     * Gets the discount amount
+     * Gets the discount amount.
      *
      * @return string
      */
     public function discount();
 
     /**
-     * Displays the type of value it is for the user
+     * Displays the type of value it is for the user.
      *
      * @return mixed
      */

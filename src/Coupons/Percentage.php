@@ -7,14 +7,11 @@ use LukePOLO\LaraCart\LaraCart;
 use LukePOLO\LaraCart\Traits\CouponTrait;
 
 /**
- * Class Percentage
- *
- * @package LukePOLO\LaraCart\Coupons
+ * Class Percentage.
  */
 
 /**
- * Class Percentage
- * @package LukePOLO\LaraCart\Coupons
+ * Class Percentage.
  */
 class Percentage implements CouponContract
 {
@@ -28,7 +25,6 @@ class Percentage implements CouponContract
      *
      * @param $code
      * @param $value
-     *
      * @param array $options
      */
     public function __construct($code, $value, $options = [])
@@ -40,7 +36,7 @@ class Percentage implements CouponContract
     }
 
     /**
-     * Gets the discount amount
+     * Gets the discount amount.
      *
      * @param $throwErrors boolean this allows us to capture errors in our code if we wish,
      * that way we can spit out why the coupon has failed
@@ -57,12 +53,11 @@ class Percentage implements CouponContract
         );
     }
 
-
     /**
      * @return mixed
      */
     public function displayValue()
     {
-        return ($this->value * 100) . '%';
+        return ($this->value * 100).'%';
     }
 }

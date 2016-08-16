@@ -3,14 +3,14 @@
 use LukePOLO\LaraCart\Exceptions\InvalidTaxableValue;
 
 /**
- * Class MagicFunctionsTest
+ * Class MagicFunctionsTest.
  */
 class MagicFunctionsTest extends Orchestra\Testbench\TestCase
 {
     use \LukePOLO\LaraCart\Tests\LaraCartTestTrait;
 
     /**
-     * Test the magic method get
+     * Test the magic method get.
      */
     public function testGet()
     {
@@ -20,7 +20,7 @@ class MagicFunctionsTest extends Orchestra\Testbench\TestCase
     }
 
     /**
-     * Test the magic method set
+     * Test the magic method set.
      */
     public function testSet()
     {
@@ -49,7 +49,7 @@ class MagicFunctionsTest extends Orchestra\Testbench\TestCase
     }
 
     /**
-     * Test the magic method isset
+     * Test the magic method isset.
      */
     public function testIsset()
     {
