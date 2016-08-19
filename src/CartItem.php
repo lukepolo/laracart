@@ -139,11 +139,11 @@ class CartItem
     }
 
     /**
-     * Adds an sub item to a item
+     * Adds an sub item to a item.
      *
      * @param array $subItem
+     * @param bool  $autoUpdate
      *
-     * @param bool $autoUpdate
      * @return CartSubItem
      */
     public function addSubItem(array $subItem, $autoUpdate = true)
