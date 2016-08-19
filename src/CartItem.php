@@ -139,13 +139,14 @@ class CartItem
     }
 
     /**
-     * Adds an sub item to a item.
+     * Adds an sub item to a item
      *
      * @param array $subItem
      *
+     * @param bool $autoUpdate
      * @return CartSubItem
      */
-    public function addSubItem(array $subItem)
+    public function addSubItem(array $subItem, $autoUpdate = true)
     {
         $subItem = new CartSubItem($subItem);
 
@@ -153,7 +154,9 @@ class CartItem
 
         $this->generateHash();
 
-        app('laracart')->update();
+        if ($autoUpdate) {
+            app('laracart')->update();
+        }
 
         return $subItem;
     }
