@@ -423,9 +423,9 @@ class LaraCart implements LaraCartContract
 
         $this->session->forget($this->prefix.'.'.$instance);
 
-        $this->setInstance('default');
-
         $this->events->fire('laracart.destroy', $instance);
+
+        $this->cart = new Cart($instance);
 
         $this->update();
     }
