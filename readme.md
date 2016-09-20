@@ -56,6 +56,10 @@ Copy over the configuration file by running the command:
 ###Documentation
 <a href="http://laracart.lukepolo.com/">http://laracart.lukepolo.com</a>
 
+To Contribute to documentation use this repo : 
+
+https://github.com/lukepolo/laracart-docs
+
 License
 ----
 MIT
