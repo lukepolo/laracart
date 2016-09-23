@@ -35,7 +35,7 @@ trait CartTotals
     {
         $feeTotal = 0;
 
-        foreach ($this->getFees() as $fee) {
+        foreach ($this->fees() as $fee) {
             $feeTotal += $fee->amount;
 
             if ($withTax && $fee->taxable && $fee->tax > 0) {
@@ -57,7 +57,7 @@ trait CartTotals
         $totalDiscount = $this->totalDiscount()->amount();
 
         if ($this->count() != 0) {
-            foreach ($this->getItems() as $item) {
+            foreach ($this->items() as $item) {
                 if ($discounted >= $totalDiscount) {
                     $totalTax += $item->tax();
                 } else {
@@ -72,7 +72,7 @@ trait CartTotals
             }
         }
 
-        foreach ($this->getFees() as $fee) {
+        foreach ($this->fees() as $fee) {
             if ($fee->taxable) {
                 $totalTax += $fee->amount * $fee->tax;
             }
@@ -91,7 +91,7 @@ trait CartTotals
         $total = 0;
 
         if ($this->count() != 0) {
-            foreach ($this->getItems() as $item) {
+            foreach ($this->items() as $item) {
                 $total += $item->subTotal($withDiscount)->amount();
             }
         }

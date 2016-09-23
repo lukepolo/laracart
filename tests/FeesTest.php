@@ -30,7 +30,7 @@ class FeesTest extends Orchestra\Testbench\TestCase
 
         $fee = $this->laracart->getFee('testFeeOne');
 
-        $this->assertEquals('$10.00', $fee->getAmount());
+        $this->assertEquals('$10.00', $fee->amount());
     }
 
     /**
@@ -41,8 +41,8 @@ class FeesTest extends Orchestra\Testbench\TestCase
         $this->addFee('testFeeOne');
         $this->addFee('testFeeTwo', 20);
 
-        $this->assertEquals('$10.00', $this->laracart->getFee('testFeeOne')->getAmount());
-        $this->assertEquals('$20.00', $this->laracart->getFee('testFeeTwo')->getAmount());
+        $this->assertEquals('$10.00', $this->laracart->getFee('testFeeOne')->amount());
+        $this->assertEquals('$20.00', $this->laracart->getFee('testFeeTwo')->amount());
     }
 
     /**
@@ -51,7 +51,7 @@ class FeesTest extends Orchestra\Testbench\TestCase
     public function testRemoveFee()
     {
         $this->addFee('testFeeOne');
-        $this->assertEquals('$10.00', $this->laracart->getFee('testFeeOne')->getAmount());
+        $this->assertEquals('$10.00', $this->laracart->getFee('testFeeOne')->amount());
 
         $this->laracart->removeFee('testFeeOne');
 
@@ -64,10 +64,10 @@ class FeesTest extends Orchestra\Testbench\TestCase
     public function testRemoveFees()
     {
         $this->addFee('testFeeOne');
-        $this->assertEquals('$10.00', $this->laracart->getFee('testFeeOne')->getAmount());
+        $this->assertEquals('$10.00', $this->laracart->getFee('testFeeOne')->amount());
 
         $this->laracart->removeFees();
 
-        $this->assertTrue(empty($this->laracart->getFees()));
+        $this->assertTrue(empty($this->laracart->fees()));
     }
 }

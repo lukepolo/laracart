@@ -30,12 +30,12 @@ class CartItem
     const ITEM_TAXABLE = 'taxable';
     const ITEM_OPTIONS = 'options';
 
-    protected $itemHash;
+    protected $hash;
 
     public $locale;
     public $lineItem;
     public $discount = 0;
-    public $subItems = [];
+    public $modifiers = [];
     public $couponInfo = [];
     public $internationalFormat;
 
@@ -69,44 +69,12 @@ class CartItem
     }
 
     /**
-     * // TODO - I would like to move this into a helper if possible
-     * Generates a hash based on the cartItem array
-     * @param bool $force
-     * @return string itemHash
-     */
-    public function generateHash($force = false)
-    {
-        if ($this->lineItem === false) {
-            $this->itemHash = null;
-
-            $cartItemArray = (array)$this;
-
-            unset($cartItemArray['options']['qty']);
-
-            ksort($cartItemArray['options']);
-
-            $this->itemHash = $this->hash($cartItemArray);
-        } elseif ($force || empty($this->itemHash)) {
-            $this->itemHash = $this->randomHash();
-        }
-
-        app('events')->fire(
-            'laracart.updateItem', [
-                'item' => $this,
-                'newHash' => $this->itemHash
-            ]
-        );
-
-        return $this->itemHash;
-    }
-
-    /**
      * Gets the hash for the item
      * @return mixed
      */
-    public function getHash()
+    public function hash()
     {
-        return $this->itemHash;
+        return $this->hash;
     }
 
     /**
@@ -134,9 +102,9 @@ class CartItem
     {
         $matches = [];
 
-        foreach ($this->subItems as $subItem) {
-            if ($subItem->find($data)) {
-                $matches[] = $subItem;
+        foreach ($this->modifiers as $modifier) {
+            if ($modifier->find($data)) {
+                $matches[] = $modifier;
             }
         }
 
@@ -145,41 +113,39 @@ class CartItem
 
     /**
      * Finds a sub item by its hash
-     * @param $subItemHash
+     * @param $modifierHash
      * @return mixed
      */
-    public function findSubItem($subItemHash)
+    public function findModifier($modifierHash)
     {
-        return array_get($this->subItems, $subItemHash);
+        return array_get($this->modifiers, $modifierHash);
     }
 
     /**
      * Adds an sub item to a item
-     * @param array $subItem
-     * @return CartSubItem
+     * @param array $modifier
+     * @return CartModifier
      */
-    public function addSubItem(array $subItem)
+    public function addModifier(array $modifier)
     {
-        $subItem = new CartSubItem($subItem);
+        $modifier = new CartItemModifier($modifier);
 
-        $this->subItems[$subItem->getHash()] = $subItem;
+        $this->modifiers[$modifier->hash()] = $modifier;
 
-        $this->generateHash();
+        $this->updateCart();
 
-        app('laracart')->update();
-
-        return $subItem;
+        return $modifier;
     }
 
     /**
      * Removes a sub item from the item
-     * @param $subItemHash
+     * @param $modifierHash
      */
-    public function removeSubItem($subItemHash)
+    public function removeModifier($modifierHash)
     {
-        unset($this->subItems[$subItemHash]);
+        unset($this->modifiers[$modifierHash]);
 
-        $this->generateHash();
+        $this->updateCart();
     }
 
     /**
@@ -193,8 +159,7 @@ class CartItem
             $amountNotTaxable = $amountNotTaxable + ($this->price * $this->qty);
         }
 
-        return $this->tax * ($this->subTotal(false, config('laracart.discountTaxable', true),
-                true) - $amountNotTaxable);
+        return $this->tax * ($this->subTotal(false, config('laracart.discountTaxable', true))->amount() - $amountNotTaxable);
     }
 
     /**
@@ -204,7 +169,7 @@ class CartItem
      */
     public function price($taxedItemsOnly = false)
     {
-        return $this->formatMoney($this->price + $this->subItemsTotal($taxedItemsOnly)->amount(), $this->locale,
+        return $this->formatMoney($this->price + $this->modifiersTotal($taxedItemsOnly)->amount(), $this->locale,
             $this->internationalFormat);
     }
 
@@ -219,7 +184,7 @@ class CartItem
         $total = $this->price($taxedItemsOnly)->amount() * $this->qty;
 
         if ($withDiscount) {
-            $total -= $this->getDiscount()->amount();
+            $total -= $this->discount()->amount();
         }
 
         return $this->formatMoney($total, $this->locale, $this->internationalFormat);
@@ -231,12 +196,12 @@ class CartItem
      * @param bool $taxedItemsOnly
      * @return string
      */
-    public function subItemsTotal($taxedItemsOnly = false)
+    public function modifiersTotal($taxedItemsOnly = false)
     {
         $total = 0;
 
-        foreach ($this->subItems as $subItem) {
-            $total += $subItem->price($taxedItemsOnly)->amount();
+        foreach ($this->modifiers as $modifier) {
+            $total += $modifier->price($taxedItemsOnly)->amount();
         }
 
         return $this->formatMoney($total, $this->locale, $this->internationalFormat);
@@ -246,7 +211,7 @@ class CartItem
      * Gets the discount of an item
      * @return string
      */
-    public function getDiscount()
+    public function discount()
     {
         $amount = 0;
 

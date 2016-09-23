@@ -52,7 +52,7 @@ trait CartFees
      *
      * @return mixed
      */
-    public function getFees()
+    public function fees()
     {
         return $this->cart->fees;
     }

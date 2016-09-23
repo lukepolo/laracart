@@ -20,14 +20,6 @@ class AddCartSessionIdToUsersTable extends Migration
                 $table->timestamps();
             });
         }
-
-        if (!(Schema::hasTable('item_item_option')) {
-            Schema::table('item_item_option', function (Blueprint $table) {
-                $table->increments('id');
-                $table->integer('item_id');
-                $table->integer('item_option_id');
-            });
-        }
     }
 
     /**

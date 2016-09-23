@@ -12,6 +12,7 @@ use LukePOLO\LaraCart\Exceptions\ModelNotFound;
 trait ItemModelBinding
 {
     public $itemModel;
+    public $itemModelRelations;
 
     public function bindModelToItem(Model $itemModel)
     {

@@ -16,6 +16,6 @@ class User extends Authenticatable
 
     public function save(array $options = [])
     {
-        $this->cart_sessoin_id = $this->getAttribute('cart_sessoin_id');
+        $this->cart_sessoin_id = $this->get('cart_sessoin_id');
     }
 }

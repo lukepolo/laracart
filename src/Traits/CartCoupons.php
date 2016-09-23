@@ -31,7 +31,7 @@ trait CartCoupons
      * Gets the coupons for the current cart
      * @return array
      */
-    public function getCoupons()
+    public function coupons()
     {
         return $this->cart->coupons;
     }
@@ -75,7 +75,7 @@ trait CartCoupons
      */
     private function removeCouponFromItems($code = null)
     {
-        foreach ($this->getItems() as $item) {
+        foreach ($this->items() as $item) {
             if (isset($item->code) && (empty($code) || $item->code == $code)) {
                 $item->code = null;
                 $item->discount = null;

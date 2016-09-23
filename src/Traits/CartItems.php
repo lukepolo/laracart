@@ -21,10 +21,10 @@ trait CartItems
      */
     public function addItem(CartItem $cartItem)
     {
-        $itemHash = $cartItem->generateHash();
+        $itemHash = $cartItem->hash();
 
-        if ($this->getItem($itemHash)) {
-            $this->getItem($itemHash)->qty += $cartItem->qty;
+        if ($item = $this->getItem($itemHash)) {
+            $item->qty += $cartItem->qty;
         } else {
             $this->cart->items[] = $cartItem;
         }
@@ -48,9 +48,7 @@ trait CartItems
      */
     public function add($itemID, $name = null, $qty = 1, $price = '0.00', $options = [])
     {
-        $item = $this->addItem(new CartItem($itemID, $name, $qty, $price, $options));
-
-        return $this->getItem($item->getHash());
+        return $this->addItem(new CartItem($itemID, $name, $qty, $price, $options));
     }
 
     /**
@@ -62,9 +60,7 @@ trait CartItems
      */
     public function addByModel(Model $model, $qty = 1, $options = [])
     {
-        $item = $this->addItem(new CartItem($model, null, $qty, null, $options));
-
-        return $this->getItem($item->getHash());
+        return $this->addItem(new CartItem($model, null, $qty, null, $options));
     }
 
     /**
@@ -79,10 +75,7 @@ trait CartItems
      */
     public function addNonTaxableItem($itemID, $name = null, $qty = 1, $price = '0.00', $options = [])
     {
-
-        $item = $this->addItem(new CartItem($itemID, $name, $qty, $price, $options, false));
-
-        return $this->getItem($item->getHash());
+        return $this->addItem(new CartItem($itemID, $name, $qty, $price, $options, false));
     }
 
 
@@ -97,9 +90,7 @@ trait CartItems
      */
     public function addLine($itemID, $name = null, $qty = 1, $price = '0.00', array $options = [])
     {
-        $item = $this->addItem(new CartItem($itemID, $name, $qty, $price, $options, true, true));
-
-        return $this->getItem($item->getHash());
+        return $this->addItem(new CartItem($itemID, $name, $qty, $price, $options, true, true));
     }
 
     /**
@@ -115,7 +106,7 @@ trait CartItems
     {
         $item = $this->addItem(new CartItem($itemID, $name, $qty, $price, $options, false, true));
 
-        return $this->getItem($item->getHash());
+        return $this->getItem($item->hash());
     }
 
     /**
@@ -125,20 +116,20 @@ trait CartItems
      */
     public function getItem($itemHash)
     {
-        return array_get($this->getItems(), $itemHash);
+        return array_get($this->items(), $itemHash);
     }
 
     /**
      * Gets all the items within the cart
      * @return array
      */
-    public function getItems()
+    public function items()
     {
         $items = [];
 
         if (isset($this->cart->items)) {
             foreach ($this->cart->items as $item) {
-                $items[$item->getHash()] = $item;
+                $items[$item->hash()] = $item;
             }
         }
 
@@ -158,11 +149,9 @@ trait CartItems
     {
         if (!empty($item = $this->getItem($itemHash))) {
             $item->$key = $value;
+            $item->generateHash($item);
+            $this->update();
         }
-
-        $item->generateHash();
-
-        $this->update();
 
         return $item;
     }
@@ -175,7 +164,7 @@ trait CartItems
     public function removeItem($itemHash)
     {
         foreach ($this->cart->items as $itemKey => $item) {
-            if ($item->getHash() == $itemHash) {
+            if ($item->hash() == $itemHash) {
                 unset($this->cart->items[$itemKey]);
                 break;
             }
@@ -195,6 +184,7 @@ trait CartItems
     public function increaseQty($itemHash, $qty = 1)
     {
         $item = $this->getItem($itemHash);
+
         $item->qty = $item->qty + $qty;
 
         $this->update();

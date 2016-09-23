@@ -11,7 +11,7 @@ use LukePOLO\LaraCart\Traits\CartOptionsMagicMethods;
  * @property array items
  * @package LukePOLO\LaraCart
  */
-class CartSubItem
+class CartItemModifier 
 {
     use CartOptionsMagicMethods;
 
@@ -23,7 +23,7 @@ class CartSubItem
     private $itemHash;
 
     /**
-     * CartSubItem constructor.
+     * CartItemModifier constructor.
      * @param $options
      */
     public function __construct($options)
@@ -41,13 +41,14 @@ class CartSubItem
      * Gets the hash for the item
      * @return mixed
      */
-    public function getHash()
+    public function hash()
     {
         return $this->itemHash;
     }
 
     /**
      * Search for matching options on the item
+     * @param $data
      * @return mixed
      */
     public function find($data)
@@ -78,5 +79,29 @@ class CartSubItem
         }
 
         return $this->formatMoney($price, $this->locale, $this->internationalFormat);
+    }
+
+    /**
+     * Adds an item to the modifier
+     *
+     * @param CartItem $cartItem
+     */
+    public function addItem(CartItem $cartItem)
+    {
+        $this->items[$cartItem->hash()] = $cartItem;
+
+        $this->updateCart();
+    }
+
+    /**
+     * Removes a item from the sub item
+     *
+     * @param $itemHash
+     */
+    public function removeItem($itemHash)
+    {
+        unset($this->items[$itemHash]);
+
+        $this->updateCart();
     }
 }

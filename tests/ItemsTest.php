@@ -15,7 +15,6 @@ class ItemsTest extends Orchestra\Testbench\TestCase
         $this->addItem();
         $this->addItem();
 
-        $this->assertEquals(1, $this->laracart->itemRows());
         $this->assertEquals(2, $this->laracart->count());
     }
 
@@ -24,9 +23,14 @@ class ItemsTest extends Orchestra\Testbench\TestCase
      */
     public function testIncrementItem()
     {
+
         $item = $this->addItem();
-        $itemHash = $item->getHash();
+
+        $itemHash = $item->hash();
+
         $this->laracart->increaseQty($itemHash);
+
+        $this->assertEquals($item->hash, $itemHash);
 
         $this->assertEquals(2, $this->laracart->count());
 
@@ -42,7 +46,7 @@ class ItemsTest extends Orchestra\Testbench\TestCase
     public function testDecrementItem()
     {
         $item = $this->addItem();
-        $itemHash = $item->getHash();
+        $itemHash = $item->hash();
         $this->laracart->increaseQty($itemHash);
         $this->laracart->decreaseQty($itemHash);
 
@@ -60,7 +64,7 @@ class ItemsTest extends Orchestra\Testbench\TestCase
     public function testDecrementUniqueItem()
     {
         $item = $this->addItem();
-        $itemHash = $item->getHash();
+        $itemHash = $item->hash();
         $this->laracart->decreaseQty($itemHash);
 
         $this->assertEquals(null, $this->laracart->getItem($itemHash));
@@ -72,7 +76,8 @@ class ItemsTest extends Orchestra\Testbench\TestCase
     public function testItemQtyUpdate()
     {
         $item = $this->addItem();
-        $itemHash = $item->getHash();
+        $itemHash = $item->hash();
+
         $this->addItem();
         $this->addItem();
         $this->addItem();
@@ -81,7 +86,7 @@ class ItemsTest extends Orchestra\Testbench\TestCase
         $this->addItem();
 
         $this->assertEquals(7, $item->qty);
-        $this->assertEquals($itemHash, $item->getHash());
+        $this->assertEquals($itemHash, $item->hash());
 
         $options = [
             'a' => 2,
@@ -89,6 +94,7 @@ class ItemsTest extends Orchestra\Testbench\TestCase
         ];
 
         $item = $this->addNonTaxableItem(1, 1, $options);
+
         $this->addNonTaxableItem(1, 1, array_reverse($options));
 
         $this->assertEquals(2, $item->qty);
@@ -112,7 +118,6 @@ class ItemsTest extends Orchestra\Testbench\TestCase
             ]
         );
 
-        $this->assertEquals(2, $this->laracart->itemRows());
         $this->assertEquals(3, $this->laracart->count());
     }
 
@@ -122,7 +127,7 @@ class ItemsTest extends Orchestra\Testbench\TestCase
     public function testGetItem()
     {
         $item = $this->addItem();
-        $this->assertEquals($item, $this->laracart->getItem($item->getHash()));
+        $this->assertEquals($item, $this->laracart->getItem($item->hash()));
     }
 
     /**
@@ -132,7 +137,7 @@ class ItemsTest extends Orchestra\Testbench\TestCase
     {
         $item = $this->addItem();
 
-        $this->laracart->updateItem($item->getHash(), 'qty', 4);
+        $this->laracart->updateItem($item->hash(), 'qty', 4);
 
         $this->assertEquals(4, $item->qty);
     }
@@ -145,7 +150,7 @@ class ItemsTest extends Orchestra\Testbench\TestCase
         $this->addItem();
         $this->addItem();
 
-        $items = $this->laracart->getItems();
+        $items = $this->laracart->items();
 
         $this->assertInternalType('array', $items);
 
@@ -173,9 +178,9 @@ class ItemsTest extends Orchestra\Testbench\TestCase
     {
         $item = $this->addItem();
 
-        $this->laracart->removeItem($item->getHash());
+        $this->laracart->removeItem($item->hash());
 
-        $this->assertEmpty($this->laracart->getItem($item->getHash()));
+        $this->assertEmpty($this->laracart->getItem($item->hash()));
     }
 
     /**
@@ -242,14 +247,13 @@ class ItemsTest extends Orchestra\Testbench\TestCase
      */
     public function testDifferentTaxes()
     {
-
         $item = $this->addItem();
 
-        $prevHash = $item->getHash();
+        $prevHash = $item->hash();
 
         $item->tax = .05;
 
-        $this->assertNotEquals($prevHash, $item->getHash());
+        $this->assertNotEquals($prevHash, $item->hash());
 
         $item = $this->addItem();
         $item->tax = .3;
@@ -280,16 +284,16 @@ class ItemsTest extends Orchestra\Testbench\TestCase
             'key2' => 'value2',
         ]);
 
-        $result1 = $this->laracart->find(['key1' => 'matching']);
-        $result2 = $this->laracart->find(['key2' => 'value2']);
+        $result1 = $this->laracart->search(['key1' => 'matching']);
+        $result2 = $this->laracart->search(['key2' => 'value2']);
 
         $this->assertCount(1, $result1);
         $this->assertEquals($item1->key1, $result1[0]->key1);
-        $this->assertEquals($item1->getHash(), $result1[0]->getHash());
+        $this->assertEquals($item1->hash(), $result1[0]->hash());
 
         $this->assertCount(1, $result2);
         $this->assertEquals($item2->key2, $result2[0]->key2);
-        $this->assertEquals($item2->getHash(), $result2[0]->getHash());
+        $this->assertEquals($item2->hash(), $result2[0]->hash());
     }
 
     /**
@@ -305,7 +309,7 @@ class ItemsTest extends Orchestra\Testbench\TestCase
             'key2' => 'notmatching',
         ]);
 
-        $this->assertCount(0, $this->laracart->find(['key1' => 'matching']));
+        $this->assertCount(0, $this->laracart->search(['key1' => 'matching']));
     }
 
     /**
@@ -327,13 +331,13 @@ class ItemsTest extends Orchestra\Testbench\TestCase
             'key1' => 'nomatch',
         ]);
 
-        $results = $this->laracart->find(['key1' => 'matching']);
+        $results = $this->laracart->search(['key1' => 'matching']);
 
         $this->assertCount(2, $results);
         $this->assertEquals($item1->key1, $results[0]->key1);
-        $this->assertEquals($item1->getHash(), $results[0]->getHash());
+        $this->assertEquals($item1->hash(), $results[0]->hash());
         $this->assertEquals($item2->key1, $results[1]->key1);
-        $this->assertEquals($item2->getHash(), $results[1]->getHash());
+        $this->assertEquals($item2->hash(), $results[1]->hash());
     }
 
     /**
@@ -341,7 +345,7 @@ class ItemsTest extends Orchestra\Testbench\TestCase
      */
     public function testFindingAnItemOnAnEmptyCartReturnsNoMatches()
     {
-        $this->assertCount(0, $this->laracart->find(['key1' => 'matching']));
+        $this->assertCount(0, $this->laracart->search(['key1' => 'matching']));
     }
 
     /**
@@ -359,23 +363,23 @@ class ItemsTest extends Orchestra\Testbench\TestCase
             'key2' => 'value3',
         ]);
 
-        $result1 = $this->laracart->find(['key1' => 'value1', 'key2' => 'value2']);
-        $result2 = $this->laracart->find(['key1' => 'value1', 'key2' => 'value3']);
+        $result1 = $this->laracart->search(['key1' => 'value1', 'key2' => 'value2']);
+        $result2 = $this->laracart->search(['key1' => 'value1', 'key2' => 'value3']);
 
         $this->assertCount(1, $result1);
         $this->assertEquals($item1->key2, $result1[0]->key2);
-        $this->assertEquals($item1->getHash(), $result1[0]->getHash());
+        $this->assertEquals($item1->hash(), $result1[0]->hash());
 
         $this->assertCount(1, $result2);
         $this->assertEquals($item2->key2, $result2[0]->key2);
-        $this->assertEquals($item2->getHash(), $result2[0]->getHash());
+        $this->assertEquals($item2->hash(), $result2[0]->hash());
 
-        $this->assertCount(0, $this->laracart->find(['key1' => 'value2', 'key2' => 'value2']));
+        $this->assertCount(0, $this->laracart->search(['key1' => 'value2', 'key2' => 'value2']));
 
-        $result3 = $this->laracart->find(['key1' => 'value1']);
+        $result3 = $this->laracart->search(['key1' => 'value1']);
         $this->assertCount(2, $result3);
-        $this->assertEquals($item1->getHash(), $result3[0]->getHash());
-        $this->assertEquals($item2->getHash(), $result3[1]->getHash());
+        $this->assertEquals($item1->hash(), $result3[0]->hash());
+        $this->assertEquals($item2->hash(), $result3[1]->hash());
     }
 
     /**
@@ -393,12 +397,12 @@ class ItemsTest extends Orchestra\Testbench\TestCase
             'key2' => 'value3',
         ]);
 
-        $result = $this->laracart->find(['name' => 'My Item']);
+        $result = $this->laracart->search(['name' => 'My Item']);
 
         $this->assertCount(1, $result);
         $this->assertEquals($item1->name, $result[0]->name);
-        $this->assertEquals($item1->getHash(), $result[0]->getHash());
+        $this->assertEquals($item1->hash(), $result[0]->hash());
 
-        $this->assertCount(0, $this->laracart->find(['name' => 'My Item', 'key2' => 'nomatch']));
+        $this->assertCount(0, $this->laracart->search(['name' => 'My Item', 'key2' => 'nomatch']));
     }
 }

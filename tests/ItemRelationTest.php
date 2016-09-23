@@ -85,7 +85,7 @@ class ItemRelationTest extends Orchestra\Testbench\TestCase
             $this->assertEquals('Could not find the item model for fail', $e->getMessage());
         }
 
-        $this->assertEquals($item, $this->laracart->getItem($item->getHash()));
+        $this->assertEquals($item, $this->laracart->getItem($item->hash()));
         $this->assertEquals($item->id, 'itemID');
         $this->assertEquals($item->name, 'Test Item');
         $this->assertEquals($item->qty, 1);
@@ -119,7 +119,7 @@ class ItemRelationTest extends Orchestra\Testbench\TestCase
 
         $item = $this->laracart->add($item);
 
-        $this->assertEquals($item, $this->laracart->getItem($item->getHash()));
+        $this->assertEquals($item, $this->laracart->getItem($item->hash()));
 
         $this->assertEquals($item->id, 'itemID');
         $this->assertEquals($item->name, 'Test Item');
@@ -155,7 +155,7 @@ class ItemRelationTest extends Orchestra\Testbench\TestCase
         $this->laracart->add($item);
         $item = $this->laracart->add($item);
 
-        $this->assertEquals(2, $this->laracart->getItem($item->getHash())->qty);
+        $this->assertEquals(2, $this->laracart->getItem($item->hash())->qty);
     }
 
     /**
@@ -183,7 +183,7 @@ class ItemRelationTest extends Orchestra\Testbench\TestCase
 
         $item = $this->laracart->addLine($item);
 
-        $this->assertEquals($item, $this->laracart->getItem($item->getHash()));
+        $this->assertEquals($item, $this->laracart->getItem($item->hash()));
 
         $this->assertEquals($item->id, 'itemID');
         $this->assertEquals($item->name, 'Test Item');
@@ -219,6 +219,6 @@ class ItemRelationTest extends Orchestra\Testbench\TestCase
         $this->laracart->addLine($item);
         $item = $this->laracart->addLine($item);
 
-        $this->assertEquals(1, $this->laracart->getItem($item->getHash())->qty);
+        $this->assertEquals(1, $this->laracart->getItem($item->hash())->qty);
     }
 }

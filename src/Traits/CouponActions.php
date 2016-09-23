@@ -134,8 +134,8 @@ trait CouponActions
         if (!is_numeric($discountAmount)) {
             throw new InvalidPrice('You must use a discount amount.');
         }
+
         $this->appliedToCart = false;
-        // TODO - if we have multiple coupons this will fail
         $item->code = $this->code;
         $item->discount = $discountAmount;
         $item->couponInfo = $this->options;

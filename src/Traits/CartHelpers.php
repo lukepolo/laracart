@@ -27,9 +27,9 @@ trait CartHelpers
      * @param $data
      * @return string
      */
-    function hash($data)
+    public function generateHash($data)
     {
-        return md5(json_encode($data));
+        return $this->setHash(md5($this->uniqueData($data)));
     }
 
     /**
@@ -37,8 +37,35 @@ trait CartHelpers
      * @param int $length
      * @return string
      */
-    function randomHash($length = 40)
+    public function randomHash($length = 40)
     {
-        return str_random($length);
+        return $this->setHash(str_random($length));
     }
+
+    function updateCart()
+    {
+        app('laracart')->update();
+    }
+
+    private function uniqueData($data)
+    {
+        $clonedData = clone $data;
+
+        unset($clonedData->hash);
+        unset($clonedData->options['qty']);
+
+        ksort($clonedData->options);
+
+        return json_encode($clonedData);
+    }
+
+    public function setHash($hash)
+    {
+        if ($this->hash) {
+            $this->hash = $hash;
+        }
+
+        return $hash;
+    }
+
 }

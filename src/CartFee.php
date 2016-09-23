@@ -35,7 +35,7 @@ class CartFee
      * Gets the formatted amount
      * @return string
      */
-    public function getAmount()
+    public function amount()
     {
         return $this->formatMoney($this->amount, $this->locale, $this->internationalFormat);
     }

@@ -98,15 +98,15 @@ class TotalsTest extends Orchestra\Testbench\TestCase
         $this->addItem();
         $item = $this->addNonTaxableItem(1, 2);
         // only 1 dollar is taxable!
-        $this->assertEquals('3.07', $this->laracart->total(false));
+        $this->assertEquals('3.07', $this->laracart->total()->amount());
 
         $item->qty = 5;
 
         // 3 * 5 = 15 - 5 = 10 , only 10 is taxable
 
         // only 5 dollar is taxable!
-        $this->assertEquals('11.00', $this->laracart->subTotal(false));
-        $this->assertEquals('11.07', $this->laracart->total(false));
+        $this->assertEquals('11.00', $this->laracart->subTotal()->amount());
+        $this->assertEquals('11.07', $this->laracart->total()->amount());
     }
 
     /**

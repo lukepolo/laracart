@@ -163,9 +163,9 @@
         <line num="93" type="stmt" count="8"/>
         <line num="95" type="stmt" count="8"/>
         <line num="98" type="stmt" count="4"/>
-        <line num="109" type="method" name="getAttribute" crap="1" count="3"/>
+        <line num="109" type="method" name="get" crap="1" count="3"/>
         <line num="111" type="stmt" count="3"/>
-        <line num="119" type="method" name="getAttributes" crap="1" count="1"/>
+        <line num="119" type="method" name="gets" crap="1" count="1"/>
         <line num="121" type="stmt" count="1"/>
         <line num="130" type="method" name="setAttribute" crap="1" count="3"/>
         <line num="132" type="stmt" count="3"/>
