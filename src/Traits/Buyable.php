@@ -3,13 +3,13 @@
 namespace LukePOLO\LaraCart\Traits;
 
 /**
- * Class Buyable
- * @package LukePOLO\LaraCart\Traits
+ * Class Buyable.
  */
 trait Buyable
 {
     /**
-     * Gets the item name
+     * Gets the item name.
+     *
      * @return mixed
      */
     public function getName()
@@ -18,7 +18,8 @@ trait Buyable
     }
 
     /**
-     * Checks to see if the item is taxable
+     * Checks to see if the item is taxable.
+     *
      * @return mixed
      */
     public function isTaxable()
@@ -27,7 +28,8 @@ trait Buyable
     }
 
     /**
-     * Checks to see if the it should be an line item
+     * Checks to see if the it should be an line item.
+     *
      * @return mixed
      */
     public function isLineItem()
@@ -36,7 +38,8 @@ trait Buyable
     }
 
     /**
-     * Gets the items price
+     * Gets the items price.
+     *
      * @return mixed
      */
     public function getPrice()
@@ -45,7 +48,8 @@ trait Buyable
     }
 
     /**
-     * Gets the items tax (ex .07)
+     * Gets the items tax (ex .07).
+     *
      * @return mixed
      */
     public function getTax()

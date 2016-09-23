@@ -1,14 +1,14 @@
 <?php
 
 /**
- * Class LaraCartTest
+ * Class LaraCartTest.
  */
 class LaraCartTest extends Orchestra\Testbench\TestCase
 {
     use \LukePOLO\LaraCart\Tests\LaraCartTestTrait;
 
     /**
-     * Test getting the laracart instance
+     * Test getting the laracart instance.
      */
     public function testGetInstance()
     {
@@ -17,7 +17,7 @@ class LaraCartTest extends Orchestra\Testbench\TestCase
     }
 
     /**
-     * Test setting the instance
+     * Test setting the instance.
      */
     public function testSetInstance()
     {
@@ -26,7 +26,7 @@ class LaraCartTest extends Orchestra\Testbench\TestCase
     }
 
     /**
-     * Test to make sure we get default instance
+     * Test to make sure we get default instance.
      */
     public function testGetInstancesDefault()
     {
@@ -34,7 +34,7 @@ class LaraCartTest extends Orchestra\Testbench\TestCase
     }
 
     /**
-     * Test to make sure we can get instances
+     * Test to make sure we can get instances.
      */
     public function testGetInstances()
     {
@@ -48,7 +48,7 @@ class LaraCartTest extends Orchestra\Testbench\TestCase
     }
 
     /**
-     * Testing the money format function
+     * Testing the money format function.
      */
     public function testFormatMoney()
     {
@@ -61,7 +61,7 @@ class LaraCartTest extends Orchestra\Testbench\TestCase
     }
 
     /**
-     * Test getting the attributes from the cart
+     * Test getting the attributes from the cart.
      */
     public function testgets()
     {
@@ -75,7 +75,7 @@ class LaraCartTest extends Orchestra\Testbench\TestCase
     }
 
     /**
-     * Test removing attributes from the cart
+     * Test removing attributes from the cart.
      */
     public function testRemoveAttribute()
     {
@@ -89,7 +89,7 @@ class LaraCartTest extends Orchestra\Testbench\TestCase
     }
 
     /**
-     * Testing if the item count matches
+     * Testing if the item count matches.
      */
     public function testCount()
     {
@@ -99,7 +99,7 @@ class LaraCartTest extends Orchestra\Testbench\TestCase
     }
 
     /**
-     * Makes sure that when we empty the cart it deletes all items
+     * Makes sure that when we empty the cart it deletes all items.
      */
     public function testEmptyCart()
     {
@@ -114,7 +114,7 @@ class LaraCartTest extends Orchestra\Testbench\TestCase
     }
 
     /**
-     * Test destroying the cart rather than just emptying it
+     * Test destroying the cart rather than just emptying it.
      */
     public function testDestroyCart()
     {
@@ -130,7 +130,7 @@ class LaraCartTest extends Orchestra\Testbench\TestCase
     }
 
     /**
-     * Testing to make sure if we switch carts and destroy it destroys the proper cart
+     * Testing to make sure if we switch carts and destroy it destroys the proper cart.
      */
     public function testDestroyOtherCart()
     {
@@ -157,7 +157,7 @@ class LaraCartTest extends Orchestra\Testbench\TestCase
     }
 
     /**
-     * Tests if generating a new hash when we change an option
+     * Tests if generating a new hash when we change an option.
      */
     public function testGeneratingHashes()
     {
@@ -172,7 +172,7 @@ class LaraCartTest extends Orchestra\Testbench\TestCase
     }
 
     /**
-     * Tests the facade
+     * Tests the facade.
      */
     public function getFacadeName()
     {

@@ -9,14 +9,15 @@ use LukePOLO\LaraCart\Exceptions\InvalidQuantity;
 use LukePOLO\LaraCart\Exceptions\ModelNotFound;
 
 /**
- * Class CartItems
- * @package LukePOLO\LaraCart\Traits
+ * Class CartItems.
  */
 trait CartItems
 {
     /**
-     * Adds the cartItem into the cart session
+     * Adds the cartItem into the cart session.
+     *
      * @param CartItem $cartItem
+     *
      * @return CartItem
      */
     public function addItem(CartItem $cartItem)
@@ -37,14 +38,17 @@ trait CartItems
     }
 
     /**
-     * Creates a CartItem and then adds it to cart
+     * Creates a CartItem and then adds it to cart.
+     *
      * @param $itemID
-     * @param null $name
-     * @param int $qty
+     * @param null   $name
+     * @param int    $qty
      * @param string $price
-     * @param array $options
-     * @return CartItem
+     * @param array  $options
+     *
      * @throws ModelNotFound
+     *
+     * @return CartItem
      */
     public function add($itemID, $name = null, $qty = 1, $price = '0.00', $options = [])
     {
@@ -52,10 +56,12 @@ trait CartItems
     }
 
     /**
-     * Creates a CartItem and then adds it to cart
+     * Creates a CartItem and then adds it to cart.
+     *
      * @param Model $model
-     * @param int $qty
+     * @param int   $qty
      * @param array $options
+     *
      * @return CartItem|null
      */
     public function addByModel(Model $model, $qty = 1, $options = [])
@@ -64,28 +70,32 @@ trait CartItems
     }
 
     /**
-     * Creates a CartItem and then adds it to cart
+     * Creates a CartItem and then adds it to cart.
+     *
      * @param $itemID
-     * @param null $name
-     * @param int $qty
+     * @param null   $name
+     * @param int    $qty
      * @param string $price
-     * @param array $options
-     * @return CartItem
+     * @param array  $options
+     *
      * @throws ModelNotFound
+     *
+     * @return CartItem
      */
     public function addNonTaxableItem($itemID, $name = null, $qty = 1, $price = '0.00', $options = [])
     {
         return $this->addItem(new CartItem($itemID, $name, $qty, $price, $options, false));
     }
 
-
     /**
-     * Creates a CartItem and then adds it to cart
+     * Creates a CartItem and then adds it to cart.
+     *
      * @param string|int $itemID
-     * @param null $name
-     * @param int $qty
-     * @param string $price
-     * @param array $options
+     * @param null       $name
+     * @param int        $qty
+     * @param string     $price
+     * @param array      $options
+     *
      * @return CartItem
      */
     public function addLine($itemID, $name = null, $qty = 1, $price = '0.00', array $options = [])
@@ -94,12 +104,14 @@ trait CartItems
     }
 
     /**
-     * Creates a CartItem and then adds it to cart
+     * Creates a CartItem and then adds it to cart.
+     *
      * @param string|int $itemID
-     * @param null $name
-     * @param int $qty
-     * @param string $price
-     * @param array $options
+     * @param null       $name
+     * @param int        $qty
+     * @param string     $price
+     * @param array      $options
+     *
      * @return CartItem
      */
     public function addNonTaxableLine($itemID, $name = null, $qty = 1, $price = '0.00', array $options = [])
@@ -110,8 +122,10 @@ trait CartItems
     }
 
     /**
-     * Finds a cartItem based on the itemHash
+     * Finds a cartItem based on the itemHash.
+     *
      * @param $itemHash
+     *
      * @return CartItem|null
      */
     public function getItem($itemHash)
@@ -120,7 +134,8 @@ trait CartItems
     }
 
     /**
-     * Gets all the items within the cart
+     * Gets all the items within the cart.
+     *
      * @return array
      */
     public function items()
@@ -137,13 +152,16 @@ trait CartItems
     }
 
     /**
-     * Updates an items attributes
+     * Updates an items attributes.
+     *
      * @param $itemHash
      * @param $key
      * @param $value
-     * @return CartItem
+     *
      * @throws InvalidPrice
      * @throws InvalidQuantity
+     *
+     * @return CartItem
      */
     public function updateItem($itemHash, $key, $value)
     {
@@ -157,8 +175,10 @@ trait CartItems
     }
 
     /**
-     * Removes a CartItem based on the itemHash
+     * Removes a CartItem based on the itemHash.
+     *
      * @param $itemHash
+     *
      * @return void
      */
     public function removeItem($itemHash)
@@ -176,9 +196,11 @@ trait CartItems
     }
 
     /**
-     * Increase the quantity of a cartItem based on the itemHash
+     * Increase the quantity of a cartItem based on the itemHash.
+     *
      * @param $itemHash
      * @param int $qty
+     *
      * @return CartItem|null
      */
     public function increaseQty($itemHash, $qty = 1)
@@ -193,9 +215,11 @@ trait CartItems
     }
 
     /**
-     * Decreases the quantity of a cartItem based on the itemHash
+     * Decreases the quantity of a cartItem based on the itemHash.
+     *
      * @param $itemHash
      * @param int $qty
+     *
      * @return CartItem|null
      */
     public function decreaseQty($itemHash, $qty = 1)

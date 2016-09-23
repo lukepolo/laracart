@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Class CrossDeviceTest
+ * Class CrossDeviceTest.
  */
 class CrossDeviceTest extends Orchestra\Testbench\TestCase
 {
@@ -9,12 +9,12 @@ class CrossDeviceTest extends Orchestra\Testbench\TestCase
     use \LukePOLO\LaraCart\Tests\LaraCartTestTrait;
 
     /**
-     * Testing migrations
+     * Testing migrations.
      */
     public function testMigrations()
     {
         $this->artisan('migrate', [
-            '--realpath' => realpath(__DIR__ . '/../migrations'),
+            '--realpath' => realpath(__DIR__.'/../migrations'),
         ]);
 
         $this->beforeApplicationDestroyed(function () {
@@ -23,7 +23,7 @@ class CrossDeviceTest extends Orchestra\Testbench\TestCase
     }
 
     /**
-     *  Test getting the old session
+     *  Test getting the old session.
      */
     public function testGetOldSession()
     {
@@ -48,7 +48,7 @@ class CrossDeviceTest extends Orchestra\Testbench\TestCase
     }
 
     /**
-     * Testing to make sure the session gets saved to the model
+     * Testing to make sure the session gets saved to the model.
      */
     public function testSaveCartSessionID()
     {

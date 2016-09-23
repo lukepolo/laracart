@@ -8,9 +8,7 @@ use LukePOLO\LaraCart\Exceptions\InvalidQuantity;
 use LukePOLO\LaraCart\Exceptions\InvalidTaxableValue;
 
 /**
- * Class CartOptionsMagicMethods
- *
- * @package LukePOLO\LaraCart\Traits
+ * Class CartOptionsMagicMethods.
  */
 trait CartOptionsMagicMethods
 {
@@ -19,7 +17,7 @@ trait CartOptionsMagicMethods
     public $options = [];
 
     /**
-     * Magic Method allows for user input as an object
+     * Magic Method allows for user input as an object.
      *
      * @param $option
      *
@@ -35,7 +33,7 @@ trait CartOptionsMagicMethods
     }
 
     /**
-     * Magic Method allows for user input to set a value inside the options array
+     * Magic Method allows for user input to set a value inside the options array.
      *
      * @param $option
      * @param $value
@@ -76,7 +74,7 @@ trait CartOptionsMagicMethods
     }
 
     /**
-     * Magic Method allows for user to check if an option isset
+     * Magic Method allows for user to check if an option isset.
      *
      * @param $option
      *
