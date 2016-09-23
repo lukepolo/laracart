@@ -3,10 +3,8 @@
 namespace LukePOLO\LaraCart\Contracts;
 
 /**
- * Interface ItemContract
- * @package LukePOLO\LaraCart\Contracts
+ * Interface ItemContract.
  */
 interface ItemContract
 {
-
 }

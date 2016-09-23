@@ -5,8 +5,7 @@ namespace LukePOLO\LaraCart;
 use LukePOLO\LaraCart\Traits\CartOptionsMagicMethods;
 
 /**
- * Class CartFee
- * @package LukePOLO\LaraCart
+ * Class CartFee.
  */
 class CartFee
 {
@@ -20,6 +19,7 @@ class CartFee
 
     /**
      * CartFee constructor.
+     *
      * @param $amount
      * @param array $options
      */
@@ -32,7 +32,8 @@ class CartFee
     }
 
     /**
-     * Gets the formatted amount
+     * Gets the formatted amount.
+     *
      * @return string
      */
     public function amount()

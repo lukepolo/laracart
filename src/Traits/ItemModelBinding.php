@@ -6,8 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use LukePOLO\LaraCart\Exceptions\ModelNotFound;
 
 /**
- * Class ItemModelBinding
- * @package LukePOLO\LaraCart\Traits
+ * Class ItemModelBinding.
  */
 trait ItemModelBinding
 {
@@ -25,9 +24,11 @@ trait ItemModelBinding
     }
 
     /**
-     * Sets the related model to the item
+     * Sets the related model to the item.
+     *
      * @param $itemModel
      * @param array $relations
+     *
      * @throws ModelNotFound
      */
     public function setModel($itemModel, array $relations = [])
@@ -41,15 +42,16 @@ trait ItemModelBinding
     }
 
     /**
-     * Returns a Model
+     * Returns a Model.
+     *
      * @throws ModelNotFound
      */
     public function getModel()
     {
-        $itemModel = (new $this->itemModel)->with($this->itemModelRelations)->find($this->id);
+        $itemModel = (new $this->itemModel())->with($this->itemModelRelations)->find($this->id);
 
         if (empty($itemModel)) {
-            throw new ModelNotFound('Could not find the item model for ' . $this->id);
+            throw new ModelNotFound('Could not find the item model for '.$this->id);
         }
 
         return $itemModel;

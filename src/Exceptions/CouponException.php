@@ -3,8 +3,7 @@
 namespace LukePOLO\LaraCart\Exceptions;
 
 /**
- * Class CouponException
- * @package LukePOLO\LaraCart\Exceptions
+ * Class CouponException.
  */
 class CouponException extends \Exception
 {

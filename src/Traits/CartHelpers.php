@@ -5,16 +5,17 @@ namespace LukePOLO\LaraCart\Traits;
 use LukePOLO\LaraCart\CartMoneyFormatter;
 
 /**
- * Class CartHelpers
- * @package LukePOLO\LaraCart\Traits
+ * Class CartHelpers.
  */
 trait CartHelpers
 {
     /**
-     * Formats the amount into a money format based on the locale and international formats
+     * Formats the amount into a money format based on the locale and international formats.
+     *
      * @param $amount
      * @param $locale
      * @param $internationalFormat
+     *
      * @return CartMoneyFormatter
      */
     public static function formatMoney($amount, $locale = null, $internationalFormat = null)
@@ -23,8 +24,10 @@ trait CartHelpers
     }
 
     /**
-     * Generates a has based on the data given
+     * Generates a has based on the data given.
+     *
      * @param $data
+     *
      * @return string
      */
     public function generateHash($data)
@@ -33,8 +36,10 @@ trait CartHelpers
     }
 
     /**
-     * Generates a random hash
+     * Generates a random hash.
+     *
      * @param int $length
+     *
      * @return string
      */
     public function randomHash($length = 40)
@@ -42,7 +47,7 @@ trait CartHelpers
         return $this->setHash(str_random($length));
     }
 
-    function updateCart()
+    public function updateCart()
     {
         app('laracart')->update();
     }
@@ -67,5 +72,4 @@ trait CartHelpers
 
         return $hash;
     }
-
 }

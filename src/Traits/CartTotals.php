@@ -3,14 +3,13 @@
 namespace LukePOLO\LaraCart\Traits;
 
 /**
- * Class CartItems
- *
- * @package LukePOLO\LaraCart\Traits
+ * Class CartItems.
  */
 trait CartTotals
 {
     /**
-     * Gets the total amount discounted
+     * Gets the total amount discounted.
+     *
      * @return string
      */
     public function totalDiscount()
@@ -27,8 +26,10 @@ trait CartTotals
     }
 
     /**
-     * Gets all the fee totals
+     * Gets all the fee totals.
+     *
      * @param bool $withTax
+     *
      * @return string
      */
     public function feeTotals($withTax = false)
@@ -47,7 +48,8 @@ trait CartTotals
     }
 
     /**
-     * Gets the total tax for the cart
+     * Gets the total tax for the cart.
+     *
      * @return string
      */
     public function taxTotal()
@@ -82,8 +84,10 @@ trait CartTotals
     }
 
     /**
-     * Gets the subtotal of the cart with or without tax
-     * @param boolean $withDiscount
+     * Gets the subtotal of the cart with or without tax.
+     *
+     * @param bool $withDiscount
+     *
      * @return string
      */
     public function subTotal($withDiscount = true)
@@ -100,9 +104,11 @@ trait CartTotals
     }
 
     /**
-     * Gets the total of the cart with or without tax
-     * @param boolean $withDiscount
+     * Gets the total of the cart with or without tax.
+     *
+     * @param bool $withDiscount
      * @param bool $withTax
+     *
      * @return string
      */
     public function total($withDiscount = true, $withTax = true)
