@@ -3,14 +3,14 @@
 use LukePOLO\LaraCart\Exceptions\ModelNotFound;
 
 /**
- * Class LaraCartTest
+ * Class LaraCartTest.
  */
 class ItemRelationTest extends Orchestra\Testbench\TestCase
 {
     use \LukePOLO\LaraCart\Tests\LaraCartTestTrait;
 
     /**
-     * Tests the item relations
+     * Tests the item relations.
      */
     public function testItemRelation()
     {
@@ -34,7 +34,7 @@ class ItemRelationTest extends Orchestra\Testbench\TestCase
     }
 
     /**
-     * Test for exception if could not find model
+     * Test for exception if could not find model.
      */
     public function testItemRelationModelException()
     {
@@ -49,32 +49,32 @@ class ItemRelationTest extends Orchestra\Testbench\TestCase
     }
 
     /**
-     * Testing adding via item id
+     * Testing adding via item id.
      */
     public function testAddItemID()
     {
         $this->laracart->itemModel = \LukePOLO\LaraCart\Tests\Models\TestItem::class;
 
         $this->laracart->item_model_bindings = [
-            \LukePOLO\LaraCart\CartItem::ITEM_ID => 'id',
-            \LukePOLO\LaraCart\CartItem::ITEM_NAME => 'name',
-            \LukePOLO\LaraCart\CartItem::ITEM_PRICE => 'price',
+            \LukePOLO\LaraCart\CartItem::ITEM_ID      => 'id',
+            \LukePOLO\LaraCart\CartItem::ITEM_NAME    => 'name',
+            \LukePOLO\LaraCart\CartItem::ITEM_PRICE   => 'price',
             \LukePOLO\LaraCart\CartItem::ITEM_TAXABLE => 'taxable',
             \LukePOLO\LaraCart\CartItem::ITEM_OPTIONS => [
-                'tax'
-            ]
+                'tax',
+            ],
         ];
 
         $this->app['config']->set('laracart.item_model', \LukePOLO\LaraCart\Tests\Models\TestItem::class);
 
         $this->app['config']->set('laracart.item_model_bindings', [
-            \LukePOLO\LaraCart\CartItem::ITEM_ID => 'id',
-            \LukePOLO\LaraCart\CartItem::ITEM_NAME => 'name',
-            \LukePOLO\LaraCart\CartItem::ITEM_PRICE => 'price',
+            \LukePOLO\LaraCart\CartItem::ITEM_ID      => 'id',
+            \LukePOLO\LaraCart\CartItem::ITEM_NAME    => 'name',
+            \LukePOLO\LaraCart\CartItem::ITEM_PRICE   => 'price',
             \LukePOLO\LaraCart\CartItem::ITEM_TAXABLE => 'taxable',
             \LukePOLO\LaraCart\CartItem::ITEM_OPTIONS => [
-                'tax'
-            ]
+                'tax',
+            ],
         ]);
 
         $item = $this->laracart->add('123123');
@@ -95,26 +95,26 @@ class ItemRelationTest extends Orchestra\Testbench\TestCase
     }
 
     /**
-     * Testing adding a item model
+     * Testing adding a item model.
      */
     public function testAddItemModel()
     {
         $this->app['config']->set('laracart.item_model', \LukePOLO\LaraCart\Tests\Models\TestItem::class);
 
         $this->app['config']->set('laracart.item_model_bindings', [
-            \LukePOLO\LaraCart\CartItem::ITEM_ID => 'id',
-            \LukePOLO\LaraCart\CartItem::ITEM_NAME => 'name',
-            \LukePOLO\LaraCart\CartItem::ITEM_PRICE => 'price',
+            \LukePOLO\LaraCart\CartItem::ITEM_ID      => 'id',
+            \LukePOLO\LaraCart\CartItem::ITEM_NAME    => 'name',
+            \LukePOLO\LaraCart\CartItem::ITEM_PRICE   => 'price',
             \LukePOLO\LaraCart\CartItem::ITEM_TAXABLE => 'taxable',
             \LukePOLO\LaraCart\CartItem::ITEM_OPTIONS => [
-                'tax'
-            ]
+                'tax',
+            ],
         ]);
 
         $item = new \LukePOLO\LaraCart\Tests\Models\TestItem([
-            'price' => 5000.01, // absurd!
+            'price'   => 5000.01, // absurd!
             'taxable' => false,
-            'tax' => '.5'
+            'tax'     => '.5',
         ]);
 
         $item = $this->laracart->add($item);
@@ -130,26 +130,26 @@ class ItemRelationTest extends Orchestra\Testbench\TestCase
     }
 
     /**
-     * gtesting multiple item models at once
+     * gtesting multiple item models at once.
      */
     public function testAddMultipleItemModel()
     {
         $this->app['config']->set('laracart.item_model', \LukePOLO\LaraCart\Tests\Models\TestItem::class);
 
         $this->app['config']->set('laracart.item_model_bindings', [
-            \LukePOLO\LaraCart\CartItem::ITEM_ID => 'id',
-            \LukePOLO\LaraCart\CartItem::ITEM_NAME => 'name',
-            \LukePOLO\LaraCart\CartItem::ITEM_PRICE => 'price',
+            \LukePOLO\LaraCart\CartItem::ITEM_ID      => 'id',
+            \LukePOLO\LaraCart\CartItem::ITEM_NAME    => 'name',
+            \LukePOLO\LaraCart\CartItem::ITEM_PRICE   => 'price',
             \LukePOLO\LaraCart\CartItem::ITEM_TAXABLE => 'taxable',
             \LukePOLO\LaraCart\CartItem::ITEM_OPTIONS => [
-                'tax'
-            ]
+                'tax',
+            ],
         ]);
 
         $item = new \LukePOLO\LaraCart\Tests\Models\TestItem([
-            'price' => 5000.01, // absurd!
+            'price'   => 5000.01, // absurd!
             'taxable' => false,
-            'tax' => '.5'
+            'tax'     => '.5',
         ]);
 
         $this->laracart->add($item);
@@ -159,26 +159,26 @@ class ItemRelationTest extends Orchestra\Testbench\TestCase
     }
 
     /**
-     * Testing adding a model to a line item
+     * Testing adding a model to a line item.
      */
     public function testAddItemModelLine()
     {
         $this->app['config']->set('laracart.item_model', \LukePOLO\LaraCart\Tests\Models\TestItem::class);
 
         $this->app['config']->set('laracart.item_model_bindings', [
-            \LukePOLO\LaraCart\CartItem::ITEM_ID => 'id',
-            \LukePOLO\LaraCart\CartItem::ITEM_NAME => 'name',
-            \LukePOLO\LaraCart\CartItem::ITEM_PRICE => 'price',
+            \LukePOLO\LaraCart\CartItem::ITEM_ID      => 'id',
+            \LukePOLO\LaraCart\CartItem::ITEM_NAME    => 'name',
+            \LukePOLO\LaraCart\CartItem::ITEM_PRICE   => 'price',
             \LukePOLO\LaraCart\CartItem::ITEM_TAXABLE => 'taxable',
             \LukePOLO\LaraCart\CartItem::ITEM_OPTIONS => [
-                'tax'
-            ]
+                'tax',
+            ],
         ]);
 
         $item = new \LukePOLO\LaraCart\Tests\Models\TestItem([
-            'price' => 5000.01, // absurd!
+            'price'   => 5000.01, // absurd!
             'taxable' => false,
-            'tax' => '.5'
+            'tax'     => '.5',
         ]);
 
         $item = $this->laracart->addLine($item);
@@ -194,26 +194,26 @@ class ItemRelationTest extends Orchestra\Testbench\TestCase
     }
 
     /**
-     * Testing adding multiple item models per row
+     * Testing adding multiple item models per row.
      */
     public function testAddMultipleItemModelLine()
     {
         $this->app['config']->set('laracart.item_model', \LukePOLO\LaraCart\Tests\Models\TestItem::class);
 
         $this->app['config']->set('laracart.item_model_bindings', [
-            \LukePOLO\LaraCart\CartItem::ITEM_ID => 'id',
-            \LukePOLO\LaraCart\CartItem::ITEM_NAME => 'name',
-            \LukePOLO\LaraCart\CartItem::ITEM_PRICE => 'price',
+            \LukePOLO\LaraCart\CartItem::ITEM_ID      => 'id',
+            \LukePOLO\LaraCart\CartItem::ITEM_NAME    => 'name',
+            \LukePOLO\LaraCart\CartItem::ITEM_PRICE   => 'price',
             \LukePOLO\LaraCart\CartItem::ITEM_TAXABLE => 'taxable',
             \LukePOLO\LaraCart\CartItem::ITEM_OPTIONS => [
-                'tax'
-            ]
+                'tax',
+            ],
         ]);
 
         $item = new \LukePOLO\LaraCart\Tests\Models\TestItem([
-            'price' => 5000.01, // absurd!
+            'price'   => 5000.01, // absurd!
             'taxable' => false,
-            'tax' => '.5'
+            'tax'     => '.5',
         ]);
 
         $this->laracart->addLine($item);

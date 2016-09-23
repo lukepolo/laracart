@@ -9,8 +9,7 @@ use LukePOLO\LaraCart\Exceptions\InvalidPrice;
 use LukePOLO\LaraCart\LaraCart;
 
 /**
- * Class CouponActions
- * @package LukePOLO\LaraCart\Traits
+ * Class CouponActions.
  */
 trait CouponActions
 {
@@ -22,7 +21,8 @@ trait CouponActions
     use CartOptionsMagicMethods;
 
     /**
-     * Sets all the options for the coupon
+     * Sets all the options for the coupon.
+     *
      * @param $options
      */
     public function setOptions($options)
@@ -33,13 +33,15 @@ trait CouponActions
     }
 
     /**
-     * Checks to see if we can apply the coupon
+     * Checks to see if we can apply the coupon.
+     *
      * @return bool
      */
     public function canApply()
     {
         try {
             $this->discount(true);
+
             return true;
         } catch (CouponException $e) {
             return false;
@@ -47,7 +49,8 @@ trait CouponActions
     }
 
     /**
-     * Gets the failed message for a coupon
+     * Gets the failed message for a coupon.
+     *
      * @return null|string
      */
     public function getFailedMessage()
@@ -57,16 +60,17 @@ trait CouponActions
         } catch (CouponException $e) {
             return $e->getMessage();
         }
-
-        return null;
     }
 
     /**
-     * Checks the minimum subtotal needed to apply the coupon
+     * Checks the minimum subtotal needed to apply the coupon.
+     *
      * @param $minAmount
      * @param $throwErrors
-     * @return bool
+     *
      * @throws CouponException
+     *
+     * @return bool
      */
     public function checkMinAmount($minAmount, $throwErrors = true)
     {
@@ -78,18 +82,22 @@ trait CouponActions
         }
 
         if ($throwErrors) {
-            throw new CouponException('You must have at least a total of ' . $laraCart->formatMoney($minAmount));
+            throw new CouponException('You must have at least a total of '.$laraCart->formatMoney($minAmount));
         }
+
         return false;
     }
 
     /**
-     * Returns either the max discount or the discount applied based on what is passed through
+     * Returns either the max discount or the discount applied based on what is passed through.
+     *
      * @param $maxDiscount
      * @param $discount
      * @param $throwErrors
-     * @return mixed
+     *
      * @throws CouponException
+     *
+     * @return mixed
      */
     public function maxDiscount($maxDiscount, $discount, $throwErrors = true)
     {
@@ -98,18 +106,22 @@ trait CouponActions
         }
 
         if ($throwErrors) {
-            throw new CouponException('This has a max discount of ' . $this->formatMoney($maxDiscount));
+            throw new CouponException('This has a max discount of '.$this->formatMoney($maxDiscount));
         }
+
         return $maxDiscount;
     }
 
     /**
-     * Checks to see if the times are valid for the coupon
+     * Checks to see if the times are valid for the coupon.
+     *
      * @param Carbon $startDate
      * @param Carbon $endDate
      * @param $throwErrors
-     * @return bool
+     *
      * @throws CouponException
+     *
+     * @return bool
      */
     public function checkValidTimes(Carbon $startDate, Carbon $endDate, $throwErrors = true)
     {
@@ -120,13 +132,16 @@ trait CouponActions
         if ($throwErrors) {
             throw new CouponException('This coupon has expired');
         }
+
         return false;
     }
 
     /**
-     * Sets a discount to an item with what code was used and the discount amount
+     * Sets a discount to an item with what code was used and the discount amount.
+     *
      * @param CartItem $item
      * @param $discountAmount
+     *
      * @throws InvalidPrice
      */
     public function setDiscountOnItem(CartItem $item, $discountAmount)

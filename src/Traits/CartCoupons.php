@@ -5,15 +5,15 @@ namespace LukePOLO\LaraCart\Traits;
 use LukePOLO\LaraCart\Contracts\CouponContract;
 
 /**
- * Class CartItems
- *
- * @package LukePOLO\LaraCart\Traits
+ * Class CartItems.
  */
 trait CartCoupons
 {
     /**
-     * Applies a coupon to the cart
+     * Applies a coupon to the cart.
+     *
      * @param CouponContract $coupon
+     *
      * @return void
      */
     public function addCoupon(CouponContract $coupon)
@@ -28,7 +28,8 @@ trait CartCoupons
     }
 
     /**
-     * Gets the coupons for the current cart
+     * Gets the coupons for the current cart.
+     *
      * @return array
      */
     public function coupons()
@@ -37,8 +38,10 @@ trait CartCoupons
     }
 
     /**
-     * Finds a specific coupon in the cart
+     * Finds a specific coupon in the cart.
+     *
      * @param $code
+     *
      * @return mixed
      */
     public function findCoupon($code)
@@ -47,8 +50,10 @@ trait CartCoupons
     }
 
     /**
-     * Removes a coupon in the cart
+     * Removes a coupon in the cart.
+     *
      * @param $code
+     *
      * @return void
      */
     public function removeCoupon($code)
@@ -59,7 +64,8 @@ trait CartCoupons
     }
 
     /**
-     * Removes all coupons from the cart
+     * Removes all coupons from the cart.
+     *
      * @return void
      */
     public function removeCoupons()
@@ -70,7 +76,8 @@ trait CartCoupons
     }
 
     /**
-     * Removes a coupon from the item
+     * Removes a coupon from the item.
+     *
      * @param null $code
      */
     private function removeCouponFromItems($code = null)

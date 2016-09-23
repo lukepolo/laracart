@@ -5,13 +5,13 @@ namespace LukePOLO\LaraCart;
 use LukePOLO\LaraCart\Traits\CartOptionsMagicMethods;
 
 /**
- * Class CartItemOption
+ * Class CartItemOption.
+ *
  * @property float price
  * @property array options
  * @property array items
- * @package LukePOLO\LaraCart
  */
-class CartItemModifier 
+class CartItemModifier
 {
     use CartOptionsMagicMethods;
 
@@ -24,6 +24,7 @@ class CartItemModifier
 
     /**
      * CartItemModifier constructor.
+     *
      * @param $options
      */
     public function __construct($options)
@@ -38,7 +39,8 @@ class CartItemModifier
     }
 
     /**
-     * Gets the hash for the item
+     * Gets the hash for the item.
+     *
      * @return mixed
      */
     public function hash()
@@ -47,8 +49,10 @@ class CartItemModifier
     }
 
     /**
-     * Search for matching options on the item
+     * Search for matching options on the item.
+     *
      * @param $data
+     *
      * @return mixed
      */
     public function find($data)
@@ -61,8 +65,10 @@ class CartItemModifier
     }
 
     /**
-     * Gets the formatted price
+     * Gets the formatted price.
+     *
      * @param bool $taxedItemsOnly
+     *
      * @return string
      */
     public function price($taxedItemsOnly = true)
@@ -82,7 +88,7 @@ class CartItemModifier
     }
 
     /**
-     * Adds an item to the modifier
+     * Adds an item to the modifier.
      *
      * @param CartItem $cartItem
      */
@@ -94,7 +100,7 @@ class CartItemModifier
     }
 
     /**
-     * Removes a item from the sub item
+     * Removes a item from the sub item.
      *
      * @param $itemHash
      */

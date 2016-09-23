@@ -8,15 +8,15 @@ use LukePOLO\LaraCart\Traits\CartOptionsMagicMethods;
 use LukePOLO\LaraCart\Traits\ItemModelBinding;
 
 /**
- * Class CartItem
+ * Class CartItem.
+ *
  * @property int id
  * @property int qty
  * @property float tax
  * @property float price
  * @property string name
  * @property array options
- * @property boolean taxable
- * @package LukePOLO\LaraCart
+ * @property bool taxable
  */
 class CartItem
 {
@@ -41,12 +41,13 @@ class CartItem
 
     /**
      * CartItem constructor.
+     *
      * @param $id
      * @param $name
-     * @param integer $qty
-     * @param string $price
-     * @param array $options
-     * @param boolean $taxable
+     * @param int        $qty
+     * @param string     $price
+     * @param array      $options
+     * @param bool       $taxable
      * @param bool|false $lineItem
      */
     public function __construct($id, $name, $qty, $price, array $options = [], $taxable = true, $lineItem = false)
@@ -63,13 +64,14 @@ class CartItem
             $this->$option = $value;
         }
 
-        if($id instanceof Model && class_uses(Buyable::class)) {
+        if ($id instanceof Model && class_uses(Buyable::class)) {
             $this->bindModelToItem($id);
         }
     }
 
     /**
-     * Gets the hash for the item
+     * Gets the hash for the item.
+     *
      * @return mixed
      */
     public function hash()
@@ -78,8 +80,10 @@ class CartItem
     }
 
     /**
-     * Search for matching options on the item
+     * Search for matching options on the item.
+     *
      * @param $data
+     *
      * @return mixed
      */
     public function find($data)
@@ -94,8 +98,10 @@ class CartItem
     }
 
     /**
-     *  A way to find sub items
+     *  A way to find sub items.
+     *
      * @param $data
+     *
      * @return array
      */
     public function search($data)
@@ -112,8 +118,10 @@ class CartItem
     }
 
     /**
-     * Finds a sub item by its hash
+     * Finds a sub item by its hash.
+     *
      * @param $modifierHash
+     *
      * @return mixed
      */
     public function findModifier($modifierHash)
@@ -122,8 +130,10 @@ class CartItem
     }
 
     /**
-     * Adds an sub item to a item
+     * Adds an sub item to a item.
+     *
      * @param array $modifier
+     *
      * @return CartModifier
      */
     public function addModifier(array $modifier)
@@ -138,7 +148,8 @@ class CartItem
     }
 
     /**
-     * Removes a sub item from the item
+     * Removes a sub item from the item.
+     *
      * @param $modifierHash
      */
     public function removeModifier($modifierHash)
@@ -149,8 +160,10 @@ class CartItem
     }
 
     /**
-     * Gets the tax for the item
+     * Gets the tax for the item.
+     *
      * @param int $amountNotTaxable
+     *
      * @return int|mixed
      */
     public function tax($amountNotTaxable = 0)
@@ -163,8 +176,10 @@ class CartItem
     }
 
     /**
-     * Gets the price of the item with or without tax, with the proper format
+     * Gets the price of the item with or without tax, with the proper format.
+     *
      * @param bool $taxedItemsOnly
+     *
      * @return string
      */
     public function price($taxedItemsOnly = false)
@@ -174,9 +189,11 @@ class CartItem
     }
 
     /**
-     * Gets the sub total of the item based on the qty with or without tax in the proper format
+     * Gets the sub total of the item based on the qty with or without tax in the proper format.
+     *
      * @param bool $withDiscount
      * @param bool $taxedItemsOnly
+     *
      * @return string
      */
     public function subTotal($withDiscount = true, $taxedItemsOnly = false)
@@ -190,10 +207,11 @@ class CartItem
         return $this->formatMoney($total, $this->locale, $this->internationalFormat);
     }
 
-
     /**
-     * Gets the totals for the options
+     * Gets the totals for the options.
+     *
      * @param bool $taxedItemsOnly
+     *
      * @return string
      */
     public function modifiersTotal($taxedItemsOnly = false)
@@ -208,7 +226,8 @@ class CartItem
     }
 
     /**
-     * Gets the discount of an item
+     * Gets the discount of an item.
+     *
      * @return string
      */
     public function discount()

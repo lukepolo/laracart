@@ -1,14 +1,14 @@
 <?php
 
 /**
- * Class FeesTest
+ * Class FeesTest.
  */
 class FeesTest extends Orchestra\Testbench\TestCase
 {
     use \LukePOLO\LaraCart\Tests\LaraCartTestTrait;
 
     /**
-     * Add a fee
+     * Add a fee.
      *
      * @param $name
      * @param int $fee
@@ -22,7 +22,7 @@ class FeesTest extends Orchestra\Testbench\TestCase
     }
 
     /**
-     * Testing add a fee to the cart
+     * Testing add a fee to the cart.
      */
     public function testAddFee()
     {
@@ -34,7 +34,7 @@ class FeesTest extends Orchestra\Testbench\TestCase
     }
 
     /**
-     * Test if we can add multiple fees to the cart
+     * Test if we can add multiple fees to the cart.
      */
     public function testMultipleFees()
     {
@@ -46,7 +46,7 @@ class FeesTest extends Orchestra\Testbench\TestCase
     }
 
     /**
-     * Test if we can remove a fee from the cart
+     * Test if we can remove a fee from the cart.
      */
     public function testRemoveFee()
     {
@@ -59,7 +59,7 @@ class FeesTest extends Orchestra\Testbench\TestCase
     }
 
     /**
-     * Test if we can remove all fees from the cart
+     * Test if we can remove all fees from the cart.
      */
     public function testRemoveFees()
     {
