@@ -45,7 +45,7 @@ class CartItemModifier
      */
     public function hash()
     {
-        return $this->itemHash;
+        return $this->generateHash($this);
     }
 
     /**
@@ -80,7 +80,7 @@ class CartItemModifier
                 if ($taxedItemsOnly && !$item->taxable) {
                     continue;
                 }
-                $price += $item->price(false, $taxedItemsOnly);
+                $price += $item->price($taxedItemsOnly)->amount();
             }
         }
 

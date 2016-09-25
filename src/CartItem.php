@@ -98,13 +98,13 @@ class CartItem
     }
 
     /**
-     *  A way to find sub items.
+     *  A way to find modifiers.
      *
      * @param $data
      *
      * @return array
      */
-    public function search($data)
+    public function search(array $data = [])
     {
         $matches = [];
 
@@ -126,7 +126,9 @@ class CartItem
      */
     public function findModifier($modifierHash)
     {
-        return array_get($this->modifiers, $modifierHash);
+        if(isset($this->modifiers[$modifierHash])) {
+            return $this->modifiers[$modifierHash];
+        }
     }
 
     /**
@@ -172,7 +174,7 @@ class CartItem
             $amountNotTaxable = $amountNotTaxable + ($this->price * $this->qty);
         }
 
-        return $this->tax * ($this->subTotal(false, config('laracart.discountTaxable', true))->amount() - $amountNotTaxable);
+        return $this->tax * ($this->subTotal(config('laracart.discountTaxable', true), true)->amount() - $amountNotTaxable);
     }
 
     /**
@@ -184,8 +186,7 @@ class CartItem
      */
     public function price($taxedItemsOnly = false)
     {
-        return $this->formatMoney($this->price + $this->modifiersTotal($taxedItemsOnly)->amount(), $this->locale,
-            $this->internationalFormat);
+        return $this->formatMoney($this->price + $this->modifiersTotal($taxedItemsOnly)->amount());
     }
 
     /**

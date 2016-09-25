@@ -27,24 +27,26 @@ class CrossDeviceTest extends Orchestra\Testbench\TestCase
      */
     public function testGetOldSession()
     {
-        $newCart = new \LukePOLO\LaraCart\LaraCart($this->session, $this->events, $this->authManager);
-
-        $this->addItem();
-        $this->addItem();
-
+        // TODO - this test isnt really doing anything
         $this->app['config']->set('laracart.cross_devices', true);
 
         $user = new \LukePOLO\LaraCart\Tests\Models\User();
 
-        $this->assertEquals(0, $newCart->count());
-        $this->assertEquals(1, $this->count());
-
-        $user->cart_session_id = $this->session->getId();
         $this->authManager->login($user);
 
-        $newCart->get();
+        $this->laracart = new \LukePOLO\LaraCart\LaraCart($this->session, $this->events, $this->authManager);
 
-        $this->assertEquals($newCart->count(), $this->count());
+        $this->addItem();
+        $this->addItem();
+
+        $this->assertEquals(2, $this->laracart->count());
+
+        $this->session->setId('random');
+        $this->session->start();
+
+        $newCart = new \LukePOLO\LaraCart\LaraCart($this->session, $this->events, $this->authManager);
+
+        $this->assertEquals(2, $newCart->count());
     }
 
     /**
@@ -53,7 +55,9 @@ class CrossDeviceTest extends Orchestra\Testbench\TestCase
     public function testSaveCartSessionID()
     {
         $this->app['config']->set('laracart.cross_devices', true);
+
         $user = new \LukePOLO\LaraCart\Tests\Models\User();
+
         $this->authManager->login($user);
 
         $this->addItem();
