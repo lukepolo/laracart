@@ -126,7 +126,7 @@ class CartItem
      */
     public function findModifier($modifierHash)
     {
-        if(isset($this->modifiers[$modifierHash])) {
+        if (isset($this->modifiers[$modifierHash])) {
             return $this->modifiers[$modifierHash];
         }
     }

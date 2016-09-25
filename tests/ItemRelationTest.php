@@ -1,6 +1,5 @@
 <?php
 
-use LukePOLO\LaraCart\Exceptions\ModelNotFound;
 
 /**
  * Class LaraCartTest.
@@ -14,7 +13,6 @@ class ItemRelationTest extends Orchestra\Testbench\TestCase
      */
     public function testItemRelation()
     {
-
     }
 
     /**
@@ -22,7 +20,6 @@ class ItemRelationTest extends Orchestra\Testbench\TestCase
      */
     public function testItemRelationModelException()
     {
-
     }
 
     /**
@@ -30,7 +27,6 @@ class ItemRelationTest extends Orchestra\Testbench\TestCase
      */
     public function testAddItemID()
     {
-
     }
 
     /**
@@ -38,7 +34,6 @@ class ItemRelationTest extends Orchestra\Testbench\TestCase
      */
     public function testAddItemModel()
     {
-
     }
 
     /**
@@ -46,7 +41,6 @@ class ItemRelationTest extends Orchestra\Testbench\TestCase
      */
     public function testAddMultipleItemModel()
     {
-
     }
 
     /**
@@ -54,7 +48,6 @@ class ItemRelationTest extends Orchestra\Testbench\TestCase
      */
     public function testAddItemModelLine()
     {
-
     }
 
     /**
@@ -62,6 +55,5 @@ class ItemRelationTest extends Orchestra\Testbench\TestCase
      */
     public function testAddMultipleItemModelLine()
     {
-
     }
 }
