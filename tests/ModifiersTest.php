@@ -187,7 +187,7 @@ class ModifiersTest extends Orchestra\Testbench\TestCase
     public function testAddTaxedModifiersTotalItemUnTaxed()
     {
         $item = $this->addItem(2, 2, [
-            'taxable' => false
+            'taxable' => false,
         ]);
 
         $item->addModifier([
