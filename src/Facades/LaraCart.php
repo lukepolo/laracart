@@ -5,8 +5,7 @@ namespace LukePOLO\LaraCart\Facades;
 use Illuminate\Support\Facades\Facade;
 
 /**
- * Class LaraCart
- * @package LukePOLO\LaraCart\Facades
+ * Class LaraCart.
  */
 class LaraCart extends Facade
 {

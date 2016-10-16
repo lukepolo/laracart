@@ -3,14 +3,13 @@
 namespace LukePOLO\LaraCart\Traits;
 
 /**
- * Class CartItems
- *
- * @package LukePOLO\LaraCart\Traits
+ * Class CartItems.
  */
 trait CartTotals
 {
     /**
-     * Gets the total amount discounted
+     * Gets the total amount discounted.
+     *
      * @return string
      */
     public function totalDiscount()
@@ -27,15 +26,17 @@ trait CartTotals
     }
 
     /**
-     * Gets all the fee totals
+     * Gets all the fee totals.
+     *
      * @param bool $withTax
+     *
      * @return string
      */
     public function feeTotals($withTax = false)
     {
         $feeTotal = 0;
 
-        foreach ($this->getFees() as $fee) {
+        foreach ($this->fees() as $fee) {
             $feeTotal += $fee->amount;
 
             if ($withTax && $fee->taxable && $fee->tax > 0) {
@@ -47,7 +48,8 @@ trait CartTotals
     }
 
     /**
-     * Gets the total tax for the cart
+     * Gets the total tax for the cart.
+     *
      * @return string
      */
     public function taxTotal()
@@ -57,11 +59,12 @@ trait CartTotals
         $totalDiscount = $this->totalDiscount()->amount();
 
         if ($this->count() != 0) {
-            foreach ($this->getItems() as $item) {
+            foreach ($this->items() as $item) {
                 if ($discounted >= $totalDiscount) {
                     $totalTax += $item->tax();
                 } else {
                     $itemPrice = $item->subTotal()->amount();
+
 
                     if (($discounted + $itemPrice) > $totalDiscount) {
                         $totalTax += $item->tax($totalDiscount - $discounted);
@@ -72,7 +75,9 @@ trait CartTotals
             }
         }
 
-        foreach ($this->getFees() as $fee) {
+
+
+        foreach ($this->fees() as $fee) {
             if ($fee->taxable) {
                 $totalTax += $fee->amount * $fee->tax;
             }
@@ -82,8 +87,10 @@ trait CartTotals
     }
 
     /**
-     * Gets the subtotal of the cart with or without tax
-     * @param boolean $withDiscount
+     * Gets the subtotal of the cart with or without tax.
+     *
+     * @param bool $withDiscount
+     *
      * @return string
      */
     public function subTotal($withDiscount = true)
@@ -91,7 +98,7 @@ trait CartTotals
         $total = 0;
 
         if ($this->count() != 0) {
-            foreach ($this->getItems() as $item) {
+            foreach ($this->items() as $item) {
                 $total += $item->subTotal($withDiscount)->amount();
             }
         }
@@ -100,9 +107,11 @@ trait CartTotals
     }
 
     /**
-     * Gets the total of the cart with or without tax
-     * @param boolean $withDiscount
+     * Gets the total of the cart with or without tax.
+     *
+     * @param bool $withDiscount
      * @param bool $withTax
+     *
      * @return string
      */
     public function total($withDiscount = true, $withTax = true)

@@ -1,14 +1,14 @@
 <?php
 
 /**
- * Class TotalsTest
+ * Class TotalsTest.
  */
 class TotalsTest extends Orchestra\Testbench\TestCase
 {
     use \LukePOLO\LaraCart\Tests\LaraCartTestTrait;
 
     /**
-     * Test total discounts
+     * Test total discounts.
      */
     public function testTotalDiscount()
     {
@@ -27,18 +27,18 @@ class TotalsTest extends Orchestra\Testbench\TestCase
     }
 
     /**
-     * test total taxes
+     * test total taxes.
      */
     public function testTaxTotal()
     {
         $this->addItem();
 
-        $this->assertEquals("$0.07", $this->laracart->taxTotal());
-        $this->assertEquals("0.07", $this->laracart->taxTotal()->amount());
+        $this->assertEquals('$0.07', $this->laracart->taxTotal());
+        $this->assertEquals('0.07', $this->laracart->taxTotal()->amount());
     }
 
     /**
-     * Test getting all the fees
+     * Test getting all the fees.
      */
     public function testFeeTotals()
     {
@@ -47,11 +47,10 @@ class TotalsTest extends Orchestra\Testbench\TestCase
 
         $this->assertEquals('$25.00', $this->laracart->feeTotals());
         $this->assertEquals(25, $this->laracart->feeTotals()->amount());
-
     }
 
     /**
-     * Test getting a sub total (without tax)
+     * Test getting a sub total (without tax).
      */
     public function testSubTotal()
     {
@@ -66,7 +65,7 @@ class TotalsTest extends Orchestra\Testbench\TestCase
     }
 
     /**
-     * Test getting the final total (with tax)
+     * Test getting the final total (with tax).
      */
     public function testTotal()
     {
@@ -77,7 +76,7 @@ class TotalsTest extends Orchestra\Testbench\TestCase
     }
 
     /**
-     * Test the taxable fees total
+     * Test the taxable fees total.
      */
     public function testTaxableFees()
     {
@@ -86,24 +85,26 @@ class TotalsTest extends Orchestra\Testbench\TestCase
         $this->assertEquals('$1.00', $this->laracart->feeTotals());
         $this->assertEquals(1, $this->laracart->feeTotals()->amount());
 
-        $this->assertEquals("$0.07", $this->laracart->taxTotal());
-        $this->assertEquals("0.07", $this->laracart->taxTotal()->amount());
+        $this->assertEquals('$0.07', $this->laracart->taxTotal());
+        $this->assertEquals('0.07', $this->laracart->taxTotal()->amount());
     }
 
     /**
-     * Test making sure items are taxable and not taxable
+     * Test making sure items are taxable and not taxable.
      */
     public function testTaxableItems()
     {
         $this->addItem();
         $item = $this->addNonTaxableItem(1, 2);
-
-        $this->assertEquals('$3.07', $this->laracart->total());
+        // only 1 dollar is taxable!
         $this->assertEquals('3.07', $this->laracart->total()->amount());
 
         $item->qty = 5;
 
-        $this->assertEquals('11.00', $this->laracart->subTotal(false)->amount());
+        // 3 * 5 = 15 - 5 = 10 , only 10 is taxable
+
+        // only 5 dollar is taxable!
+        $this->assertEquals('11.00', $this->laracart->subTotal()->amount());
         $this->assertEquals('11.07', $this->laracart->total()->amount());
     }
 

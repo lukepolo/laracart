@@ -3,22 +3,25 @@
 namespace LukePOLO\LaraCart;
 
 use Illuminate\Database\Eloquent\Model;
-use LukePOLO\LaraCart\Exceptions\ModelNotFound;
-use LukePOLO\LaraCart\Traits\CartOptionsMagicMethodsTrait;
+use LukePOLO\LaraCart\Traits\Buyable;
+use LukePOLO\LaraCart\Traits\CartOptionsMagicMethods;
+use LukePOLO\LaraCart\Traits\ItemModelBinding;
 
 /**
- * Class CartItem
+ * Class CartItem.
+ *
  * @property int id
  * @property int qty
  * @property float tax
  * @property float price
  * @property string name
  * @property array options
- * @property boolean taxable
- * @package LukePOLO\LaraCart
+ * @property bool taxable
  */
 class CartItem
 {
+    use CartOptionsMagicMethods, ItemModelBinding;
+
     const ITEM_ID = 'id';
     const ITEM_QTY = 'qty';
     const ITEM_TAX = 'tax';
@@ -27,27 +30,24 @@ class CartItem
     const ITEM_TAXABLE = 'taxable';
     const ITEM_OPTIONS = 'options';
 
-    use CartOptionsMagicMethodsTrait;
-
-    protected $itemHash;
-    protected $itemModel;
-    protected $itemModelRelations;
+    protected $hash;
 
     public $locale;
     public $lineItem;
     public $discount = 0;
-    public $subItems = [];
+    public $modifiers = [];
     public $couponInfo = [];
     public $internationalFormat;
 
     /**
      * CartItem constructor.
+     *
      * @param $id
      * @param $name
-     * @param integer $qty
-     * @param string $price
-     * @param array $options
-     * @param boolean $taxable
+     * @param int        $qty
+     * @param string     $price
+     * @param array      $options
+     * @param bool       $taxable
      * @param bool|false $lineItem
      */
     public function __construct($id, $name, $qty, $price, array $options = [], $taxable = true, $lineItem = false)
@@ -59,60 +59,31 @@ class CartItem
         $this->lineItem = $lineItem;
         $this->price = floatval($price);
         $this->tax = config('laracart.tax');
-        $this->itemModel = config('laracart.item_model', null);
-        $this->itemModelRelations = config('laracart.item_model_relations', []);
 
         foreach ($options as $option => $value) {
             $this->$option = $value;
         }
 
-        if (!empty(config('laracart.item_model'))) {
+        if ($id instanceof Model && class_uses(Buyable::class)) {
             $this->bindModelToItem($id);
         }
     }
 
     /**
-     * Generates a hash based on the cartItem array
-     * @param bool $force
-     * @return string itemHash
-     */
-    public function generateHash($force = false)
-    {
-        if ($this->lineItem === false) {
-            $this->itemHash = null;
-
-            $cartItemArray = (array)$this;
-
-            unset($cartItemArray['options']['qty']);
-
-            ksort($cartItemArray['options']);
-
-            $this->itemHash = $this->hash($cartItemArray);
-        } elseif ($force || empty($this->itemHash)) {
-            $this->itemHash = $this->randomHash();
-        }
-
-        app('events')->fire(
-            'laracart.updateItem', [
-                'item' => $this,
-                'newHash' => $this->itemHash
-            ]
-        );
-
-        return $this->itemHash;
-    }
-
-    /**
-     * Gets the hash for the item
+     * Gets the hash for the item.
+     *
      * @return mixed
      */
-    public function getHash()
+    public function hash()
     {
-        return $this->itemHash;
+        return $this->hash;
     }
 
     /**
-     * Search for matching options on the item
+     * Search for matching options on the item.
+     *
+     * @param $data
+     *
      * @return mixed
      */
     public function find($data)
@@ -127,57 +98,103 @@ class CartItem
     }
 
     /**
-     * Finds a sub item by its hash
-     * @param $subItemHash
+     *  A way to find modifiers.
+     *
+     * @param $data
+     *
+     * @return array
+     */
+    public function search(array $data = [])
+    {
+        $matches = [];
+
+        foreach ($this->modifiers as $modifier) {
+            if ($modifier->find($data)) {
+                $matches[] = $modifier;
+            }
+        }
+
+        return $matches;
+    }
+
+    /**
+     * Finds a sub item by its hash.
+     *
+     * @param $modifierHash
+     *
      * @return mixed
      */
-    public function findSubItem($subItemHash)
+    public function findModifier($modifierHash)
     {
-        return array_get($this->subItems, $subItemHash);
+        if (isset($this->modifiers[$modifierHash])) {
+            return $this->modifiers[$modifierHash];
+        }
     }
 
     /**
-     * Adds an sub item to a item
-     * @param array $subItem
-     * @return CartSubItem
+     * Adds an sub item to a item.
+     *
+     * @param array $modifier
+     *
+     * @return CartModifier
      */
-    public function addSubItem(array $subItem)
+    public function addModifier(array $modifier)
     {
-        $subItem = new CartSubItem($subItem);
+        $modifier = new CartItemModifier($modifier);
 
-        $this->subItems[$subItem->getHash()] = $subItem;
+        $this->modifiers[$modifier->hash()] = $modifier;
 
-        $this->generateHash();
+        $this->updateCart();
 
-        return $subItem;
+        return $modifier;
     }
 
     /**
-     * Removes a sub item from the item
-     * @param $subItemHash
+     * Removes a sub item from the item.
+     *
+     * @param $modifierHash
      */
-    public function removeSubItem($subItemHash)
+    public function removeModifier($modifierHash)
     {
-        unset($this->subItems[$subItemHash]);
+        unset($this->modifiers[$modifierHash]);
 
-        $this->generateHash();
+        $this->updateCart();
     }
 
     /**
-     * Gets the price of the item with or without tax, with the proper format
+     * Gets the tax for the item.
+     *
+     * @param int $amountNotTaxable
+     *
+     * @return int|mixed
+     */
+    public function tax($amountNotTaxable = 0)
+    {
+        if (!$this->taxable) {
+            $amountNotTaxable = $amountNotTaxable + ($this->price * $this->qty);
+        }
+
+        return $this->tax * ($this->subTotal(config('laracart.discountTaxable', true), true)->amount() - $amountNotTaxable);
+    }
+
+    /**
+     * Gets the price of the item with or without tax, with the proper format.
+     *
      * @param bool $taxedItemsOnly
+     *
      * @return string
      */
     public function price($taxedItemsOnly = false)
     {
-        return $this->formatMoney($this->price + $this->subItemsTotal($taxedItemsOnly)->amount(), $this->locale,
-            $this->internationalFormat);
+        return $this->formatMoney($this->price + $this->modifiersTotal($taxedItemsOnly)->amount());
     }
 
     /**
-     * Gets the sub total of the item based on the qty with or without tax in the proper format
+     * Gets the sub total of the item based on the qty with or without tax in the proper format.
+     *
      * @param bool $withDiscount
      * @param bool $taxedItemsOnly
+     *
      * @return string
      */
     public function subTotal($withDiscount = true, $taxedItemsOnly = false)
@@ -185,34 +202,36 @@ class CartItem
         $total = $this->price($taxedItemsOnly)->amount() * $this->qty;
 
         if ($withDiscount) {
-            $total -= $this->getDiscount()->amount();
+            $total -= $this->discount()->amount();
         }
 
         return $this->formatMoney($total, $this->locale, $this->internationalFormat);
     }
 
-
     /**
-     * Gets the totals for the options
+     * Gets the totals for the options.
+     *
      * @param bool $taxedItemsOnly
+     *
      * @return string
      */
-    public function subItemsTotal($taxedItemsOnly = false)
+    public function modifiersTotal($taxedItemsOnly = false)
     {
         $total = 0;
 
-        foreach ($this->subItems as $subItem) {
-            $total += $subItem->price($taxedItemsOnly)->amount();
+        foreach ($this->modifiers as $modifier) {
+            $total += $modifier->price($taxedItemsOnly)->amount();
         }
 
         return $this->formatMoney($total, $this->locale, $this->internationalFormat);
     }
 
     /**
-     * Gets the discount of an item
+     * Gets the discount of an item.
+     *
      * @return string
      */
-    public function getDiscount()
+    public function discount()
     {
         $amount = 0;
 
@@ -225,131 +244,5 @@ class CartItem
             $this->locale,
             $this->internationalFormat
         );
-    }
-
-    /**
-     * Gets the tax for the item
-     * @param int $amountNotTaxable
-     * @return int|mixed
-     */
-    public function tax($amountNotTaxable = 0)
-    {
-        $tax = 0;
-
-        if ($this->taxable) {
-            return $this->tax * ($this->subTotal(config('laracart.discountTaxable', true),
-                    true)->amount() - $amountNotTaxable);
-        }
-
-        return $tax;
-    }
-
-    /**
-     * Sets the related model to the item
-     * @param $itemModel
-     * @param array $relations
-     * @throws ModelNotFound
-     */
-    public function setModel($itemModel, array $relations = [])
-    {
-        if (!class_exists($itemModel)) {
-            throw new ModelNotFound('Could not find relation model');
-        }
-
-        $this->itemModel = $itemModel;
-        $this->itemModelRelations = $relations;
-    }
-
-    /**
-     * Returns a Model
-     * @throws ModelNotFound
-     */
-    public function getModel()
-    {
-        $itemModel = (new $this->itemModel)->with($this->itemModelRelations)->find($this->id);
-
-        if (empty($itemModel)) {
-            throw new ModelNotFound('Could not find the item model for ' . $this->id);
-        }
-
-        return $itemModel;
-    }
-
-    /**
-     * Checks to see if its an item model
-     * @param $itemModel
-     * @return bool
-     */
-    private function isItemModel($itemModel)
-    {
-        if (is_object($itemModel) && get_class($itemModel) == config('laracart.item_model')) {
-            return true;
-        }
-
-        return false;
-    }
-
-    /**
-     * Gets a option from the model
-     * @param Model $itemModel
-     * @param $attr
-     * @param null $defaultValue
-     * @return Model|null
-     */
-    private function getFromModel(Model $itemModel, $attr, $defaultValue = null)
-    {
-        $variable = $itemModel;
-
-        if (!empty($attr)) {
-            foreach (explode('.', $attr) as $attr) {
-                $variable = array_get($variable, $attr, $defaultValue);
-            }
-        }
-
-        return $variable;
-    }
-
-    /**
-     * Binds the data model to the item passed in
-     * @param $itemModel
-     * @throws ModelNotFound
-     */
-    private function bindModelToItem($itemModel)
-    {
-        $this->itemModel = config('laracart.item_model', null);
-        $this->itemModelRelations = config('laracart.item_model_relations', []);
-
-        if (!$this->isItemModel($itemModel)) {
-            $itemModel = $this->getModel();
-        }
-
-        $bindings = config('laracart.item_model_bindings');
-
-        $this->id = $itemModel[$bindings[CartItem::ITEM_ID]];
-        $this->name = $itemModel[$bindings[CartItem::ITEM_NAME]];
-        $this->price = $itemModel[$bindings[CartItem::ITEM_PRICE]];
-        $this->taxable = $itemModel[$bindings[CartItem::ITEM_TAXABLE]] ? true : false;
-        $this->options = array_merge($this->options, $this->getItemModelOptions($itemModel, $bindings[CartItem::ITEM_OPTIONS]));
-    }
-
-    /**
-     * Gets the item models options based the config
-     * @param Model $itemModel
-     * @param array $options
-     * @return array
-     */
-    private function getItemModelOptions(Model $itemModel, array $options = [])
-    {
-        $itemOptions = [];
-        foreach ($options as $option) {
-            $itemOptions[$option] = $this->getFromModel($itemModel, $option);
-        }
-
-        return array_filter($itemOptions, function ($value) {
-            if ($value !== false && empty($value)) {
-                return false;
-            }
-            return true;
-        });
     }
 }

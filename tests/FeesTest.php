@@ -1,14 +1,14 @@
 <?php
 
 /**
- * Class FeesTest
+ * Class FeesTest.
  */
 class FeesTest extends Orchestra\Testbench\TestCase
 {
     use \LukePOLO\LaraCart\Tests\LaraCartTestTrait;
 
     /**
-     * Add a fee
+     * Add a fee.
      *
      * @param $name
      * @param int $fee
@@ -22,7 +22,7 @@ class FeesTest extends Orchestra\Testbench\TestCase
     }
 
     /**
-     * Testing add a fee to the cart
+     * Testing add a fee to the cart.
      */
     public function testAddFee()
     {
@@ -30,28 +30,28 @@ class FeesTest extends Orchestra\Testbench\TestCase
 
         $fee = $this->laracart->getFee('testFeeOne');
 
-        $this->assertEquals('$10.00', $fee->getAmount());
+        $this->assertEquals('$10.00', $fee->amount());
     }
 
     /**
-     * Test if we can add multiple fees to the cart
+     * Test if we can add multiple fees to the cart.
      */
     public function testMultipleFees()
     {
         $this->addFee('testFeeOne');
         $this->addFee('testFeeTwo', 20);
 
-        $this->assertEquals('$10.00', $this->laracart->getFee('testFeeOne')->getAmount());
-        $this->assertEquals('$20.00', $this->laracart->getFee('testFeeTwo')->getAmount());
+        $this->assertEquals('$10.00', $this->laracart->getFee('testFeeOne')->amount());
+        $this->assertEquals('$20.00', $this->laracart->getFee('testFeeTwo')->amount());
     }
 
     /**
-     * Test if we can remove a fee from the cart
+     * Test if we can remove a fee from the cart.
      */
     public function testRemoveFee()
     {
         $this->addFee('testFeeOne');
-        $this->assertEquals('$10.00', $this->laracart->getFee('testFeeOne')->getAmount());
+        $this->assertEquals('$10.00', $this->laracart->getFee('testFeeOne')->amount());
 
         $this->laracart->removeFee('testFeeOne');
 
@@ -59,15 +59,15 @@ class FeesTest extends Orchestra\Testbench\TestCase
     }
 
     /**
-     * Test if we can remove all fees from the cart
+     * Test if we can remove all fees from the cart.
      */
     public function testRemoveFees()
     {
         $this->addFee('testFeeOne');
-        $this->assertEquals('$10.00', $this->laracart->getFee('testFeeOne')->getAmount());
+        $this->assertEquals('$10.00', $this->laracart->getFee('testFeeOne')->amount());
 
         $this->laracart->removeFees();
 
-        $this->assertTrue(empty($this->laracart->getFees()));
+        $this->assertTrue(empty($this->laracart->fees()));
     }
 }

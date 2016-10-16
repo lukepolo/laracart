@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Class CrossDeviceTest
+ * Class CrossDeviceTest.
  */
 class CrossDeviceTest extends Orchestra\Testbench\TestCase
 {
@@ -9,12 +9,12 @@ class CrossDeviceTest extends Orchestra\Testbench\TestCase
     use \LukePOLO\LaraCart\Tests\LaraCartTestTrait;
 
     /**
-     * Testing migrations
+     * Testing migrations.
      */
     public function testMigrations()
     {
         $this->artisan('migrate', [
-            '--realpath' => realpath(__DIR__ . '/../migrations'),
+            '--realpath' => realpath(__DIR__.'/../migrations'),
         ]);
 
         $this->beforeApplicationDestroyed(function () {
@@ -23,37 +23,41 @@ class CrossDeviceTest extends Orchestra\Testbench\TestCase
     }
 
     /**
-     *  Test getting the old session
+     *  Test getting the old session.
      */
     public function testGetOldSession()
     {
-        $newCart = new \LukePOLO\LaraCart\LaraCart($this->session, $this->events, $this->authManager);
-
-        $this->addItem();
-        $this->addItem();
-
+        // TODO - this test isnt really doing anything
         $this->app['config']->set('laracart.cross_devices', true);
 
         $user = new \LukePOLO\LaraCart\Tests\Models\User();
 
-        $this->assertEquals(0, $newCart->itemRows());
-        $this->assertEquals(1, $this->count());
-
-        $user->cart_session_id = $this->session->getId();
         $this->authManager->login($user);
 
-        $newCart->get();
+        $this->laracart = new \LukePOLO\LaraCart\LaraCart($this->session, $this->events, $this->authManager);
 
-        $this->assertEquals($newCart->itemRows(), $this->count());
+        $this->addItem();
+        $this->addItem();
+
+        $this->assertEquals(2, $this->laracart->count());
+
+        $this->session->setId('random');
+        $this->session->start();
+
+        $newCart = new \LukePOLO\LaraCart\LaraCart($this->session, $this->events, $this->authManager);
+
+        $this->assertEquals(2, $newCart->count());
     }
 
     /**
-     * Testing to make sure the session gets saved to the model
+     * Testing to make sure the session gets saved to the model.
      */
     public function testSaveCartSessionID()
     {
         $this->app['config']->set('laracart.cross_devices', true);
+
         $user = new \LukePOLO\LaraCart\Tests\Models\User();
+
         $this->authManager->login($user);
 
         $this->addItem();

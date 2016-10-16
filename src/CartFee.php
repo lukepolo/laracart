@@ -2,15 +2,14 @@
 
 namespace LukePOLO\LaraCart;
 
-use LukePOLO\LaraCart\Traits\CartOptionsMagicMethodsTrait;
+use LukePOLO\LaraCart\Traits\CartOptionsMagicMethods;
 
 /**
- * Class CartFee
- * @package LukePOLO\LaraCart
+ * Class CartFee.
  */
 class CartFee
 {
-    use CartOptionsMagicMethodsTrait;
+    use CartOptionsMagicMethods;
 
     public $locale;
     public $amount;
@@ -20,6 +19,7 @@ class CartFee
 
     /**
      * CartFee constructor.
+     *
      * @param $amount
      * @param array $options
      */
@@ -32,10 +32,11 @@ class CartFee
     }
 
     /**
-     * Gets the formatted amount
+     * Gets the formatted amount.
+     *
      * @return string
      */
-    public function getAmount()
+    public function amount()
     {
         return $this->formatMoney($this->amount, $this->locale, $this->internationalFormat);
     }

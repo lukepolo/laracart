@@ -5,13 +5,13 @@ namespace LukePOLO\LaraCart\Traits;
 use LukePOLO\LaraCart\CartFee;
 
 /**
- * Class CartItems
- * @package LukePOLO\LaraCart\Traits
+ * Class CartItems.
  */
 trait CartFees
 {
     /**
-     * Adding a fee
+     * Adding a fee.
+     *
      * @param $name
      * @param $amount
      * @param array $options
@@ -24,7 +24,8 @@ trait CartFees
     }
 
     /**
-     * Adding a non-taxable fee
+     * Adding a non-taxable fee.
+     *
      * @param $name
      * @param $amount
      * @param array $options
@@ -38,8 +39,10 @@ trait CartFees
     }
 
     /**
-     * Gets a specific fee from the fees array
+     * Gets a specific fee from the fees array.
+     *
      * @param $name
+     *
      * @return mixed
      */
     public function getFee($name)
@@ -48,18 +51,20 @@ trait CartFees
     }
 
     /**
-     * Gets all the fees on the cart object
+     * Gets all the fees on the cart object.
      *
      * @return mixed
      */
-    public function getFees()
+    public function fees()
     {
         return $this->cart->fees;
     }
 
     /**
-     * Removes a fee from the fee array
+     * Removes a fee from the fee array.
+     *
      * @param $name
+     *
      * @return void
      */
     public function removeFee($name)
@@ -70,7 +75,8 @@ trait CartFees
     }
 
     /**
-     * Removes all the fees set in the cart
+     * Removes all the fees set in the cart.
+     *
      * @return void
      */
     public function removeFees()

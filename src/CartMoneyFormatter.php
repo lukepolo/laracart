@@ -3,8 +3,7 @@
 namespace LukePOLO\LaraCart;
 
 /**
- * Class CartMoneyFormatter
- * @package LukePOLO\LaraCart
+ * Class CartMoneyFormatter.
  */
 class CartMoneyFormatter
 {
@@ -16,6 +15,7 @@ class CartMoneyFormatter
 
     /**
      * CartMoneyFormatter constructor.
+     *
      * @param $number
      * @param null $locale
      * @param null $internationalFormat
@@ -31,7 +31,8 @@ class CartMoneyFormatter
     }
 
     /**
-     * Shows the string version of the amount
+     * Shows the string version of the amount.
+     *
      * @return string
      */
     public function __toString()
@@ -40,7 +41,8 @@ class CartMoneyFormatter
     }
 
     /**
-     * Formats as an integer
+     * Formats as an integer.
+     *
      * @return int
      */
     public function asInt()
@@ -49,7 +51,8 @@ class CartMoneyFormatter
     }
 
     /**
-     * Gets the amount
+     * Gets the amount.
+     *
      * @return string
      */
     public function amount()
@@ -58,7 +61,8 @@ class CartMoneyFormatter
     }
 
     /**
-     * Formats the number in money formats
+     * Formats the number in money formats.
+     *
      * @return string
      */
     private function formatNumber()

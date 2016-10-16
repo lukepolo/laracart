@@ -5,9 +5,7 @@ namespace LukePOLO\LaraCart\Tests\Models;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
 /**
- * Class User
- *
- * @package LukePOLO\LaraCart\Tests\Models
+ * Class User.
  */
 class User extends Authenticatable
 {
@@ -16,6 +14,5 @@ class User extends Authenticatable
 
     public function save(array $options = [])
     {
-        $this->cart_sessoin_id = $this->getAttribute('cart_sessoin_id');
     }
 }

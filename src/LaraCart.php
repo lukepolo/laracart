@@ -13,8 +13,7 @@ use LukePOLO\LaraCart\Traits\CartItems;
 use LukePOLO\LaraCart\Traits\CartTotals;
 
 /**
- * Class LaraCart
- * @package LukePOLO\LaraCart
+ * Class LaraCart.
  */
 class LaraCart implements LaraCartContract
 {
@@ -33,9 +32,10 @@ class LaraCart implements LaraCartContract
 
     /**
      * LaraCart constructor.
+     *
      * @param SessionManager $session
-     * @param Dispatcher $events
-     * @param AuthManager $authManager
+     * @param Dispatcher     $events
+     * @param AuthManager    $authManager
      */
     public function __construct(SessionManager $session, Dispatcher $events, AuthManager $authManager)
     {
@@ -44,34 +44,17 @@ class LaraCart implements LaraCartContract
         $this->authManager = $authManager;
         $this->prefix = config('laracart.cache_prefix', 'laracart');
 
-        $this->setInstance($this->session->get($this->prefix . '.instance', 'default'));
+        $this->instance($this->session->get($this->prefix.'.instance', 'default'));
     }
 
     /**
-     * Sets and Gets the instance of the cart in the session we should be using
+     * Gets the instance in the session.
+     *
      * @param string $instance
-     * @return LaraCart
-     */
-    public function setInstance($instance = 'default')
-    {
-        $this->get($instance);
-
-        $this->session->set($this->prefix . '.instance', $instance);
-
-        if (!in_array($instance, $this->getInstances())) {
-            $this->session->push($this->prefix . '.instances', $instance);
-        }
-        $this->events->fire('laracart.new');
-
-        return $this;
-    }
-
-    /**
-     * Gets the instance in the session
-     * @param string $instance
+     *
      * @return $this cart instance
      */
-    public function get($instance = 'default')
+    public function instance($instance = 'default')
     {
         if (config('laracart.cross_devices', false) && $this->authManager->check()) {
             if (!empty($cartSessionID = $this->authManager->user()->cart_session_id)) {
@@ -80,28 +63,38 @@ class LaraCart implements LaraCartContract
             }
         }
 
-        if (empty($this->cart = $this->session->get($this->prefix . '.' . $instance))) {
+        $this->session->set($this->prefix.'.instance', $instance);
+
+        $this->cart = $this->session->get($this->prefix.'.'.$instance);
+
+        if (empty($this->cart)) {
             $this->cart = new Cart($instance);
+            $this->session->push($this->prefix.'.instances', $instance);
+            $this->events->fire('laracart.new');
+
+            $this->session->set($this->prefix.'.'.$instance, $this->cart);
         }
 
         return $this;
     }
 
     /**
-     * Gets all current instances inside the session
+     * Gets all current instances inside the session.
+     *
      * @return mixed
      */
-    public function getInstances()
+    public function instances()
     {
-        return $this->session->get($this->prefix . '.instances', []);
+        return $this->session->get($this->prefix.'.instances', []);
     }
 
     /**
-     * Adds an Attribute to the cart
+     * Adds an Attribute to the cart.
+     *
      * @param $attribute
      * @param $value
      */
-    public function setAttribute($attribute, $value)
+    public function set($attribute, $value)
     {
         array_set($this->cart->attributes, $attribute, $value);
 
@@ -109,31 +102,35 @@ class LaraCart implements LaraCartContract
     }
 
     /**
-     * Gets an an attribute from the cart
+     * Gets an an attribute from the cart.
+     *
      * @param $attribute
      * @param $defaultValue
+     *
      * @return mixed
      */
-    public function getAttribute($attribute, $defaultValue = null)
+    public function get($attribute, $defaultValue = null)
     {
         return array_get($this->cart->attributes, $attribute, $defaultValue);
     }
 
     /**
-     * Gets all the carts attributes
+     * Gets all the carts attributes.
+     *
      * @return mixed
      */
-    public function getAttributes()
+    public function attributes()
     {
         return $this->cart->attributes;
     }
 
     /**
-     * Removes an attribute from the cart
+     * Removes an attribute from the cart.
+     *
      * @param $attribute
      * return void
      */
-    public function removeAttribute($attribute)
+    public function remove($attribute)
     {
         array_forget($this->cart->attributes, $attribute);
 
@@ -142,15 +139,16 @@ class LaraCart implements LaraCartContract
 
     /**
      * Updates cart session
-     * return void
+     * return void.
      */
     public function update()
     {
-        $this->session->set($this->prefix . '.' . $this->cart->instance, $this->cart);
+        $this->session->set($this->prefix.'.'.$this->cart->instance, $this->cart);
 
         if (config('laracart.cross_devices', false) && $this->authManager->check()) {
-            $this->authManager->user()->cart_session_id = $this->session->getId();
-            $this->authManager->user()->save();
+            $user = $this->authManager->user();
+            $user->cart_session_id = $this->session->getId();
+            $user->save();
         }
 
         $this->session->save();
@@ -159,14 +157,15 @@ class LaraCart implements LaraCartContract
     }
 
     /**
-     * Get the count based on qty
+     * Get the count based on qty.
+     *
      * @return int
      */
     public function count()
     {
         $count = 0;
 
-        foreach ($this->getItems() as $item) {
+        foreach ($this->items() as $item) {
             $count += $item->qty;
         }
 
@@ -174,24 +173,17 @@ class LaraCart implements LaraCartContract
     }
 
     /**
-     * Get the the number of item rows in the cart
-     * @return int
-     */
-    public function itemRows()
-    {
-        return count($this->getItems());
-    }
-
-    /**
-     * Find items in the cart matching a data set
+     * Find items in the cart matching a data set.
+     *
      * @param $data array
+     *
      * @return array
      */
-    public function find(array $data)
+    public function search(array $data)
     {
         $matches = [];
 
-        foreach ($this->getItems() as $item) {
+        foreach ($this->items() as $item) {
             if ($item->find($data)) {
                 $matches[] = $item;
             }
@@ -202,9 +194,9 @@ class LaraCart implements LaraCartContract
 
     /**
      * Empties the carts items
-     * return void
+     * return void.
      */
-    public function emptyCart()
+    public function clear()
     {
         unset($this->cart->items);
 
@@ -215,19 +207,19 @@ class LaraCart implements LaraCartContract
 
     /**
      * Completely destroys cart and anything associated with it
-     * return void
+     * return void.
      */
-    public function destroyCart()
+    public function destroy()
     {
         $instance = $this->cart->instance;
 
-        $this->session->forget($this->prefix . '.' . $instance);
+        $this->session->forget($this->prefix.'.'.$instance);
+        $this->session->forget($this->prefix.'.instances', $instance);
 
-        $this->setInstance('default');
+        $this->instance('default');
 
         $this->events->fire('laracart.destroy', $instance);
 
         $this->update();
     }
-
 }

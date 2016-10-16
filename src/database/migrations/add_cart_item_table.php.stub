@@ -1,0 +1,38 @@
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+
+class AddCartSessionIdToUsersTable extends Migration
+{
+    /**
+     * Run the migrations.
+     *
+     * @return void
+     */
+    public function up()
+    {
+        if (!(Schema::hasTable('items')) {
+            Schema::table('items', function (Blueprint $table) {
+                $table->increments('id');
+                $table->string('name');
+                $table->float('price', 8, 2);
+                $table->boolean('taxable');
+                $table->boolean('lineitem');
+                $table->timestamps();
+            });
+        }
+    }
+
+    /**
+     * Reverse the migrations.
+     *
+     * @return void
+     */
+    public function down()
+    {
+        if ((Schema::hasTable('items'))) {
+            Schema::drop('items');
+        }
+    }
+}
