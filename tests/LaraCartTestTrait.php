@@ -30,7 +30,6 @@ trait LaraCartTestTrait
 
         $app['config']->set('database.default', 'testing');
 
-        // Setup default database to use sqlite :memory:
         $app['config']->set('laracart.tax', '.07');
     }
 

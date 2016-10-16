@@ -19,11 +19,11 @@ class ModifiersTest extends Orchestra\Testbench\TestCase
             'price' => 2.50,
         ]);
 
-//        $this->assertInternalType('array', $item->modifiersTotal);
+        $this->assertInternalType('array', $item->modifiersTotal);
 
-//        $this->containsOnlyInstancesOf(LukePOLO\LaraCart\CartItemModifierm::class, $item->modifiersTotal);
+        $this->containsOnlyInstancesOf(LukePOLO\LaraCart\CartItemModifierm::class, $item->modifiersTotal);
 
-//        $this->assertEquals($subItem, $item->findModifier($subItem->hash()));
+        $this->assertEquals($subItem, $item->findModifier($subItem->hash()));
     }
 
     /**
@@ -218,7 +218,6 @@ class ModifiersTest extends Orchestra\Testbench\TestCase
 
         $subItem->addModifier([
             'items' => [
-                // not taxable
                 new \LukePOLO\LaraCart\CartItem('itemId', 'test sub sub item non taxable', 1, 10, [], false),
             ],
         ]);

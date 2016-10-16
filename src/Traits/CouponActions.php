@@ -113,7 +113,7 @@ trait CouponActions
     }
 
     /**
-     * Checks to see if the times are valid for the coupon.
+     * Checks to see if the times aresetDiscountOnItem valid for the coupon.
      *
      * @param Carbon $startDate
      * @param Carbon $endDate

@@ -191,50 +191,36 @@ class CouponsTest extends Orchestra\Testbench\TestCase
      */
     public function testSetDiscountOnItem()
     {
-        //        $item = $this->addItem(2, 30);
-//
-//        $this->assertEquals('64.20', $this->laracart->total()->amount());
-//
-//        $fixedCoupon = new LukePOLO\LaraCart\Coupons\Fixed('10OFF', 10);
-//
-//        $this->laracart->addCoupon($fixedCoupon);
-//
-//        $coupon = $this->laracart->findCoupon('10OFF');
-//
-        // TODO - THIS IS A BIG FAIL
-//        $this->assertEquals('54.20', $this->laracart->total()->amount());
-//
-//        $coupon->setDiscountOnItem($item, 10.00);
-//
-//        $this->assertEquals('10OFF', $item->code);
-//
-//        try {
-//            $coupon->setDiscountOnItem($item, 'abc');
-//            $this->setExpectedException(\LukePOLO\LaraCart\Exceptions\InvalidPrice::class);
-//        } catch (\LukePOLO\LaraCart\Exceptions\InvalidPrice $e) {
-//            $this->assertEquals('You must use a discount amount.', $e->getMessage());
-//        }
-//
-//
-//
-//        $this->app['config']->set('laracart.discountTaxable', false);
-//
-//
-//        $item = $this->addItem();
-//
-//        $this->assertEquals('50.50', $this->laracart->total()->amount());
-//
-//        dd($this->laracart->total()->amount());
-//
-//        $this->assertEquals('54.57', $this->laracart->total()->amount());
-//
-//        $this->laracart->removeCoupon('10OFF');
-//
-//        $this->assertEquals('65.27', $this->laracart->total()->amount());
-//
-//        $this->assertNull($item->code);
-//        $this->assertEquals(0, $item->discount);
-//        $this->assertCount(0, $item->couponInfo);
+        $item = $this->addItem(3, 30);
+
+        $this->assertEquals('96.30', $this->laracart->total()->amount());
+
+        $fixedCoupon = new LukePOLO\LaraCart\Coupons\Fixed('10OFF', 10);
+
+        $this->laracart->addCoupon($fixedCoupon);
+
+        $this->assertEquals('85.60', $this->laracart->total()->amount());
+
+        $coupon = $this->laracart->findCoupon('10OFF');
+
+        $coupon->setDiscountOnItem($item, 10.00);
+
+        $this->assertEquals('10OFF', $item->code);
+
+        try {
+            $coupon->setDiscountOnItem($item, 'abc');
+            $this->setExpectedException(\LukePOLO\LaraCart\Exceptions\InvalidPrice::class);
+        } catch (\LukePOLO\LaraCart\Exceptions\InvalidPrice $e) {
+            $this->assertEquals('You must use a discount amount.', $e->getMessage());
+        }
+
+
+        $this->assertEquals('85.60', $this->laracart->total()->amount());
+
+        $this->app['config']->set('laracart.discountTaxable', false);
+
+
+        $this->assertEquals('86.30', $this->laracart->total()->amount());
     }
 
     /**

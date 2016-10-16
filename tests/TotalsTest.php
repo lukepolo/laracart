@@ -10,7 +10,7 @@ class TotalsTest extends Orchestra\Testbench\TestCase
     /**
      * Test total discounts.
      */
-    public function testTotalDiscount()
+    public function testdiscountTotal()
     {
         $this->addItem(1, 10);
 
@@ -20,8 +20,8 @@ class TotalsTest extends Orchestra\Testbench\TestCase
 
         $this->laracart->addCoupon($fixedCoupon);
 
-        $this->assertEquals('$10.00', $this->laracart->totalDiscount());
-        $this->assertEquals(10, $this->laracart->totalDiscount()->amount());
+        $this->assertEquals('$10.00', $this->laracart->discountTotal());
+        $this->assertEquals(10, $this->laracart->discountTotal()->amount());
 
         $this->assertEquals(0, $this->laracart->total()->amount());
     }

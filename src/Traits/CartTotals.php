@@ -12,7 +12,7 @@ trait CartTotals
      *
      * @return string
      */
-    public function totalDiscount()
+    public function discountTotal()
     {
         $total = 0;
 
@@ -56,18 +56,18 @@ trait CartTotals
     {
         $totalTax = 0;
         $discounted = 0;
-        $totalDiscount = $this->totalDiscount()->amount();
+        $discountTotal = $this->discountTotal()->amount();
 
         if ($this->count() != 0) {
             foreach ($this->items() as $item) {
-                if ($discounted >= $totalDiscount) {
+                if ($discounted >= $discountTotal) {
                     $totalTax += $item->tax();
                 } else {
                     $itemPrice = $item->subTotal()->amount();
 
 
-                    if (($discounted + $itemPrice) > $totalDiscount) {
-                        $totalTax += $item->tax($totalDiscount - $discounted);
+                    if (($discounted + $itemPrice) > $discountTotal) {
+                        $totalTax += $item->tax($discountTotal - $discounted);
                     }
 
                     $discounted += $itemPrice;
@@ -103,6 +103,10 @@ trait CartTotals
             }
         }
 
+        if ($withDiscount) {
+            $total -= $this->discountTotal()->amount();
+        }
+
         return $this->formatMoney($total);
     }
 
@@ -116,11 +120,7 @@ trait CartTotals
      */
     public function total($withDiscount = true, $withTax = true)
     {
-        $total = $this->subTotal()->amount() + $this->feeTotals()->amount();
-
-        if ($withDiscount) {
-            $total -= $this->totalDiscount()->amount();
-        }
+        $total = $this->subTotal($withDiscount)->amount() + $this->feeTotals()->amount();
 
         if ($withTax) {
             $total += $this->taxTotal()->amount();

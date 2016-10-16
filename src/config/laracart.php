@@ -52,6 +52,14 @@ return [
     /*
     |--------------------------------------------------------------------------
     | Allows you to choose if the discounts applied are taxable
+    |
+    |    If the discount is taxable, the discount is applied to the taxable
+    |    line items before the sales tax is calculated. This reduces the
+    |    amount of sales tax charged to the customer.
+    |
+    |    If the discount is non-taxable, the discount is applied to the
+    |    taxable line items after the sales tax is calculated.
+    |
     |--------------------------------------------------------------------------
     |
     */
@@ -64,17 +72,6 @@ return [
     |
     */
     'multiple_coupons' => false,
-
-    /*
-    |
-    |                     **** DEPRECATED IN 1.3 ****
-    |
-    |--------------------------------------------------------------------------
-    | Applied message when using getMessage on a coupon
-    |--------------------------------------------------------------------------
-    |
-    */
-    'coupon_applied_message' => 'Coupon Applied',
 
     /*
     |--------------------------------------------------------------------------
