@@ -8,28 +8,28 @@ class ModifiersTest extends Orchestra\Testbench\TestCase
     use \LukePOLO\LaraCart\Tests\LaraCartTestTrait;
 
     /**
-     * Test adding a sub item on a item.
+     * Test adding a modifier on a item.
      */
     public function testAddModifier()
     {
         $item = $this->addItem();
 
-        $subItem = $item->addModifier([
+        $modifier = $item->addModifier([
             'size'  => 'XXL',
             'price' => 2.50,
         ]);
 
-        $this->assertInternalType('array', $item->modifiersTotal);
+        $this->assertInternalType('array', $item->modifiers);
 
-        $this->containsOnlyInstancesOf(LukePOLO\LaraCart\CartItemModifierm::class, $item->modifiersTotal);
+        $this->containsOnlyInstancesOf(LukePOLO\LaraCart\CartItemModifier::class, $item->modifiers);
 
-        $this->assertEquals($subItem, $item->findModifier($subItem->hash()));
+        $this->assertEquals($modifier, $item->findModifier($modifier->hash()));
     }
 
     /**
-     * Test getting the total from a sub item.
+     * Test getting the total from a modifier.
      */
-    public function testSubItemTotal()
+    public function testModifierItemTotal()
     {
         $item = $this->addItem();
 
@@ -43,16 +43,16 @@ class ModifiersTest extends Orchestra\Testbench\TestCase
     }
 
     /**
-     * Test the sub items with more sub items.
+     * Test the modifiers with more modifiers.
      */
-    public function testSubItemItemsTotal()
+    public function testModifierItemsTotal()
     {
         $item = $this->addItem(1, 11);
 
         $item->addModifier([
             'price' => 2,
             'items' => [
-                new \LukePOLO\LaraCart\CartItem('10', 'sub item item', 1, 1),
+                new \LukePOLO\LaraCart\CartItem('10', 'modifier item', 1, 1),
             ],
         ]);
 
@@ -63,23 +63,23 @@ class ModifiersTest extends Orchestra\Testbench\TestCase
     }
 
     /**
-     * Testing totals for sub sub items.
+     * Testing totals for sub modifiers.
      */
     public function testModifiersTotalModifiersTotalTotal()
     {
         $item = $this->addItem(1, 11);
 
-        $subItem = new \LukePOLO\LaraCart\CartItem('10', 'sub item item', 1, 2);
+        $modifier = new \LukePOLO\LaraCart\CartItem('10', 'modifier item', 1, 2);
 
-        $subItem->addModifier([
+        $modifier->addModifier([
             'items' => [
-                new \LukePOLO\LaraCart\CartItem('10', 'sub item item', 1, 1),
+                new \LukePOLO\LaraCart\CartItem('10', 'modifier item', 1, 1),
             ],
         ]);
 
         $item->addModifier([
             'items' => [
-                $subItem,
+                $modifier,
             ],
         ]);
 
@@ -90,13 +90,13 @@ class ModifiersTest extends Orchestra\Testbench\TestCase
     }
 
     /**
-     * Test adding an item on a sub item.
+     * Test adding an item on a modifier.
      */
     public function testaddModifierItems()
     {
         $item = $this->addItem();
 
-        $subItem = $item->addModifier([
+        $modifier = $item->addModifier([
             'size'  => 'XXL',
             'price' => 2.50,
             'items' => [
@@ -104,22 +104,22 @@ class ModifiersTest extends Orchestra\Testbench\TestCase
             ],
         ]);
 
-        $this->assertInternalType('array', $subItem->items);
+        $this->assertInternalType('array', $modifier->items);
 
-        $this->containsOnlyInstancesOf(LukePOLO\LaraCart\CartItem::class, $subItem->items);
+        $this->containsOnlyInstancesOf(LukePOLO\LaraCart\CartItem::class, $modifier->items);
 
 
-        $this->assertEquals('$12.50', $subItem->price());
+        $this->assertEquals('$12.50', $modifier->price());
     }
 
     /**
-     * Test adding an item on a sub item.
+     * Test adding an item on a modifier.
      */
     public function testaddModifierItemsWithQty()
     {
         $item = $this->addItem();
 
-        $subItem = $item->addModifier([
+        $modifier = $item->addModifier([
             'size'  => 'XXL',
             'price' => 2.50,
             'items' => [
@@ -127,12 +127,12 @@ class ModifiersTest extends Orchestra\Testbench\TestCase
             ],
         ]);
 
-        $this->assertInternalType('array', $subItem->items);
+        $this->assertInternalType('array', $modifier->items);
 
-        $this->containsOnlyInstancesOf(LukePOLO\LaraCart\CartItem::class, $subItem->items);
+        $this->containsOnlyInstancesOf(LukePOLO\LaraCart\CartItem::class, $modifier->items);
 
 
-        $this->assertEquals('$12.50', $subItem->price());
+        $this->assertEquals('$12.50', $modifier->price());
 
         $this->assertEquals('13.50', $this->laracart->subTotal()->amount());
 
@@ -142,23 +142,23 @@ class ModifiersTest extends Orchestra\Testbench\TestCase
     }
 
     /**
-     * Test removing sub items.
+     * Test removing modifiers.
      */
-    public function testRemoveSubItem()
+    public function testRemoveModifier()
     {
         $item = $this->addItem();
 
-        $subItem = $item->addModifier([
+        $modifier = $item->addModifier([
             'size'  => 'XXL',
             'price' => 2.50,
         ]);
 
-        $subItemHash = $subItem->hash();
+        $modifierHash = $modifier->hash();
 
-        $this->assertEquals($subItem, $item->findModifier($subItemHash));
-        $item->removeModifier($subItemHash);
+        $this->assertEquals($modifier, $item->findModifier($modifierHash));
+        $item->removeModifier($modifierHash);
 
-        $this->assertEquals(null, $item->findModifier($subItemHash));
+        $this->assertEquals(null, $item->findModifier($modifierHash));
     }
 
     /**
@@ -208,23 +208,23 @@ class ModifiersTest extends Orchestra\Testbench\TestCase
     }
 
     /**
-     * Test Tax in case the sub sub item is untaxed but sub item is taxed.
+     * Test Tax in case the sub modifier is untaxed but modifier is taxed.
      */
-    public function testAddTaxedSubSubItemUntaxedSubItemTaxed()
+    public function testAddTaxedSubModifierUntaxedModifierTaxed()
     {
         $item = $this->addItem(1, 3);
 
-        $subItem = new \LukePOLO\LaraCart\CartItem('itemId', 'test sub item', 1, 10, [], true);
+        $modifier = new \LukePOLO\LaraCart\CartItem('itemId', 'test modifier', 1, 10, [], true);
 
-        $subItem->addModifier([
+        $modifier->addModifier([
             'items' => [
-                new \LukePOLO\LaraCart\CartItem('itemId', 'test sub sub item non taxable', 1, 10, [], false),
+                new \LukePOLO\LaraCart\CartItem('itemId', 'test sub modifier non taxable', 1, 10, [], false),
             ],
         ]);
 
         $item->addModifier([
             'items' => [
-                $subItem,
+                $modifier,
             ],
         ]);
 
@@ -237,7 +237,7 @@ class ModifiersTest extends Orchestra\Testbench\TestCase
     {
         $item = $this->addItem(2, 2, false);
 
-        $subItem = $item->addModifier([
+        $modifier = $item->addModifier([
             'size'    => 'XXL',
             'price'   => 2.50,
             'taxable' => true,
@@ -256,7 +256,7 @@ class ModifiersTest extends Orchestra\Testbench\TestCase
 
         $itemFound = $itemsFound[0];
 
-        $this->assertEquals($subItem->hash(), $itemFound->hash());
-        $this->assertEquals($subItem->size, $itemFound->size);
+        $this->assertEquals($modifier->hash(), $itemFound->hash());
+        $this->assertEquals($modifier->size, $itemFound->size);
     }
 }
