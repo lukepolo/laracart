@@ -19,7 +19,7 @@ trait CartHelpers
      */
     public static function formatMoney($amount, $locale = null, $internationalFormat = null)
     {
-        return new CartMoneyFormatter($amount, $locale, $internationalFormat);
+        return app(CartMoneyFormatter::CART_FORMATTER, [$amount, $locale, $internationalFormat]);
     }
 
     /**

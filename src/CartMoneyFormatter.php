@@ -8,6 +8,8 @@ namespace LukePOLO\LaraCart;
  */
 class CartMoneyFormatter
 {
+    const CART_FORMATTER = 'laracart_formatter';
+
     public $number;
     public $locale;
     public $internationalFormat;

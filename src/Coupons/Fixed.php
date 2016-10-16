@@ -45,7 +45,7 @@ class Fixed implements CouponContract
             return 0;
         }
 
-        return new CartMoneyFormatter($this->value);
+        return app(CartMoneyFormatter::CART_FORMATTER, [$this->value]);
     }
 
     /**
