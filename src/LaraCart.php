@@ -590,10 +590,10 @@ class LaraCart implements LaraCartContract
     {
         $total = $this->subTotal(false);
 
-        if($withFees) {
+        if ($withFees) {
             $total += $this->feeTotals(false);
         }
-        
+
         if ($withDiscount) {
             $total -= $this->totalDiscount(false);
         }
