@@ -39,8 +39,8 @@ class LaraCartServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->app->bind(CartMoneyFormatter::CART_FORMATTER, function($app, $parameters) {
-           return new CartMoneyFormatter(... $parameters);
+        $this->app->bind(CartMoneyFormatter::CART_FORMATTER, function ($app, $parameters) {
+            return new CartMoneyFormatter(...$parameters);
         });
 
         $this->app->singleton(LaraCart::SERVICE, function ($app) {
