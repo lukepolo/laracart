@@ -35,10 +35,12 @@ class CartFee
     /**
      * Gets the formatted amount.
      *
+     * @param bool $format
+     *
      * @return string
      */
-    public function getAmount()
+    public function getAmount($format = true)
     {
-        return LaraCart::formatMoney($this->amount, $this->locale, $this->internationalFormat);
+        return LaraCart::formatMoney($this->amount, $this->locale, $this->internationalFormat, $format);
     }
 }
