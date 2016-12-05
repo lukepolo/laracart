@@ -186,8 +186,7 @@ class CartItem
     {
         $total = $this->price + $this->subItemsTotal(false, $taxedItemsOnly);
 
-        if ($withTax)
-        {
+        if ($withTax) {
             $total += $this->tax * $total;
         }
 
@@ -216,8 +215,7 @@ class CartItem
             $total -= $this->getDiscount(false);
         }
 
-        if ($withTax)
-        {
+        if ($withTax) {
             $total += $this->tax();
         }
 
@@ -241,8 +239,7 @@ class CartItem
             $total += $subItem->price(false, $taxedItemsOnly);
         }
 
-        if ($withTax)
-        {
+        if ($withTax) {
             $total += $this->tax * $total;
         }
 
