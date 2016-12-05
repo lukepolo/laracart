@@ -151,6 +151,8 @@ class LaraCart implements LaraCartContract
 
         $this->session->save();
 
+        $this->session()->reflash();
+        
         $this->events->fire('laracart.update', $this->cart);
     }
 
