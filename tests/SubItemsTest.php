@@ -40,6 +40,7 @@ class SubItemsTest extends Orchestra\Testbench\TestCase
 
         $this->assertEquals('$2.50', $item->subItemsTotal());
         $this->assertEquals('2.50', $item->subItemsTotal(false));
+        $this->assertEquals('2.68', $item->subItemsTotal(false, false, true)); // with tax
     }
 
     /**
@@ -57,9 +58,12 @@ class SubItemsTest extends Orchestra\Testbench\TestCase
         ]);
 
         $this->assertEquals(3, $item->subItemsTotal(false));
+        $this->assertEquals(3.21, $item->subItemsTotal(false, false, true)); // with tax
 
         $this->assertEquals(14, $item->subTotal(false));
+        $this->assertEquals(14.98, $item->subTotal(false, true, false, true)); // with tax
         $this->assertEquals(14, $item->price(false));
+        $this->assertEquals(14.98, $item->price(false, false, true)); // with tax
     }
 
     /**
@@ -84,9 +88,12 @@ class SubItemsTest extends Orchestra\Testbench\TestCase
         ]);
 
         $this->assertEquals(3, $item->subItemsTotal(false));
+        $this->assertEquals(3.21, $item->subItemsTotal(false, false, true)); // with tax
 
         $this->assertEquals(14, $item->subTotal(false));
+        $this->assertEquals(14.98, $item->subTotal(false, true, false, true)); // with tax
         $this->assertEquals(14, $item->price(false));
+        $this->assertEquals(14.98, $item->price(false, false, true)); // with tax
     }
 
     /**

@@ -583,6 +583,8 @@ class LaraCart implements LaraCartContract
      *
      * @param bool $format
      * @param bool $withDiscount
+     * @param bool $withTax
+     * @param bool $withFees
      *
      * @return string
      */

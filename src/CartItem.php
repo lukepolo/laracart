@@ -178,13 +178,21 @@ class CartItem
      *
      * @param bool $format
      * @param bool $taxedItemsOnly
+     * @param bool $withTax
      *
      * @return string
      */
-    public function price($format = true, $taxedItemsOnly = false)
+    public function price($format = true, $taxedItemsOnly = false, $withTax = false)
     {
+        $total = $this->price + $this->subItemsTotal(false, $taxedItemsOnly);
+
+        if ($withTax)
+        {
+            $total += $this->tax * $total;
+        }
+
         return LaraCart::formatMoney(
-            $this->price + $this->subItemsTotal(false, $taxedItemsOnly),
+            $total,
             $this->locale,
             $this->internationalFormat, $format
         );
@@ -196,15 +204,21 @@ class CartItem
      * @param bool $format
      * @param bool $withDiscount
      * @param bool $taxedItemsOnly
+     * @param bool $withTax
      *
      * @return string
      */
-    public function subTotal($format = true, $withDiscount = true, $taxedItemsOnly = false)
+    public function subTotal($format = true, $withDiscount = true, $taxedItemsOnly = false, $withTax = false)
     {
         $total = $this->price(false, $taxedItemsOnly) * $this->qty;
 
         if ($withDiscount) {
             $total -= $this->getDiscount(false);
+        }
+
+        if ($withTax)
+        {
+            $total += $this->tax();
         }
 
         return LaraCart::formatMoney($total, $this->locale, $this->internationalFormat, $format);
@@ -215,15 +229,21 @@ class CartItem
      *
      * @param bool $format
      * @param bool $taxedItemsOnly
+     * @param bool $withTax
      *
      * @return string
      */
-    public function subItemsTotal($format = true, $taxedItemsOnly = false)
+    public function subItemsTotal($format = true, $taxedItemsOnly = false, $withTax = false)
     {
         $total = 0;
 
         foreach ($this->subItems as $subItem) {
             $total += $subItem->price(false, $taxedItemsOnly);
+        }
+
+        if ($withTax)
+        {
+            $total += $this->tax * $total;
         }
 
         return LaraCart::formatMoney($total, $this->locale, $this->internationalFormat, $format);
