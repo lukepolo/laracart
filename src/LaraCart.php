@@ -149,6 +149,8 @@ class LaraCart implements LaraCartContract
             $this->authManager->user()->save();
         }
 
+        $this->session->reflash();
+
         $this->session->save();
 
         $this->events->fire('laracart.update', $this->cart);
@@ -583,12 +585,18 @@ class LaraCart implements LaraCartContract
      *
      * @param bool $format
      * @param bool $withDiscount
+     * @param bool $withTax
+     * @param bool $withFees
      *
      * @return string
      */
-    public function total($format = true, $withDiscount = true, $withTax = true)
+    public function total($format = true, $withDiscount = true, $withTax = true, $withFees = true)
     {
-        $total = $this->subTotal(false) + $this->feeTotals(false);
+        $total = $this->subTotal(false);
+
+        if ($withFees) {
+            $total += $this->feeTotals(false);
+        }
 
         if ($withDiscount) {
             $total -= $this->totalDiscount(false);
