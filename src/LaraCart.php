@@ -223,8 +223,8 @@ class LaraCart implements LaraCartContract
             $itemID = $itemModel[$bindings[\LukePOLO\LaraCart\CartItem::ITEM_ID]];
             $name = $itemModel[$bindings[\LukePOLO\LaraCart\CartItem::ITEM_NAME]];
 
-            if (empty($qty = $name) || !is_int($name)) {
-                $qty = 1;
+            if (is_int($name)) {
+                $qty = $name;
             }
 
             $price = $itemModel[$bindings[\LukePOLO\LaraCart\CartItem::ITEM_PRICE]];
