@@ -223,12 +223,12 @@ class LaraCart implements LaraCartContract
             $bindings = config('laracart.item_model_bindings');
 
             $itemID = $itemModel[$bindings[\LukePOLO\LaraCart\CartItem::ITEM_ID]];
-            $name = $itemModel[$bindings[\LukePOLO\LaraCart\CartItem::ITEM_NAME]];
 
             if (is_int($name)) {
                 $qty = $name;
             }
 
+            $name = $itemModel[$bindings[\LukePOLO\LaraCart\CartItem::ITEM_NAME]];
             $price = $itemModel[$bindings[\LukePOLO\LaraCart\CartItem::ITEM_PRICE]];
 
             $options = array_merge($options,
