@@ -36,5 +36,6 @@
     "psr-4": {
       "LukePOLO\\LaraCart\\Tests\\": "tests"
     }
-  }
+  },
+  "minimum-stability": "stable"
 }
