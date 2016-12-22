@@ -546,10 +546,11 @@ class LaraCart implements LaraCartContract
      * Gets the total tax for the cart.
      *
      * @param bool|true $format
+     * @param bool|true $withFees
      *
      * @return string
      */
-    public function taxTotal($format = true)
+    public function taxTotal($format = true, $withFees = true)
     {
         $totalTax = 0;
         $discounted = 0;
@@ -571,9 +572,11 @@ class LaraCart implements LaraCartContract
             }
         }
 
-        foreach ($this->getFees() as $fee) {
-            if ($fee->taxable) {
-                $totalTax += $fee->amount * $fee->tax;
+        if ($withFees) {
+            foreach ($this->getFees() as $fee) {
+                if ($fee->taxable) {
+                    $totalTax += $fee->amount * $fee->tax;
+                }
             }
         }
 
