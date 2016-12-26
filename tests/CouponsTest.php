@@ -251,6 +251,29 @@ class CouponsTest extends Orchestra\Testbench\TestCase
     }
 
     /**
+     * Test cart percentage coupon when items are taxable
+     */
+    public function testCouponsTaxableItem()
+    {
+        $this->addItem(1, 1);
+
+        $percentCoupon = new LukePOLO\LaraCart\Coupons\Percentage('20%OFF', '.2');
+
+        $this->laracart->addCoupon($percentCoupon);
+
+        $this->assertEquals($percentCoupon, $this->laracart->findCoupon('20%OFF'));
+
+        $this->assertEquals('20%', $percentCoupon->displayValue());
+        $this->assertEquals('0.20', $percentCoupon->discount());
+
+        $this->app['config']->set('laracart.discountTaxable', false);
+
+        $this->assertEquals('0.07', $this->laracart->taxTotal(false));
+
+        $this->assertEquals('0.87', $this->laracart->total(false));
+    }
+
+    /**
      * Test if we can remove all coupons from the cart.
      */
     public function testRemoveCoupons()
