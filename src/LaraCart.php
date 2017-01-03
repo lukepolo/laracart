@@ -564,7 +564,8 @@ class LaraCart implements LaraCartContract
                     $itemPrice = $item->subTotal(false);
 
                     if (($discounted + $itemPrice) > $totalDiscount) {
-                        $totalTax += $item->tax($totalDiscount - $discounted);
+                        $totalTax += config('laracart.discountTaxable', true) ?
+                            $item->tax($totalDiscount - $discounted) : $item->tax();
                     }
 
                     $discounted += $itemPrice;
