@@ -85,7 +85,7 @@ class CartItem
 
             ksort($cartItemArray['options']);
 
-            $this->itemHash = app(LaraCart::HASH, $cartItemArray);
+            $this->itemHash = app(LaraCart::HASH)->hash($cartItemArray);
         } elseif ($force || empty($this->itemHash) === true) {
             $this->itemHash = app(LaraCart::RANHASH);
         }

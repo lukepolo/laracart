@@ -16,7 +16,7 @@ use LukePOLO\LaraCart\Exceptions\ModelNotFound;
 class LaraCart implements LaraCartContract
 {
     const SERVICE = 'laracart';
-    const HASH = 'generateCartHash';
+    const HASH = LaraCartHasher::class;
     const RANHASH = 'generateRandomCartItemHash';
 
     protected $events;
@@ -89,7 +89,7 @@ class LaraCart implements LaraCartContract
     {
         if (config('laracart.cross_devices', false) && $this->authManager->check()) {
             if (!empty($cartSessionID = $this->authManager->user()->cart_session_id)) {
-                $this->session->putId($cartSessionID);
+                $this->session->setId($cartSessionID);
                 $this->session->start();
             }
         }
@@ -666,7 +666,7 @@ class LaraCart implements LaraCartContract
      *
      * @return string
      */
-    public static function formatMoney($number, $locale = null, $internationalFormat = null, $format = true)
+    public static function formatMoney($number, $locale = null, $internationalFormat = false, $format = true)
     {
         $number = number_format($number, 2, '.', '');
 

@@ -18,14 +18,15 @@
   ],
   "require": {
     "php": ">=5.6",
-    "illuminate/support": "5.1.* || 5.2.* || 5.3.* || 5.4.*"
+    "illuminate/support": "5.4.*",
+    "illuminate/session": "5.4.*",
+    "illuminate/events": "5.4.*"
   },
   "require-dev": {
     "phpunit/phpunit": "4.*",
-    "orchestra/testbench": "~3.1",
-    "psr/log": "1.0.0",
+    "orchestra/testbench": "~3.3",
     "codeclimate/php-test-reporter": "dev-master",
-    "mockery/mockery": "^0.9.4"
+    "mockery/mockery": "^0.9.7"
   },
   "autoload": {
     "psr-4": {
@@ -37,5 +38,6 @@
       "LukePOLO\\LaraCart\\Tests\\": "tests"
     }
   },
-  "minimum-stability": "stable"
+  "prefer-stable" : true,
+  "minimum-stability": "dev"
 }

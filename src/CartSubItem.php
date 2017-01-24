@@ -33,7 +33,7 @@ class CartSubItem
             array_set($this->options, $option, $value);
         }
 
-        $this->itemHash = app(LaraCart::HASH, $this->options);
+        $this->itemHash = app(LaraCart::HASH)->hash($this->options);
     }
 
     /**
