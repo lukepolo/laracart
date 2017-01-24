@@ -68,12 +68,12 @@ class LaraCart implements LaraCartContract
     {
         $this->get($instance);
 
-        $this->session->set($this->prefix.'.instance', $instance);
+        $this->session->put($this->prefix.'.instance', $instance);
 
         if (!in_array($instance, $this->getInstances())) {
             $this->session->push($this->prefix.'.instances', $instance);
         }
-        $this->events->fire('laracart.new');
+        $this->events->dispatch('laracart.new');
 
         return $this;
     }
@@ -89,7 +89,7 @@ class LaraCart implements LaraCartContract
     {
         if (config('laracart.cross_devices', false) && $this->authManager->check()) {
             if (!empty($cartSessionID = $this->authManager->user()->cart_session_id)) {
-                $this->session->setId($cartSessionID);
+                $this->session->putId($cartSessionID);
                 $this->session->start();
             }
         }
@@ -142,7 +142,7 @@ class LaraCart implements LaraCartContract
      */
     public function update()
     {
-        $this->session->set($this->prefix.'.'.$this->cart->instance, $this->cart);
+        $this->session->put($this->prefix.'.'.$this->cart->instance, $this->cart);
 
         if (config('laracart.cross_devices', false) && $this->authManager->check()) {
             $this->authManager->user()->cart_session_id = $this->session->getId();
@@ -153,7 +153,7 @@ class LaraCart implements LaraCartContract
 
         $this->session->save();
 
-        $this->events->fire('laracart.update', $this->cart);
+        $this->events->dispatch('laracart.update', $this->cart);
     }
 
     /**
@@ -269,7 +269,7 @@ class LaraCart implements LaraCartContract
             $this->cart->items[] = $cartItem;
         }
 
-        $this->events->fire('laracart.addItem', $cartItem);
+        $this->events->dispatch('laracart.addItem', $cartItem);
 
         return $cartItem;
     }
@@ -399,7 +399,7 @@ class LaraCart implements LaraCartContract
             }
         }
 
-        $this->events->fire('laracart.removeItem', $item);
+        $this->events->dispatch('laracart.removeItem', $item);
 
         $this->update();
     }
@@ -413,7 +413,7 @@ class LaraCart implements LaraCartContract
 
         $this->update();
 
-        $this->events->fire('laracart.empty', $this->cart->instance);
+        $this->events->dispatch('laracart.empty', $this->cart->instance);
     }
 
     /**
@@ -425,7 +425,7 @@ class LaraCart implements LaraCartContract
 
         $this->session->forget($this->prefix.'.'.$instance);
 
-        $this->events->fire('laracart.destroy', $instance);
+        $this->events->dispatch('laracart.destroy', $instance);
 
         $this->cart = new Cart($instance);
 

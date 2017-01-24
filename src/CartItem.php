@@ -90,7 +90,7 @@ class CartItem
             $this->itemHash = app(LaraCart::RANHASH);
         }
 
-        app('events')->fire(
+        app('events')->dispatch(
             'laracart.updateItem', [
                 'item'    => $this,
                 'newHash' => $this->itemHash,
