@@ -34,7 +34,7 @@ class FeesTest extends Orchestra\Testbench\TestCase
             $fee,
             true,
             [
-                'tax' => $tax
+                'tax' => $tax,
             ]
         );
     }
@@ -66,7 +66,6 @@ class FeesTest extends Orchestra\Testbench\TestCase
 
         $this->assertEquals(100, $fee->getAmount(false, false));
         $this->assertEquals(121, $fee->getAmount(false, true));
-
     }
 
     /**

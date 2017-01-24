@@ -41,15 +41,11 @@ class LaraCartServiceProvider extends ServiceProvider
     {
         $this->app->singleton(LaraCart::SERVICE, function ($app) {
             return new LaraCart($app['session'], $app['events'], $app['auth']);
-        }
-        );
+        });
 
-        $this->app->bind(
-            LaraCart::HASH,
-            function ($app, $data) {
-                return md5(json_encode($data));
-            }
-        );
+        $this->app->singleton(LaraCart::HASH, function () {
+            return new LaraCartHasher();
+        });
 
         $this->app->bind(
             LaraCart::RANHASH,
