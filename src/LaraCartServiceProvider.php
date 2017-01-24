@@ -43,10 +43,9 @@ class LaraCartServiceProvider extends ServiceProvider
             return new LaraCart($app['session'], $app['events'], $app['auth']);
         });
 
-        $this->app->singleton(LaraCart::HASH, function() {
+        $this->app->singleton(LaraCart::HASH, function () {
             return new LaraCartHasher();
         });
-
 
         $this->app->bind(
             LaraCart::RANHASH,
