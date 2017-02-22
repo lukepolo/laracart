@@ -37,6 +37,7 @@ class Fixed implements CouponContract
      * @param bool $discountOnFees
      * @param $throwErrors boolean this allows us to capture errors in our code if we wish,
      * that way we can spit out why the coupon has failed
+     *
      * @return string
      */
     public function discount($throwErrors = false, $discountOnFees = false)

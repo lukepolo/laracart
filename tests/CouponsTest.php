@@ -334,7 +334,7 @@ class CouponsTest extends Orchestra\Testbench\TestCase
     }
 
     /**
-     * Testing discount when total is greater than applied coupon value
+     * Testing discount when total is greater than applied coupon value.
      */
     public function testFixedCouponWithTotalLessThanCoupon()
     {
@@ -350,7 +350,7 @@ class CouponsTest extends Orchestra\Testbench\TestCase
     }
 
     /**
-     * Testing discount when total with fees is greater than applied coupon value
+     * Testing discount when total with fees is greater than applied coupon value.
      */
     public function testFixedCouponWithFeeWithTotalLessThanCoupon()
     {
