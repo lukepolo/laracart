@@ -332,4 +332,18 @@ class CouponsTest extends Orchestra\Testbench\TestCase
         $this->assertEquals('Sorry, you must have at least 100 dollars!', $fixedCoupon->getMessage());
         $this->assertEquals('Sorry, you must have at least 100 dollars!', $fixedCoupon->getFailedMessage());
     }
+
+    public function testFixedCouponWithTotalLessThanCoupon()
+    {
+        $fixedCoupon = new LukePOLO\LaraCart\Coupons\Fixed('500 OFF', 500);
+
+        $this->laracart->addCoupon($fixedCoupon);
+
+        $this->assertEquals('0', $fixedCoupon->discount());
+
+        $this->addItem(1, 400);
+
+        $this->assertEquals('400', $fixedCoupon->discount());
+
+    }
 }
