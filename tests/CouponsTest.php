@@ -364,6 +364,8 @@ class CouponsTest extends Orchestra\Testbench\TestCase
 
         $this->laracart->addFee('testFee', 150);
 
-        $this->assertEquals('500', $fixedCoupon->discount(false, true));
+        $this->app['config']->set('laracart.discountOnFees', true);
+
+        $this->assertEquals('500', $fixedCoupon->discount());
     }
 }
