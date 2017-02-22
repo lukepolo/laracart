@@ -333,6 +333,9 @@ class CouponsTest extends Orchestra\Testbench\TestCase
         $this->assertEquals('Sorry, you must have at least 100 dollars!', $fixedCoupon->getFailedMessage());
     }
 
+    /**
+     * Testing discount when total is greater than applied coupon value.
+     */
     public function testFixedCouponWithTotalLessThanCoupon()
     {
         $fixedCoupon = new LukePOLO\LaraCart\Coupons\Fixed('500 OFF', 500);
@@ -344,5 +347,25 @@ class CouponsTest extends Orchestra\Testbench\TestCase
         $this->addItem(1, 400);
 
         $this->assertEquals('400', $fixedCoupon->discount());
+    }
+
+    /**
+     * Testing discount when total with fees is greater than applied coupon value.
+     */
+    public function testFixedCouponWithFeeWithTotalLessThanCoupon()
+    {
+        $fixedCoupon = new LukePOLO\LaraCart\Coupons\Fixed('500 OFF', 500);
+
+        $this->laracart->addCoupon($fixedCoupon);
+
+        $this->assertEquals('0', $fixedCoupon->discount());
+
+        $this->addItem(1, 400);
+
+        $this->laracart->addFee('testFee', 150);
+
+        $this->app['config']->set('laracart.discountOnFees', true);
+
+        $this->assertEquals('500', $fixedCoupon->discount());
     }
 }
