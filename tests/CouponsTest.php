@@ -344,6 +344,5 @@ class CouponsTest extends Orchestra\Testbench\TestCase
         $this->addItem(1, 400);
 
         $this->assertEquals('400', $fixedCoupon->discount());
-
     }
 }
