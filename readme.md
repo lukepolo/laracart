@@ -1,4 +1,4 @@
-## LaraCart 1.1.0 - Laravel Shopping Cart Package
+## LaraCart 1.2.0 - Laravel Shopping Cart Package
 [![Build Status](https://travis-ci.org/lukepolo/laracart.svg?branch=master)](https://travis-ci.org/lukepolo/laracart) 
 [![Latest Stable Version](https://poser.pugx.org/lukepolo/laracart/v/stable)](https://packagist.org/packages/lukepolo/laracart)
 [![Test Coverage](https://codeclimate.com/github/lukepolo/laracart/badges/coverage.svg)](https://codeclimate.com/github/lukepolo/laracart/coverage)
@@ -21,7 +21,8 @@
 
  Laravel  | laracart
 :---------|:----------
- 5.x      | 1.x
+ 5.x      | .* - 1.1.*
+ 5.4      | 1.2.*
 
 
 ## Installation
@@ -31,7 +32,7 @@ Install the package through [Composer](http://getcomposer.org/). Edit your proje
     {
 	    "require": {
 	        ........,
-	        "lukepolo/laracart": "1.1.*"
+	        "lukepolo/laracart": "1.2.*"
 	    }
     }
 
