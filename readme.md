@@ -1,4 +1,4 @@
-## LaraCart - Laravel Shopping Cart Package
+## LaraCart - Laravel Shopping Cart Package (<a href="http://laracart.lukepolo.com/">http://laracart.lukepolo.com</a>)
 [![Build Status](https://travis-ci.org/lukepolo/laracart.svg?branch=master)](https://travis-ci.org/lukepolo/laracart) 
 [![Latest Stable Version](https://poser.pugx.org/lukepolo/laracart/v/stable)](https://packagist.org/packages/lukepolo/laracart)
 [![Test Coverage](https://codeclimate.com/github/lukepolo/laracart/badges/coverage.svg)](https://codeclimate.com/github/lukepolo/laracart/coverage)
@@ -54,7 +54,7 @@ Copy over the configuration file by running the command:
     php artisan vendor:publish --provider='LukePOLO\LaraCart\LaraCartServiceProvider' 
 ```
 
-###Documentation
+### Documentation
 <a href="http://laracart.lukepolo.com/">http://laracart.lukepolo.com</a>
 
 To Contribute to documentation use this repo : 
