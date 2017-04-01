@@ -1,4 +1,5 @@
 <?php
+
 use LukePOLO\LaraCart\Cart;
 
 /**

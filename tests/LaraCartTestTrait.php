@@ -16,7 +16,7 @@ trait LaraCartTestTrait
     {
         parent::setUp();
 
-        /** @var Cart laracart */
+        /* @var Cart laracart */
         $this->laracart = new \LukePOLO\LaraCart\LaraCart($this->session, $this->events, $this->authManager);
     }
 
