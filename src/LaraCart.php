@@ -367,18 +367,20 @@ class LaraCart implements LaraCartContract
      * @param $key
      * @param $value
      *
+     * @return CartItem|null
      * @throws Exceptions\InvalidPrice
      * @throws Exceptions\InvalidQuantity
-     *
-     * @return CartItem
      */
     public function updateItem($itemHash, $key, $value)
     {
         if (empty($item = $this->getItem($itemHash)) === false) {
+
+            if($key == 'qty' && $value == 0) {
+                return $this->removeItem($itemHash);
+            }
+
             $item->$key = $value;
         }
-
-        $item->generateHash();
 
         $this->update();
 

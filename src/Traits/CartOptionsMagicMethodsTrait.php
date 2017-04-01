@@ -44,7 +44,7 @@ trait CartOptionsMagicMethodsTrait
     {
         switch ($option) {
             case CartItem::ITEM_QTY:
-                if (!is_numeric($value) || $value < 0) {
+                if (!is_numeric($value) || $value <= 0) {
                     throw new InvalidQuantity('The quantity must be a valid number');
                 }
                 break;

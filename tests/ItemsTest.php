@@ -1,4 +1,5 @@
 <?php
+use LukePOLO\LaraCart\Cart;
 
 /**
  * Class ItemsTest.
@@ -42,6 +43,10 @@ class ItemsTest extends Orchestra\Testbench\TestCase
         $this->laracart->decrement($itemHash);
 
         $this->assertEquals(1, $this->laracart->count());
+
+        $this->laracart->decrement($itemHash);
+
+        $this->assertEquals(0, $this->laracart->count());
     }
 
     /**
@@ -391,5 +396,16 @@ class ItemsTest extends Orchestra\Testbench\TestCase
         $this->assertEquals($item1->getHash(), $result[0]->getHash());
 
         $this->assertCount(0, $this->laracart->find(['name' => 'My Item', 'key2' => 'nomatch']));
+    }
+
+    public function testQtyUpdate()
+    {
+        $item = $this->addItem();
+
+        $this->assertEquals(1, $this->laracart->count(false));
+
+        $this->laracart->updateItem($item->getHash(), 'qty', 0);
+
+        $this->assertEquals(0, $this->laracart->count(false));
     }
 }

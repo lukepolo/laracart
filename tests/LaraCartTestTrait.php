@@ -2,6 +2,8 @@
 
 namespace LukePOLO\LaraCart\Tests;
 
+use LukePOLO\LaraCart\Cart;
+
 /**
  * Class LaraCartTestTrait.
  */
@@ -14,6 +16,7 @@ trait LaraCartTestTrait
     {
         parent::setUp();
 
+        /** @var Cart laracart */
         $this->laracart = new \LukePOLO\LaraCart\LaraCart($this->session, $this->events, $this->authManager);
     }
 
