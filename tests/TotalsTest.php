@@ -208,6 +208,5 @@ class TotalsTest extends Orchestra\Testbench\TestCase
         $item->enable();
 
         $this->assertEquals('1.07', $this->laracart->total(false));
-
     }
 }

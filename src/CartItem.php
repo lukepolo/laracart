@@ -187,7 +187,7 @@ class CartItem
     {
         $total = 0;
 
-        if($this->active) {
+        if ($this->active) {
             $total = $this->price + $this->subItemsTotal(false, $taxedItemsOnly);
 
             if ($withTax) {
