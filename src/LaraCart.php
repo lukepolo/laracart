@@ -327,14 +327,14 @@ class LaraCart implements LaraCartContract
             }
         }
 
-        switch(count($matches)) {
-            case 0 :
-                return null;
+        switch (count($matches)) {
+            case 0:
+                return;
                 break;
             case 1:
                 return $matches[0];
                 break;
-            default :
+            default:
                 return $matches;
         }
     }

@@ -411,7 +411,7 @@ class ItemsTest extends Orchestra\Testbench\TestCase
         $item->id = 123;
 
         $this->assertEquals($item, $this->laracart->find([
-            'id' => 123
+            'id' => 123,
         ]));
     }
 }
