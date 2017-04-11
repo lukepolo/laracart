@@ -313,10 +313,9 @@ class LaraCart implements LaraCartContract
     /**
      * Find items in the cart matching a data set.
      *
-     *
      * param $data
      *
-     * @return array
+     * @return array | CartItem | null
      */
     public function find($data)
     {
@@ -328,7 +327,16 @@ class LaraCart implements LaraCartContract
             }
         }
 
-        return $matches;
+        switch(count($matches)) {
+            case 0 :
+                return null;
+                break;
+            case 1:
+                return $matches[0];
+                break;
+            default :
+                return $matches;
+        }
     }
 
     /**
