@@ -194,4 +194,20 @@ class TotalsTest extends Orchestra\Testbench\TestCase
         $this->assertEquals('5.00', $this->laracart->subTotal(false, true));
         $this->assertEquals('8.14', $this->laracart->total(false));
     }
+
+    public function testActivateAndDeactivate()
+    {
+        $item = $this->addItem();
+
+        $this->assertEquals('1.07', $this->laracart->total(false));
+
+        $item->disable();
+
+        $this->assertEquals(0, $this->laracart->total(false));
+
+        $item->enable();
+
+        $this->assertEquals('1.07', $this->laracart->total(false));
+
+    }
 }

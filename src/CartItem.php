@@ -35,6 +35,7 @@ class CartItem
     public $locale;
     public $lineItem;
     public $discount = 0;
+    public $active = true;
     public $subItems = [];
     public $couponInfo = [];
     public $internationalFormat;
@@ -184,10 +185,14 @@ class CartItem
      */
     public function price($format = true, $taxedItemsOnly = false, $withTax = false)
     {
-        $total = $this->price + $this->subItemsTotal(false, $taxedItemsOnly);
+        $total = 0;
 
-        if ($withTax) {
-            $total += $this->tax * $total;
+        if($this->active) {
+            $total = $this->price + $this->subItemsTotal(false, $taxedItemsOnly);
+
+            if ($withTax) {
+                $total += $this->tax * $total;
+            }
         }
 
         return LaraCart::formatMoney(
@@ -338,5 +343,17 @@ class CartItem
         }
 
         return $matches;
+    }
+
+    public function disable()
+    {
+        $this->active = false;
+        app('laracart')->update();
+    }
+
+    public function enable()
+    {
+        $this->active = true;
+        app('laracart')->update();
     }
 }
