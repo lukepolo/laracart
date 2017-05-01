@@ -287,10 +287,10 @@ class CartItem
             $amountNotTaxable = $amountNotTaxable + ($this->price * $this->qty);
         }
 
-        if(config('laracart.tax_by_item')) {
+        if (config('laracart.tax_by_item')) {
             $itemCount = 0;
             $totalTax = 0;
-            while($itemCount < $this->qty) {
+            while ($itemCount < $this->qty) {
                 $totalTax += round($this->price * $this->tax, 2);
                 $itemCount++;
             }
