@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1493649329">
-  <project timestamp="1493649329">
+<coverage generated="1493649415">
+  <project timestamp="1493649415">
     <package name="LukePOLO\LaraCart">
       <file name="/Users/LukePOLO/PhpstormProjects/laracart/src/Cart.php">
         <class name="Cart" namespace="LukePOLO\LaraCart">
