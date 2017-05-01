@@ -427,4 +427,23 @@ class ItemsTest extends Orchestra\Testbench\TestCase
 
         $this->assertEquals(20.00, $this->laracart->total(false));
     }
+
+    public function testSeperateTaxationTotal()
+    {
+        $this->app['config']->set('laracart.tax_by_item', true);
+
+        $this->addItem(1, 8.33, 1, [
+            'tax' => '.2',
+        ]);
+
+        $this->addItem(1, 8.33, 1, [
+            'tax' => '.2',
+            'some' => 'test',
+            'name' => '12313'
+        ]);
+
+
+
+        $this->assertEquals(20.00, $this->laracart->total(false));
+    }
 }
