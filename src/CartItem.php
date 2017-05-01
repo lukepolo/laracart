@@ -287,8 +287,18 @@ class CartItem
             $amountNotTaxable = $amountNotTaxable + ($this->price * $this->qty);
         }
 
-        return $this->tax * ($this->subTotal(false, config('laracart.discountTaxable', true),
-                true) - $amountNotTaxable);
+        if(config('laracart.tax_by_item')) {
+            $itemCount = 0;
+            $totalTax = 0;
+            while($itemCount < $this->qty) {
+                $totalTax += round($this->price * $this->tax, 2);
+                $itemCount++;
+            }
+
+            return $totalTax - $amountNotTaxable;
+        }
+
+        return $this->tax * ($this->subTotal(false, config('laracart.discountTaxable', true), true) - $amountNotTaxable);
     }
 
     /**

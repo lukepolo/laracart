@@ -414,4 +414,18 @@ class ItemsTest extends Orchestra\Testbench\TestCase
             'id' => 123,
         ]));
     }
+
+    public function testTaxationTotal()
+    {
+        $this->addItem(2, 8.33,1, [
+            'tax' => '.2'
+        ]);
+
+        $this->assertEquals(19.99, $this->laracart->total(false));
+
+        $this->app['config']->set('laracart.tax_by_item', true);
+
+        $this->assertEquals(20.00, $this->laracart->total(false));
+
+    }
 }
