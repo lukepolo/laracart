@@ -437,12 +437,10 @@ class ItemsTest extends Orchestra\Testbench\TestCase
         ]);
 
         $this->addItem(1, 8.33, 1, [
-            'tax' => '.2',
+            'tax'  => '.2',
             'some' => 'test',
-            'name' => '12313'
+            'name' => '12313',
         ]);
-
-
 
         $this->assertEquals(20.00, $this->laracart->total(false));
     }
