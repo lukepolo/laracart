@@ -53,7 +53,7 @@ return [
     |--------------------------------------------------------------------------
     | Calculate tax per item, rather than subtotal
     | https://github.com/lukepolo/laracart/issues/180
-
+    |
     | This will vary , please investigate to follow the rules of your local laws
     | https://money.stackexchange.com/questions/15051/sales-tax-rounded-then-totaled-or-totaled-then-rounded
     |--------------------------------------------------------------------------
