@@ -97,7 +97,6 @@ class TotalsTest extends Orchestra\Testbench\TestCase
         $this->addItem();
         $item = $this->addItem(1, 2, false);
 
-
         // only 1 dollar is taxable!
         $this->assertEquals('3.07', $this->laracart->total(false));
 

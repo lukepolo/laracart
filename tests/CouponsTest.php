@@ -228,7 +228,7 @@ class CouponsTest extends Orchestra\Testbench\TestCase
     }
 
     /**
-     * Test cart percentage coupon when items are not taxable
+     * Test cart percentage coupon when items are not taxable.
      */
     public function testCouponsNotTaxableItem()
     {
@@ -251,7 +251,7 @@ class CouponsTest extends Orchestra\Testbench\TestCase
     }
 
     /**
-     * Test cart percentage coupon when items are taxable
+     * Test cart percentage coupon when items are taxable.
      */
     public function testCouponsTaxableItem()
     {
