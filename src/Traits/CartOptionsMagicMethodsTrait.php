@@ -54,8 +54,8 @@ trait CartOptionsMagicMethodsTrait
                 }
                 break;
             case CartItem::ITEM_TAX:
-                if (!empty($value) && (!is_numeric($value) || $value > 1)) {
-                    throw new InvalidTaxableValue('The tax must be a float less than 1');
+                if (!empty($value) && (!is_numeric($value))) {
+                    throw new InvalidTaxableValue('The tax must be a number');
                 }
                 break;
             case CartItem::ITEM_TAXABLE:

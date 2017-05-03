@@ -31,10 +31,10 @@ class MagicFunctionsTest extends Orchestra\Testbench\TestCase
         $this->assertEquals(123, $item->test_option);
 
         try {
-            $item->tax = 2;
+            $item->tax = 'not_a_number';
             $this->setExpectedException(InvalidTaxableValue::class);
         } catch (InvalidTaxableValue $e) {
-            $this->assertEquals('The tax must be a float less than 1', $e->getMessage());
+            $this->assertEquals('The tax must be a number', $e->getMessage());
         }
 
         try {
