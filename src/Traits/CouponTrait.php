@@ -142,7 +142,7 @@ trait CouponTrait
      */
     public function checkValidTimes(Carbon $startDate, Carbon $endDate, $throwErrors = true)
     {
-        if (Carbon::now()->between($startDate, $endDate)) {
+        if (Carbon::now()->between($startDate, $endDate, false)) {
             return true;
         } else {
             if ($throwErrors) {
