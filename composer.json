@@ -39,6 +39,16 @@
       "LukePOLO\\LaraCart\\Tests\\": "tests"
     }
   },
+  "extra": {
+      "laravel": {
+          "providers": [
+              "LukePOLO\\LaraCart\\LaraCartServiceProvider"
+          ],
+          "aliases": {
+              "LaraCart": "LukePOLO\\LaraCart\\Facades\\LaraCart"
+          }
+      }
+  }
   "prefer-stable" : true,
   "minimum-stability": "dev"
 }
