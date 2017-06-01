@@ -48,7 +48,7 @@
               "LaraCart": "LukePOLO\\LaraCart\\Facades\\LaraCart"
           }
       }
-  }
+  },
   "prefer-stable" : true,
   "minimum-stability": "dev"
 }
