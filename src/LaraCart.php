@@ -402,16 +402,18 @@ class LaraCart implements LaraCartContract
      */
     public function removeItem($itemHash)
     {
-        foreach ($this->cart->items as $itemKey => $item) {
-            if ($item->getHash() == $itemHash) {
-                unset($this->cart->items[$itemKey]);
-                break;
+        if (empty($this->cart->items) === false) {
+            foreach ($this->cart->items as $itemKey => $item) {
+                if ($item->getHash() == $itemHash) {
+                    unset($this->cart->items[$itemKey]);
+                    break;
+                }
             }
+
+            $this->events->dispatch('laracart.removeItem', $item);
+
+            $this->update();
         }
-
-        $this->events->dispatch('laracart.removeItem', $item);
-
-        $this->update();
     }
 
     /**
