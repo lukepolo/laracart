@@ -709,7 +709,6 @@ class LaraCart implements LaraCartContract
         foreach ($this->getFees() as $fee) {
             $feeTotal += $fee->amount;
 
-
             if ($withTax && $fee->taxable && $fee->tax > 0) {
                 $feeTotal += $fee->amount * $fee->tax;
             }
