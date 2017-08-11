@@ -29,7 +29,7 @@ class ItemRelationTest extends Orchestra\Testbench\TestCase
             $item->getModel();
             $this->setExpectedException(ModelNotFound::class);
         } catch (ModelNotFound $e) {
-            $this->assertEquals('Could not find the item model for fail', $e->getMessage());
+            $this->assertEquals('Couasdfasdfasfdadsfasdfld not find the item model for fail', $e->getMessage());
         }
     }
 

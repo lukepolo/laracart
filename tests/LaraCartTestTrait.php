@@ -3,12 +3,16 @@
 namespace LukePOLO\LaraCart\Tests;
 
 use LukePOLO\LaraCart\Cart;
+use LukePOLO\LaraCart\LaraCart;
 
 /**
  * Class LaraCartTestTrait.
  */
 trait LaraCartTestTrait
 {
+    /** @var  LaraCart */
+    public $laracart;
+
     /**
      * Setup the test functions with laracart.
      */

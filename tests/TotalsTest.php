@@ -209,4 +209,21 @@ class TotalsTest extends Orchestra\Testbench\TestCase
 
         $this->assertEquals('1.07', $this->laracart->total(false));
     }
+
+    public function testTotalWithoutFees()
+    {
+        $item = $this->addItem(5);
+
+        $this->assertEquals('5.35', $this->laracart->total(false));
+
+        $this->laracart->addFee('test', 1, true);
+
+        $this->assertEquals('6.49', $this->laracart->total(false));
+
+        $this->assertEquals('6.00', $this->laracart->total(false, true, false));
+
+        $this->assertEquals('5.35', $this->laracart->total(false, true, true, false));
+
+        $this->assertEquals('5.00', $this->laracart->total(false, true, false, false));
+    }
 }

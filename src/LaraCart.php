@@ -609,7 +609,7 @@ class LaraCart implements LaraCartContract
         $total = $this->subTotal(false);
 
         if ($withFees) {
-            $total += $this->feeTotals(false);
+            $total += $this->feeTotals(false, $withTax);
         }
 
         if ($withDiscount) {
@@ -617,7 +617,7 @@ class LaraCart implements LaraCartContract
         }
 
         if ($withTax) {
-            $total += $this->taxTotal(false);
+            $total += $this->taxTotal(false, $withFees);
         }
 
         return $this->formatMoney($total, null, null, $format);
@@ -698,6 +698,7 @@ class LaraCart implements LaraCartContract
      * Gets all the fee totals.
      *
      * @param bool $format
+     * @param bool $withTax
      *
      * @return string
      */
