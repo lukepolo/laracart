@@ -22,7 +22,8 @@
  Laravel  | laracart
 :---------|:----------
  5.x      | .* - 1.1.*
- 5.4      | 1.2.*
+ 5.4+     | 1.3.*
+ 
 
 
 ## Installation
@@ -36,7 +37,7 @@ Install the package through [Composer](http://getcomposer.org/). Edit your proje
 	    }
     }
 
-Include Service Providers / Facade in `app/config/app.php`:
+If using 5.4 you will need to include the service providers / facade in `app/config/app.php`:
 
 ```php
 	LukePOLO\LaraCart\LaraCartServiceProvider::class,
