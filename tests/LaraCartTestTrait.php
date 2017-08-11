@@ -10,7 +10,7 @@ use LukePOLO\LaraCart\LaraCart;
  */
 trait LaraCartTestTrait
 {
-    /** @var  LaraCart */
+    /** @var LaraCart */
     public $laracart;
 
     /**
