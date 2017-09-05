@@ -134,6 +134,7 @@ class CouponsTest extends Orchestra\Testbench\TestCase
         $this->assertEquals(true, $coupon->checkMinAmount(0));
         $this->assertEquals(false, $coupon->checkMinAmount(100, false));
         $this->assertEquals(1, $coupon->addOptions);
+
         try {
             $coupon->checkMinAmount(100);
             $this->setExpectedException(\LukePOLO\LaraCart\Exceptions\CouponException::class);
