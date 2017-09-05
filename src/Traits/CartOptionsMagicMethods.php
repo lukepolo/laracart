@@ -69,7 +69,6 @@ trait CartOptionsMagicMethods
 
         array_set($this->options, $option, $value);
 
-
         $this->hash = $this->generateHash($this);
     }
 

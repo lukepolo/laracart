@@ -108,7 +108,6 @@ class ModifiersTest extends Orchestra\Testbench\TestCase
 
         $this->containsOnlyInstancesOf(LukePOLO\LaraCart\CartItem::class, $modifier->items);
 
-
         $this->assertEquals('$12.50', $modifier->price());
     }
 
@@ -130,7 +129,6 @@ class ModifiersTest extends Orchestra\Testbench\TestCase
         $this->assertInternalType('array', $modifier->items);
 
         $this->containsOnlyInstancesOf(LukePOLO\LaraCart\CartItem::class, $modifier->items);
-
 
         $this->assertEquals('$12.50', $modifier->price());
 

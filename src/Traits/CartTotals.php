@@ -65,7 +65,6 @@ trait CartTotals
                 } else {
                     $itemPrice = $item->subTotal()->amount();
 
-
                     if (($discounted + $itemPrice) > $discountTotal) {
                         $totalTax += $item->tax($discountTotal - $discounted);
                     }
@@ -74,8 +73,6 @@ trait CartTotals
                 }
             }
         }
-
-
 
         foreach ($this->fees() as $fee) {
             if ($fee->taxable) {

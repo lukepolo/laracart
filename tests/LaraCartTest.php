@@ -144,7 +144,6 @@ class LaraCartTest extends Orchestra\Testbench\TestCase
 
         $this->assertEquals(1, $cart->count());
 
-
         $this->laracart->destroy();
 
         $cart = $this->laracart->instance('test');
@@ -166,7 +165,6 @@ class LaraCartTest extends Orchestra\Testbench\TestCase
         $prevHash = $item->hash();
 
         $item->name = 'NEW NAME';
-
 
         $this->assertNotEquals($prevHash, $item->hash());
     }
