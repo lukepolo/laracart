@@ -566,7 +566,7 @@ class LaraCart implements LaraCartContract
     {
         $totalTax = 0;
         $discounted = 0;
-        $totalDiscount = $this->totalDiscount(false);
+        $totalDiscount = $this->totalDiscount(false, false);
 
         if ($this->count() != 0) {
             foreach ($this->getItems() as $index => $item) {
@@ -613,7 +613,7 @@ class LaraCart implements LaraCartContract
         }
 
         if ($withDiscount) {
-            $total -= $this->totalDiscount(false);
+            $total -= $this->totalDiscount(false, false);
         }
 
         if ($withTax) {
@@ -731,12 +731,20 @@ class LaraCart implements LaraCartContract
      * Gets the total amount discounted.
      *
      * @param bool $format
+     * @param bool $withItemDiscounts
      *
      * @return string
      */
-    public function totalDiscount($format = true)
+    public function totalDiscount($format = true, $withItemDiscounts = true)
     {
         $total = 0;
+
+        if ($withItemDiscounts) {
+            /** @var CartItem $item */
+            foreach ($this->cart->items as $item) {
+                $total += floatval($item->getDiscount(false));
+            }
+        }
 
         foreach ($this->cart->coupons as $coupon) {
             if ($coupon->appliedToCart) {
