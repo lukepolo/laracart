@@ -731,17 +731,17 @@ class LaraCart implements LaraCartContract
      * Gets the total amount discounted.
      *
      * @param bool $format
-     *
      * @param bool $withItemDiscounts
+     *
      * @return string
      */
     public function totalDiscount($format = true, $withItemDiscounts = true)
     {
         $total = 0;
 
-        if($withItemDiscounts) {
+        if ($withItemDiscounts) {
             /** @var CartItem $item */
-            foreach($this->cart->items as $item) {
+            foreach ($this->cart->items as $item) {
                 $total += floatval($item->getDiscount(false));
             }
         }

@@ -134,6 +134,7 @@ class CouponsTest extends Orchestra\Testbench\TestCase
         $this->assertEquals(true, $coupon->checkMinAmount(0));
         $this->assertEquals(false, $coupon->checkMinAmount(100, false));
         $this->assertEquals(1, $coupon->addOptions);
+
         try {
             $coupon->checkMinAmount(100);
             $this->setExpectedException(\LukePOLO\LaraCart\Exceptions\CouponException::class);
@@ -239,7 +240,6 @@ class CouponsTest extends Orchestra\Testbench\TestCase
 
         $this->assertEquals(0, $this->laracart->subTotal(false));
         $this->assertEquals(10, $this->laracart->totalDiscount(false, true));
-
     }
 
     /**
