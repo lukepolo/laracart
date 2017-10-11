@@ -201,24 +201,27 @@ class CouponsTest extends Orchestra\Testbench\TestCase
 
         $this->assertEquals('53.50', $this->laracart->total(false));
 
-//        $coupon->setDiscountOnItem($item, 10.00);
-//
-//        $this->assertEquals('10OFF', $item->code);
-//
-//        $item = $this->addItem();
-//
-//        $this->assertEquals('54.57', $this->laracart->total(false));
-//
-//        $this->app['config']->set('laracart.discountTaxable', false);
-//        $this->assertEquals('55.27', $this->laracart->total(false));
-//
-//        $this->laracart->removeCoupon('10OFF');
-//
-//        $this->assertEquals('65.27', $this->laracart->total(false));
-//
-//        $this->assertNull($item->code);
-//        $this->assertEquals(0, $item->discount);
-//        $this->assertCount(0, $item->couponInfo);
+        $coupon->setDiscountOnItem($item, 10.00);
+
+        $this->assertEquals('10OFF', $item->code);
+
+        $item = $this->addItem();
+
+        $this->app['config']->set('laracart.discountTaxable', true);
+
+        $this->assertEquals('54.57', $this->laracart->total(false));
+
+        $this->app['config']->set('laracart.discountTaxable', false);
+
+        $this->assertEquals('55.27', $this->laracart->total(false));
+
+        $this->laracart->removeCoupon('10OFF');
+
+        $this->assertEquals('65.27', $this->laracart->total(false));
+
+        $this->assertNull($item->code);
+        $this->assertEquals(0, $item->discount);
+        $this->assertCount(0, $item->couponInfo);
     }
 
     /**
@@ -283,9 +286,9 @@ class CouponsTest extends Orchestra\Testbench\TestCase
 
         $this->app['config']->set('laracart.discountTaxable', false);
 
-        $this->assertEquals('0.07', $this->laracart->taxTotal(false));
+        $this->assertEquals('0.06', $this->laracart->taxTotal(false));
 
-        $this->assertEquals('0.87', $this->laracart->total(false));
+        $this->assertEquals('0.86', $this->laracart->total(false));
     }
 
     /**

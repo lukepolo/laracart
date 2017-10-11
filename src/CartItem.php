@@ -284,7 +284,7 @@ class CartItem
     public function tax($amountNotTaxable = 0)
     {
         if (!$this->taxable) {
-            $amountNotTaxable = $amountNotTaxable + ($this->price * $this->qty);
+            $amountNotTaxable = $this->price * $this->qty;
         }
 
         if (config('laracart.tax_by_item')) {

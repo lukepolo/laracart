@@ -575,7 +575,7 @@ class LaraCart implements LaraCartContract
                 } else {
                     $itemPrice = $item->subTotal(false);
                     if (($discounted + $itemPrice) > $totalDiscount) {
-                        $totalTax += config('laracart.discountTaxable', true) ? $item->tax($totalDiscount - $discounted) : $item->tax();
+                        $totalTax += config('laracart.discountTaxable', true) ? $item->tax() : $item->tax($totalDiscount - $discounted);
                     }
 
                     $discounted += $itemPrice;
@@ -606,7 +606,7 @@ class LaraCart implements LaraCartContract
      */
     public function total($format = true, $withDiscount = true, $withTax = true, $withFees = true)
     {
-        $total = $this->subTotal(false, false);
+        $total = $this->subTotal(false);
 
         if ($withFees) {
             $total += $this->feeTotals(false);
