@@ -606,7 +606,7 @@ class LaraCart implements LaraCartContract
      */
     public function total($format = true, $withDiscount = true, $withTax = true, $withFees = true)
     {
-        $total = $this->subTotal(false);
+        $total = $this->subTotal(false, false);
 
         if ($withFees) {
             $total += $this->feeTotals(false);
