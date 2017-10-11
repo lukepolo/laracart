@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1507675572">
-  <project timestamp="1507675572">
+<coverage generated="1507723232">
+  <project timestamp="1507723232">
     <package name="LukePOLO\LaraCart">
       <file name="/Users/LukePOLO/PhpstormProjects/laracart/src/Cart.php">
         <class name="Cart" namespace="LukePOLO\LaraCart">
@@ -96,7 +96,7 @@
         <line num="215" type="method" name="subTotal" crap="3" count="31"/>
         <line num="217" type="stmt" count="31"/>
         <line num="219" type="stmt" count="31"/>
-        <line num="220" type="stmt" count="31"/>
+        <line num="220" type="stmt" count="30"/>
         <line num="223" type="stmt" count="31"/>
         <line num="224" type="stmt" count="3"/>
         <line num="227" type="stmt" count="31"/>
@@ -107,15 +107,15 @@
         <line num="247" type="stmt" count="33"/>
         <line num="248" type="stmt" count="3"/>
         <line num="251" type="stmt" count="33"/>
-        <line num="261" type="method" name="getDiscount" crap="2" count="31"/>
-        <line num="263" type="stmt" count="31"/>
-        <line num="265" type="stmt" count="31"/>
+        <line num="261" type="method" name="getDiscount" crap="2" count="30"/>
+        <line num="263" type="stmt" count="30"/>
+        <line num="265" type="stmt" count="30"/>
         <line num="266" type="stmt" count="10"/>
-        <line num="269" type="stmt" count="31"/>
-        <line num="270" type="stmt" count="31"/>
-        <line num="271" type="stmt" count="31"/>
-        <line num="272" type="stmt" count="31"/>
-        <line num="273" type="stmt" count="31"/>
+        <line num="269" type="stmt" count="30"/>
+        <line num="270" type="stmt" count="30"/>
+        <line num="271" type="stmt" count="30"/>
+        <line num="272" type="stmt" count="30"/>
+        <line num="273" type="stmt" count="30"/>
         <line num="284" type="method" name="tax" crap="4" count="24"/>
         <line num="286" type="stmt" count="24"/>
         <line num="287" type="stmt" count="5"/>
@@ -330,19 +330,19 @@
         <line num="445" type="stmt" count="2"/>
         <line num="452" type="method" name="getCoupons" crap="1" count="4"/>
         <line num="454" type="stmt" count="4"/>
-        <line num="464" type="method" name="findCoupon" crap="1" count="37"/>
-        <line num="466" type="stmt" count="37"/>
+        <line num="464" type="method" name="findCoupon" crap="1" count="36"/>
+        <line num="466" type="stmt" count="36"/>
         <line num="474" type="method" name="addCoupon" crap="2" count="17"/>
         <line num="476" type="stmt" count="17"/>
         <line num="477" type="stmt" count="16"/>
         <line num="480" type="stmt" count="17"/>
         <line num="482" type="stmt" count="17"/>
         <line num="483" type="stmt" count="17"/>
-        <line num="490" type="method" name="removeCoupon" crap="1" count="2"/>
-        <line num="492" type="stmt" count="2"/>
-        <line num="493" type="stmt" count="2"/>
-        <line num="494" type="stmt" count="2"/>
-        <line num="495" type="stmt" count="2"/>
+        <line num="490" type="method" name="removeCoupon" crap="1" count="1"/>
+        <line num="492" type="stmt" count="1"/>
+        <line num="493" type="stmt" count="1"/>
+        <line num="494" type="stmt" count="1"/>
+        <line num="495" type="stmt" count="1"/>
         <line num="500" type="method" name="removeCoupons" crap="1" count="1"/>
         <line num="502" type="stmt" count="1"/>
         <line num="503" type="stmt" count="1"/>
@@ -369,7 +369,7 @@
         <line num="571" type="stmt" count="23"/>
         <line num="572" type="stmt" count="22"/>
         <line num="573" type="stmt" count="22"/>
-        <line num="574" type="stmt" count="17"/>
+        <line num="574" type="stmt" count="16"/>
         <line num="576" type="stmt" count="6"/>
         <line num="577" type="stmt" count="6"/>
         <line num="578" type="stmt" count="5"/>
@@ -447,13 +447,13 @@
         <line num="812" type="stmt" count="5"/>
         <line num="813" type="stmt" count="5"/>
         <line num="817" type="stmt" count="5"/>
-        <line num="825" type="method" name="removeCouponFromItems" crap="5" count="3"/>
-        <line num="827" type="stmt" count="3"/>
-        <line num="828" type="stmt" count="2"/>
-        <line num="829" type="stmt" count="2"/>
-        <line num="830" type="stmt" count="2"/>
-        <line num="831" type="stmt" count="2"/>
-        <line num="834" type="stmt" count="3"/>
+        <line num="825" type="method" name="removeCouponFromItems" crap="5" count="2"/>
+        <line num="827" type="stmt" count="2"/>
+        <line num="828" type="stmt" count="1"/>
+        <line num="829" type="stmt" count="1"/>
+        <line num="830" type="stmt" count="1"/>
+        <line num="831" type="stmt" count="1"/>
+        <line num="834" type="stmt" count="2"/>
         <metrics loc="835" ncloc="546" classes="1" methods="43" coveredmethods="41" conditionals="0" coveredconditionals="0" statements="226" coveredstatements="224" elements="269" coveredelements="265"/>
       </file>
       <file name="/Users/LukePOLO/PhpstormProjects/laracart/src/LaraCartHasher.php">
@@ -480,7 +480,7 @@
         <line num="31" type="stmt" count="97"/>
         <line num="33" type="stmt" count="97"/>
         <line num="40" type="method" name="register" crap="1" count="97"/>
-        <line num="43" type="stmt" count="40"/>
+        <line num="43" type="stmt" count="39"/>
         <line num="44" type="stmt" count="97"/>
         <line num="47" type="stmt" count="71"/>
         <line num="48" type="stmt" count="97"/>
@@ -622,10 +622,10 @@
         <line num="69" type="stmt" count="74"/>
         <line num="70" type="stmt" count="73"/>
         <line num="72" type="stmt" count="74"/>
-        <line num="81" type="method" name="__isset" crap="2" count="11"/>
-        <line num="83" type="stmt" count="11"/>
-        <line num="84" type="stmt" count="10"/>
-        <line num="86" type="stmt" count="4"/>
+        <line num="81" type="method" name="__isset" crap="2" count="10"/>
+        <line num="83" type="stmt" count="10"/>
+        <line num="84" type="stmt" count="9"/>
+        <line num="86" type="stmt" count="3"/>
         <metrics loc="89" ncloc="62" classes="1" methods="3" coveredmethods="3" conditionals="0" coveredconditionals="0" statements="26" coveredstatements="26" elements="29" coveredelements="29"/>
       </file>
       <file name="/Users/LukePOLO/PhpstormProjects/laracart/src/Traits/CouponTrait.php">
@@ -665,12 +665,12 @@
         <line num="148" type="stmt" count="1"/>
         <line num="149" type="stmt" count="1"/>
         <line num="151" type="stmt" count="1"/>
-        <line num="163" type="method" name="setDiscountOnItem" crap="1" count="3"/>
-        <line num="165" type="stmt" count="3"/>
-        <line num="166" type="stmt" count="3"/>
-        <line num="167" type="stmt" count="3"/>
-        <line num="168" type="stmt" count="3"/>
-        <line num="169" type="stmt" count="3"/>
+        <line num="163" type="method" name="setDiscountOnItem" crap="1" count="2"/>
+        <line num="165" type="stmt" count="2"/>
+        <line num="166" type="stmt" count="2"/>
+        <line num="167" type="stmt" count="2"/>
+        <line num="168" type="stmt" count="2"/>
+        <line num="169" type="stmt" count="2"/>
         <metrics loc="170" ncloc="103" classes="1" methods="7" coveredmethods="7" conditionals="0" coveredconditionals="0" statements="32" coveredstatements="32" elements="39" coveredelements="39"/>
       </file>
     </package>
