@@ -210,7 +210,7 @@ class CouponsTest extends Orchestra\Testbench\TestCase
         $this->assertEquals(round(90 * 1.07), $this->laracart->total(false));
 
 //        dd('fixed');
-        
+
         $this->app['config']->set('laracart.discountTaxable', true);
 
         $this->assertEquals(round(90 + (100 * .07)), $this->laracart->total(false));

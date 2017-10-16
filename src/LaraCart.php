@@ -570,7 +570,7 @@ class LaraCart implements LaraCartContract
 
         if ($this->count() != 0) {
             /**
-             * @var  $index
+             * @var 
              * @var CartItem $item
              */
             foreach ($this->getItems() as $index => $item) {
