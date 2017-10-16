@@ -569,13 +569,17 @@ class LaraCart implements LaraCartContract
         $totalDiscount = $this->totalDiscount(false, false);
 
         if ($this->count() != 0) {
+            /**
+             * @var  $index
+             * @var CartItem $item
+             */
             foreach ($this->getItems() as $index => $item) {
                 if ($discounted >= $totalDiscount) {
-                    $totalTax += $item->tax();
+                    $totalTax += $item->tax(config('laracart.discountTaxable', false) === false ? $item->getDiscount(false) : 0);
                 } else {
-                    $itemPrice = $item->subTotal(false);
+                    $itemPrice = $item->subTotal(false, config('laracart.discountTaxable', false));
                     if (($discounted + $itemPrice) > $totalDiscount) {
-                        $totalTax += config('laracart.discountTaxable', true) ? $item->tax() : $item->tax($totalDiscount - $discounted);
+                        $totalTax += config('laracart.discountTaxable', false) ? $item->tax() : $item->tax($totalDiscount - $discounted);
                     }
 
                     $discounted += $itemPrice;
