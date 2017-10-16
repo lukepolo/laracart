@@ -241,7 +241,5 @@ class TotalsTest extends Orchestra\Testbench\TestCase
         ]);
 
         $this->laracart->addCoupon($coupon);
-
-
     }
 }
