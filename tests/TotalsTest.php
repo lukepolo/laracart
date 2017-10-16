@@ -230,4 +230,16 @@ class TotalsTest extends Orchestra\Testbench\TestCase
 
         $this->assertEquals('5.00', $this->laracart->total(false, true, false, false));
     }
+
+    public function testTaxTotalWithDiscounts()
+    {
+        $this->laracart->add(1, 'Test Product', 1, 100, ['tax' => 0.21]);
+
+        $coupon = new LukePOLO\LaraCart\Coupons\Percentage('test', 0.05, [
+            'name'        => '5% off',
+            'description' => '5% off test',
+        ]);
+
+        $this->laracart->addCoupon($coupon);
+    }
 }
