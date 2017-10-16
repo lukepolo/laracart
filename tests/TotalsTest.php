@@ -260,7 +260,6 @@ class TotalsTest extends Orchestra\Testbench\TestCase
 //        $cart->taxTotal(false) => 16.00
 //        $cart->total(false) => 111.00
 
-
         dump($this->laracart->subTotal(false));
         dump($this->laracart->totalDiscount(false));
         dump($this->laracart->taxTotal(false));
