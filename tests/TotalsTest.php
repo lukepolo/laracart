@@ -242,4 +242,22 @@ class TotalsTest extends Orchestra\Testbench\TestCase
 
         $this->laracart->addCoupon($coupon);
     }
+
+    public function testDoubleDiscounts()
+    {
+        $item = $this->laracart->add(1, 'Test Product', 1, 100, ['tax' => 0.21]);
+
+        $coupon = new LukePOLO\LaraCart\Coupons\Percentage('test', 0.05, [
+            'name'        => '5% off',
+            'description' => '5% off test',
+        ]);
+
+        $this->laracart->addCoupon($coupon);
+        $coupon->setDiscountOnItem($item, $item->price(false) * $coupon->value);
+
+        $this->assertEquals(95, $this->laracart->subTotal(false));
+        $this->assertEquals(5, $this->laracart->totalDiscount(false));
+        $this->assertEquals(19.95, $this->laracart->taxTotal(false));
+        $this->assertEquals(114.95, $this->laracart->total(false));
+    }
 }

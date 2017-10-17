@@ -298,7 +298,7 @@ class CartItem
             return $totalTax - $amountNotTaxable;
         }
 
-        return $this->tax * ($this->subTotal(false, config('laracart.discountTaxable', true), true) - $amountNotTaxable);
+        return $this->tax * ($this->subTotal(false, !config('laracart.discountTaxable', false), true) - $amountNotTaxable);
     }
 
     /**

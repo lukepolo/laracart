@@ -157,14 +157,18 @@ trait CouponTrait
      * Sets a discount to an item with what code was used and the discount amount.
      *
      * @param CartItem $item
+     * @param $discountAmount
      *
      * @throws InvalidPrice
      */
-    public function setDiscountOnItem(CartItem $item)
+    public function setDiscountOnItem(CartItem $item, $discountAmount)
     {
+        if (!is_numeric($discountAmount)) {
+            throw new InvalidPrice('You must use a discount amount.');
+        }
         $this->appliedToCart = false;
         $item->code = $this->code;
-        $item->discount = $this->discount();
+        $item->discount = $discountAmount;
         $item->couponInfo = $this->options;
     }
 }
