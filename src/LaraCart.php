@@ -231,6 +231,8 @@ class LaraCart implements LaraCartContract
             $name = $itemModel[$bindings[\LukePOLO\LaraCart\CartItem::ITEM_NAME]];
             $price = $itemModel[$bindings[\LukePOLO\LaraCart\CartItem::ITEM_PRICE]];
 
+            $options['model'] = $itemModel;
+
             $options = array_merge($options,
                 $this->getItemModelOptions($itemModel, $bindings[\LukePOLO\LaraCart\CartItem::ITEM_OPTIONS]));
 
