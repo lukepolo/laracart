@@ -78,6 +78,8 @@ class ItemRelationTest extends Orchestra\Testbench\TestCase
 
         $item = $this->laracart->add('123123');
 
+        $this->assertEquals($item->getModel()->id, $item->model->id);
+
         try {
             $this->laracart->add('fail');
         } catch (ModelNotFound $e) {
