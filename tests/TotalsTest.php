@@ -241,6 +241,11 @@ class TotalsTest extends Orchestra\Testbench\TestCase
         ]);
 
         $this->laracart->addCoupon($coupon);
+
+        $this->assertEquals(100, $this->laracart->subTotal(false));
+        $this->assertEquals(5, $this->laracart->totalDiscount(false));
+        $this->assertEquals(19.95, $this->laracart->taxTotal(false));
+        $this->assertEquals(114.95, $this->laracart->total(false));
     }
 
     public function testDoubleDiscounts()
