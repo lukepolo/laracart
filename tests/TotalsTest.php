@@ -266,7 +266,8 @@ class TotalsTest extends Orchestra\Testbench\TestCase
         $this->assertEquals(114.95, $this->laracart->total(false));
     }
 
-    public function testTaxationOnCoupons() {
+    public function testTaxationOnCoupons()
+    {
         // Add to cart
         $this->laracart->add(
             1,
