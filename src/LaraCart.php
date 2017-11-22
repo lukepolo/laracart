@@ -747,7 +747,7 @@ class LaraCart implements LaraCartContract
 
         if ($withItemDiscounts) {
             /** @var CartItem $item */
-            foreach ($this->cart->items as $item) {
+            foreach ((array) $this->cart->items as $item) {
                 $total += floatval($item->getDiscount(false));
             }
         }
