@@ -570,6 +570,11 @@ class LaraCart implements LaraCartContract
         $discounted = 0;
         $totalDiscount = $this->totalDiscount(false, false);
 
+        if(config('laracart.discountsAlreadyTaxed')) {
+              $totalDiscount = 0;
+        }
+
+
         if ($this->count() != 0) {
             /**
              * @var
