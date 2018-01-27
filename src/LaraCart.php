@@ -561,7 +561,8 @@ class LaraCart implements LaraCartContract
      *
      * @param bool|true $format
      * @param bool|true $withFees
-     * @param bool $grossTaxes
+     * @param bool      $grossTaxes
+     *
      * @return string
      */
     public function taxTotal($format = true, $withFees = true, $grossTaxes = true)
@@ -600,6 +601,7 @@ class LaraCart implements LaraCartContract
                 }
             }
         }
+
         return $this->formatMoney($totalTax, null, null, $format);
     }
 
