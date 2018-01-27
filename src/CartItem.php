@@ -234,7 +234,7 @@ class CartItem
      */
     public function netTotal($format = true) {
         return LaraCart::formatMoney(
-            $this->price(false, false, true) - $this->discount - $this->tax(false, true),
+            ($this->price(false, false, true) * $this->qty) - $this->discount - $this->tax(false, true),
             $this->locale,
             $this->internationalFormat,
             $format
