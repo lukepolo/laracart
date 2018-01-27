@@ -277,6 +277,7 @@ class CartItem
 
     /**
      * @param CouponContract $coupon
+     *
      * @return $this
      */
     public function addCoupon(CouponContract $coupon)
@@ -382,18 +383,12 @@ class CartItem
         return $matches;
     }
 
-    /**
-     *
-     */
     public function disable()
     {
         $this->active = false;
         app('laracart')->update();
     }
 
-    /**
-     *
-     */
     public function enable()
     {
         $this->active = true;
