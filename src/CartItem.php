@@ -285,7 +285,7 @@ class CartItem
         app('laracart')->addCoupon($coupon);
         $this->code = $coupon->code;
         $this->couponInfo = $coupon->options;
-        $this->discount = $coupon->discount($this);
+        $this->discount = $coupon->forItem($this);
 
         return $this;
     }
