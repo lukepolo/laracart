@@ -275,7 +275,8 @@ class CartItem
         );
     }
 
-    public function addCoupon(CouponContract $coupon) {
+    public function addCoupon(CouponContract $coupon)
+    {
         $coupon->appliedToCart = false;
         app('laracart')->addCoupon($coupon);
         $this->code = $coupon->code;
@@ -286,8 +287,9 @@ class CartItem
     /**
      * Gets the tax for the item.
      *
-     * @param int $amountNotTaxable
+     * @param int  $amountNotTaxable
      * @param bool $grossTax
+     *
      * @return int|mixed
      */
     public function tax($amountNotTaxable = 0, $grossTax = true)

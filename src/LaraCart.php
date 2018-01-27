@@ -172,14 +172,15 @@ class LaraCart implements LaraCartContract
      * Creates a CartItem and then adds it to cart.
      *
      * @param string|int $itemID
-     * @param null $name
-     * @param int $qty
-     * @param string $price
-     * @param array $options
-     * @param bool|true $taxable
+     * @param null       $name
+     * @param int        $qty
+     * @param string     $price
+     * @param array      $options
+     * @param bool|true  $taxable
+     *
+     * @throws ModelNotFound
      *
      * @return CartItem
-     * @throws ModelNotFound
      */
     public function addLine($itemID, $name = null, $qty = 1, $price = '0.00', $options = [], $taxable = true)
     {
@@ -562,7 +563,8 @@ class LaraCart implements LaraCartContract
      *
      * @param bool|true $format
      * @param bool|true $withFees
-     * @param bool $grossTaxes
+     * @param bool      $grossTaxes
+     *
      * @return string
      */
     public function taxTotal($format = true, $withFees = true, $grossTaxes = true)

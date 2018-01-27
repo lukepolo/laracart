@@ -305,13 +305,14 @@ class TotalsTest extends Orchestra\Testbench\TestCase
         $this->assertEquals(6639.12, $this->laracart->total(false));
     }
 
-    public function testTaxationAndDiscount() {
+    public function testTaxationAndDiscount()
+    {
         $this->app['config']->set('laracart.tax', .19);
         $this->app['config']->set('laracart.tax_by_item', true);
         $this->app['config']->set('laracart.discountTaxable', false);
         $this->app['config']->set('laracart.discountsAlreadyTaxed', true);
 
-        /** @var \LukePOLO\LaraCart\CartItem $item */
+        /* @var \LukePOLO\LaraCart\CartItem $item */
         $this->laracart->add(
             1,
             'Product with 19% Tax',
@@ -321,7 +322,7 @@ class TotalsTest extends Orchestra\Testbench\TestCase
                 \LukePOLO\LaraCart\CartItem::ITEM_TAX => .19,
             ]
         )->addCoupon(new \LukePOLO\LaraCart\Coupons\Fixed('50EUR', 50, [
-            'description' => '50EUR'
+            'description' => '50EUR',
         ]));
 
         $this->assertEquals(50, $this->laracart->subTotal(false));

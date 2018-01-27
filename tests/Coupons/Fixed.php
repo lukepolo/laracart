@@ -48,15 +48,15 @@ class Fixed implements CouponContract
         throw new CouponException('Sorry, you must have at least 100 dollars!');
     }
 
-
     /**
-     * If an item is supplied it will get its discount value
+     * If an item is supplied it will get its discount value.
      *
      * @param CartItem $item
      *
      * @return float
      */
-    public function forItem(CartItem $item) {
+    public function forItem(CartItem $item)
+    {
         return $item->price - $this->value;
     }
 

@@ -24,9 +24,8 @@ interface CouponContract
      */
     public function discount();
 
-
     /**
-     * If an item is supplied it will get its discount value
+     * If an item is supplied it will get its discount value.
      *
      * @param CartItem $cartItem
      *
