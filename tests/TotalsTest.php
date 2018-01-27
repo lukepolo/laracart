@@ -305,7 +305,8 @@ class TotalsTest extends Orchestra\Testbench\TestCase
         $this->assertEquals(6639.12, $this->laracart->total(false));
     }
 
-    public function testTaxationAndDiscount() {
+    public function testTaxationAndDiscount()
+    {
         $this->app['config']->set('laracart.tax', .19);
         $this->app['config']->set('laracart.tax_by_item', true);
         $this->app['config']->set('laracart.discountTaxable', false);
@@ -322,7 +323,7 @@ class TotalsTest extends Orchestra\Testbench\TestCase
         );
 
         $coupon = new \LukePOLO\LaraCart\Coupons\Fixed('50EUR', 50, [
-            'description' => '50EUR'
+            'description' => '50EUR',
         ]);
 
         $this->laracart->addCoupon($coupon);
