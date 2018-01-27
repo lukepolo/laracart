@@ -65,7 +65,7 @@ class Fixed implements CouponContract
      */
     public function forItem(CartItem $item)
     {
-        return $item->price - $this->value;
+        return $this->value;
     }
 
     /**
