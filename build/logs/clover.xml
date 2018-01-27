@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1517081412">
-  <project timestamp="1517081412">
+<coverage generated="1517083219">
+  <project timestamp="1517083219">
     <package name="LukePOLO\LaraCart">
       <file name="/Users/LukePOLO/PhpstormProjects/laracart/src/Cart.php">
         <class name="Cart" namespace="LukePOLO\LaraCart">
@@ -38,7 +38,7 @@
       </file>
       <file name="/Users/LukePOLO/PhpstormProjects/laracart/src/CartItem.php">
         <class name="CartItem" namespace="LukePOLO\LaraCart">
-          <metrics methods="18" coveredmethods="5" conditionals="0" coveredconditionals="0" statements="116" coveredstatements="73" elements="134" coveredelements="78"/>
+          <metrics methods="18" coveredmethods="4" conditionals="0" coveredconditionals="0" statements="115" coveredstatements="70" elements="133" coveredelements="74"/>
         </class>
         <line num="55" type="method" name="__construct" crap="2" count="1"/>
         <line num="57" type="stmt" count="1"/>
@@ -97,12 +97,12 @@
         <line num="200" type="stmt" count="1"/>
         <line num="201" type="stmt" count="1"/>
         <line num="202" type="stmt" count="1"/>
-        <line num="216" type="method" name="subTotal" crap="3" count="1"/>
+        <line num="216" type="method" name="subTotal" crap="3.04" count="1"/>
         <line num="218" type="stmt" count="1"/>
         <line num="220" type="stmt" count="1"/>
         <line num="221" type="stmt" count="1"/>
         <line num="224" type="stmt" count="1"/>
-        <line num="225" type="stmt" count="1"/>
+        <line num="225" type="stmt" count="0"/>
         <line num="228" type="stmt" count="1"/>
         <line num="240" type="method" name="subItemsTotal" crap="4.59" count="1"/>
         <line num="242" type="stmt" count="1"/>
@@ -129,10 +129,10 @@
         <line num="292" type="stmt" count="1"/>
         <line num="293" type="stmt" count="1"/>
         <line num="294" type="stmt" count="1"/>
-        <line num="305" type="method" name="tax" crap="11.82" count="1"/>
+        <line num="305" type="method" name="tax" crap="12.00" count="1"/>
         <line num="307" type="stmt" count="1"/>
         <line num="308" type="stmt" count="1"/>
-        <line num="309" type="stmt" count="1"/>
+        <line num="309" type="stmt" count="0"/>
         <line num="312" type="stmt" count="1"/>
         <line num="313" type="stmt" count="0"/>
         <line num="316" type="stmt" count="1"/>
@@ -143,38 +143,37 @@
         <line num="321" type="stmt" count="1"/>
         <line num="324" type="stmt" count="1"/>
         <line num="325" type="stmt" count="1"/>
-        <line num="326" type="stmt" count="1"/>
-        <line num="330" type="stmt" count="1"/>
+        <line num="328" type="stmt" count="1"/>
+        <line num="331" type="stmt" count="0"/>
         <line num="333" type="stmt" count="0"/>
-        <line num="335" type="stmt" count="0"/>
-        <line num="336" type="stmt" count="0"/>
-        <line num="339" type="stmt" count="0"/>
-        <line num="350" type="method" name="setModel" crap="6" count="0"/>
-        <line num="352" type="stmt" count="0"/>
-        <line num="353" type="stmt" count="0"/>
+        <line num="334" type="stmt" count="0"/>
+        <line num="337" type="stmt" count="0"/>
+        <line num="348" type="method" name="setModel" crap="6" count="0"/>
+        <line num="350" type="stmt" count="0"/>
+        <line num="351" type="stmt" count="0"/>
+        <line num="354" type="stmt" count="0"/>
+        <line num="355" type="stmt" count="0"/>
         <line num="356" type="stmt" count="0"/>
-        <line num="357" type="stmt" count="0"/>
-        <line num="358" type="stmt" count="0"/>
-        <line num="365" type="method" name="getModel" crap="6" count="0"/>
+        <line num="363" type="method" name="getModel" crap="6" count="0"/>
+        <line num="365" type="stmt" count="0"/>
         <line num="367" type="stmt" count="0"/>
-        <line num="369" type="stmt" count="0"/>
-        <line num="370" type="stmt" count="0"/>
-        <line num="373" type="stmt" count="0"/>
-        <line num="383" type="method" name="searchForSubItem" crap="12" count="0"/>
+        <line num="368" type="stmt" count="0"/>
+        <line num="371" type="stmt" count="0"/>
+        <line num="381" type="method" name="searchForSubItem" crap="12" count="0"/>
+        <line num="383" type="stmt" count="0"/>
         <line num="385" type="stmt" count="0"/>
+        <line num="386" type="stmt" count="0"/>
         <line num="387" type="stmt" count="0"/>
-        <line num="388" type="stmt" count="0"/>
-        <line num="389" type="stmt" count="0"/>
-        <line num="393" type="stmt" count="0"/>
-        <line num="396" type="method" name="disable" crap="2" count="0"/>
+        <line num="391" type="stmt" count="0"/>
+        <line num="394" type="method" name="disable" crap="2" count="0"/>
+        <line num="396" type="stmt" count="0"/>
+        <line num="397" type="stmt" count="0"/>
         <line num="398" type="stmt" count="0"/>
-        <line num="399" type="stmt" count="0"/>
-        <line num="400" type="stmt" count="0"/>
-        <line num="402" type="method" name="enable" crap="2" count="0"/>
+        <line num="400" type="method" name="enable" crap="2" count="0"/>
+        <line num="402" type="stmt" count="0"/>
+        <line num="403" type="stmt" count="0"/>
         <line num="404" type="stmt" count="0"/>
-        <line num="405" type="stmt" count="0"/>
-        <line num="406" type="stmt" count="0"/>
-        <metrics loc="407" ncloc="280" classes="1" methods="18" coveredmethods="5" conditionals="0" coveredconditionals="0" statements="116" coveredstatements="73" elements="134" coveredelements="78"/>
+        <metrics loc="405" ncloc="278" classes="1" methods="18" coveredmethods="4" conditionals="0" coveredconditionals="0" statements="115" coveredstatements="70" elements="133" coveredelements="74"/>
       </file>
       <file name="/Users/LukePOLO/PhpstormProjects/laracart/src/CartSubItem.php">
         <class name="CartSubItem" namespace="LukePOLO\LaraCart">
@@ -217,7 +216,7 @@
       </file>
       <file name="/Users/LukePOLO/PhpstormProjects/laracart/src/LaraCart.php">
         <class name="LaraCart" namespace="LukePOLO\LaraCart">
-          <metrics methods="43" coveredmethods="11" conditionals="0" coveredconditionals="0" statements="233" coveredstatements="103" elements="276" coveredelements="114"/>
+          <metrics methods="43" coveredmethods="10" conditionals="0" coveredconditionals="0" statements="233" coveredstatements="102" elements="276" coveredelements="112"/>
         </class>
         <line num="38" type="method" name="__construct" crap="1" count="1"/>
         <line num="40" type="stmt" count="1"/>
@@ -425,13 +424,13 @@
         <line num="632" type="stmt" count="1"/>
         <line num="633" type="stmt" count="1"/>
         <line num="636" type="stmt" count="1"/>
-        <line num="647" type="method" name="subTotal" crap="4" count="1"/>
+        <line num="647" type="method" name="subTotal" crap="4.05" count="1"/>
         <line num="649" type="stmt" count="1"/>
         <line num="651" type="stmt" count="1"/>
         <line num="652" type="stmt" count="1"/>
         <line num="653" type="stmt" count="1"/>
         <line num="657" type="stmt" count="1"/>
-        <line num="658" type="stmt" count="1"/>
+        <line num="658" type="stmt" count="0"/>
         <line num="661" type="stmt" count="1"/>
         <line num="671" type="method" name="count" crap="3" count="1"/>
         <line num="673" type="stmt" count="1"/>
@@ -495,7 +494,7 @@
         <line num="851" type="stmt" count="0"/>
         <line num="852" type="stmt" count="0"/>
         <line num="855" type="stmt" count="0"/>
-        <metrics loc="856" ncloc="560" classes="1" methods="43" coveredmethods="11" conditionals="0" coveredconditionals="0" statements="233" coveredstatements="103" elements="276" coveredelements="114"/>
+        <metrics loc="856" ncloc="560" classes="1" methods="43" coveredmethods="10" conditionals="0" coveredconditionals="0" statements="233" coveredstatements="102" elements="276" coveredelements="112"/>
       </file>
       <file name="/Users/LukePOLO/PhpstormProjects/laracart/src/LaraCartHasher.php">
         <class name="LaraCartHasher" namespace="LukePOLO\LaraCart">
@@ -546,63 +545,62 @@
     <package name="LukePOLO\LaraCart\Coupons">
       <file name="/Users/LukePOLO/PhpstormProjects/laracart/src/Coupons/Fixed.php">
         <class name="Fixed" namespace="LukePOLO\LaraCart\Coupons">
-          <metrics methods="4" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="27" coveredstatements="0" elements="31" coveredelements="0"/>
+          <metrics methods="4" coveredmethods="2" conditionals="0" coveredconditionals="0" statements="17" coveredstatements="5" elements="21" coveredelements="7"/>
         </class>
-        <line num="27" type="method" name="__construct" crap="2" count="0"/>
-        <line num="28" type="stmt" count="0"/>
-        <line num="29" type="stmt" count="0"/>
-        <line num="30" type="stmt" count="0"/>
-        <line num="32" type="stmt" count="0"/>
-        <line num="33" type="stmt" count="0"/>
+        <line num="27" type="method" name="__construct" crap="1" count="1"/>
+        <line num="29" type="stmt" count="1"/>
+        <line num="30" type="stmt" count="1"/>
+        <line num="32" type="stmt" count="1"/>
+        <line num="33" type="stmt" count="1"/>
         <line num="43" type="method" name="discount" crap="12" count="0"/>
-        <line num="44" type="stmt" count="0"/>
         <line num="45" type="stmt" count="0"/>
         <line num="46" type="stmt" count="0"/>
         <line num="48" type="stmt" count="0"/>
         <line num="49" type="stmt" count="0"/>
-        <line num="50" type="stmt" count="0"/>
         <line num="52" type="stmt" count="0"/>
         <line num="53" type="stmt" count="0"/>
-        <line num="54" type="stmt" count="0"/>
         <line num="56" type="stmt" count="0"/>
-        <line num="57" type="stmt" count="0"/>
-        <line num="66" type="method" name="forItem" crap="2" count="0"/>
-        <line num="67" type="stmt" count="0"/>
-        <line num="68" type="stmt" count="0"/>
-        <line num="69" type="stmt" count="0"/>
+        <line num="66" type="method" name="forItem" crap="1" count="1"/>
+        <line num="68" type="stmt" count="1"/>
         <line num="79" type="method" name="displayValue" crap="2" count="0"/>
-        <line num="80" type="stmt" count="0"/>
         <line num="81" type="stmt" count="0"/>
         <line num="82" type="stmt" count="0"/>
         <line num="83" type="stmt" count="0"/>
         <line num="84" type="stmt" count="0"/>
         <line num="85" type="stmt" count="0"/>
-        <line num="86" type="stmt" count="0"/>
-        <line num="87" type="stmt" count="0"/>
-        <metrics loc="88" ncloc="55" classes="1" methods="4" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="27" coveredstatements="0" elements="31" coveredelements="0"/>
+        <metrics loc="88" ncloc="55" classes="1" methods="4" coveredmethods="2" conditionals="0" coveredconditionals="0" statements="17" coveredstatements="5" elements="21" coveredelements="7"/>
       </file>
       <file name="/Users/LukePOLO/PhpstormProjects/laracart/src/Coupons/Percentage.php">
         <class name="Percentage" namespace="LukePOLO\LaraCart\Coupons">
-          <metrics methods="4" coveredmethods="1" conditionals="0" coveredconditionals="0" statements="13" coveredstatements="6" elements="17" coveredelements="7"/>
+          <metrics methods="4" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="22" coveredstatements="0" elements="26" coveredelements="0"/>
         </class>
-        <line num="31" type="method" name="__construct" crap="1" count="1"/>
-        <line num="33" type="stmt" count="1"/>
-        <line num="34" type="stmt" count="1"/>
-        <line num="36" type="stmt" count="1"/>
-        <line num="37" type="stmt" count="1"/>
-        <line num="46" type="method" name="forItem" crap="2.15" count="1"/>
-        <line num="48" type="stmt" count="1"/>
-        <line num="49" type="stmt" count="1"/>
+        <line num="31" type="method" name="__construct" crap="2" count="0"/>
+        <line num="32" type="stmt" count="0"/>
+        <line num="33" type="stmt" count="0"/>
+        <line num="34" type="stmt" count="0"/>
+        <line num="36" type="stmt" count="0"/>
+        <line num="37" type="stmt" count="0"/>
+        <line num="46" type="method" name="forItem" crap="6" count="0"/>
+        <line num="47" type="stmt" count="0"/>
+        <line num="48" type="stmt" count="0"/>
+        <line num="49" type="stmt" count="0"/>
+        <line num="50" type="stmt" count="0"/>
         <line num="52" type="stmt" count="0"/>
+        <line num="53" type="stmt" count="0"/>
         <line num="63" type="method" name="discount" crap="2" count="0"/>
+        <line num="64" type="stmt" count="0"/>
         <line num="65" type="stmt" count="0"/>
         <line num="66" type="stmt" count="0"/>
         <line num="67" type="stmt" count="0"/>
         <line num="68" type="stmt" count="0"/>
         <line num="69" type="stmt" count="0"/>
+        <line num="70" type="stmt" count="0"/>
+        <line num="71" type="stmt" count="0"/>
         <line num="76" type="method" name="displayValue" crap="2" count="0"/>
+        <line num="77" type="stmt" count="0"/>
         <line num="78" type="stmt" count="0"/>
-        <metrics loc="80" ncloc="49" classes="1" methods="4" coveredmethods="1" conditionals="0" coveredconditionals="0" statements="13" coveredstatements="6" elements="17" coveredelements="7"/>
+        <line num="79" type="stmt" count="0"/>
+        <metrics loc="80" ncloc="49" classes="1" methods="4" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="22" coveredstatements="0" elements="26" coveredelements="0"/>
       </file>
     </package>
     <package name="LukePOLO\LaraCart\Exceptions">
@@ -743,6 +741,6 @@
       <line num="124" type="stmt" count="1"/>
       <metrics loc="155" ncloc="37" classes="0" methods="0" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="7" coveredstatements="7" elements="7" coveredelements="7"/>
     </file>
-    <metrics files="20" loc="2508" ncloc="1474" classes="17" methods="92" coveredmethods="25" conditionals="0" coveredconditionals="0" statements="529" coveredstatements="239" elements="621" coveredelements="264"/>
+    <metrics files="20" loc="2506" ncloc="1472" classes="17" methods="92" coveredmethods="24" conditionals="0" coveredconditionals="0" statements="527" coveredstatements="234" elements="619" coveredelements="258"/>
   </project>
 </coverage>

@@ -305,7 +305,7 @@ class CartItem
     public function tax($amountNotTaxable = 0, $grossTax = true)
     {
         $totalDiscount = $this->getDiscount(false);
-        if ($totalDiscount < 0 || $totalDiscount >= $this->price) {
+        if ($totalDiscount < 0 || $totalDiscount > $this->price) {
             return 0;
         }
 
@@ -322,9 +322,7 @@ class CartItem
             }
 
             if ($grossTax && config('laracart.discountsAlreadyTaxed', false)) {
-                if ($totalDiscount < $this->price) {
-                    $totalTax = $totalTax - ($totalDiscount - ($totalDiscount / (1 + $this->tax)));
-                }
+                $totalTax = $totalTax - ($totalDiscount - ($totalDiscount / (1 + $this->tax)));
             }
 
             return $totalTax - $amountNotTaxable;
