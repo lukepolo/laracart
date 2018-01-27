@@ -765,6 +765,10 @@ class LaraCart implements LaraCartContract
             }
         }
 
+        if($total < 0) {
+            $total = 0;
+        }
+
         return $this->formatMoney($total, null, null, $format);
     }
 
