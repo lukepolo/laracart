@@ -389,6 +389,6 @@ class TotalsTest extends Orchestra\Testbench\TestCase
             'description' => '50EUR'
         ]));
 
-        $this->assertEquals(0, $this->laracart->totalDiscount(false));
+        $this->assertEquals(119, $this->laracart->totalDiscount(false));
     }
 }
