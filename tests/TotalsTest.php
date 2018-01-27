@@ -306,7 +306,7 @@ class TotalsTest extends Orchestra\Testbench\TestCase
     }
 
     public function testTaxationAndDiscount() {
-
+        $this->app['config']->set('laracart.tax', .19);
         $this->app['config']->set('laracart.tax_by_item', true);
         $this->app['config']->set('laracart.discountTaxable', false);
         $this->app['config']->set('laracart.discountsAlreadyTaxed', true);
@@ -329,7 +329,7 @@ class TotalsTest extends Orchestra\Testbench\TestCase
 
         $this->assertEquals(100, $this->laracart->subTotal(false));
         $this->assertEquals(50, $this->laracart->totalDiscount(false));
-        $this->assertEquals(19.00, $this->laracart->taxTotal(false));
+        $this->assertEquals(11.02, $this->laracart->taxTotal(false));
         $this->assertEquals(69.00, $this->laracart->total(false));
     }
 }

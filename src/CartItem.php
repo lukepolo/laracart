@@ -279,9 +279,10 @@ class CartItem
      *
      * @param int $amountNotTaxable
      *
+     * @param int $totalDiscount
      * @return int|mixed
      */
-    public function tax($amountNotTaxable = 0)
+    public function tax($amountNotTaxable = 0, $totalDiscount = 0)
     {
         if (!$this->taxable) {
             $amountNotTaxable = $this->price * $this->qty;
@@ -295,10 +296,21 @@ class CartItem
                 $itemCount++;
             }
 
+            if($totalDiscount !== 0) {
+                $totalTax = $totalTax - ($totalDiscount - ($totalDiscount/(1 + $this->tax)));
+            }
+
             return $totalTax - $amountNotTaxable;
         }
 
-        return $this->tax * ($this->subTotal(false, !config('laracart.discountTaxable', false), true) - $amountNotTaxable);
+        $totalTax = $this->tax * ($this->subTotal(false, !config('laracart.discountTaxable', false), true) - $amountNotTaxable);
+
+
+        if($totalDiscount !== 0) {
+            $totalTax = $totalTax - ($totalDiscount - ($totalDiscount/(1 + $this->tax)));
+        }
+
+        return $totalTax;
     }
 
     /**

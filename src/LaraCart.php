@@ -561,19 +561,18 @@ class LaraCart implements LaraCartContract
      *
      * @param bool|true $format
      * @param bool|true $withFees
-     *
+     * @param bool $grossTaxes
      * @return string
      */
-    public function taxTotal($format = true, $withFees = true)
+    public function taxTotal($format = true, $withFees = true, $grossTaxes = true)
     {
         $totalTax = 0;
         $discounted = 0;
-        $totalDiscount = $this->totalDiscount(false, false);
+        $tempTotalDiscount = $totalDiscount = $this->totalDiscount(false, false);
 
         if(config('laracart.discountsAlreadyTaxed')) {
               $totalDiscount = 0;
         }
-
 
         if ($this->count() != 0) {
             /**
@@ -582,7 +581,7 @@ class LaraCart implements LaraCartContract
              */
             foreach ($this->getItems() as $index => $item) {
                 if ($discounted >= $totalDiscount) {
-                    $totalTax += $item->tax();
+                    $totalTax += $item->tax(null, $grossTaxes && config('laracart.discountsAlreadyTaxed') ? $tempTotalDiscount : 0);
                 } else {
                     $itemPrice = $item->subTotal(false, config('laracart.discountTaxable', false));
                     if (($discounted + $itemPrice) > $totalDiscount) {
@@ -601,7 +600,6 @@ class LaraCart implements LaraCartContract
                 }
             }
         }
-
         return $this->formatMoney($totalTax, null, null, $format);
     }
 
@@ -628,7 +626,7 @@ class LaraCart implements LaraCartContract
         }
 
         if ($withTax) {
-            $total += $this->taxTotal(false, $withFees);
+            $total += $this->taxTotal(false, $withFees, false);
         }
 
         return $this->formatMoney($total, null, null, $format);
