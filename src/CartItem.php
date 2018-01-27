@@ -275,6 +275,10 @@ class CartItem
         );
     }
 
+    /**
+     * @param CouponContract $coupon
+     * @return $this
+     */
     public function addCoupon(CouponContract $coupon)
     {
         $coupon->appliedToCart = false;
@@ -282,6 +286,8 @@ class CartItem
         $this->code = $coupon->code;
         $this->couponInfo = $coupon->options;
         $this->discount = $coupon->discount($this);
+
+        return $this;
     }
 
     /**
@@ -376,12 +382,18 @@ class CartItem
         return $matches;
     }
 
+    /**
+     *
+     */
     public function disable()
     {
         $this->active = false;
         app('laracart')->update();
     }
 
+    /**
+     *
+     */
     public function enable()
     {
         $this->active = true;
