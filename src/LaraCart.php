@@ -570,7 +570,7 @@ class LaraCart implements LaraCartContract
         $discounted = 0;
         $tempTotalDiscount = $totalDiscount = $this->totalDiscount(false, false);
 
-        if (config('laracart.discountsAlreadyTaxed')) {
+        if (config('laracart.discountsAlreadyTaxed', false)) {
             $totalDiscount = 0;
         }
 
@@ -581,7 +581,7 @@ class LaraCart implements LaraCartContract
              */
             foreach ($this->getItems() as $index => $item) {
                 if ($discounted >= $totalDiscount) {
-                    $totalTax += $item->tax(null, $grossTaxes && config('laracart.discountsAlreadyTaxed') ? $tempTotalDiscount : 0);
+                    $totalTax += $item->tax(null, $grossTaxes && config('laracart.discountsAlreadyTaxed', false) ? $tempTotalDiscount : 0);
                 } else {
                     $itemPrice = $item->subTotal(false, config('laracart.discountTaxable', false));
                     if (($discounted + $itemPrice) > $totalDiscount) {
