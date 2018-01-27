@@ -654,7 +654,7 @@ class LaraCart implements LaraCartContract
             }
         }
 
-        if($total < 0) {
+        if ($total < 0) {
             $total = 0;
         }
 
