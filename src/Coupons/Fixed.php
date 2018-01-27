@@ -2,6 +2,7 @@
 
 namespace LukePOLO\LaraCart\Coupons;
 
+use LukePOLO\LaraCart\CartItem;
 use LukePOLO\LaraCart\Contracts\CouponContract;
 use LukePOLO\LaraCart\LaraCart;
 use LukePOLO\LaraCart\Traits\CouponTrait;
@@ -53,6 +54,17 @@ class Fixed implements CouponContract
         }
 
         return $this->value;
+    }
+
+    /**
+     * If an item is supplied it will get its discount value
+     *
+     * @param CartItem $item
+     *
+     * @return float
+     */
+    public function forItem(CartItem $item) {
+        return $item->price - $this->value;
     }
 
     /**

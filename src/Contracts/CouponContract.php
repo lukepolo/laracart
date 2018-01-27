@@ -2,6 +2,8 @@
 
 namespace LukePOLO\LaraCart\Contracts;
 
+use LukePOLO\LaraCart\CartItem;
+
 /**
  * Interface CouponContract.
  */
@@ -21,6 +23,16 @@ interface CouponContract
      * @return string
      */
     public function discount();
+
+
+    /**
+     * If an item is supplied it will get its discount value
+     *
+     * @param CartItem $cartItem
+     *
+     * @return mixed
+     */
+    public function forItem(CartItem $cartItem);
 
     /**
      * Displays the type of value it is for the user.

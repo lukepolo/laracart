@@ -2,6 +2,7 @@
 
 namespace LukePOLO\LaraCart;
 
+use LukePOLO\LaraCart\Contracts\CouponContract;
 use LukePOLO\LaraCart\Exceptions\ModelNotFound;
 use LukePOLO\LaraCart\Traits\CartOptionsMagicMethodsTrait;
 
@@ -274,15 +275,22 @@ class CartItem
         );
     }
 
+    public function addCoupon(CouponContract $coupon) {
+        $coupon->appliedToCart = false;
+        app('laracart')->addCoupon($coupon);
+        $this->code = $coupon->code;
+        $this->couponInfo = $coupon->options;
+        $this->discount = $coupon->discount($this);
+    }
+
     /**
      * Gets the tax for the item.
      *
      * @param int $amountNotTaxable
-     *
-     * @param int $totalDiscount
+     * @param bool $grossTax
      * @return int|mixed
      */
-    public function tax($amountNotTaxable = 0, $totalDiscount = 0)
+    public function tax($amountNotTaxable = 0, $grossTax = true)
     {
         if (!$this->taxable) {
             $amountNotTaxable = $this->price * $this->qty;
@@ -296,8 +304,8 @@ class CartItem
                 $itemCount++;
             }
 
-            if($totalDiscount !== 0) {
-                $totalTax = $totalTax - ($totalDiscount - ($totalDiscount/(1 + $this->tax)));
+            if ($grossTax && config('laracart.discountsAlreadyTaxed', false)) {
+                $totalTax = $totalTax - ($this->getDiscount(false) - ($this->getDiscount(false) / (1 + $this->tax)));
             }
 
             return $totalTax - $amountNotTaxable;
@@ -305,9 +313,8 @@ class CartItem
 
         $totalTax = $this->tax * ($this->subTotal(false, !config('laracart.discountTaxable', false), true) - $amountNotTaxable);
 
-
-        if($totalDiscount !== 0) {
-            $totalTax = $totalTax - ($totalDiscount - ($totalDiscount/(1 + $this->tax)));
+        if (config('laracart.discountsAlreadyTaxed', false)) {
+            $totalTax = $totalTax - ($this->getDiscount(false) - ($this->getDiscount(false) / (1 + $this->tax)));
         }
 
         return $totalTax;

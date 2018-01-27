@@ -172,13 +172,14 @@ class LaraCart implements LaraCartContract
      * Creates a CartItem and then adds it to cart.
      *
      * @param string|int $itemID
-     * @param null       $name
-     * @param int        $qty
-     * @param string     $price
-     * @param array      $options
-     * @param bool|true  $taxable
+     * @param null $name
+     * @param int $qty
+     * @param string $price
+     * @param array $options
+     * @param bool|true $taxable
      *
      * @return CartItem
+     * @throws ModelNotFound
      */
     public function addLine($itemID, $name = null, $qty = 1, $price = '0.00', $options = [], $taxable = true)
     {
@@ -568,7 +569,7 @@ class LaraCart implements LaraCartContract
     {
         $totalTax = 0;
         $discounted = 0;
-        $tempTotalDiscount = $totalDiscount = $this->totalDiscount(false, false);
+        $totalDiscount = $this->totalDiscount(false, false);
 
         if (config('laracart.discountsAlreadyTaxed', false)) {
             $totalDiscount = 0;
@@ -581,7 +582,7 @@ class LaraCart implements LaraCartContract
              */
             foreach ($this->getItems() as $index => $item) {
                 if ($discounted >= $totalDiscount) {
-                    $totalTax += $item->tax(null, $grossTaxes && config('laracart.discountsAlreadyTaxed', false) ? $tempTotalDiscount : 0);
+                    $totalTax += $item->tax(null, $grossTaxes);
                 } else {
                     $itemPrice = $item->subTotal(false, config('laracart.discountTaxable', false));
                     if (($discounted + $itemPrice) > $totalDiscount) {
@@ -600,6 +601,7 @@ class LaraCart implements LaraCartContract
                 }
             }
         }
+
         return $this->formatMoney($totalTax, null, null, $format);
     }
 
