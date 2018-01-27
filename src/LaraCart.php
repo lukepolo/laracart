@@ -766,7 +766,7 @@ class LaraCart implements LaraCartContract
         }
 
         if($total < 0) {
-            $total = $this->total(false);
+            $total = $this->subTotal(false);
         }
 
         return $this->formatMoney($total, null, null, $format);

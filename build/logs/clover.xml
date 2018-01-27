@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1517073715">
-  <project timestamp="1517073715">
+<coverage generated="1517073819">
+  <project timestamp="1517073819">
     <package name="LukePOLO\LaraCart">
       <file name="/Users/LukePOLO/PhpstormProjects/laracart/src/Cart.php">
         <class name="Cart" namespace="LukePOLO\LaraCart">
@@ -38,7 +38,7 @@
       </file>
       <file name="/Users/LukePOLO/PhpstormProjects/laracart/src/CartItem.php">
         <class name="CartItem" namespace="LukePOLO\LaraCart">
-          <metrics methods="18" coveredmethods="5" conditionals="0" coveredconditionals="0" statements="113" coveredstatements="40" elements="131" coveredelements="45"/>
+          <metrics methods="18" coveredmethods="5" conditionals="0" coveredconditionals="0" statements="113" coveredstatements="57" elements="131" coveredelements="62"/>
         </class>
         <line num="55" type="method" name="__construct" crap="2" count="1"/>
         <line num="57" type="stmt" count="1"/>
@@ -87,30 +87,30 @@
         <line num="173" type="stmt" count="0"/>
         <line num="175" type="stmt" count="0"/>
         <line num="176" type="stmt" count="0"/>
-        <line num="187" type="method" name="price" crap="12" count="0"/>
-        <line num="189" type="stmt" count="0"/>
-        <line num="191" type="stmt" count="0"/>
-        <line num="192" type="stmt" count="0"/>
-        <line num="194" type="stmt" count="0"/>
+        <line num="187" type="method" name="price" crap="3.01" count="1"/>
+        <line num="189" type="stmt" count="1"/>
+        <line num="191" type="stmt" count="1"/>
+        <line num="192" type="stmt" count="1"/>
+        <line num="194" type="stmt" count="1"/>
         <line num="195" type="stmt" count="0"/>
-        <line num="199" type="stmt" count="0"/>
-        <line num="200" type="stmt" count="0"/>
-        <line num="201" type="stmt" count="0"/>
-        <line num="202" type="stmt" count="0"/>
-        <line num="216" type="method" name="subTotal" crap="12" count="0"/>
-        <line num="218" type="stmt" count="0"/>
-        <line num="220" type="stmt" count="0"/>
-        <line num="221" type="stmt" count="0"/>
-        <line num="224" type="stmt" count="0"/>
+        <line num="199" type="stmt" count="1"/>
+        <line num="200" type="stmt" count="1"/>
+        <line num="201" type="stmt" count="1"/>
+        <line num="202" type="stmt" count="1"/>
+        <line num="216" type="method" name="subTotal" crap="3.04" count="1"/>
+        <line num="218" type="stmt" count="1"/>
+        <line num="220" type="stmt" count="1"/>
+        <line num="221" type="stmt" count="1"/>
+        <line num="224" type="stmt" count="1"/>
         <line num="225" type="stmt" count="0"/>
-        <line num="228" type="stmt" count="0"/>
-        <line num="240" type="method" name="subItemsTotal" crap="20" count="0"/>
-        <line num="242" type="stmt" count="0"/>
-        <line num="244" type="stmt" count="0"/>
+        <line num="228" type="stmt" count="1"/>
+        <line num="240" type="method" name="subItemsTotal" crap="4.59" count="1"/>
+        <line num="242" type="stmt" count="1"/>
+        <line num="244" type="stmt" count="1"/>
         <line num="245" type="stmt" count="0"/>
-        <line num="248" type="stmt" count="0"/>
+        <line num="248" type="stmt" count="1"/>
         <line num="249" type="stmt" count="0"/>
-        <line num="252" type="stmt" count="0"/>
+        <line num="252" type="stmt" count="1"/>
         <line num="262" type="method" name="getDiscount" crap="2" count="1"/>
         <line num="264" type="stmt" count="1"/>
         <line num="266" type="stmt" count="1"/>
@@ -171,7 +171,7 @@
         <line num="400" type="stmt" count="0"/>
         <line num="401" type="stmt" count="0"/>
         <line num="402" type="stmt" count="0"/>
-        <metrics loc="403" ncloc="276" classes="1" methods="18" coveredmethods="5" conditionals="0" coveredconditionals="0" statements="113" coveredstatements="40" elements="131" coveredelements="45"/>
+        <metrics loc="403" ncloc="276" classes="1" methods="18" coveredmethods="5" conditionals="0" coveredconditionals="0" statements="113" coveredstatements="57" elements="131" coveredelements="62"/>
       </file>
       <file name="/Users/LukePOLO/PhpstormProjects/laracart/src/CartSubItem.php">
         <class name="CartSubItem" namespace="LukePOLO\LaraCart">
@@ -214,7 +214,7 @@
       </file>
       <file name="/Users/LukePOLO/PhpstormProjects/laracart/src/LaraCart.php">
         <class name="LaraCart" namespace="LukePOLO\LaraCart">
-          <metrics methods="43" coveredmethods="8" conditionals="0" coveredconditionals="0" statements="231" coveredstatements="66" elements="274" coveredelements="74"/>
+          <metrics methods="43" coveredmethods="10" conditionals="0" coveredconditionals="0" statements="231" coveredstatements="77" elements="274" coveredelements="87"/>
         </class>
         <line num="38" type="method" name="__construct" crap="1" count="1"/>
         <line num="40" type="stmt" count="1"/>
@@ -422,19 +422,19 @@
         <line num="632" type="stmt" count="0"/>
         <line num="633" type="stmt" count="0"/>
         <line num="636" type="stmt" count="0"/>
-        <line num="647" type="method" name="subTotal" crap="12" count="0"/>
-        <line num="649" type="stmt" count="0"/>
-        <line num="651" type="stmt" count="0"/>
-        <line num="652" type="stmt" count="0"/>
-        <line num="653" type="stmt" count="0"/>
-        <line num="657" type="stmt" count="0"/>
-        <line num="667" type="method" name="count" crap="12" count="0"/>
-        <line num="669" type="stmt" count="0"/>
-        <line num="671" type="stmt" count="0"/>
-        <line num="672" type="stmt" count="0"/>
-        <line num="673" type="stmt" count="0"/>
-        <line num="675" type="stmt" count="0"/>
-        <line num="679" type="stmt" count="0"/>
+        <line num="647" type="method" name="subTotal" crap="3" count="1"/>
+        <line num="649" type="stmt" count="1"/>
+        <line num="651" type="stmt" count="1"/>
+        <line num="652" type="stmt" count="1"/>
+        <line num="653" type="stmt" count="1"/>
+        <line num="657" type="stmt" count="1"/>
+        <line num="667" type="method" name="count" crap="3" count="1"/>
+        <line num="669" type="stmt" count="1"/>
+        <line num="671" type="stmt" count="1"/>
+        <line num="672" type="stmt" count="1"/>
+        <line num="673" type="stmt" count="1"/>
+        <line num="675" type="stmt" count="1"/>
+        <line num="679" type="stmt" count="1"/>
         <line num="692" type="method" name="formatMoney" crap="11.10" count="1"/>
         <line num="694" type="stmt" count="1"/>
         <line num="696" type="stmt" count="1"/>
@@ -490,7 +490,7 @@
         <line num="847" type="stmt" count="0"/>
         <line num="848" type="stmt" count="0"/>
         <line num="851" type="stmt" count="0"/>
-        <metrics loc="852" ncloc="556" classes="1" methods="43" coveredmethods="8" conditionals="0" coveredconditionals="0" statements="231" coveredstatements="66" elements="274" coveredelements="74"/>
+        <metrics loc="852" ncloc="556" classes="1" methods="43" coveredmethods="10" conditionals="0" coveredconditionals="0" statements="231" coveredstatements="77" elements="274" coveredelements="87"/>
       </file>
       <file name="/Users/LukePOLO/PhpstormProjects/laracart/src/LaraCartHasher.php">
         <class name="LaraCartHasher" namespace="LukePOLO\LaraCart">
@@ -734,6 +734,6 @@
       <line num="116" type="stmt" count="1"/>
       <metrics loc="147" ncloc="35" classes="0" methods="0" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="7" coveredstatements="7" elements="7" coveredelements="7"/>
     </file>
-    <metrics files="20" loc="2488" ncloc="1460" classes="17" methods="92" coveredmethods="23" conditionals="0" coveredconditionals="0" statements="520" coveredstatements="168" elements="612" coveredelements="191"/>
+    <metrics files="20" loc="2488" ncloc="1460" classes="17" methods="92" coveredmethods="25" conditionals="0" coveredconditionals="0" statements="520" coveredstatements="196" elements="612" coveredelements="221"/>
   </project>
 </coverage>
