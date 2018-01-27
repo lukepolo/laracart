@@ -267,6 +267,10 @@ class CartItem
             $amount = $this->discount;
         }
 
+        if($amount < 0) {
+            $amount = $this->price;
+        }
+
         return LaraCart::formatMoney(
             $amount,
             $this->locale,
@@ -301,7 +305,8 @@ class CartItem
      */
     public function tax($amountNotTaxable = 0, $grossTax = true)
     {
-        if ($this->getDiscount(false) >= $this->price) {
+        $totalDiscount = $this->getDiscount(false);
+        if ($totalDiscount < 0 || $totalDiscount >= $this->price) {
             return 0;
         }
 
@@ -318,8 +323,8 @@ class CartItem
             }
 
             if ($grossTax && config('laracart.discountsAlreadyTaxed', false)) {
-                if ($this->getDiscount(false) < $this->price) {
-                    $totalTax = $totalTax - ($this->getDiscount(false) - ($this->getDiscount(false) / (1 + $this->tax)));
+                if ($totalDiscount < $this->price) {
+                    $totalTax = $totalTax - ($totalDiscount - ($totalDiscount / (1 + $this->tax)));
                 }
             }
 
