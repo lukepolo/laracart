@@ -370,7 +370,7 @@ class TotalsTest extends Orchestra\Testbench\TestCase
         ]));
 
         $this->assertEquals(0, $this->laracart->subTotal(false));
-        $this->assertEquals(100, $this->laracart->totalDiscount(false));
+        $this->assertEquals(119, $this->laracart->totalDiscount(false));
         $this->assertEquals(0, $this->laracart->taxTotal(false));
         $this->assertEquals(0, $this->laracart->total(false));
     }
