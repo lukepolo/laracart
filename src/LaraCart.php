@@ -379,9 +379,6 @@ class LaraCart implements LaraCartContract
      * @param $key
      * @param $value
      *
-     * @throws Exceptions\InvalidPrice
-     * @throws Exceptions\InvalidQuantity
-     *
      * @return CartItem|null
      */
     public function updateItem($itemHash, $key, $value)
@@ -651,6 +648,30 @@ class LaraCart implements LaraCartContract
         if ($this->count() != 0) {
             foreach ($this->getItems() as $item) {
                 $total += $item->subTotal(false, $withDiscount);
+            }
+        }
+
+        if ($total < 0) {
+            $total = 0;
+        }
+
+        return $this->formatMoney($total, null, null, $format);
+    }
+
+    /**
+     * Gets the netTotal of the cart
+     *
+     * @param bool $format
+     *
+     * @return string
+     */
+    public function netTotal($format = true)
+    {
+        $total = 0;
+
+        if ($this->count() != 0) {
+            foreach ($this->getItems() as $item) {
+                $total += $item->netTotal(false);
             }
         }
 

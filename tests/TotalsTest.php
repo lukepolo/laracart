@@ -396,7 +396,7 @@ class TotalsTest extends Orchestra\Testbench\TestCase
             'description' => '50EUR',
         ]));
 
-        $this->assertEquals(50, $this->laracart->subTotal(false));
+        $this->assertEquals(57.98, $this->laracart->netTotal(false));
         $this->assertEquals(50, $this->laracart->totalDiscount(false));
         $this->assertEquals(11.02, $this->laracart->taxTotal(false));
         $this->assertEquals(69.00, $this->laracart->total(false));
@@ -423,7 +423,7 @@ class TotalsTest extends Orchestra\Testbench\TestCase
             'description' => '50EUR',
         ]));
 
-        $this->assertEquals(40.50, $this->laracart->subTotal(false));
+        $this->assertEquals(50.00, $this->laracart->netTotal(false));
         $this->assertEquals(119 * .5, $this->laracart->totalDiscount(false));
         $this->assertEquals(9.50, $this->laracart->taxTotal(false));
         $this->assertEquals(59.50, $this->laracart->total(false));
@@ -450,7 +450,7 @@ class TotalsTest extends Orchestra\Testbench\TestCase
             'description' => '100EUR',
         ]));
 
-        $this->assertEquals(0, $this->laracart->subTotal(false));
+        $this->assertEquals(15.97, $this->laracart->netTotal(false));
         $this->assertEquals(100, $this->laracart->totalDiscount(false));
         $this->assertEquals(3.03, $this->laracart->taxTotal(false));
         $this->assertEquals(19, $this->laracart->total(false));
@@ -477,9 +477,65 @@ class TotalsTest extends Orchestra\Testbench\TestCase
             'description' => '85',
         ]));
 
-        $this->assertEquals(0, $this->laracart->subTotal(false));
+        $this->assertEquals(15.00, $this->laracart->netTotal(false));
         $this->assertEquals(101.15, $this->laracart->totalDiscount(false));
         $this->assertEquals(2.85, $this->laracart->taxTotal(false));
         $this->assertEquals(17.85, $this->laracart->total(false));
     }
+
+    public function testPreTaxationAndDiscountWithPercentageCouponsWith84PercentDollar()
+    {
+        $this->app['config']->set('laracart.tax', .19);
+        $this->app['config']->set('laracart.tax_by_item', true);
+        $this->app['config']->set('laracart.discountTaxable', true);
+        $this->app['config']->set('laracart.discountsAlreadyTaxed', true);
+        $this->app['config']->set('laracart.tax_item_before_discount', true);
+
+        /* @var \LukePOLO\LaraCart\CartItem $item */
+        $this->laracart->add(
+            1,
+            'Product with 19% Tax',
+            1,
+            100,
+            [
+                \LukePOLO\LaraCart\CartItem::ITEM_TAX => .19,
+            ]
+        )->addCoupon(new \LukePOLO\LaraCart\Coupons\Percentage('50EUR', .84, [
+            'description' => '50EUR',
+        ]));
+
+        $this->assertEquals(16.00, $this->laracart->netTotal(false));
+        $this->assertEquals(99.96, $this->laracart->totalDiscount(false));
+        $this->assertEquals(3.04, $this->laracart->taxTotal(false));
+        $this->assertEquals(19.04, $this->laracart->total(false));
+    }
+
+
+    public function testPreTaxationAndDiscountWithPercentageCouponsWith1Dollar()
+    {
+        $this->app['config']->set('laracart.tax', .19);
+        $this->app['config']->set('laracart.tax_by_item', true);
+        $this->app['config']->set('laracart.discountTaxable', true);
+        $this->app['config']->set('laracart.discountsAlreadyTaxed', true);
+        $this->app['config']->set('laracart.tax_item_before_discount', true);
+
+        /* @var \LukePOLO\LaraCart\CartItem $item */
+        $this->laracart->add(
+            1,
+            'Product with 19% Tax',
+            1,
+            100,
+            [
+                \LukePOLO\LaraCart\CartItem::ITEM_TAX => .19,
+            ]
+        )->addCoupon(new \LukePOLO\LaraCart\Coupons\Percentage('50EUR', .99, [
+            'description' => '50EUR',
+        ]));
+
+        $this->assertEquals(1, $this->laracart->netTotal(false));
+        $this->assertEquals(117.81, $this->laracart->totalDiscount(false));
+        $this->assertEquals(.19, $this->laracart->taxTotal(false));
+        $this->assertEquals(1.19, $this->laracart->total(false));
+    }
+
 }

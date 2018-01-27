@@ -229,6 +229,19 @@ class CartItem
     }
 
     /**
+     * @param bool $format
+     * @return string
+     */
+    public function netTotal($format = true) {
+        return LaraCart::formatMoney(
+            $this->price(false, false, true) - $this->discount - $this->tax(false, true),
+            $this->locale,
+            $this->internationalFormat,
+            $format
+        );
+    }
+
+    /**
      * Gets the totals for the options.
      *
      * @param bool $format
@@ -393,12 +406,18 @@ class CartItem
         return $matches;
     }
 
+    /**
+     *
+     */
     public function disable()
     {
         $this->active = false;
         app('laracart')->update();
     }
 
+    /**
+     *
+     */
     public function enable()
     {
         $this->active = true;
