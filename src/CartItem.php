@@ -291,6 +291,7 @@ class CartItem
         $this->code = $coupon->code;
         $this->couponInfo = $coupon->options;
         $this->discount = $coupon->forItem($this);
+
         return $this;
     }
 
