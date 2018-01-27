@@ -267,7 +267,7 @@ class CartItem
             $amount = $this->discount;
         }
 
-        if($amount < 0) {
+        if ($amount < 0) {
             $amount = $this->price;
         }
 
