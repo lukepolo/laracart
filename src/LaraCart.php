@@ -659,7 +659,7 @@ class LaraCart implements LaraCartContract
     }
 
     /**
-     * Gets the netTotal of the cart
+     * Gets the netTotal of the cart.
      *
      * @param bool $format
      *
