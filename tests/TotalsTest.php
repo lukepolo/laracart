@@ -383,10 +383,11 @@ class TotalsTest extends Orchestra\Testbench\TestCase
         $this->assertEquals(0, $this->laracart->total(false));
     }
 
-    public function testNonZeroCoupons() {
+    public function testNonZeroCoupons()
+    {
         $this->laracart->add(1, 'Produkt mit 19%', 1, 100, [\LukePOLO\LaraCart\CartItem::ITEM_TAX  => (19 / 100)])
             ->addCoupon(new \LukePOLO\LaraCart\Coupons\Fixed('50EUR', 119, [
-            'description' => '50EUR'
+            'description' => '50EUR',
         ]));
 
         $this->assertEquals(0, $this->laracart->totalDiscount(false));
