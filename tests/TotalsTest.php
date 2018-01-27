@@ -510,7 +510,6 @@ class TotalsTest extends Orchestra\Testbench\TestCase
         $this->assertEquals(19.04, $this->laracart->total(false));
     }
 
-
     public function testPreTaxationAndDiscountWithPercentageCouponsWith1Dollar()
     {
         $this->app['config']->set('laracart.tax', .19);
@@ -537,5 +536,4 @@ class TotalsTest extends Orchestra\Testbench\TestCase
         $this->assertEquals(.19, $this->laracart->taxTotal(false));
         $this->assertEquals(1.19, $this->laracart->total(false));
     }
-
 }
