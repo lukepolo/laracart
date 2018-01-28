@@ -322,7 +322,7 @@ class CartItem
      *
      * @return int|mixed
      */
-    public function tax($amountNotTaxable = 0, $grossTax = true)
+    public function tax($amountNotTaxable = 0, $grossTax = true, $rounded = false)
     {
         $totalDiscount = $this->getDiscount(false);
 
@@ -346,6 +346,15 @@ class CartItem
                 }
             }
 
+            if ($rounded) {
+                return LaraCart::formatMoney(
+                    ($totalTax - $amountNotTaxable),
+                    $this->locale,
+                    $this->internationalFormat,
+                    false
+                );
+            }
+
             return $totalTax - $amountNotTaxable;
         }
 
@@ -353,6 +362,15 @@ class CartItem
 
         if (config('laracart.discountsAlreadyTaxed', false)) {
             $totalTax = $totalTax - ($this->getDiscount(false) - ($this->getDiscount(false) / (1 + $this->tax)));
+        }
+
+        if ($rounded) {
+            return LaraCart::formatMoney(
+                $totalTax,
+                $this->locale,
+                $this->internationalFormat,
+                false
+            );
         }
 
         return $totalTax;
