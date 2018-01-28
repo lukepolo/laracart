@@ -221,12 +221,12 @@ class CartItem
             $total -= $this->getDiscount(false);
         }
 
-        if ($withTax) {
-            $total += $this->tax();
-        }
-
         if ($total < 0) {
             $total = 0;
+        }
+
+        if ($withTax) {
+            $total += $this->tax(0, false);
         }
 
         return LaraCart::formatMoney($total, $this->locale, $this->internationalFormat, $format);
