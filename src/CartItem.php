@@ -225,6 +225,10 @@ class CartItem
             $total += $this->tax();
         }
 
+        if ($total < 0) {
+            $total = 0;
+        }
+
         return LaraCart::formatMoney($total, $this->locale, $this->internationalFormat, $format);
     }
 
