@@ -34,7 +34,7 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | If true displays the international format rather thant he national format
+    | If true, displays the international format rather than the national format
     |--------------------------------------------------------------------------
     |
     */
@@ -42,8 +42,8 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Sets the tax for the cart and items , you can change per item
-    | via the object later if  needed
+    | Sets the tax for the cart and items, you can change per item
+    | via the object later if needed
     |--------------------------------------------------------------------------
     |
     */
@@ -54,7 +54,7 @@ return [
     | Calculate tax per item, rather than subtotal
     | https://github.com/lukepolo/laracart/issues/180
     |
-    | This will vary , please investigate to follow the rules of your local laws
+    | This will vary, please investigate to follow the rules of your local laws
     | https://money.stackexchange.com/questions/15051/sales-tax-rounded-then-totaled-or-totaled-then-rounded
     |--------------------------------------------------------------------------
     |
@@ -80,7 +80,7 @@ return [
     /*
     |--------------------------------------------------------------------------
     | If your discounts are already pre taxes but items are not,
-    | you can set this here to to get the correct values
+    | you can set this here to get the correct values
     |--------------------------------------------------------------------------
     |
     */
