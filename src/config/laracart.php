@@ -18,7 +18,7 @@ return [
     | Common Locales
     |
     | English - United States (en_US): 123,456.00
-    | English - UNITED KINGDOM (en_GB) 123,456.00
+    | English - United Kingdom (en_GB) 123,456.00
     | Spanish - Spain (es_ES): 123.456,000
     | Dutch - Netherlands (nl_NL): 123 456,00
     | German - Germany (de_DE): 123.456,00
