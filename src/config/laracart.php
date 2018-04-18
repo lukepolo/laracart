@@ -13,7 +13,7 @@ return [
     /*
     |--------------------------------------------------------------------------
     | Locale is used to convert money into a readable format for the user,
-    | please note the UTF-8 , helps to make sure its encoded correctly
+    | please note the UTF-8, helps to make sure its encoded correctly
     |
     | Common Locales
     |
