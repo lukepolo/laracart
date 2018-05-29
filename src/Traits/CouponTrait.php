@@ -5,7 +5,6 @@ namespace LukePOLO\LaraCart\Traits;
 use Carbon\Carbon;
 use LukePOLO\LaraCart\CartItem;
 use LukePOLO\LaraCart\Exceptions\CouponException;
-use LukePOLO\LaraCart\Exceptions\InvalidPrice;
 use LukePOLO\LaraCart\LaraCart;
 
 /**
