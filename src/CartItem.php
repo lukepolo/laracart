@@ -282,7 +282,9 @@ class CartItem
     {
         $amount = 0;
 
-        if (app('laracart')->findCoupon($this->code)) {
+        if($this->coupon) {
+            $amount = $this->coupon->forItem($this);
+        } else if(app('laracart')->findCoupon($this->code)) {
             $amount = $this->discount;
         }
 

@@ -258,7 +258,7 @@ class TotalsTest extends Orchestra\Testbench\TestCase
         ]);
 
         $this->laracart->addCoupon($coupon);
-        $coupon->setDiscountOnItem($item, $item->price(false) * $coupon->value);
+        $coupon->setDiscountOnItem($item);
 
         $this->assertEquals(95, $this->laracart->subTotal(false));
         $this->assertEquals(5, $this->laracart->totalDiscount(false));

@@ -869,8 +869,7 @@ class LaraCart implements LaraCartContract
         foreach ($this->getItems() as $item) {
             if (isset($item->code) && (empty($code) || $item->code == $code)) {
                 $item->code = null;
-                $item->discount = null;
-                $item->couponInfo = [];
+                $item->coupon = null;
             }
         }
     }
