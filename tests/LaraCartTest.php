@@ -60,23 +60,23 @@ class LaraCartTest extends Orchestra\Testbench\TestCase
         $this->assertEquals('$25.54', $this->laracart->formatMoney('25.544'));
     }
 
-	/**
-	 * Testing the money format function with the prices_in_cents config setting.
-	 */
-	public function testFormatMoneyPricesInCents()
-	{
-		$this->app['config']->set('laracart.prices_in_cents', true);
+    /**
+     * Testing the money format function with the prices_in_cents config setting.
+     */
+    public function testFormatMoneyPricesInCents()
+    {
+        $this->app['config']->set('laracart.prices_in_cents', true);
 
-		$this->assertEquals('$25.00', $this->laracart->formatMoney(2500));
-		$this->assertEquals('USD 25.00', $this->laracart->formatMoney(2500, null, true));
-		$this->assertEquals(2500, $this->laracart->formatMoney(2500, null, null, false));
+        $this->assertEquals('$25.00', $this->laracart->formatMoney(2500));
+        $this->assertEquals('USD 25.00', $this->laracart->formatMoney(2500, null, true));
+        $this->assertEquals(2500, $this->laracart->formatMoney(2500, null, null, false));
 
-		$this->assertEquals('$25.01', $this->laracart->formatMoney(2500.55));
-		$this->assertEquals('$25.00', $this->laracart->formatMoney(2500.44));
+        $this->assertEquals('$25.01', $this->laracart->formatMoney(2500.55));
+        $this->assertEquals('$25.00', $this->laracart->formatMoney(2500.44));
 
-		$this->assertEquals(2501, $this->laracart->formatMoney(2500.55, null, null, false));
-		$this->assertEquals(2500, $this->laracart->formatMoney(2500.44,null, null, false));
-	}
+        $this->assertEquals(2501, $this->laracart->formatMoney(2500.55, null, null, false));
+        $this->assertEquals(2500, $this->laracart->formatMoney(2500.44, null, null, false));
+    }
 
     /**
      * Test getting the attributes from the cart.

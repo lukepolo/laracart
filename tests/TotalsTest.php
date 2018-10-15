@@ -26,48 +26,48 @@ class TotalsTest extends Orchestra\Testbench\TestCase
         $this->assertEquals(0, $this->laracart->total(false));
     }
 
-	/**
-	 * Test total discounts when using the pricing_in_cents config setting.
-	 */
-	public function testTotalDiscountInCents()
-	{
-		$this->app['config']->set('laracart.prices_in_cents', true);
-		$this->addItem(1, 1000);
+    /**
+     * Test total discounts when using the pricing_in_cents config setting.
+     */
+    public function testTotalDiscountInCents()
+    {
+        $this->app['config']->set('laracart.prices_in_cents', true);
+        $this->addItem(1, 1000);
 
-		$fixedCoupon = new LukePOLO\LaraCart\Coupons\Fixed(
-			'10OFF', 1000
-		);
+        $fixedCoupon = new LukePOLO\LaraCart\Coupons\Fixed(
+            '10OFF', 1000
+        );
 
-		$this->laracart->addCoupon($fixedCoupon);
+        $this->laracart->addCoupon($fixedCoupon);
 
-		$this->assertEquals('$10.00', $this->laracart->totalDiscount());
-		$this->assertEquals(1000, $this->laracart->totalDiscount(false));
+        $this->assertEquals('$10.00', $this->laracart->totalDiscount());
+        $this->assertEquals(1000, $this->laracart->totalDiscount(false));
 
-		$this->assertEquals(0, $this->laracart->total(false));
-	}
+        $this->assertEquals(0, $this->laracart->total(false));
+    }
 
     /**
      * Test total taxes.
      */
     public function testTaxTotal()
     {
-	    $this->addItem();
+        $this->addItem();
 
         $this->assertEquals('$0.07', $this->laracart->taxTotal());
         $this->assertEquals('0.07', $this->laracart->taxTotal(false));
     }
 
-	/**
-	 * Test total taxes when using the pricing_in_cents config setting.
-	 */
-	public function testTaxTotalInCents()
-	{
-		$this->app['config']->set('laracart.prices_in_cents', true);
-		$this->addItem(1, 100);
+    /**
+     * Test total taxes when using the pricing_in_cents config setting.
+     */
+    public function testTaxTotalInCents()
+    {
+        $this->app['config']->set('laracart.prices_in_cents', true);
+        $this->addItem(1, 100);
 
-		$this->assertEquals('$0.07', $this->laracart->taxTotal());
-		$this->assertEquals(7, $this->laracart->taxTotal(false));
-	}
+        $this->assertEquals('$0.07', $this->laracart->taxTotal());
+        $this->assertEquals(7, $this->laracart->taxTotal(false));
+    }
 
     /**
      * Test getting all the fees.
@@ -107,17 +107,17 @@ class TotalsTest extends Orchestra\Testbench\TestCase
         $this->assertEquals('1.07', $this->laracart->total(false));
     }
 
-	/**
-	 * Test getting the final total (with tax) when using the pricing_in_cents config setting.
-	 */
-	public function testTotalInCents()
-	{
-		$this->app['config']->set('laracart.prices_in_cents', true);
-		$this->addItem(1, 100);
+    /**
+     * Test getting the final total (with tax) when using the pricing_in_cents config setting.
+     */
+    public function testTotalInCents()
+    {
+        $this->app['config']->set('laracart.prices_in_cents', true);
+        $this->addItem(1, 100);
 
-		$this->assertEquals('$1.07', $this->laracart->total());
-		$this->assertEquals(107, $this->laracart->total(false));
-	}
+        $this->assertEquals('$1.07', $this->laracart->total());
+        $this->assertEquals(107, $this->laracart->total(false));
+    }
 
     /**
      * Test the taxable fees total.

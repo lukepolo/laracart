@@ -40,18 +40,18 @@ return [
     */
     'international_format' => false,
 
-	/*
+    /*
     |--------------------------------------------------------------------------
     | If true, lets you supply and retrieve all prices in cents.
-	| To retrieve the prices as integer in cents, set the $format parameter
-	| to false for the various price functions. Otherwise you will retrieve
-	| the formatted price instead.
-	| Make sure when adding products to the cart, adding coupons, etc, to
-	| supply the price in cents too.
+    | To retrieve the prices as integer in cents, set the $format parameter
+    | to false for the various price functions. Otherwise you will retrieve
+    | the formatted price instead.
+    | Make sure when adding products to the cart, adding coupons, etc, to
+    | supply the price in cents too.
     |--------------------------------------------------------------------------
     |
     */
-	'prices_in_cents' => false,
+    'prices_in_cents' => false,
 
     /*
     |--------------------------------------------------------------------------

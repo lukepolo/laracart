@@ -716,15 +716,15 @@ class LaraCart implements LaraCartContract
      */
     public static function formatMoney($number, $locale = null, $internationalFormat = false, $format = true)
     {
-    	// When prices in cents needs to be formatted, divide by 100 to allow formatting in whole units
-		if(config('laracart.prices_in_cents', false) === true && $format){
-			$number = $number / 100;
-			// When prices in cents do not need to be formatted then cast to integer and round the price
-		} elseif(config('laracart.prices_in_cents', false) === true && !$format) {
-			$number = (int) round($number);
-		} else {
-		    $number = number_format($number, 2, '.', '');
-	    }
+        // When prices in cents needs to be formatted, divide by 100 to allow formatting in whole units
+        if (config('laracart.prices_in_cents', false) === true && $format) {
+            $number = $number / 100;
+        // When prices in cents do not need to be formatted then cast to integer and round the price
+        } elseif (config('laracart.prices_in_cents', false) === true && !$format) {
+            $number = (int) round($number);
+        } else {
+            $number = number_format($number, 2, '.', '');
+        }
 
         if ($format) {
             setlocale(LC_MONETARY, null);

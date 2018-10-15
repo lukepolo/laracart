@@ -164,23 +164,23 @@ class ItemsTest extends Orchestra\Testbench\TestCase
         $this->assertEquals(32.1, $item->subTotal(false, true, false, true)); // return subtotal with tax
     }
 
-	/**
-	 * Test the prices in cents based on the item.
-	 */
-	public function testItemPriceInCents()
-	{
-		$this->app['config']->set('laracart.prices_in_cents', true);
-		$item = $this->addItem(3, 1000);
+    /**
+     * Test the prices in cents based on the item.
+     */
+    public function testItemPriceInCents()
+    {
+        $this->app['config']->set('laracart.prices_in_cents', true);
+        $item = $this->addItem(3, 1000);
 
-		$this->assertEquals(1000, $item->price(false));
-		$this->assertEquals(1070, $item->price(false, false, true)); // return item price with tax
-		$this->assertEquals(3000, $item->subTotal(false));
-		$this->assertEquals(3210, $item->subTotal(false, true, false, true)); // return subtotal with tax
+        $this->assertEquals(1000, $item->price(false));
+        $this->assertEquals(1070, $item->price(false, false, true)); // return item price with tax
+        $this->assertEquals(3000, $item->subTotal(false));
+        $this->assertEquals(3210, $item->subTotal(false, true, false, true)); // return subtotal with tax
 
-		// Test that floats are converted to int and not rounded in the constructor
-		$item2 = $this->addItem(3, 1000.55);
-		$this->assertEquals(1000, $item2->price(false));
-	}
+        // Test that floats are converted to int and not rounded in the constructor
+        $item2 = $this->addItem(3, 1000.55);
+        $this->assertEquals(1000, $item2->price(false));
+    }
 
     /**
      * Test removing an item from the cart.
