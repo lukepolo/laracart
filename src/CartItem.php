@@ -59,7 +59,7 @@ class CartItem
         $this->name = $name;
         $this->taxable = $taxable;
         $this->lineItem = $lineItem;
-        $this->price = floatval($price);
+        $this->price = (config('laracart.prices_in_cents', false) === true ? intval($price) : floatval($price));
         $this->tax = config('laracart.tax');
         $this->itemModel = config('laracart.item_model', null);
         $this->itemModelRelations = config('laracart.item_model_relations', []);
