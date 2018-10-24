@@ -1,6 +1,5 @@
 <?php
 
-use LukePOLO\LaraCart\Cart;
 use Illuminate\Support\Facades\Event;
 
 /**
@@ -142,7 +141,7 @@ class ItemsTest extends Orchestra\Testbench\TestCase
         $this->laracart->updateItem($item->getHash(), 'qty', 4);
 
         Event::assertDispatched('laracart.updateItem', function ($e, $eventItem) use ($item) {
-            return ($eventItem['item'] === $item && $eventItem['newHash'] === $item->getHash());
+            return $eventItem['item'] === $item && $eventItem['newHash'] === $item->getHash();
         });
         Event::assertDispatched('laracart.updateItem', 1);
 
