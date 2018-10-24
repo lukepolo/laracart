@@ -68,7 +68,7 @@ trait CartOptionsMagicMethodsTrait
         $changed = (!empty(array_get($this->options, $option)) && array_get($this->options, $option) != $value);
         array_set($this->options, $option, $value);
 
-        if ($changed){
+        if ($changed) {
             if (is_callable([$this, 'generateHash'])) {
                 $this->generateHash();
             }
