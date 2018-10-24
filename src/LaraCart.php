@@ -273,7 +273,9 @@ class LaraCart implements LaraCartContract
             $this->cart->items[] = $cartItem;
         }
 
-        $this->events->dispatch('laracart.addItem', $cartItem);
+        app('events')->dispatch(
+            'laracart.addItem',$cartItem
+        );
 
         return $cartItem;
     }
