@@ -21,7 +21,9 @@ class ItemsTest extends Orchestra\Testbench\TestCase
         Event::assertDispatched('laracart.addItem', function ($e, $item) use ($cartItem) {
             return $item === $cartItem;
         });
-        Event::assertDispatched('laracart.addItem', 1);
+        
+        $this->assertEquals(1, Event::dispatched('laracart.addItem')->count());
+
 
         $this->addItem();
 
@@ -143,8 +145,8 @@ class ItemsTest extends Orchestra\Testbench\TestCase
         Event::assertDispatched('laracart.updateItem', function ($e, $eventItem) use ($item) {
             return $eventItem['item'] === $item && $eventItem['newHash'] === $item->getHash();
         });
-        Event::assertDispatched('laracart.updateItem', 1);
-
+        
+        $this->assertEquals(1, Event::dispatched('laracart.updateItem')->count());
         $this->assertEquals(4, $item->qty);
     }
 
