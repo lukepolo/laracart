@@ -4,24 +4,24 @@
 
 ## Features
 
-* Coupons
-* Session Based System
-* Cross Device Support
-* Multiple cart instances
-* Fees such as a delivery fee
-* Taxation on a the item level
-* Prices display currency and locale
-* Endless item chaining for complex systems
-* Totals of all items within the item chains
-* Item Model Relation at a global and item level
-* Quickly insert items with your own item models
+- Coupons
+- Session Based System
+- Cross Device Support
+- Multiple cart instances
+- Fees such as a delivery fee
+- Taxation on a the item level
+- Prices display currency and locale
+- Endless item chaining for complex systems
+- Totals of all items within the item chains
+- Item Model Relation at a global and item level
+- Quickly insert items with your own item models
 
 ## Laravel compatibility
 
-| Laravel | laracart   |
-| :------ | :--------- |
-| 5.x     | ._ - 1.1._ |
-| 5.4+    | 1.3.\*     |
+| Laravel           | laracart   |
+| :---------------- | :--------- |
+| 5.1 \| 5.2 \| 5.3 | 1.1 \/ 1.2 |
+| 5.4+              | 1.3+       |
 
 ## Installation
 
