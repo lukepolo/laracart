@@ -35,7 +35,6 @@ class CouponsTest extends Orchestra\Testbench\TestCase
      */
     public function testAddPercentageCouponOnTaxItem()
     {
-
         $this->app['config']->set('laracart.tax_by_item', false);
         $this->app['config']->set('laracart.tax_item_before_discount', true);
         $this->app['config']->set('laracart.discountsAlreadyTaxed', false);
