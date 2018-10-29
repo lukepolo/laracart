@@ -226,7 +226,7 @@ class CartItem
         }
 
         if ($withTax) {
-            $total += $this->tax(0, false);
+            $total += $this->tax(0, false, false, $withDiscount);
         }
 
         return LaraCart::formatMoney($total, $this->locale, $this->internationalFormat, $format);
@@ -324,9 +324,10 @@ class CartItem
      *
      * @return int|mixed
      */
-    public function tax($amountNotTaxable = 0, $grossTax = true, $rounded = false)
+    public function tax($amountNotTaxable = 0, $grossTax = true, $rounded = false, $withDiscount = true)
     {
-        $totalDiscount = $this->getDiscount(false);
+        $discountTaxable = ($withDiscount) ? !config('laracart.discountTaxable', false) : false;
+        $totalDiscount = ($withDiscount) ? $this->getDiscount(false) : 0;
 
         if (!$this->taxable) {
             $amountNotTaxable = $this->price * $this->qty;
@@ -360,9 +361,9 @@ class CartItem
             return $totalTax - $amountNotTaxable;
         }
 
-        $totalTax = $this->tax * ($this->subTotal(false, !config('laracart.discountTaxable', false), true) - $amountNotTaxable);
+        $totalTax = $this->tax * ($this->subTotal(false, $discountTaxable, true, false) - $amountNotTaxable);
 
-        if (config('laracart.discountsAlreadyTaxed', false)) {
+        if (config('laracart.discountsAlreadyTaxed', false) && $withDiscount) {
             $totalTax = $totalTax - ($this->getDiscount(false) - ($this->getDiscount(false) / (1 + $this->tax)));
         }
 
