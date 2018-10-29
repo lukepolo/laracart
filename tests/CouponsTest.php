@@ -252,11 +252,11 @@ class CouponsTest extends Orchestra\Testbench\TestCase
 
         $this->app['config']->set('laracart.discountTaxable', true);
 
-        $this->assertEquals(90 + (100 * .07), $this->laracart->total(false));  // 97
+        $this->assertEquals(90 + (100 * .07), $this->laracart->total(false));
 
         $this->app['config']->set('laracart.discountTaxable', false);
 
-        $this->assertEquals(90 * 1.07, $this->laracart->total(false)); // 96,3
+        $this->assertEquals(90 * 1.07, $this->laracart->total(false));
 
         $this->laracart->removeCoupon('10OFF');
 
