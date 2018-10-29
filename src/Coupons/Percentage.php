@@ -46,7 +46,6 @@ class Percentage implements CouponContract
     public function forItem(CartItem $item)
     {
         if (config('laracart.tax_item_before_discount')) {
-//            dd($item->subTotal(false, false, false, true) * $this->value, $item->subTotal(false, false, false, true) , $this->value);
             return $item->subTotal(false, false, false, true) * $this->value;
         }
 

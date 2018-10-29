@@ -329,7 +329,6 @@ class CartItem
         $discountTaxable = ($withDiscount) ? !config('laracart.discountTaxable', false) : false;
         $totalDiscount = ($withDiscount) ? $this->getDiscount(false) : 0;
 
-
         if (!$this->taxable) {
             $amountNotTaxable = $this->price * $this->qty;
         }
@@ -337,7 +336,6 @@ class CartItem
         if (config('laracart.tax_by_item')) {
             $itemCount = 0;
             $totalTax = 0;
-
             while ($itemCount < $this->qty) {
                 $totalTax += round($this->price * $this->tax, 2);
                 $itemCount++;
