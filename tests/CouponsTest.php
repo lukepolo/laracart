@@ -16,7 +16,16 @@ class CouponsTest extends Orchestra\Testbench\TestCase
     {
         $this->addItem(3, 1);
 
+        try {
+            $percentCoupon = new LukePOLO\LaraCart\Coupons\Percentage('10%OFF', '23');
+            $this->setExpectedException(\LukePOLO\LaraCart\Exceptions\CouponException::class);
+        } catch (\LukePOLO\LaraCart\Exceptions\CouponException $e) {
+            $this->assertEquals('Invalid value for a percentage coupon. The value must be between 0 and 1.', $e->getMessage());
+        }
+
         $percentCoupon = new LukePOLO\LaraCart\Coupons\Percentage('10%OFF', '.1');
+
+
 
         $this->laracart->addCoupon($percentCoupon);
 
@@ -426,5 +435,13 @@ class CouponsTest extends Orchestra\Testbench\TestCase
         $this->app['config']->set('laracart.discountOnFees', true);
 
         $this->assertEquals('500', $fixedCoupon->discount());
+
+
+        $this->app['config']->set('laracart.discountOnFees', true);
+
+        $percentCoupon = new LukePOLO\LaraCart\Coupons\Percentage('100% Off', 1);
+        $this->laracart->addCoupon($percentCoupon);
+
+        $this->assertEquals(0, $this->laracart->total(false));
     }
 }

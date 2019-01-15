@@ -4,6 +4,7 @@ namespace LukePOLO\LaraCart\Coupons;
 
 use LukePOLO\LaraCart\CartItem;
 use LukePOLO\LaraCart\Contracts\CouponContract;
+use LukePOLO\LaraCart\Exceptions\CouponException;
 use LukePOLO\LaraCart\LaraCart;
 use LukePOLO\LaraCart\Traits\CouponTrait;
 
@@ -27,10 +28,14 @@ class Percentage implements CouponContract
      * @param $code
      * @param $value
      * @param array $options
+     * @throws \Exception
      */
     public function __construct($code, $value, $options = [])
     {
         $this->code = $code;
+        if($value > 1) {
+            throw new CouponException('Invalid value for a percentage coupon. The value must be between 0 and 1.');
+        }
         $this->value = $value;
 
         $this->setOptions($options);
@@ -62,8 +67,13 @@ class Percentage implements CouponContract
      */
     public function discount($throwErrors = false)
     {
+        $subTotal = app(LaraCart::SERVICE)->subTotal(false);
+        if (config('laracart.discountOnFees', false)) {
+            $subTotal = $subTotal + app(LaraCart::SERVICE)->feeTotals(false);
+        }
+
         return LaraCart::formatMoney(
-            app(LaraCart::SERVICE)->subTotal(false) * $this->value,
+            $subTotal * $this->value,
             null,
             null,
             false
