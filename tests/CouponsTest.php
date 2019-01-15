@@ -25,8 +25,6 @@ class CouponsTest extends Orchestra\Testbench\TestCase
 
         $percentCoupon = new LukePOLO\LaraCart\Coupons\Percentage('10%OFF', '.1');
 
-
-
         $this->laracart->addCoupon($percentCoupon);
 
         $this->assertEquals($percentCoupon, $this->laracart->findCoupon('10%OFF'));
@@ -435,7 +433,6 @@ class CouponsTest extends Orchestra\Testbench\TestCase
         $this->app['config']->set('laracart.discountOnFees', true);
 
         $this->assertEquals('500', $fixedCoupon->discount());
-
 
         $this->app['config']->set('laracart.discountOnFees', true);
 

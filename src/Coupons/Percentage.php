@@ -28,12 +28,13 @@ class Percentage implements CouponContract
      * @param $code
      * @param $value
      * @param array $options
+     *
      * @throws \Exception
      */
     public function __construct($code, $value, $options = [])
     {
         $this->code = $code;
-        if($value > 1) {
+        if ($value > 1) {
             throw new CouponException('Invalid value for a percentage coupon. The value must be between 0 and 1.');
         }
         $this->value = $value;
