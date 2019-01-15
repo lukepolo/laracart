@@ -84,7 +84,7 @@ trait CartOptionsMagicMethodsTrait
      */
     public function __isset($option)
     {
-        if (!empty($this->options[$option])) {
+        if (isset($this->options[$option])) {
             return true;
         } else {
             return false;
