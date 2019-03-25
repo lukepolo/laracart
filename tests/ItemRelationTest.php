@@ -91,7 +91,7 @@ class ItemRelationTest extends Orchestra\Testbench\TestCase
         $this->assertEquals($item->id, 'itemID');
         $this->assertEquals($item->name, 'Test Item');
         $this->assertEquals($item->qty, 1);
-        $this->assertEquals($item->tax, '.5');
+        $this->assertEquals($item->tax, '.07');
         $this->assertEquals($item->price, 5000.01);
         $this->assertEquals($item->taxable, false);
     }
@@ -123,7 +123,6 @@ class ItemRelationTest extends Orchestra\Testbench\TestCase
 
         $this->assertEquals($item, $this->laracart->getItem($item->getHash()));
 
-        dump($item);
         $this->assertEquals($item->id, 'itemID');
         $this->assertEquals($item->name, 'Test Item');
         $this->assertEquals($item->qty, 1);

@@ -224,21 +224,20 @@ class LaraCart implements LaraCartContract
 
             $bindings = config('laracart.item_model_bindings');
 
-            $itemID = $itemModel[$bindings[\LukePOLO\LaraCart\CartItem::ITEM_ID]];
+            $itemID = $itemModel->{$bindings[\LukePOLO\LaraCart\CartItem::ITEM_ID]};
 
             if (is_int($name)) {
                 $qty = $name;
             }
 
-            $name = $itemModel[$bindings[\LukePOLO\LaraCart\CartItem::ITEM_NAME]];
-            $price = $itemModel[$bindings[\LukePOLO\LaraCart\CartItem::ITEM_PRICE]];
+            $name = $itemModel->{$bindings[\LukePOLO\LaraCart\CartItem::ITEM_NAME]};
+            $price = $itemModel->{$bindings[\LukePOLO\LaraCart\CartItem::ITEM_PRICE]};
 
             $options['model'] = $itemModel;
 
-            $options = array_merge($options,
-                $this->getItemModelOptions($itemModel, $bindings[\LukePOLO\LaraCart\CartItem::ITEM_OPTIONS]));
+            $options = array_merge($options, $this->getItemModelOptions($itemModel, $bindings[\LukePOLO\LaraCart\CartItem::ITEM_OPTIONS]));
 
-            $taxable = $itemModel[$bindings[\LukePOLO\LaraCart\CartItem::ITEM_TAXABLE]] ? true : false;
+            $taxable = $itemModel->{$bindings[\LukePOLO\LaraCart\CartItem::ITEM_TAXABLE]} ? true : false;
         }
 
         $item = $this->addItem(new CartItem(
