@@ -123,6 +123,7 @@ class ItemRelationTest extends Orchestra\Testbench\TestCase
 
         $this->assertEquals($item, $this->laracart->getItem($item->getHash()));
 
+        dump($item);
         $this->assertEquals($item->id, 'itemID');
         $this->assertEquals($item->name, 'Test Item');
         $this->assertEquals($item->qty, 1);
