@@ -400,7 +400,8 @@ class CartItem
     /**
      * Gets the items model class.
      */
-    public function getItemModel() {
+    public function getItemModel()
+    {
         return $this->itemModel;
     }
 
