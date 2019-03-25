@@ -13,7 +13,6 @@ class CrossDeviceTest extends Orchestra\Testbench\TestCase
      */
     public function testMigrations()
     {
-
         $this->assertNull($this->artisan('migrate'));
 
         $this->beforeApplicationDestroyed(function () {
