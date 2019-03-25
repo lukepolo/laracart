@@ -398,6 +398,13 @@ class CartItem
     }
 
     /**
+     * Gets the items model class.
+     */
+    public function getItemModel() {
+        return $this->itemModel;
+    }
+
+    /**
      * Returns a Model.
      *
      * @throws ModelNotFound

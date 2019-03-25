@@ -20,7 +20,7 @@ class ItemRelationTest extends Orchestra\Testbench\TestCase
 
         $item->setModel(\LukePOLO\LaraCart\Tests\Models\TestItem::class);
 
-        $this->assertEquals(\LukePOLO\LaraCart\Tests\Models\TestItem::class, $item->itemModel);
+        $this->assertEquals(\LukePOLO\LaraCart\Tests\Models\TestItem::class, $item->getItemModel());
 
         $this->assertEquals('itemID', $item->getModel()->id);
 

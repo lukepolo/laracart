@@ -23,11 +23,7 @@ trait CartOptionsMagicMethodsTrait
      */
     public function __get($option)
     {
-        try {
-            return $this->$option;
-        } catch (\ErrorException $e) {
-            return array_get($this->options, $option);
-        }
+        return array_get($this->options, $option);
     }
 
     /**
