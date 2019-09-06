@@ -2,6 +2,7 @@
 
 namespace LukePOLO\LaraCart;
 
+use Illuminate\Support\Arr;
 use LukePOLO\LaraCart\Contracts\CouponContract;
 use LukePOLO\LaraCart\Exceptions\ModelNotFound;
 use LukePOLO\LaraCart\Traits\CartOptionsMagicMethodsTrait;
@@ -9,13 +10,13 @@ use LukePOLO\LaraCart\Traits\CartOptionsMagicMethodsTrait;
 /**
  * Class CartItem.
  *
- * @property int id
- * @property int qty
- * @property float tax
- * @property float price
+ * @property int    id
+ * @property int    qty
+ * @property float  tax
+ * @property float  price
  * @property string name
- * @property array options
- * @property bool taxable
+ * @property array  options
+ * @property bool   taxable
  */
 class CartItem
 {
@@ -44,8 +45,8 @@ class CartItem
     /**
      * CartItem constructor.
      *
-     * @param $id
-     * @param $name
+     * @param            $id
+     * @param            $name
      * @param int        $qty
      * @param string     $price
      * @param array      $options
@@ -137,7 +138,7 @@ class CartItem
      */
     public function findSubItem($subItemHash)
     {
-        return array_get($this->subItems, $subItemHash);
+        return Arr::get($this->subItems, $subItemHash);
     }
 
     /**
@@ -382,7 +383,7 @@ class CartItem
     /**
      * Sets the related model to the item.
      *
-     * @param $itemModel
+     * @param       $itemModel
      * @param array $relations
      *
      * @throws ModelNotFound

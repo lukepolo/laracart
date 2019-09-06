@@ -3,6 +3,7 @@
 namespace LukePOLO\LaraCart;
 
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Support\Str;
 
 /**
  * Class LaraCartServiceProvider.
@@ -50,7 +51,7 @@ class LaraCartServiceProvider extends ServiceProvider
         $this->app->bind(
             LaraCart::RANHASH,
             function () {
-                return str_random(40);
+                return Str::random(40);
             }
         );
     }

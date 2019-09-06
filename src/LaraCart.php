@@ -6,6 +6,7 @@ use Illuminate\Auth\AuthManager;
 use Illuminate\Contracts\Events\Dispatcher;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Session\SessionManager;
+use Illuminate\Support\Arr;
 use LukePOLO\LaraCart\Contracts\CouponContract;
 use LukePOLO\LaraCart\Contracts\LaraCartContract;
 use LukePOLO\LaraCart\Exceptions\ModelNotFound;
@@ -111,7 +112,7 @@ class LaraCart implements LaraCartContract
      */
     public function getAttribute($attribute, $defaultValue = null)
     {
-        return array_get($this->cart->attributes, $attribute, $defaultValue);
+        return Arr::get($this->cart->attributes, $attribute, $defaultValue);
     }
 
     /**
@@ -132,7 +133,7 @@ class LaraCart implements LaraCartContract
      */
     public function setAttribute($attribute, $value)
     {
-        array_set($this->cart->attributes, $attribute, $value);
+        Arr::set($this->cart->attributes, $attribute, $value);
 
         $this->update();
     }
@@ -163,7 +164,7 @@ class LaraCart implements LaraCartContract
      */
     public function removeAttribute($attribute)
     {
-        array_forget($this->cart->attributes, $attribute);
+        Arr::forget($this->cart->attributes, $attribute);
 
         $this->update();
     }
@@ -190,7 +191,7 @@ class LaraCart implements LaraCartContract
     /**
      * Creates a CartItem and then adds it to cart.
      *
-     * @param $itemID
+     * @param            $itemID
      * @param null       $name
      * @param int        $qty
      * @param string     $price
@@ -335,10 +336,10 @@ class LaraCart implements LaraCartContract
         switch (count($matches)) {
             case 0:
                 return;
-                break;
+            break;
             case 1:
                 return $matches[0];
-                break;
+            break;
             default:
                 return $matches;
         }
@@ -353,7 +354,7 @@ class LaraCart implements LaraCartContract
      */
     public function getItem($itemHash)
     {
-        return array_get($this->getItems(), $itemHash);
+        return Arr::get($this->getItems(), $itemHash);
     }
 
     /**
@@ -465,7 +466,7 @@ class LaraCart implements LaraCartContract
      */
     public function findCoupon($code)
     {
-        return array_get($this->cart->coupons, $code);
+        return Arr::get($this->cart->coupons, $code);
     }
 
     /**
@@ -492,7 +493,7 @@ class LaraCart implements LaraCartContract
     public function removeCoupon($code)
     {
         $this->removeCouponFromItems($code);
-        array_forget($this->cart->coupons, $code);
+        Arr::forget($this->cart->coupons, $code);
         $this->update();
     }
 
@@ -515,21 +516,21 @@ class LaraCart implements LaraCartContract
      */
     public function getFee($name)
     {
-        return array_get($this->cart->fees, $name, new CartFee(null, false));
+        return Arr::get($this->cart->fees, $name, new CartFee(null, false));
     }
 
     /**
      * Allows to charge for additional fees that may or may not be taxable
      * ex - service fee , delivery fee, tips.
      *
-     * @param $name
-     * @param $amount
+     * @param            $name
+     * @param            $amount
      * @param bool|false $taxable
      * @param array      $options
      */
     public function addFee($name, $amount, $taxable = false, array $options = [])
     {
-        array_set($this->cart->fees, $name, new CartFee($amount, $taxable, $options));
+        Arr::set($this->cart->fees, $name, new CartFee($amount, $taxable, $options));
 
         $this->update();
     }
@@ -541,7 +542,7 @@ class LaraCart implements LaraCartContract
      */
     public function removeFee($name)
     {
-        array_forget($this->cart->fees, $name);
+        Arr::forget($this->cart->fees, $name);
 
         $this->update();
     }
@@ -850,8 +851,8 @@ class LaraCart implements LaraCartContract
      * Gets a option from the model.
      *
      * @param Model $itemModel
-     * @param $attr
-     * @param null $defaultValue
+     * @param       $attr
+     * @param null  $defaultValue
      *
      * @return Model|null
      */
@@ -861,7 +862,7 @@ class LaraCart implements LaraCartContract
 
         if (!empty($attr)) {
             foreach (explode('.', $attr) as $attr) {
-                $variable = array_get($variable, $attr, $defaultValue);
+                $variable = Arr::get($variable, $attr, $defaultValue);
             }
         }
 
