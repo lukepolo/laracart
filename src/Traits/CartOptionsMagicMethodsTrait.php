@@ -2,6 +2,7 @@
 
 namespace LukePOLO\LaraCart\Traits;
 
+use Illuminate\Support\Arr;
 use LukePOLO\LaraCart\CartItem;
 use LukePOLO\LaraCart\Exceptions\InvalidPrice;
 use LukePOLO\LaraCart\Exceptions\InvalidQuantity;
@@ -23,7 +24,7 @@ trait CartOptionsMagicMethodsTrait
      */
     public function __get($option)
     {
-        return array_get($this->options, $option);
+        return Arr::get($this->options, $option);
     }
 
     /**
@@ -61,8 +62,8 @@ trait CartOptionsMagicMethodsTrait
                 break;
         }
 
-        $changed = (!empty(array_get($this->options, $option)) && array_get($this->options, $option) != $value);
-        array_set($this->options, $option, $value);
+        $changed = (!empty(Arr::get($this->options, $option)) && Arr::get($this->options, $option) != $value);
+        Arr::set($this->options, $option, $value);
 
         if ($changed) {
             if (is_callable([$this, 'generateHash'])) {

@@ -2,6 +2,7 @@
 
 namespace LukePOLO\LaraCart;
 
+use Illuminate\Support\Arr;
 use LukePOLO\LaraCart\Traits\CartOptionsMagicMethodsTrait;
 
 /**
@@ -30,7 +31,7 @@ class CartSubItem
         $this->options['items'] = [];
 
         foreach ($options as $option => $value) {
-            array_set($this->options, $option, $value);
+            Arr::set($this->options, $option, $value);
         }
 
         $this->itemHash = app(LaraCart::HASH)->hash($this->options);
@@ -60,7 +61,7 @@ class CartSubItem
 
         if (isset($this->items)) {
             foreach ($this->items as $item) {
-                if ($taxedItemsOnly && !$item->taxable) {
+                if ($taxedItemsOnly && ! $item->taxable) {
                     continue;
                 }
                 $price += $item->price(false, $taxedItemsOnly);

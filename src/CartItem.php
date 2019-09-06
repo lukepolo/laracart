@@ -2,6 +2,7 @@
 
 namespace LukePOLO\LaraCart;
 
+use Illuminate\Support\Arr;
 use LukePOLO\LaraCart\Contracts\CouponContract;
 use LukePOLO\LaraCart\Exceptions\ModelNotFound;
 use LukePOLO\LaraCart\Traits\CartOptionsMagicMethodsTrait;
@@ -9,21 +10,21 @@ use LukePOLO\LaraCart\Traits\CartOptionsMagicMethodsTrait;
 /**
  * Class CartItem.
  *
- * @property int id
- * @property int qty
- * @property float tax
- * @property float price
+ * @property int    id
+ * @property int    qty
+ * @property float  tax
+ * @property float  price
  * @property string name
- * @property array options
- * @property bool taxable
+ * @property array  options
+ * @property bool   taxable
  */
 class CartItem
 {
-    const ITEM_ID = 'id';
-    const ITEM_QTY = 'qty';
-    const ITEM_TAX = 'tax';
-    const ITEM_NAME = 'name';
-    const ITEM_PRICE = 'price';
+    const ITEM_ID      = 'id';
+    const ITEM_QTY     = 'qty';
+    const ITEM_TAX     = 'tax';
+    const ITEM_NAME    = 'name';
+    const ITEM_PRICE   = 'price';
     const ITEM_TAXABLE = 'taxable';
     const ITEM_OPTIONS = 'options';
 
@@ -44,8 +45,8 @@ class CartItem
     /**
      * CartItem constructor.
      *
-     * @param $id
-     * @param $name
+     * @param            $id
+     * @param            $name
      * @param int        $qty
      * @param string     $price
      * @param array      $options
@@ -137,7 +138,7 @@ class CartItem
      */
     public function findSubItem($subItemHash)
     {
-        return array_get($this->subItems, $subItemHash);
+        return Arr::get($this->subItems, $subItemHash);
     }
 
     /**
@@ -326,10 +327,10 @@ class CartItem
      */
     public function tax($amountNotTaxable = 0, $grossTax = true, $rounded = false, $withDiscount = true)
     {
-        $discountTaxable = ($withDiscount) ? !config('laracart.discountTaxable', false) : false;
+        $discountTaxable = ($withDiscount) ? ! config('laracart.discountTaxable', false) : false;
         $totalDiscount = ($withDiscount) ? $this->getDiscount(false) : 0;
 
-        if (!$this->taxable) {
+        if (! $this->taxable) {
             $amountNotTaxable = $this->price * $this->qty;
         }
 
@@ -382,14 +383,14 @@ class CartItem
     /**
      * Sets the related model to the item.
      *
-     * @param $itemModel
+     * @param       $itemModel
      * @param array $relations
      *
      * @throws ModelNotFound
      */
     public function setModel($itemModel, $relations = [])
     {
-        if (!class_exists($itemModel)) {
+        if (! class_exists($itemModel)) {
             throw new ModelNotFound('Could not find relation model');
         }
 
@@ -415,7 +416,7 @@ class CartItem
         $itemModel = (new $this->itemModel())->with($this->itemModelRelations)->find($this->id);
 
         if (empty($itemModel)) {
-            throw new ModelNotFound('Could not find the item model for '.$this->id);
+            throw new ModelNotFound('Could not find the item model for ' . $this->id);
         }
 
         return $itemModel;

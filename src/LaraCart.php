@@ -2,13 +2,14 @@
 
 namespace LukePOLO\LaraCart;
 
+use Illuminate\Support\Arr;
 use Illuminate\Auth\AuthManager;
-use Illuminate\Contracts\Events\Dispatcher;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Session\SessionManager;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Contracts\Events\Dispatcher;
 use LukePOLO\LaraCart\Contracts\CouponContract;
-use LukePOLO\LaraCart\Contracts\LaraCartContract;
 use LukePOLO\LaraCart\Exceptions\ModelNotFound;
+use LukePOLO\LaraCart\Contracts\LaraCartContract;
 
 /**
  * Class LaraCart.
@@ -16,7 +17,7 @@ use LukePOLO\LaraCart\Exceptions\ModelNotFound;
 class LaraCart implements LaraCartContract
 {
     const SERVICE = 'laracart';
-    const HASH = LaraCartHasher::class;
+    const HASH    = LaraCartHasher::class;
     const RANHASH = 'generateRandomCartItemHash';
 
     protected $events;
@@ -44,7 +45,7 @@ class LaraCart implements LaraCartContract
         $this->itemModel = config('laracart.item_model', null);
         $this->itemModelRelations = config('laracart.item_model_relations', []);
 
-        $this->setInstance($this->session->get($this->prefix.'.instance', 'default'));
+        $this->setInstance($this->session->get($this->prefix . '.instance', 'default'));
     }
 
     /**
@@ -54,7 +55,7 @@ class LaraCart implements LaraCartContract
      */
     public function getInstances()
     {
-        return $this->session->get($this->prefix.'.instances', []);
+        return $this->session->get($this->prefix . '.instances', []);
     }
 
     /**
@@ -68,10 +69,10 @@ class LaraCart implements LaraCartContract
     {
         $this->get($instance);
 
-        $this->session->put($this->prefix.'.instance', $instance);
+        $this->session->put($this->prefix . '.instance', $instance);
 
-        if (!in_array($instance, $this->getInstances())) {
-            $this->session->push($this->prefix.'.instances', $instance);
+        if (! in_array($instance, $this->getInstances())) {
+            $this->session->push($this->prefix . '.instances', $instance);
         }
         $this->events->dispatch('laracart.new');
 
@@ -88,13 +89,13 @@ class LaraCart implements LaraCartContract
     public function get($instance = 'default')
     {
         if (config('laracart.cross_devices', false) && $this->authManager->check()) {
-            if (!empty($cartSessionID = $this->authManager->user()->cart_session_id)) {
+            if (! empty($cartSessionID = $this->authManager->user()->cart_session_id)) {
                 $this->session->setId($cartSessionID);
                 $this->session->start();
             }
         }
 
-        if (empty($this->cart = $this->session->get($this->prefix.'.'.$instance))) {
+        if (empty($this->cart = $this->session->get($this->prefix . '.' . $instance))) {
             $this->cart = new Cart($instance);
         }
 
@@ -111,7 +112,7 @@ class LaraCart implements LaraCartContract
      */
     public function getAttribute($attribute, $defaultValue = null)
     {
-        return array_get($this->cart->attributes, $attribute, $defaultValue);
+        return Arr::get($this->cart->attributes, $attribute, $defaultValue);
     }
 
     /**
@@ -132,7 +133,7 @@ class LaraCart implements LaraCartContract
      */
     public function setAttribute($attribute, $value)
     {
-        array_set($this->cart->attributes, $attribute, $value);
+        Arr::set($this->cart->attributes, $attribute, $value);
 
         $this->update();
     }
@@ -142,7 +143,7 @@ class LaraCart implements LaraCartContract
      */
     public function update()
     {
-        $this->session->put($this->prefix.'.'.$this->cart->instance, $this->cart);
+        $this->session->put($this->prefix . '.' . $this->cart->instance, $this->cart);
 
         if (config('laracart.cross_devices', false) && $this->authManager->check()) {
             $this->authManager->user()->cart_session_id = $this->session->getId();
@@ -163,7 +164,7 @@ class LaraCart implements LaraCartContract
      */
     public function removeAttribute($attribute)
     {
-        array_forget($this->cart->attributes, $attribute);
+        Arr::forget($this->cart->attributes, $attribute);
 
         $this->update();
     }
@@ -178,9 +179,9 @@ class LaraCart implements LaraCartContract
      * @param array      $options
      * @param bool|true  $taxable
      *
+     * @return CartItem
      * @throws ModelNotFound
      *
-     * @return CartItem
      */
     public function addLine($itemID, $name = null, $qty = 1, $price = '0.00', $options = [], $taxable = true)
     {
@@ -190,7 +191,7 @@ class LaraCart implements LaraCartContract
     /**
      * Creates a CartItem and then adds it to cart.
      *
-     * @param $itemID
+     * @param            $itemID
      * @param null       $name
      * @param int        $qty
      * @param string     $price
@@ -198,9 +199,9 @@ class LaraCart implements LaraCartContract
      * @param bool|false $taxable
      * @param bool|false $lineItem
      *
+     * @return CartItem
      * @throws ModelNotFound
      *
-     * @return CartItem
      */
     public function add(
         $itemID,
@@ -210,16 +211,17 @@ class LaraCart implements LaraCartContract
         $options = [],
         $taxable = true,
         $lineItem = false
-    ) {
-        if (!empty(config('laracart.item_model'))) {
+    )
+    {
+        if (! empty(config('laracart.item_model'))) {
             $itemModel = $itemID;
 
-            if (!$this->isItemModel($itemModel)) {
+            if (! $this->isItemModel($itemModel)) {
                 $itemModel = (new $this->itemModel())->with($this->itemModelRelations)->find($itemID);
             }
 
             if (empty($itemModel)) {
-                throw new ModelNotFound('Could not find the item '.$itemID);
+                throw new ModelNotFound('Could not find the item ' . $itemID);
             }
 
             $bindings = config('laracart.item_model_bindings');
@@ -335,10 +337,10 @@ class LaraCart implements LaraCartContract
         switch (count($matches)) {
             case 0:
                 return;
-                break;
+            break;
             case 1:
                 return $matches[0];
-                break;
+            break;
             default:
                 return $matches;
         }
@@ -353,7 +355,7 @@ class LaraCart implements LaraCartContract
      */
     public function getItem($itemHash)
     {
-        return array_get($this->getItems(), $itemHash);
+        return Arr::get($this->getItems(), $itemHash);
     }
 
     /**
@@ -437,7 +439,7 @@ class LaraCart implements LaraCartContract
     {
         $instance = $this->cart->instance;
 
-        $this->session->forget($this->prefix.'.'.$instance);
+        $this->session->forget($this->prefix . '.' . $instance);
 
         $this->events->dispatch('laracart.destroy', $instance);
 
@@ -465,7 +467,7 @@ class LaraCart implements LaraCartContract
      */
     public function findCoupon($code)
     {
-        return array_get($this->cart->coupons, $code);
+        return Arr::get($this->cart->coupons, $code);
     }
 
     /**
@@ -475,7 +477,7 @@ class LaraCart implements LaraCartContract
      */
     public function addCoupon(CouponContract $coupon)
     {
-        if (!$this->cart->multipleCoupons) {
+        if (! $this->cart->multipleCoupons) {
             $this->cart->coupons = [];
         }
 
@@ -492,7 +494,7 @@ class LaraCart implements LaraCartContract
     public function removeCoupon($code)
     {
         $this->removeCouponFromItems($code);
-        array_forget($this->cart->coupons, $code);
+        Arr::forget($this->cart->coupons, $code);
         $this->update();
     }
 
@@ -515,21 +517,21 @@ class LaraCart implements LaraCartContract
      */
     public function getFee($name)
     {
-        return array_get($this->cart->fees, $name, new CartFee(null, false));
+        return Arr::get($this->cart->fees, $name, new CartFee(null, false));
     }
 
     /**
      * Allows to charge for additional fees that may or may not be taxable
      * ex - service fee , delivery fee, tips.
      *
-     * @param $name
-     * @param $amount
+     * @param            $name
+     * @param            $amount
      * @param bool|false $taxable
      * @param array      $options
      */
     public function addFee($name, $amount, $taxable = false, array $options = [])
     {
-        array_set($this->cart->fees, $name, new CartFee($amount, $taxable, $options));
+        Arr::set($this->cart->fees, $name, new CartFee($amount, $taxable, $options));
 
         $this->update();
     }
@@ -541,7 +543,7 @@ class LaraCart implements LaraCartContract
      */
     public function removeFee($name)
     {
-        array_forget($this->cart->fees, $name);
+        Arr::forget($this->cart->fees, $name);
 
         $this->update();
     }
@@ -720,8 +722,8 @@ class LaraCart implements LaraCartContract
         // When prices in cents needs to be formatted, divide by 100 to allow formatting in whole units
         if (config('laracart.prices_in_cents', false) === true && $format) {
             $number = $number / 100;
-        // When prices in cents do not need to be formatted then cast to integer and round the price
-        } elseif (config('laracart.prices_in_cents', false) === true && !$format) {
+            // When prices in cents do not need to be formatted then cast to integer and round the price
+        } elseif (config('laracart.prices_in_cents', false) === true && ! $format) {
             $number = (int) round($number);
         } else {
             $number = number_format($number, 2, '.', '');
@@ -850,8 +852,8 @@ class LaraCart implements LaraCartContract
      * Gets a option from the model.
      *
      * @param Model $itemModel
-     * @param $attr
-     * @param null $defaultValue
+     * @param       $attr
+     * @param null  $defaultValue
      *
      * @return Model|null
      */
@@ -859,9 +861,9 @@ class LaraCart implements LaraCartContract
     {
         $variable = $itemModel;
 
-        if (!empty($attr)) {
+        if (! empty($attr)) {
             foreach (explode('.', $attr) as $attr) {
-                $variable = array_get($variable, $attr, $defaultValue);
+                $variable = Arr::get($variable, $attr, $defaultValue);
             }
         }
 
