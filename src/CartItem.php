@@ -20,11 +20,11 @@ use LukePOLO\LaraCart\Traits\CartOptionsMagicMethodsTrait;
  */
 class CartItem
 {
-    const ITEM_ID      = 'id';
-    const ITEM_QTY     = 'qty';
-    const ITEM_TAX     = 'tax';
-    const ITEM_NAME    = 'name';
-    const ITEM_PRICE   = 'price';
+    const ITEM_ID = 'id';
+    const ITEM_QTY = 'qty';
+    const ITEM_TAX = 'tax';
+    const ITEM_NAME = 'name';
+    const ITEM_PRICE = 'price';
     const ITEM_TAXABLE = 'taxable';
     const ITEM_OPTIONS = 'options';
 
@@ -327,10 +327,10 @@ class CartItem
      */
     public function tax($amountNotTaxable = 0, $grossTax = true, $rounded = false, $withDiscount = true)
     {
-        $discountTaxable = ($withDiscount) ? ! config('laracart.discountTaxable', false) : false;
+        $discountTaxable = ($withDiscount) ? !config('laracart.discountTaxable', false) : false;
         $totalDiscount = ($withDiscount) ? $this->getDiscount(false) : 0;
 
-        if (! $this->taxable) {
+        if (!$this->taxable) {
             $amountNotTaxable = $this->price * $this->qty;
         }
 
@@ -390,7 +390,7 @@ class CartItem
      */
     public function setModel($itemModel, $relations = [])
     {
-        if (! class_exists($itemModel)) {
+        if (!class_exists($itemModel)) {
             throw new ModelNotFound('Could not find relation model');
         }
 
@@ -416,7 +416,7 @@ class CartItem
         $itemModel = (new $this->itemModel())->with($this->itemModelRelations)->find($this->id);
 
         if (empty($itemModel)) {
-            throw new ModelNotFound('Could not find the item model for ' . $this->id);
+            throw new ModelNotFound('Could not find the item model for '.$this->id);
         }
 
         return $itemModel;
