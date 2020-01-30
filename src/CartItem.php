@@ -262,7 +262,7 @@ class CartItem
         $total = 0;
 
         foreach ($this->subItems as $subItem) {
-            $total += $subItem->price(false, $taxedItemsOnly) * (!empty($subItem->qty) ?: 1);
+            $total += $subItem->price(false, $taxedItemsOnly) * (!empty($subItem->qty) ? $subItem->qty : 1);
         }
 
         if ($withTax) {
