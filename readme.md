@@ -30,7 +30,7 @@ Install the package through [Composer](http://getcomposer.org/). Edit your proje
     {
         "require": {
             ........,
-            "lukepolo/laracart": "1.5.*"
+            "lukepolo/laracart": "1.8.*"
         }
     }
 
