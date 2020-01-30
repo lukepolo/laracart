@@ -16,7 +16,7 @@ trait LaraCartTestTrait
     /**
      * Setup the test functions with laracart.
      */
-    public function setUp() : void
+    public function setUp(): void
     {
         parent::setUp();
 
