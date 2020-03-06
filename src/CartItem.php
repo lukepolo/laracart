@@ -94,7 +94,8 @@ class CartItem
         }
 
         app('events')->dispatch(
-            'laracart.updateItem', [
+            'laracart.updateItem',
+            [
                 'item'    => $this,
                 'newHash' => $this->itemHash,
             ]
@@ -200,7 +201,8 @@ class CartItem
         return LaraCart::formatMoney(
             $total,
             $this->locale,
-            $this->internationalFormat, $format
+            $this->internationalFormat,
+            $format
         );
     }
 

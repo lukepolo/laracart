@@ -111,7 +111,8 @@ class ItemsTest extends Orchestra\Testbench\TestCase
             'itemID',
             'Testing Item',
             1,
-            '1', [
+            '1',
+            [
                 'b_test' => 'option_1',
                 'a_test' => 'option_2',
             ]

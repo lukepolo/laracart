@@ -15,7 +15,8 @@ class TotalsTest extends Orchestra\Testbench\TestCase
         $this->addItem(1, 10);
 
         $fixedCoupon = new LukePOLO\LaraCart\Coupons\Fixed(
-            '10OFF', 10
+            '10OFF',
+            10
         );
 
         $this->laracart->addCoupon($fixedCoupon);
@@ -35,7 +36,8 @@ class TotalsTest extends Orchestra\Testbench\TestCase
         $this->addItem(1, 1000);
 
         $fixedCoupon = new LukePOLO\LaraCart\Coupons\Fixed(
-            '10OFF', 1000
+            '10OFF',
+            1000
         );
 
         $this->laracart->addCoupon($fixedCoupon);
