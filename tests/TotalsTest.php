@@ -606,4 +606,32 @@ class TotalsTest extends Orchestra\Testbench\TestCase
 
         $this->assertEquals(1, $item->subTotal(false, true, false, true));
     }
+
+    public function testBlah() {
+        $this->laracart->emptyCart();
+        $this->laracart->destroyCart();
+
+        $item = $this->laracart->add(123,'T-Shirt', 2, 100, ['tax' => .2], true);
+
+        $coupon = new \LukePOLO\LaraCart\Coupons\Percentage('10%OFF', 0.10);
+        $this->laracart->addCoupon($coupon);
+        $coupon->setDiscountOnItem($item);
+
+        $resume = [
+            'subTotal' => $this->laracart->subTotal(true, false),
+            'totalDiscount' => $this->laracart->totalDiscount(true),
+            'subTotalWithDiscount' => $this->laracart->subTotal(true, true),
+            'taxTotal' => $this->laracart->taxTotal(true),
+            'netTotal' => $this->laracart->netTotal(true),
+            'feeTotals' => $this->laracart->feeTotals(true, true),
+            'total' => $this->laracart->total(true, true),
+        ];
+
+        $this->assertEquals($item->getDiscount(false), 20);
+        $this->assertEquals($this->laracart->subTotal(false, false), 200);
+
+        $this->assertEquals($this->laracart->netTotal(false), 184);
+        $this->assertEquals($this->laracart->taxTotal(false, false), 36);
+        $this->assertEquals($this->laracart->total(false, false), 216);
+    }
 }
