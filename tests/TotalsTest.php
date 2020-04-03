@@ -607,7 +607,7 @@ class TotalsTest extends Orchestra\Testbench\TestCase
         $this->assertEquals(1, $item->subTotal(false, true, false, true));
     }
 
-    public function testBlah() {
+    public function testDiscountsOnMultiQtyItems() {
         $this->laracart->emptyCart();
         $this->laracart->destroyCart();
 
