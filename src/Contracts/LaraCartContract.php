@@ -256,16 +256,16 @@ interface LaraCartContract
     public function count($withItemQty = true);
 
     /**
-     * Formats the number into a money format based on the locale and international formats.
+     * Formats the number into a money format based on the locale and currency formats.
      *
      * @param $number
      * @param $locale
-     * @param $internationalFormat
+     * @param $currencyCode
      * @param $format
      *
      * @return string
      */
-    public static function formatMoney($number, $locale = null, $internationalFormat = null, $format = true);
+    public static function formatMoney($number, $locale = null, $currencyCode = null, $format = true);
 
     /**
      * Gets all the fee totals.

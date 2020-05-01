@@ -32,7 +32,7 @@ class TestItem extends Model
             return;
         }
 
-        return Mockery::mock(new static());
+        return new static();
     }
 
     /**
@@ -48,6 +48,6 @@ class TestItem extends Model
             $relations = func_get_args();
         }
 
-        return Mockery::mock(new static());
+        return new static();
     }
 }

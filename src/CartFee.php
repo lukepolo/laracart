@@ -15,7 +15,7 @@ class CartFee
     public $amount;
     public $taxable;
     public $tax;
-    public $internationalFormat;
+    public $currencyCode;
 
     /**
      * CartFee constructor.
@@ -48,6 +48,6 @@ class CartFee
             $total += $this->tax * $total;
         }
 
-        return LaraCart::formatMoney($total, $this->locale, $this->internationalFormat, $format);
+        return LaraCart::formatMoney($total, $this->locale, $this->currencyCode, $format);
     }
 }

@@ -40,7 +40,7 @@ class CartItem
     public $active = true;
     public $subItems = [];
     public $couponInfo = [];
-    public $internationalFormat;
+    public $currencyCode;
 
     /**
      * CartItem constructor.
@@ -201,7 +201,7 @@ class CartItem
         return LaraCart::formatMoney(
             $total,
             $this->locale,
-            $this->internationalFormat,
+            $this->currencyCode,
             $format
         );
     }
@@ -232,7 +232,7 @@ class CartItem
             $total += $this->tax(0, false, false, $withDiscount);
         }
 
-        return LaraCart::formatMoney($total, $this->locale, $this->internationalFormat, $format);
+        return LaraCart::formatMoney($total, $this->locale, $this->currencyCode, $format);
     }
 
     /**
@@ -245,7 +245,7 @@ class CartItem
         return LaraCart::formatMoney(
             ($this->price(false, false, true) * $this->qty) - $this->getDiscount(false) - $this->tax(false, true),
             $this->locale,
-            $this->internationalFormat,
+            $this->currencyCode,
             $format
         );
     }
@@ -271,7 +271,7 @@ class CartItem
             $total += $this->tax * $total;
         }
 
-        return LaraCart::formatMoney($total, $this->locale, $this->internationalFormat, $format);
+        return LaraCart::formatMoney($total, $this->locale, $this->currencyCode, $format);
     }
 
     /**
@@ -300,7 +300,7 @@ class CartItem
         return LaraCart::formatMoney(
             $amount,
             $this->locale,
-            $this->internationalFormat,
+            $this->currencyCode,
             $format
         );
     }
@@ -358,7 +358,7 @@ class CartItem
                 return LaraCart::formatMoney(
                     ($totalTax - $amountNotTaxable),
                     $this->locale,
-                    $this->internationalFormat,
+                    $this->currencyCode,
                     false
                 );
             }
@@ -376,7 +376,7 @@ class CartItem
             return LaraCart::formatMoney(
                 $totalTax,
                 $this->locale,
-                $this->internationalFormat,
+                $this->currencyCode,
                 false
             );
         }

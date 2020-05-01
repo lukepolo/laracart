@@ -2,6 +2,7 @@
 
 namespace LukePOLO\LaraCart;
 
+use NumberFormatter;
 use Illuminate\Auth\AuthManager;
 use Illuminate\Contracts\Events\Dispatcher;
 use Illuminate\Database\Eloquent\Model;
@@ -708,16 +709,16 @@ class LaraCart implements LaraCartContract
     }
 
     /**
-     * Formats the number into a money format based on the locale and international formats.
+     * Formats the number into a money format based on the locale and currency formats.
      *
      * @param $number
      * @param $locale
-     * @param $internationalFormat
+     * @param $currencyCode
      * @param $format
      *
      * @return string
      */
-    public static function formatMoney($number, $locale = null, $internationalFormat = false, $format = true)
+    public static function formatMoney($number, $locale = null, $currencyCode = null, $format = true)
     {
         // When prices in cents needs to be formatted, divide by 100 to allow formatting in whole units
         if (config('laracart.prices_in_cents', false) === true && $format) {
@@ -730,14 +731,9 @@ class LaraCart implements LaraCartContract
         }
 
         if ($format) {
-            setlocale(LC_MONETARY, null);
-            setlocale(LC_MONETARY, empty($locale) ? config('laracart.locale', 'en_US.UTF-8') : $locale);
+            $moneyFormatter = new NumberFormatter(empty($locale) ? config('laracart.locale', 'en_US.UTF-8') : $locale, NumberFormatter::CURRENCY);
 
-            if (empty($internationalFormat) === true) {
-                $internationalFormat = config('laracart.international_format', false);
-            }
-
-            $number = money_format($internationalFormat ? '%i' : '%n', $number);
+            $number = $moneyFormatter->formatCurrency($number, empty($currencyCode) ? config('laracart.currency_code', "USD") : $currencyCode);
         }
 
         return $number;
