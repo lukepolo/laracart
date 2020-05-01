@@ -2,7 +2,6 @@
 
 namespace LukePOLO\LaraCart;
 
-use NumberFormatter;
 use Illuminate\Auth\AuthManager;
 use Illuminate\Contracts\Events\Dispatcher;
 use Illuminate\Database\Eloquent\Model;
@@ -11,6 +10,7 @@ use Illuminate\Support\Arr;
 use LukePOLO\LaraCart\Contracts\CouponContract;
 use LukePOLO\LaraCart\Contracts\LaraCartContract;
 use LukePOLO\LaraCart\Exceptions\ModelNotFound;
+use NumberFormatter;
 
 /**
  * Class LaraCart.
@@ -733,7 +733,7 @@ class LaraCart implements LaraCartContract
         if ($format) {
             $moneyFormatter = new NumberFormatter(empty($locale) ? config('laracart.locale', 'en_US.UTF-8') : $locale, NumberFormatter::CURRENCY);
 
-            $number = $moneyFormatter->formatCurrency($number, empty($currencyCode) ? config('laracart.currency_code', "USD") : $currencyCode);
+            $number = $moneyFormatter->formatCurrency($number, empty($currencyCode) ? config('laracart.currency_code', 'USD') : $currencyCode);
         }
 
         return $number;

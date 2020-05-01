@@ -3,7 +3,6 @@
 namespace LukePOLO\LaraCart\Tests\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Mockery;
 
 /**
  * Class TestItem.
