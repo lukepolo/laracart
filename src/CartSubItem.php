@@ -19,7 +19,7 @@ class CartSubItem
     const ITEMS = 'items';
 
     public $locale;
-    public $internationalFormat;
+    public $currencyCode;
 
     private $itemHash;
 
@@ -68,7 +68,7 @@ class CartSubItem
             }
         }
 
-        return LaraCart::formatMoney($price, $this->locale, $this->internationalFormat, $format);
+        return LaraCart::formatMoney($price, $this->locale, $this->currencyCode, $format);
     }
 
     /**

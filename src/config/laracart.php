@@ -34,11 +34,13 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | If true, displays the international format rather than the national format
+    | The currency code changes how you see the actual amounts.
     |--------------------------------------------------------------------------
+    | This is the list of all valid currency codes
+    | https://www2.1010data.com/documentationcenter/prod/1010dataReferenceManual/DataTypesAndFormats/currencyUnitCodes.html
     |
     */
-    'international_format' => false,
+    'currency_code' => 'USD',
 
     /*
     |--------------------------------------------------------------------------

@@ -15,7 +15,7 @@ class Cart
     public $coupons = [];
     public $attributes = [];
     public $multipleCoupons;
-    public $internationalFormat;
+    public $currencyCode;
 
     /**
      * Cart constructor.
@@ -28,6 +28,6 @@ class Cart
         $this->tax = config('laracart.tax');
         $this->locale = config('laracart.locale');
         $this->multipleCoupons = config('laracart.multiple_coupons');
-        $this->internationalFormat = config('laracart.international_format');
+        $this->currencyCode = config('laracart.currency_code');
     }
 }
