@@ -12,8 +12,8 @@ class AddCartSessionIdToUsersTable extends Migration
      */
     public function up()
     {
-        if (!(Schema::hasColumn('users', 'cart_session_id'))) {
-            Schema::table('users', function (Blueprint $table) {
+        if (!(Schema::hasColumn(config('laracart.database.table'), 'cart_session_id'))) {
+            Schema::table(config('laracart.database.table'), function (Blueprint $table) {
                 $table->string('cart_session_id')->nullable()->default(null);
             });
         }
@@ -26,8 +26,8 @@ class AddCartSessionIdToUsersTable extends Migration
      */
     public function down()
     {
-        if ((Schema::hasColumn('users', 'cart_session_id'))) {
-            Schema::table('users', function (Blueprint $table) {
+        if ((Schema::hasColumn(config('laracart.database.table'), 'cart_session_id'))) {
+            Schema::table(config('laracart.database.table'), function (Blueprint $table) {
                 $table->dropColumn('cart_session_id');
             });
         }

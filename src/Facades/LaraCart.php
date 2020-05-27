@@ -14,7 +14,7 @@ class LaraCart extends Facade
      *
      * @return string
      */
-    protected static function getFacadeAccessor()
+    public static function getFacadeAccessor()
     {
         return 'laracart';
     }

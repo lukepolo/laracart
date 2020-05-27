@@ -12,6 +12,21 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | database settings
+    |--------------------------------------------------------------------------
+    |
+    | Here you can set the name of the table you want to use for
+    | storing and restoring the cart session id.
+    |
+    */
+    'database' => [
+
+        'table' => 'users',
+
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
     | Locale is used to convert money into a readable format for the user,
     | please note the UTF-8, helps to make sure its encoded correctly
     |
