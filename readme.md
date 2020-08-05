@@ -21,7 +21,7 @@
 | Laravel           | laracart   |
 | :---------------- | :--------- |
 | 5.1 \| 5.2 \| 5.3 | 1.1 \| 1.2 |
-| 5.4+              | 1.3+       |
+| 5.4+              | 1.*       |
 
 ## Installation
 
@@ -30,7 +30,7 @@ Install the package through [Composer](http://getcomposer.org/). Edit your proje
     {
         "require": {
             ........,
-            "lukepolo/laracart": "1.8.*"
+            "lukepolo/laracart": "1.11.*"
         }
     }
 
