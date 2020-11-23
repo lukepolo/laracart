@@ -443,7 +443,7 @@ class CouponsTest extends Orchestra\Testbench\TestCase
     }
 
     /**
-     * Testing percentage coupon on multiple item qty
+     * Testing percentage coupon on multiple item qty.
      */
     public function testPercentageCouponOnMultipleQtyItems()
     {
