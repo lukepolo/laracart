@@ -441,4 +441,18 @@ class CouponsTest extends Orchestra\Testbench\TestCase
 
         $this->assertEquals(0, $this->laracart->total(false));
     }
+
+    /**
+     * Testing percentage coupon on multiple item qty
+     */
+    public function testPercentageCouponOnMultipleQtyItems()
+    {
+        $percentCoupon = new LukePOLO\LaraCart\Coupons\Percentage('10% Off', .1);
+
+        $item = $this->addItem(2, 10);
+
+        $percentCoupon->setDiscountOnItem($item);
+
+        $this->assertEquals(18, $this->laracart->total(false, true, false));
+    }
 }
