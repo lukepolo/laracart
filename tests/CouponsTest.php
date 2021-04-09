@@ -455,4 +455,25 @@ class CouponsTest extends Orchestra\Testbench\TestCase
 
         $this->assertEquals(18, $this->laracart->total(false, true, false));
     }
+
+    /**
+     * Testing Discount Pre Taxed
+     */
+    public function testPreTaxDiscount()
+    {
+        $this->app['config']->set('laracart.tax', .19);
+        $this->app['config']->set('laracart.tax_by_item', true);
+        $this->app['config']->set('laracart.discountOnFees', false);
+        $this->app['config']->set('laracart.discountTaxable', false);
+        $this->app['config']->set('laracart.discountsAlreadyTaxed', true);
+        $this->app['config']->set('laracart.tax_item_before_discount', true);
+
+        $fixedCoupon = new LukePOLO\LaraCart\Coupons\Fixed('100% Off', 1);
+
+        $this->addItem(1, .84);
+
+        $this->laracart->addCoupon($fixedCoupon);
+
+        $this->assertEquals(1, $this->laracart->total(false));
+    }
 }
