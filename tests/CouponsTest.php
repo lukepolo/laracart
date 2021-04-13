@@ -457,7 +457,7 @@ class CouponsTest extends Orchestra\Testbench\TestCase
     }
 
     /**
-     * Testing Discount Pre Taxed
+     * Testing Discount Pre Taxed.
      */
     public function testPreTaxDiscountFixed()
     {
@@ -478,7 +478,7 @@ class CouponsTest extends Orchestra\Testbench\TestCase
     }
 
     /**
-     * Testing Discount Pre Taxed
+     * Testing Discount Pre Taxed.
      */
     public function testPreTaxDiscountPercentage()
     {
