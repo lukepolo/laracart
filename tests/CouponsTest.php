@@ -489,7 +489,7 @@ class CouponsTest extends Orchestra\Testbench\TestCase
         $this->app['config']->set('laracart.discountsAlreadyTaxed', true);
         $this->app['config']->set('laracart.tax_item_before_discount', true);
 
-        $percentageCoupon = new LukePOLO\LaraCart\Coupons\Percentage('100%', "100");
+        $percentageCoupon = new LukePOLO\LaraCart\Coupons\Percentage('100%', 1);
 
         $this->addItem(1, .84);
 
