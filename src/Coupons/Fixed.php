@@ -70,6 +70,10 @@ class Fixed implements CouponContract
      */
     public function forItem(CartItem $item)
     {
+        if (config('laracart.tax_item_before_discount')) {
+            return $item->subTotal(false, false, false, true) * $this->value;
+        }
+
         return $this->value;
     }
 
