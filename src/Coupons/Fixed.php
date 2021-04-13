@@ -44,6 +44,10 @@ class Fixed implements CouponContract
     {
         $subTotal = app(LaraCart::SERVICE)->subTotal(false);
 
+        if (config('laracart.tax_item_before_discount')) {
+          $subTotal = $subTotal + app(LaraCart::SERVICE)->taxTotal(false, true, true, false);
+        }
+
         if (config('laracart.discountOnFees', false)) {
             $subTotal = $subTotal + app(LaraCart::SERVICE)->feeTotals(false);
         }

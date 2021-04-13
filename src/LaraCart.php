@@ -568,14 +568,14 @@ class LaraCart implements LaraCartContract
      *
      * @return string
      */
-    public function taxTotal($format = true, $withFees = true, $grossTaxes = true)
+    public function taxTotal($format = true, $withFees = true, $grossTaxes = true, $withDiscounts = true)
     {
         $totalTax = 0;
         $discounted = 0;
-        $totalDiscount = $this->totalDiscount(false, false);
-
         if (config('laracart.discountsAlreadyTaxed', false)) {
             $totalDiscount = 0;
+        } else {
+            $totalDiscount = $this->totalDiscount(false, false);
         }
 
         if ($this->count() != 0) {
