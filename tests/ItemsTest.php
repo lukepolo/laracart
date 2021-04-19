@@ -160,7 +160,7 @@ class ItemsTest extends Orchestra\Testbench\TestCase
 
         $items = $this->laracart->getItems();
 
-        $this->assertInternalType('array', $items);
+        $this->assertIsArray($items);
 
         $this->assertCount(1, $items);
 
