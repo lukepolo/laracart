@@ -19,7 +19,7 @@ class SubItemsTest extends Orchestra\Testbench\TestCase
             'price' => 2.50,
         ]);
 
-        $this->assertInternalType('array', $item->subItems);
+        $this->assertIsArray($item->subItems);
 
         $this->containsOnlyInstancesOf(LukePOLO\LaraCart\CartSubItem::class, $item->subItems);
 
@@ -111,7 +111,7 @@ class SubItemsTest extends Orchestra\Testbench\TestCase
             ],
         ]);
 
-        $this->assertInternalType('array', $subItem->items);
+        $this->assertIsArray($subItem->items);
 
         $this->containsOnlyInstancesOf(LukePOLO\LaraCart\CartItem::class, $subItem->items);
 
@@ -133,7 +133,7 @@ class SubItemsTest extends Orchestra\Testbench\TestCase
             ],
         ]);
 
-        $this->assertInternalType('array', $subItem->items);
+        $this->assertIsArray($subItem->items);
 
         $this->containsOnlyInstancesOf(LukePOLO\LaraCart\CartItem::class, $subItem->items);
 
