@@ -726,7 +726,7 @@ class LaraCart implements LaraCartContract
         // When prices in cents do not need to be formatted then cast to integer and round the price
         } elseif (config('laracart.prices_in_cents', false) === true && !$format) {
             $number = (int) round($number);
-        } else {
+        } elseif (config('laracart.round_every_item_price', true)) {
             $number = number_format($number, 2, '.', '');
         }
 

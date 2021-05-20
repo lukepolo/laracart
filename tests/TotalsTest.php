@@ -635,4 +635,16 @@ class TotalsTest extends Orchestra\Testbench\TestCase
         $this->assertEquals($this->laracart->taxTotal(false, false), 36);
         $this->assertEquals($this->laracart->total(false, false), 216);
     }
+
+    /**
+     * Test round of prices. Only the total value should be rounded.
+     */
+    public function testRoundOnlyTotalValue()
+    {
+        $this->app['config']->set('laracart.round_every_item_price', false);
+        $this->addItem(1, 8.40336, false);
+        $this->addItem(1, 4.20168, false);
+
+        $this->assertEquals('$12.61', $this->laracart->total());
+    }
 }
