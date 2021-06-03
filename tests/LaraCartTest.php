@@ -191,6 +191,23 @@ class LaraCartTest extends Orchestra\Testbench\TestCase
         $this->assertNotEquals($prevHash, $item->getHash());
     }
 
+
+    /**
+     * Tests if generating a same hash when we change an excluded option.
+     */
+    public function testGeneratingHashesExistConfig()
+    {
+        $this->app['config']->set('laracart.exclude_from_hash', ['some_option']);
+
+        $item = $this->addItem(1, 1, true, ['some_option' => 'some value']);
+
+        $prevHash = $item->getHash();
+
+        $item->some_option = 'NEW VALUE';
+
+        $this->assertEquals($prevHash, $item->getHash());
+    }
+
     /**
      * Tests the facade.
      */
