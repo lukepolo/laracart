@@ -33,6 +33,7 @@ class CartItem
     protected $itemHash;
     protected $itemModel;
     protected $itemModelRelations;
+    protected $exclude_from_hash;
 
     public $locale;
     public $lineItem;
@@ -64,6 +65,7 @@ class CartItem
         $this->tax = config('laracart.tax');
         $this->itemModel = config('laracart.item_model', null);
         $this->itemModelRelations = config('laracart.item_model_relations', []);
+        $this->exclude_from_hash = config('laracart.exclude_from_hash', []);
 
         foreach ($options as $option => $value) {
             $this->$option = $value;
@@ -85,6 +87,10 @@ class CartItem
             $cartItemArray = (array) $this;
 
             unset($cartItemArray['options']['qty']);
+
+            foreach ($this->exclude_from_hash as $option) {
+                unset($cartItemArray['options'][$option]);
+            }
 
             ksort($cartItemArray['options']);
 
