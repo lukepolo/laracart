@@ -191,7 +191,6 @@ class LaraCartTest extends Orchestra\Testbench\TestCase
         $this->assertNotEquals($prevHash, $item->getHash());
     }
 
-
     /**
      * Tests if generating a same hash when we change an excluded option.
      */
