@@ -173,8 +173,8 @@ class ItemsTest extends Orchestra\Testbench\TestCase
         $item = $this->addItem(3, 10);
 
         $this->assertEquals(3, $item->qty);
-        $this->assertEquals(10, $item->price(false));
-        $this->assertEquals(10.7, $item->price(false, false, true)); // return item price with tax
+        $this->assertEquals(10, $item->total(false));
+        $this->assertEquals(10.7, $item->total(false, false, true)); // return item price with tax
         $this->assertEquals(30, $item->subTotal(false));
         $this->assertEquals(32.1, $item->subTotal(false, true, false, true)); // return subtotal with tax
     }
@@ -187,14 +187,14 @@ class ItemsTest extends Orchestra\Testbench\TestCase
         $this->app['config']->set('laracart.prices_in_cents', true);
         $item = $this->addItem(3, 1000);
 
-        $this->assertEquals(1000, $item->price(false));
-        $this->assertEquals(1070, $item->price(false, false, true)); // return item price with tax
+        $this->assertEquals(1000, $item->total(false));
+        $this->assertEquals(1070, $item->total(false, false, true)); // return item price with tax
         $this->assertEquals(3000, $item->subTotal(false));
         $this->assertEquals(3210, $item->subTotal(false, true, false, true)); // return subtotal with tax
 
         // Test that floats are converted to int and not rounded in the constructor
         $item2 = $this->addItem(3, 1000.55);
-        $this->assertEquals(1000, $item2->price(false));
+        $this->assertEquals(1000, $item2->total(false));
     }
 
     /**
@@ -215,19 +215,19 @@ class ItemsTest extends Orchestra\Testbench\TestCase
     public function testSetPrice()
     {
         $item = $this->addItem();
-        $item->price = 3;
+        $item->total = 3;
 
-        $this->assertEquals(3, $item->price);
+        $this->assertEquals(3, $item->total);
 
-        $item->price = 3.52313123;
-        $this->assertEquals(3.52313123, $item->price);
+        $item->total = 3.52313123;
+        $this->assertEquals(3.52313123, $item->total);
 
-        $item->price = -123123.000;
-        $this->assertEquals(-123123.000, $item->price);
+        $item->total = -123123.000;
+        $this->assertEquals(-123123.000, $item->total);
 
         try {
-            $item->price = 'a';
-            $this->setExpectedException(\LukePOLO\LaraCart\Exceptions\InvalidPrice::class);
+            $item->total = 'a';
+            $this->expectException(\LukePOLO\LaraCart\Exceptions\InvalidPrice::class);
         } catch (\LukePOLO\LaraCart\Exceptions\InvalidPrice $e) {
             $this->assertEquals('The price must be a valid number', $e->getMessage());
         }
@@ -248,21 +248,21 @@ class ItemsTest extends Orchestra\Testbench\TestCase
 
         try {
             $item->qty = 'a';
-            $this->setExpectedException(\LukePOLO\LaraCart\Exceptions\InvalidPrice::class);
+            $this->expectException(\LukePOLO\LaraCart\Exceptions\InvalidPrice::class);
         } catch (\LukePOLO\LaraCart\Exceptions\InvalidQuantity $e) {
             $this->assertEquals('The quantity must be a valid number', $e->getMessage());
         }
 
         try {
             $item->qty = 'a';
-            $this->setExpectedException(\LukePOLO\LaraCart\Exceptions\InvalidQuantity::class);
+            $this->expectException(\LukePOLO\LaraCart\Exceptions\InvalidQuantity::class);
         } catch (\LukePOLO\LaraCart\Exceptions\InvalidQuantity $e) {
             $this->assertEquals('The quantity must be a valid number', $e->getMessage());
         }
 
         try {
             $item->qty = -1;
-            $this->setExpectedException(\LukePOLO\LaraCart\Exceptions\InvalidQuantity::class);
+            $this->expectException(\LukePOLO\LaraCart\Exceptions\InvalidQuantity::class);
         } catch (\LukePOLO\LaraCart\Exceptions\InvalidQuantity $e) {
             $this->assertEquals('The quantity must be a valid number', $e->getMessage());
         }
@@ -456,14 +456,12 @@ class ItemsTest extends Orchestra\Testbench\TestCase
 
         $this->assertEquals(19.99, $this->laracart->total(false));
 
-        $this->app['config']->set('laracart.tax_by_item', true);
 
         $this->assertEquals(20.00, $this->laracart->total(false));
     }
 
     public function testSeparateTaxationTotal()
     {
-        $this->app['config']->set('laracart.tax_by_item', true);
 
         $this->addItem(1, 8.33, 1, [
             'tax' => '.2',

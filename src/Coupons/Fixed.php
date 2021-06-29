@@ -42,22 +42,6 @@ class Fixed implements CouponContract
      */
     public function discount($throwErrors = false)
     {
-        $subTotal = app(LaraCart::SERVICE)->subTotal(false);
-
-        if (config('laracart.tax_item_before_discount')) {
-            $subTotal = $subTotal + app(LaraCart::SERVICE)->taxTotal(false, true, true, false);
-        }
-
-        if (config('laracart.discountOnFees', false)) {
-            $subTotal = $subTotal + app(LaraCart::SERVICE)->feeTotals(false);
-        }
-
-        $total = $subTotal - $this->value;
-
-        if ($total < 0) {
-            return $subTotal;
-        }
-
         return $this->value;
     }
 
@@ -68,12 +52,9 @@ class Fixed implements CouponContract
      *
      * @return float
      */
+    // TODO
     public function forItem(CartItem $item)
     {
-        if (config('laracart.tax_item_before_discount')) {
-            return $item->subTotal(false, false, false, true) * $this->value;
-        }
-
         return $this->value;
     }
 

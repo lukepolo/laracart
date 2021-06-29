@@ -139,11 +139,48 @@ class LaraCart implements LaraCartContract
         $this->update();
     }
 
+    private function updateDiscounts() {
+        // TODO - fees
+//        if (config('laracart.discountOnFees', false)) {
+//            $subTotal = $subTotal + app(LaraCart::SERVICE)->feeTotals(false);
+//        }
+
+        foreach( $this->getCoupons() as $coupon) {
+            foreach($this->getItems() as $item) {
+                $item->discounted = $coupon->discount($item->subTotal(false));
+                if($item->discounted > $item->subTotal(false)) {
+                    // TODO - we have left over availablity
+                    $item->discounted = $item->subTotal(false);
+                }
+            }
+        }
+
+        foreach($this->getItems() as $item) {
+            if ($item->coupon) {
+                $item->discounted = $item->coupon->discount($item->subTotal(false));
+            } elseif ($item->code && $this->findCoupon($item->code)) {
+                $item->discounted = $item->discount;
+            }
+
+        }
+    }
+
+    private function updateTaxes() {
+        foreach($this->getItems() as $item) {
+            if($item->taxable) {
+                $item->taxed = ($item->subtotal(false) - $item->getDiscount(false)) * $item->tax;
+            }
+        }
+    }
+
     /**
      * Updates cart session.
      */
     public function update()
     {
+        $this->updateDiscounts();
+        $this->updateTaxes();
+
         $this->session->put($this->prefix.'.'.$this->cart->instance, $this->cart);
 
         if (config('laracart.cross_devices', false) && $this->authManager->check()) {
@@ -563,47 +600,26 @@ class LaraCart implements LaraCartContract
      * Gets the total tax for the cart.
      *
      * @param bool|true $format
-     * @param bool|true $withFees
-     * @param bool      $grossTaxes
      *
      * @return string
      */
-    public function taxTotal($format = true, $withFees = true, $grossTaxes = true, $withDiscounts = true)
+    public function taxTotal($format = true)
     {
         $totalTax = 0;
-        $discounted = 0;
-        if (config('laracart.discountsAlreadyTaxed', false)) {
-            $totalDiscount = 0;
-        } else {
-            $totalDiscount = $this->totalDiscount(false, false);
-        }
 
         if ($this->count() != 0) {
-            /**
-             * @var
-             * @var CartItem $item
-             */
-            foreach ($this->getItems() as $index => $item) {
-                if ($discounted >= $totalDiscount) {
-                    $totalTax += $item->tax(null, $grossTaxes);
-                } else {
-                    $itemPrice = $item->subTotal(false, config('laracart.discountTaxable', false));
-                    if (($discounted + $itemPrice) > $totalDiscount) {
-                        $totalTax += config('laracart.discountTaxable', false) ? $item->tax() : $item->tax($totalDiscount - $discounted);
-                    }
-
-                    $discounted += $itemPrice;
-                }
+            foreach ($this->getItems() as $item) {
+                $totalTax += $item->taxed;
             }
         }
 
-        if ($withFees) {
-            foreach ($this->getFees() as $fee) {
-                if ($fee->taxable) {
-                    $totalTax += $fee->amount * $fee->tax;
-                }
-            }
-        }
+//        if (config('laracart.taxable_fees', false)) {
+//            foreach ($this->getFees() as $fee) {
+//                if ($fee->taxable) {
+//                    $totalTax += $fee->amount * $fee->tax;
+//                }
+//            }
+//        }
 
         return $this->formatMoney($totalTax, null, null, $format);
     }
@@ -612,27 +628,18 @@ class LaraCart implements LaraCartContract
      * Gets the total of the cart with or without tax.
      *
      * @param bool $format
-     * @param bool $withDiscount
-     * @param bool $withTax
-     * @param bool $withFees
      *
      * @return string
      */
-    public function total($format = true, $withDiscount = true, $withTax = true, $withFees = true)
+    public function total($format = true)
     {
         $total = $this->subTotal(false);
 
-        if ($withFees) {
-            $total += $this->feeTotals(false);
-        }
+        $total += $this->feeTotals(false);
 
-        if ($withDiscount) {
-            $total -= $this->totalDiscount(false, false);
-        }
+        $total -= $this->totalDiscount(false);
 
-        if ($withTax) {
-            $total += $this->taxTotal(false, $withFees, false);
-        }
+        $total += $this->taxTotal(false);
 
         return $this->formatMoney($total, null, null, $format);
     }
@@ -641,41 +648,16 @@ class LaraCart implements LaraCartContract
      * Gets the subtotal of the cart with or without tax.
      *
      * @param bool $format
-     * @param bool $withDiscount
      *
      * @return string
      */
-    public function subTotal($format = true, $withDiscount = true)
+    public function subTotal($format = true)
     {
         $total = 0;
 
         if ($this->count() != 0) {
             foreach ($this->getItems() as $item) {
-                $total += $item->subTotal(false, $withDiscount);
-            }
-        }
-
-        if ($total < 0) {
-            $total = 0;
-        }
-
-        return $this->formatMoney($total, null, null, $format);
-    }
-
-    /**
-     * Gets the netTotal of the cart.
-     *
-     * @param bool $format
-     *
-     * @return string
-     */
-    public function netTotal($format = true)
-    {
-        $total = 0;
-
-        if ($this->count() != 0) {
-            foreach ($this->getItems() as $item) {
-                $total += $item->netTotal(false);
+                $total += $item->subTotal(false);
             }
         }
 
@@ -747,6 +729,7 @@ class LaraCart implements LaraCartContract
      *
      * @return string
      */
+    // TODO
     public function feeTotals($format = true, $withTax = false)
     {
         $feeTotal = 0;
@@ -776,29 +759,15 @@ class LaraCart implements LaraCartContract
      * Gets the total amount discounted.
      *
      * @param bool $format
-     * @param bool $withItemDiscounts
      *
      * @return string
      */
-    public function totalDiscount($format = true, $withItemDiscounts = true)
+    public function totalDiscount($format = true)
     {
         $total = 0;
 
-        if ($withItemDiscounts) {
-            /** @var CartItem $item */
-            foreach ((array) $this->cart->items as $item) {
-                $total += floatval($item->getDiscount(false));
-            }
-        }
-
-        foreach ($this->cart->coupons as $coupon) {
-            if ($coupon->appliedToCart) {
-                $total += $coupon->discount();
-            }
-        }
-
-        if ($total < 0) {
-            $total = $this->subTotal(false);
+        foreach($this->getItems() as $item) {
+            $total +=  $item->getDiscount(false);
         }
 
         return $this->formatMoney($total, null, null, $format);

@@ -2,7 +2,6 @@
 
 namespace LukePOLO\LaraCart\Coupons;
 
-use LukePOLO\LaraCart\CartItem;
 use LukePOLO\LaraCart\Contracts\CouponContract;
 use LukePOLO\LaraCart\Exceptions\CouponException;
 use LukePOLO\LaraCart\LaraCart;
@@ -43,22 +42,6 @@ class Percentage implements CouponContract
     }
 
     /**
-     * If an item is supplied it will get its discount value.
-     *
-     * @param CartItem $item
-     *
-     * @return float
-     */
-    public function forItem(CartItem $item)
-    {
-        if (config('laracart.tax_item_before_discount')) {
-            return $item->subTotal(false, false, false, true) * $this->value;
-        }
-
-        return $item->price * $this->value;
-    }
-
-    /**
      * Gets the discount amount.
      *
      * @param $throwErrors boolean this allows us to capture errors in our code if we wish,
@@ -66,20 +49,9 @@ class Percentage implements CouponContract
      *
      * @return string
      */
-    public function discount($throwErrors = false)
-    {
-        $subTotal = app(LaraCart::SERVICE)->subTotal(false);
-
-        if (config('laracart.tax_item_before_discount')) {
-            $subTotal = $subTotal + app(LaraCart::SERVICE)->taxTotal(false, true, true, false);
-        }
-
-        if (config('laracart.discountOnFees', false)) {
-            $subTotal = $subTotal + app(LaraCart::SERVICE)->feeTotals(false);
-        }
-
+    public function discount($itemSubTotal) {
         return LaraCart::formatMoney(
-            $subTotal * $this->value,
+            $itemSubTotal * $this->value,
             null,
             null,
             false

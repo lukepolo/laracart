@@ -162,5 +162,6 @@ trait CouponTrait
         $this->appliedToCart = false;
         $item->code = $this->code;
         $item->coupon = $this;
+        $item->update();
     }
 }

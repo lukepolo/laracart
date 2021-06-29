@@ -32,14 +32,14 @@ class MagicFunctionsTest extends Orchestra\Testbench\TestCase
 
         try {
             $item->tax = 'not_a_number';
-            $this->setExpectedException(InvalidTaxableValue::class);
+            $this->expectException(InvalidTaxableValue::class);
         } catch (InvalidTaxableValue $e) {
             $this->assertEquals('The tax must be a number', $e->getMessage());
         }
 
         try {
             $item->taxable = 123123;
-            $this->setExpectedException(InvalidTaxableValue::class);
+            $this->expectException(InvalidTaxableValue::class);
         } catch (InvalidTaxableValue $e) {
             $this->assertEquals('The taxable option must be a boolean', $e->getMessage());
         }

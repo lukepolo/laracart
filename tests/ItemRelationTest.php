@@ -27,7 +27,7 @@ class ItemRelationTest extends Orchestra\Testbench\TestCase
         try {
             $item->id = 'fail';
             $item->getModel();
-            $this->setExpectedException(ModelNotFound::class);
+            $this->expectException(ModelNotFound::class);
         } catch (ModelNotFound $e) {
             $this->assertEquals('Could not find the item model for fail', $e->getMessage());
         }
@@ -42,7 +42,7 @@ class ItemRelationTest extends Orchestra\Testbench\TestCase
 
         try {
             $item->setModel('asdfasdf');
-            $this->setExpectedException(ModelNotFound::class);
+            $this->expectException(ModelNotFound::class);
         } catch (ModelNotFound $e) {
             $this->assertEquals('Could not find relation model', $e->getMessage());
         }

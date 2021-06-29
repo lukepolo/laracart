@@ -51,20 +51,16 @@ class CartSubItem
      * Gets the formatted price.
      *
      * @param bool|true $format
-     * @param bool      $taxedItemsOnly
      *
      * @return string
      */
-    public function price($format = true, $taxedItemsOnly = true)
+    public function subTotal($format = true)
     {
-        $price = $this->price;
+        $price = $this->price * $this->qty;
 
         if (isset($this->items)) {
             foreach ($this->items as $item) {
-                if ($taxedItemsOnly && !$item->taxable) {
-                    continue;
-                }
-                $price += $item->price(false, $taxedItemsOnly);
+                $price += $item->total(false);
             }
         }
 

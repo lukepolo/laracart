@@ -230,21 +230,19 @@ interface LaraCartContract
      * Gets the total of the cart with or without tax.
      *
      * @param bool $format
-     * @param bool $withDiscount
      *
      * @return string
      */
-    public function total($format = true, $withDiscount = true);
+    public function total($format = true);
 
     /**
      * Gets the subtotal of the cart with or without tax.
      *
      * @param bool $format
-     * @param bool $withDiscount
      *
      * @return string
      */
-    public function subTotal($format = true, $withDiscount = true);
+    public function subTotal($format = true);
 
     /**
      * Get the count based on qty, or number of unique items.

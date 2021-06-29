@@ -20,9 +20,7 @@ return [
     |
     */
     'database' => [
-
         'table' => 'users',
-
     ],
 
     /*
@@ -81,31 +79,12 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Calculate tax per item, rather than subtotal
-    | https://github.com/lukepolo/laracart/issues/180
-    |
-    | This will vary, please investigate to follow the rules of your local laws
-    | https://money.stackexchange.com/questions/15051/sales-tax-rounded-then-totaled-or-totaled-then-rounded
+    | Taxing per item disallows coupons at the cart level, and must be
+    | applied to each item.
     |--------------------------------------------------------------------------
     |
     */
-    'tax_by_item' => false,
-
-    /*
-    |--------------------------------------------------------------------------
-    | If you need to tax items before discount you can turn it on
-    |--------------------------------------------------------------------------
-    |
-    */
-    'tax_item_before_discount' => false,
-
-    /*
-    |--------------------------------------------------------------------------
-    | If you need to round only the total value then you can turn it off.
-    |--------------------------------------------------------------------------
-    |
-    */
-    'round_every_item_price' => true,
+    'tax_per_item' => false,
 
     /*
     |--------------------------------------------------------------------------
@@ -113,7 +92,15 @@ return [
     |--------------------------------------------------------------------------
     |
     */
-    'discountTaxable' => false,
+    'discounts_taxable' => false,
+
+    /*
+    |--------------------------------------------------------------------------
+    |
+    |--------------------------------------------------------------------------
+    |
+    */
+    'discount_applied_before_tax' => true,
 
     /*
     |--------------------------------------------------------------------------
@@ -122,7 +109,7 @@ return [
     |--------------------------------------------------------------------------
     |
     */
-    'discountsAlreadyTaxed' => false,
+    'discounts_already_taxed' => false,
 
     /*
     |--------------------------------------------------------------------------
@@ -130,7 +117,15 @@ return [
     |--------------------------------------------------------------------------
     |
     */
-    'discountOnFees' => false,
+    'taxable_fees' => false,
+
+    /*
+    |--------------------------------------------------------------------------
+    | Allows you to choose if the discounts applied to fees
+    |--------------------------------------------------------------------------
+    |
+    */
+    'discount_fees' => false,
 
     /*
     |--------------------------------------------------------------------------

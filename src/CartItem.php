@@ -32,16 +32,18 @@ class CartItem
 
     protected $itemHash;
     protected $itemModel;
+    protected $excludeFromHash;
     protected $itemModelRelations;
-    protected $exclude_from_hash;
 
     public $locale;
     public $lineItem;
-    public $discount = 0;
     public $active = true;
     public $subItems = [];
     public $couponInfo = [];
     public $currencyCode;
+
+    public $taxed = 0;
+    public $discounted = 0;
 
     /**
      * CartItem constructor.
@@ -65,7 +67,7 @@ class CartItem
         $this->tax = config('laracart.tax');
         $this->itemModel = config('laracart.item_model', null);
         $this->itemModelRelations = config('laracart.item_model_relations', []);
-        $this->exclude_from_hash = config('laracart.exclude_from_hash', []);
+        $this->excludeFromHash = config('laracart.exclude_from_hash', []);
 
         foreach ($options as $option => $value) {
             $this->$option = $value;
@@ -86,9 +88,11 @@ class CartItem
 
             $cartItemArray = (array) $this;
 
+            unset($cartItemArray['taxed']);
+            unset($cartItemArray['discounted']);
             unset($cartItemArray['options']['qty']);
 
-            foreach ($this->exclude_from_hash as $option) {
+            foreach ($this->excludeFromHash as $option) {
                 unset($cartItemArray['options'][$option]);
             }
 
@@ -152,21 +156,16 @@ class CartItem
      * Adds an sub item to a item.
      *
      * @param array $subItem
-     * @param bool  $autoUpdate
      *
      * @return CartSubItem
      */
-    public function addSubItem(array $subItem, $autoUpdate = true)
+    public function addSubItem(array $subItem)
     {
         $subItem = new CartSubItem($subItem);
 
         $this->subItems[$subItem->getHash()] = $subItem;
 
-        $this->generateHash();
-
-        if ($autoUpdate) {
-            app('laracart')->update();
-        }
+        $this->update();
 
         return $subItem;
     }
@@ -180,27 +179,26 @@ class CartItem
     {
         unset($this->subItems[$subItemHash]);
 
-        $this->generateHash();
+        $this->update();
     }
 
     /**
      * Gets the price of the item with or without tax, with the proper format.
      *
      * @param bool $format
-     * @param bool $taxedItemsOnly
-     * @param bool $withTax
      *
      * @return string
      */
-    public function price($format = true, $taxedItemsOnly = false, $withTax = false)
+    public function total($format = true)
     {
         $total = 0;
 
         if ($this->active) {
-            $total = $this->price + $this->subItemsTotal(false, $taxedItemsOnly);
-
-            if ($withTax) {
-                $total += $this->tax * $total;
+            $total = $this->subTotal(false);
+            $total += $this->tax(false);
+            $total -= $this->getDiscount(false);
+            if($total < 0) {
+                $total = 0;
             }
         }
 
@@ -216,65 +214,27 @@ class CartItem
      * Gets the sub total of the item based on the qty with or without tax in the proper format.
      *
      * @param bool $format
-     * @param bool $withDiscount
-     * @param bool $taxedItemsOnly
-     * @param bool $withTax
      *
      * @return string
      */
-    public function subTotal($format = true, $withDiscount = true, $taxedItemsOnly = false, $withTax = false)
+    public function subTotal($format = true)
     {
-        $total = $this->price(false, $taxedItemsOnly) * $this->qty;
-
-        if ($withDiscount) {
-            $total -= $this->getDiscount(false);
-        }
-
-        if ($total < 0) {
-            $total = 0;
-        }
-
-        if ($withTax) {
-            $total += $this->tax(0, false, false, $withDiscount);
-        }
-
-        return LaraCart::formatMoney($total, $this->locale, $this->currencyCode, $format);
-    }
-
-    /**
-     * @param bool $format
-     *
-     * @return string
-     */
-    public function netTotal($format = true)
-    {
-        return LaraCart::formatMoney(
-            ($this->price(false, false, true) * $this->qty) - $this->getDiscount(false) - $this->tax(false, true),
-            $this->locale,
-            $this->currencyCode,
-            $format
-        );
+        return LaraCart::formatMoney(($this->price * $this->qty) + $this->subItemsTotal(false), $this->locale, $this->currencyCode, $format);
     }
 
     /**
      * Gets the totals for the options.
      *
      * @param bool $format
-     * @param bool $taxedItemsOnly
-     * @param bool $withTax
      *
      * @return string
      */
-    public function subItemsTotal($format = true, $taxedItemsOnly = false, $withTax = false)
+    public function subItemsTotal($format = true)
     {
         $total = 0;
 
         foreach ($this->subItems as $subItem) {
-            $total += $subItem->price(false, $taxedItemsOnly) * (!empty($subItem->qty) ? $subItem->qty : 1);
-        }
-
-        if ($withTax) {
-            $total += $this->tax * $total;
+            $total += $subItem->subTotal(false);
         }
 
         return LaraCart::formatMoney($total, $this->locale, $this->currencyCode, $format);
@@ -289,22 +249,8 @@ class CartItem
      */
     public function getDiscount($format = true)
     {
-        $amount = 0;
-
-        if ($this->coupon) {
-            $amount = $this->coupon->forItem($this);
-        } elseif (app('laracart')->findCoupon($this->code)) {
-            $amount = $this->discount;
-        }
-
-        $amount = $amount * $this->qty;
-
-        if ($amount < 0) {
-            $amount = $this->price * $this->qty;
-        }
-
         return LaraCart::formatMoney(
-            $amount,
+            $this->discounted,
             $this->locale,
             $this->currencyCode,
             $format
@@ -322,7 +268,6 @@ class CartItem
         app('laracart')->addCoupon($coupon);
         $this->code = $coupon->code;
         $this->couponInfo = $coupon->options;
-        $this->discount = $coupon->forItem($this);
 
         return $this;
     }
@@ -330,64 +275,16 @@ class CartItem
     /**
      * Gets the tax for the item.
      *
-     * @param int  $amountNotTaxable
-     * @param bool $grossTax
-     *
      * @return int|mixed
      */
-    public function tax($amountNotTaxable = 0, $grossTax = true, $rounded = false, $withDiscount = true)
+    public function tax($format = true)
     {
-        $discountTaxable = ($withDiscount) ? !config('laracart.discountTaxable', false) : false;
-        $totalDiscount = ($withDiscount) ? $this->getDiscount(false) : 0;
-
-        if (!$this->taxable) {
-            $amountNotTaxable = $this->price * $this->qty;
-        }
-
-        if (config('laracart.tax_by_item')) {
-            $itemCount = 0;
-            $totalTax = 0;
-            while ($itemCount < $this->qty) {
-                $totalTax += round($this->price * $this->tax, 2);
-                $itemCount++;
-            }
-
-            if ($grossTax && config('laracart.discountsAlreadyTaxed', false)) {
-                $totalTax = $totalTax - ($totalDiscount - ($totalDiscount / (1 + $this->tax)));
-            } else {
-                if ($totalDiscount < 0 || $totalDiscount > $this->price) {
-                    return $totalTax - ($totalDiscount - $this->price);
-                }
-            }
-
-            if ($rounded) {
-                return LaraCart::formatMoney(
-                    ($totalTax - $amountNotTaxable),
-                    $this->locale,
-                    $this->currencyCode,
-                    false
-                );
-            }
-
-            return $totalTax - $amountNotTaxable;
-        }
-
-        $totalTax = $this->tax * ($this->subTotal(false, $discountTaxable, true, false) - $amountNotTaxable);
-
-        if (config('laracart.discountsAlreadyTaxed', false) && $withDiscount) {
-            $totalTax = $totalTax - ($this->getDiscount(false) - ($this->getDiscount(false) / (1 + $this->tax)));
-        }
-
-        if ($rounded) {
-            return LaraCart::formatMoney(
-                $totalTax,
-                $this->locale,
-                $this->currencyCode,
-                false
-            );
-        }
-
-        return $totalTax;
+        return LaraCart::formatMoney(
+            $this->taxed,
+            $this->locale,
+            $this->currencyCode,
+            $format
+        );
     }
 
     /**
@@ -455,12 +352,17 @@ class CartItem
     public function disable()
     {
         $this->active = false;
-        app('laracart')->update();
+        $this->update();
     }
 
     public function enable()
     {
         $this->active = true;
+        $this->update();
+    }
+    
+    public function update() {
+        $this->generateHash();
         app('laracart')->update();
     }
 }
