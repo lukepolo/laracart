@@ -139,31 +139,33 @@ class LaraCart implements LaraCartContract
         $this->update();
     }
 
-    private function updateDiscounts() {
-        foreach( $this->getCoupons() as $coupon) {
+    private function updateDiscounts()
+    {
+        foreach ($this->getCoupons() as $coupon) {
             $discounted = 0;
-            foreach($this->getItems() as $item) {
-                for ($qty = 0 ; $qty < $item->qty; $qty++) {
+            foreach ($this->getItems() as $item) {
+                for ($qty = 0; $qty < $item->qty; $qty++) {
                     $discounted += $item->discounted[$qty] = $coupon->discount($item, $discounted);
                 }
             }
         }
 
-        foreach($this->getItems() as $item) {
+        foreach ($this->getItems() as $item) {
             if ($item->coupon) {
                 $discounted = 0;
-                for ($qty = 0 ; $qty < $item->qty; $qty++) {
+                for ($qty = 0; $qty < $item->qty; $qty++) {
                     $discounted += $item->discounted[$qty] = $item->coupon->discount($item, $discounted);
                 }
             }
         }
     }
 
-    private function updateTaxes() {
-        foreach($this->getItems() as $item) {
-            if($item->taxable) {
+    private function updateTaxes()
+    {
+        foreach ($this->getItems() as $item) {
+            if ($item->taxable) {
                 $item->taxed = 0;
-                for ($qty = 0 ; $qty < $item->qty; $qty++) {
+                for ($qty = 0; $qty < $item->qty; $qty++) {
                     $discounted = $item->discounted[$qty] ?? 0;
                     $item->taxed += $this->formatMoney(($item->price - $discounted) * $item->tax, null, null, false);
                 }
@@ -763,7 +765,7 @@ class LaraCart implements LaraCartContract
     {
         $total = 0;
 
-        foreach($this->getItems() as $item) {
+        foreach ($this->getItems() as $item) {
             $total += $item->getDiscount(false);
         }
 

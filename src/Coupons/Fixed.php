@@ -2,7 +2,6 @@
 
 namespace LukePOLO\LaraCart\Coupons;
 
-use LukePOLO\LaraCart\CartItem;
 use LukePOLO\LaraCart\Contracts\CouponContract;
 use LukePOLO\LaraCart\LaraCart;
 use LukePOLO\LaraCart\Traits\CouponTrait;
@@ -40,9 +39,10 @@ class Fixed implements CouponContract
     public function discount($item, $amountApplied)
     {
         $discount = $this->value - $amountApplied;
-        if($discount > $item->price) {
+        if ($discount > $item->price) {
             return $item->price;
         }
+
         return $discount;
     }
 

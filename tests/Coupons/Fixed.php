@@ -2,7 +2,6 @@
 
 namespace LukePOLO\LaraCart\Tests\Coupons;
 
-use LukePOLO\LaraCart\CartItem;
 use LukePOLO\LaraCart\Contracts\CouponContract;
 use LukePOLO\LaraCart\Exceptions\CouponException;
 use LukePOLO\LaraCart\LaraCart;

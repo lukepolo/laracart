@@ -182,7 +182,8 @@ class CartItem
         $this->update();
     }
 
-    public function getPrice($format = true) {
+    public function getPrice($format = true)
+    {
         return LaraCart::formatMoney(
             $this->price,
             $this->locale,
@@ -206,7 +207,7 @@ class CartItem
             $total = $this->subTotal(false);
             $total += $this->tax(false);
             $total -= $this->getDiscount(false);
-            if($total < 0) {
+            if ($total < 0) {
                 $total = 0;
             }
         }
@@ -369,8 +370,9 @@ class CartItem
         $this->active = true;
         $this->update();
     }
-    
-    public function update() {
+
+    public function update()
+    {
         $this->generateHash();
         app('laracart')->update();
     }

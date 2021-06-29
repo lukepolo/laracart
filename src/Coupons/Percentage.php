@@ -46,7 +46,8 @@ class Percentage implements CouponContract
      *
      * @return string
      */
-    public function discount($item, $amountApplied) {
+    public function discount($item, $amountApplied)
+    {
         return LaraCart::formatMoney(
             $item->subTotal(false) * $this->value,
             null,

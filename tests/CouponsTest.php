@@ -9,7 +9,8 @@ class CouponsTest extends Orchestra\Testbench\TestCase
 {
     use \LukePOLO\LaraCart\Tests\LaraCartTestTrait;
 
-    public function testInvalidPercentageCoupon() {
+    public function testInvalidPercentageCoupon()
+    {
         $this->addItem(3, 1);
 
         try {
