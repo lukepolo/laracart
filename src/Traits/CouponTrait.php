@@ -39,7 +39,8 @@ trait CouponTrait
     public function canApply()
     {
         try {
-            $this->discount(true);
+            // TODO
+//            $this->discount();
             return true;
         } catch (CouponException $e) {
             return $e->getMessage();

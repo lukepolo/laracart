@@ -104,15 +104,6 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | If your discounts are already pre taxes but items are not,
-    | you can set this here to get the correct values
-    |--------------------------------------------------------------------------
-    |
-    */
-    'discounts_already_taxed' => false,
-
-    /*
-    |--------------------------------------------------------------------------
     | Allows you to choose if the discounts applied to fees
     |--------------------------------------------------------------------------
     |
