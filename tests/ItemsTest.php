@@ -160,8 +160,6 @@ class ItemsTest extends Orchestra\Testbench\TestCase
 
         $items = $this->laracart->getItems();
 
-        $this->assertInternalType('array', $items);
-
         $this->assertCount(1, $items);
 
         $this->containsOnlyInstancesOf(LukePOLO\LaraCart\CartItem::class, $items);
