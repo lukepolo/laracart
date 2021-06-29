@@ -43,7 +43,7 @@ class CartItem
     public $currencyCode;
 
     public $taxed = 0;
-    public $discounted = 0;
+    public $discounted = [];
 
     /**
      * CartItem constructor.
@@ -182,6 +182,15 @@ class CartItem
         $this->update();
     }
 
+    public function getPrice($format = true) {
+        return LaraCart::formatMoney(
+            $this->price,
+            $this->locale,
+            $this->currencyCode,
+            $format
+        );
+    }
+
     /**
      * Gets the price of the item with or without tax, with the proper format.
      *
@@ -250,7 +259,7 @@ class CartItem
     public function getDiscount($format = true)
     {
         return LaraCart::formatMoney(
-            $this->discounted,
+            array_sum($this->discounted),
             $this->locale,
             $this->currencyCode,
             $format

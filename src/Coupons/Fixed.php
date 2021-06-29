@@ -35,27 +35,15 @@ class Fixed implements CouponContract
     /**
      * Gets the discount amount.
      *
-     * @param $throwErrors boolean this allows us to capture errors in our code if we wish,
-     * that way we can spit out why the coupon has failed
-     *
      * @return string
      */
-    public function discount($throwErrors = false)
+    public function discount($item, $amountApplied)
     {
-        return $this->value;
-    }
-
-    /**
-     * If an item is supplied it will get its discount value.
-     *
-     * @param CartItem $item
-     *
-     * @return float
-     */
-    // TODO
-    public function forItem(CartItem $item)
-    {
-        return $this->value;
+        $discount = $this->value - $amountApplied;
+        if($discount > $item->price) {
+            return $item->price;
+        }
+        return $discount;
     }
 
     /**

@@ -18,7 +18,7 @@
   ],
   "require": {
     "php": "~7.3 || ~7.4 || ~8.0",
-    "ext-intl" : "*",
+    "ext-intl": "*",
     "illuminate/support": "~5.5.0|~5.7.0|~5.8.0|^6.0|^7.0|^8.0",
     "illuminate/session": "~5.5.0|~5.7.0|~5.8.0|^6.0|^7.0|^8.0",
     "illuminate/events": "~5.5.0|~5.7.0|~5.8.0|^6.0|^7.0|^8.0"
@@ -41,14 +41,14 @@
     }
   },
   "extra": {
-      "laravel": {
-          "providers": [
-              "LukePOLO\\LaraCart\\LaraCartServiceProvider"
-          ],
-          "aliases": {
-              "LaraCart": "LukePOLO\\LaraCart\\Facades\\LaraCart"
-          }
+    "laravel": {
+      "providers": [
+        "LukePOLO\\LaraCart\\LaraCartServiceProvider"
+      ],
+      "aliases": {
+        "LaraCart": "LukePOLO\\LaraCart\\Facades\\LaraCart"
       }
+    }
   },
   "minimum-stability": "stable"
 }

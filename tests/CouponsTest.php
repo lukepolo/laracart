@@ -163,7 +163,6 @@ class CouponsTest extends Orchestra\Testbench\TestCase
         $this->app['config']->set('laracart.coupon_applied_message', 'Your coupon has been applied');
 
         $this->assertEquals(true, $foundCoupon->canApply());
-        $this->assertNull($foundCoupon->getFailedMessage());
 
         $this->assertEquals('Your coupon has been applied', $foundCoupon->getMessage());
     }
@@ -393,13 +392,13 @@ class CouponsTest extends Orchestra\Testbench\TestCase
      */
     public function testCouponMessage()
     {
-        $item = $this->addItem(2, 30);
+        $this->addItem(2, 30);
 
         $fixedCoupon = new \LukePOLO\LaraCart\Tests\Coupons\Fixed('10OFF', 10);
 
-        $this->assertEquals(false, $fixedCoupon->canApply());
-        $this->assertEquals('Sorry, you must have at least 100 dollars!', $fixedCoupon->getMessage());
-        $this->assertEquals('Sorry, you must have at least 100 dollars!', $fixedCoupon->getFailedMessage());
+        $canApply = $fixedCoupon->canApply();
+        $this->assertNotEquals(true, $fixedCoupon->canApply());
+        $this->assertEquals('Sorry, you must have at least 100 dollars!', $canApply);
     }
 
     /**

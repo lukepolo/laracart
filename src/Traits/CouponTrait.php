@@ -40,40 +40,7 @@ trait CouponTrait
     {
         try {
             $this->discount(true);
-
             return true;
-        } catch (CouponException $e) {
-            return false;
-        }
-    }
-
-    /**
-     * Get the reason why a coupon has failed to apply.
-     *
-     * @deprecated 1.3
-     *
-     * @return string
-     */
-    public function getMessage()
-    {
-        try {
-            $this->discount(true);
-
-            return config('laracart.coupon_applied_message', 'Coupon Applied');
-        } catch (CouponException $e) {
-            return $e->getMessage();
-        }
-    }
-
-    /**
-     * Gets the failed message for a coupon.
-     *
-     * @return null|string
-     */
-    public function getFailedMessage()
-    {
-        try {
-            $this->discount(true);
         } catch (CouponException $e) {
             return $e->getMessage();
         }

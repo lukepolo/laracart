@@ -172,11 +172,10 @@ class ItemsTest extends Orchestra\Testbench\TestCase
     {
         $item = $this->addItem(3, 10);
 
+        $this->assertEquals("$10.00", $item->getPrice());
         $this->assertEquals(3, $item->qty);
-        $this->assertEquals(10, $item->total(false));
-        $this->assertEquals(10.7, $item->total(false, false, true)); // return item price with tax
         $this->assertEquals(30, $item->subTotal(false));
-        $this->assertEquals(32.1, $item->subTotal(false, true, false, true)); // return subtotal with tax
+        $this->assertEquals(32.1, $item->total(false));
     }
 
     /**
@@ -187,14 +186,13 @@ class ItemsTest extends Orchestra\Testbench\TestCase
         $this->app['config']->set('laracart.prices_in_cents', true);
         $item = $this->addItem(3, 1000);
 
-        $this->assertEquals(1000, $item->total(false));
-        $this->assertEquals(1070, $item->total(false, false, true)); // return item price with tax
+        $this->assertEquals(3210, $item->total(false));
+        $this->assertEquals("$10.00", $item->getPrice());
         $this->assertEquals(3000, $item->subTotal(false));
-        $this->assertEquals(3210, $item->subTotal(false, true, false, true)); // return subtotal with tax
 
         // Test that floats are converted to int and not rounded in the constructor
         $item2 = $this->addItem(3, 1000.55);
-        $this->assertEquals(1000, $item2->total(false));
+        $this->assertEquals(1000, $item2->getPrice(false));
     }
 
     /**
@@ -215,18 +213,8 @@ class ItemsTest extends Orchestra\Testbench\TestCase
     public function testSetPrice()
     {
         $item = $this->addItem();
-        $item->total = 3;
-
-        $this->assertEquals(3, $item->total);
-
-        $item->total = 3.52313123;
-        $this->assertEquals(3.52313123, $item->total);
-
-        $item->total = -123123.000;
-        $this->assertEquals(-123123.000, $item->total);
-
         try {
-            $item->total = 'a';
+            $item->price = 'a';
             $this->expectException(\LukePOLO\LaraCart\Exceptions\InvalidPrice::class);
         } catch (\LukePOLO\LaraCart\Exceptions\InvalidPrice $e) {
             $this->assertEquals('The price must be a valid number', $e->getMessage());
@@ -274,25 +262,13 @@ class ItemsTest extends Orchestra\Testbench\TestCase
     public function testDifferentTaxes()
     {
         $item = $this->addItem();
-
-        $prevHash = $item->getHash();
-
-        $item->tax = .05;
-
-        $this->assertNotEquals($prevHash, $item->getHash());
-
-        $item = $this->addItem();
-        $item->tax = .3;
-
-        $this->assertEquals('2.35', $this->laracart->total(false));
-
-        $item = $this->addItem(1, 1, true, [
-            'tax' => .7,
+        $item2 = $this->addItem(1, 1, true, [
+            "tax" => ".05"
         ]);
 
-        $this->assertEquals('.70', $item->tax());
+        $this->assertEquals(true, $item->tax !== $item2->tax);
 
-        $this->assertEquals('4.05', $this->laracart->total(false));
+        $this->assertEquals("0.12", $this->laracart->taxTotal(false));
     }
 
     /**
@@ -450,19 +426,34 @@ class ItemsTest extends Orchestra\Testbench\TestCase
 
     public function testTaxationTotal()
     {
-        $this->addItem(2, 8.33, 1, [
+        $this->addItem(1, 8.33, true, [
             'tax' => '.2',
         ]);
 
-        $this->assertEquals(19.99, $this->laracart->total(false));
+        $this->assertEquals(10.00, $this->laracart->total(false));
 
+        $this->addItem(1, 8.33, true, [
+            'tax' => '.2',
+        ]);
+
+        $this->assertEquals(20.00, $this->laracart->total(false));
+
+        $this->addItem(1, 8.33, true, [
+            'tax' => '.2',
+        ]);
+
+        $fixedCoupon = new LukePOLO\LaraCart\Coupons\Fixed(
+            '8.33 OFF',
+            8.33
+        );
+
+        $this->laracart->addCoupon($fixedCoupon);
 
         $this->assertEquals(20.00, $this->laracart->total(false));
     }
 
     public function testSeparateTaxationTotal()
     {
-
         $this->addItem(1, 8.33, 1, [
             'tax' => '.2',
         ]);

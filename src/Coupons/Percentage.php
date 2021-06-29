@@ -44,14 +44,11 @@ class Percentage implements CouponContract
     /**
      * Gets the discount amount.
      *
-     * @param $throwErrors boolean this allows us to capture errors in our code if we wish,
-     * that way we can spit out why the coupon has failed
-     *
      * @return string
      */
-    public function discount($itemSubTotal) {
+    public function discount($item, $amountApplied) {
         return LaraCart::formatMoney(
-            $itemSubTotal * $this->value,
+            $item->subTotal(false) * $this->value,
             null,
             null,
             false
