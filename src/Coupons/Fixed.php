@@ -13,9 +13,6 @@ class Fixed implements CouponContract
 {
     use CouponTrait;
 
-    public $code;
-    public $value;
-
     /**
      * Fixed constructor.
      *
@@ -36,9 +33,9 @@ class Fixed implements CouponContract
      *
      * @return string
      */
-    public function discount($item, $amountApplied)
+    public function discount($item)
     {
-        $discount = $this->value - $amountApplied;
+        $discount = $this->value - $this->discounted;
         if ($discount > $item->price) {
             return $item->price;
         }

@@ -12,9 +12,9 @@ use LukePOLO\LaraCart\LaraCart;
  */
 trait CouponTrait
 {
-    /**
-     * @var bool
-     */
+    public $code;
+    public $value;
+    public $discounted;
     public $appliedToCart = true;
 
     use CartOptionsMagicMethodsTrait;

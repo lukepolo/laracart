@@ -18,9 +18,6 @@ class Percentage implements CouponContract
 {
     use CouponTrait;
 
-    public $code;
-    public $value;
-
     /**
      * Percentage constructor.
      *
@@ -46,7 +43,7 @@ class Percentage implements CouponContract
      *
      * @return string
      */
-    public function discount($item, $amountApplied)
+    public function discount($item)
     {
         return LaraCart::formatMoney(
             $item->price * $this->value,
