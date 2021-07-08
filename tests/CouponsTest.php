@@ -502,29 +502,4 @@ class CouponsTest extends Orchestra\Testbench\TestCase
         $this->assertEquals(.54, $cartTotal);
         $this->assertEquals($itemTotal, $cartTotal);
     }
-
-    public function testBasicCoupon() {
-       $item = $this->addItem();
-
-        $item->addSubItem([
-            'description' => 'Ticket: Erwachsener',
-            'price' => 10.08403,
-            'qty' => 1
-        ]);
-
-        $item->addSubItem([
-            'description' => 'Ticket: Kind',
-            'price' => 8.40336,
-            'qty' => 1
-        ]);
-
-        $couponPercentage = new \LukePOLO\LaraCart\Coupons\Percentage('CODE', 0.5);
-        $this->laracart->addCoupon($couponPercentage);
-//        $item->addCoupon($couponPercentage);
-
-        dump('Netto', $this->laracart->subTotal());
-        dump('Total Discount', $this->laracart->totalDiscount());
-        dump('Tax Total', $this->laracart->taxTotal());
-        dd('Total', $this->laracart->total());
-    }
 }
