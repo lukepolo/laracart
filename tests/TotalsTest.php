@@ -620,14 +620,14 @@ class TotalsTest extends Orchestra\Testbench\TestCase
         $item = $this->addItem();
         $item->addSubItem([
             'description' => 'First item',
-            'price' => 8.40336,
-            'qty' => 1
+            'price'       => 8.40336,
+            'qty'         => 1,
         ]);
 
         $item->addSubItem([
             'description' => 'Second item',
-            'price' => 4.20168,
-            'qty' => 1
+            'price'       => 4.20168,
+            'qty'         => 1,
         ]);
         $this->assertEquals(13.61, $this->laracart->subTotal(false));
     }

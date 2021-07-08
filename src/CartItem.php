@@ -277,6 +277,7 @@ class CartItem
         $coupon->appliedToCart = false;
         app('laracart')->addCoupon($coupon);
         $this->coupon = $coupon;
+
         return $this;
     }
 

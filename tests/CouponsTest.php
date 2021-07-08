@@ -263,7 +263,8 @@ class CouponsTest extends Orchestra\Testbench\TestCase
         $this->assertEquals(107, $this->laracart->total(false));
     }
 
-    public function testDiscountsTaxable() {
+    public function testDiscountsTaxable()
+    {
         $this->addItem(1, 20);
 
         $fixedCoupon = new LukePOLO\LaraCart\Coupons\Fixed('10OFF', 10);
