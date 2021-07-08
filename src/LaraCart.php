@@ -181,6 +181,7 @@ class LaraCart implements LaraCartContract
                 $discounted = $item->discounted[$qty] ?? 0;
                 $taxable = ($item->taxableSubTotalPerItem(false) - $discounted);
                 if ($taxable > 0) {
+                    // TODO - allow for sub items to have different tax rates
                     $item->taxed += $this->formatMoney($taxable * $item->tax, null, null, false);
                 }
             }
