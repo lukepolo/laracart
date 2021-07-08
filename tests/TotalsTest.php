@@ -355,7 +355,6 @@ class TotalsTest extends Orchestra\Testbench\TestCase
     public function testBasicTotalsWithItemTax()
     {
         $this->app['config']->set('laracart.tax', .19);
-        $this->app['config']->set('laracart.discounts_taxable', true);
 
         /* @var \LukePOLO\LaraCart\CartItem $item */
         $this->laracart->add(

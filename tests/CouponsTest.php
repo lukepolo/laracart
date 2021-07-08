@@ -48,8 +48,6 @@ class CouponsTest extends Orchestra\Testbench\TestCase
      */
     public function testAddPercentageCouponOnTaxItem()
     {
-        $this->app['config']->set('laracart.discounts_taxable', false);
-
         $item = $this->addItem(1, 10);
 
         $percentCoupon = new LukePOLO\LaraCart\Coupons\Percentage('10%OFF', '.1');
@@ -260,7 +258,6 @@ class CouponsTest extends Orchestra\Testbench\TestCase
 
         $this->assertEquals(20, $this->laracart->subTotal(false));
 
-        $this->app['config']->set('laracart.discounts_taxable', true);
         $this->assertEquals(10 + (10 * .07), $this->laracart->total(false));
     }
 
@@ -300,8 +297,6 @@ class CouponsTest extends Orchestra\Testbench\TestCase
 
         $this->assertEquals('20%', $percentCoupon->displayValue());
         $this->assertEquals('0.20', $this->laracart->totalDiscount(false));
-
-        $this->app['config']->set('laracart.discounts_taxable', true);
 
         $this->assertEquals(0, $this->laracart->taxTotal(false));
 
@@ -448,7 +443,6 @@ class CouponsTest extends Orchestra\Testbench\TestCase
     {
         $this->app['config']->set('laracart.tax', .19);
         $this->app['config']->set('laracart.fees_taxable', false);
-        $this->app['config']->set('laracart.discounts_taxable', false);
 
         $fixedCoupon = new LukePOLO\LaraCart\Coupons\Fixed('$1 Off', 1);
 
@@ -466,7 +460,6 @@ class CouponsTest extends Orchestra\Testbench\TestCase
     {
         $this->app['config']->set('laracart.tax', .19);
         $this->app['config']->set('laracart.fees_taxable', false);
-        $this->app['config']->set('laracart.discounts_taxable', false);
 
         $percentageCoupon = new LukePOLO\LaraCart\Coupons\Percentage('100%', 1);
 

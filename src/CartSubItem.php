@@ -58,7 +58,21 @@ class CartSubItem
 
         if (isset($this->items)) {
             foreach ($this->items as $item) {
-                $price += $item->total(false);
+                $price += $item->subTotal(false);
+            }
+        }
+
+        return $price;
+    }
+
+    public function taxableSubTotalPerItem() {
+        $price = $this->price;
+
+        if (isset($this->items)) {
+            foreach ($this->items as $item) {
+                if($item->taxable) {
+                    $price += $item->taxableSubTotalPerItem(false);
+                }
             }
         }
 

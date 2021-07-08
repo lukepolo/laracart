@@ -168,11 +168,12 @@ class LaraCart implements LaraCartContract
     private function updateTaxes()
     {
         foreach ($this->getItems() as $item) {
-            if ($item->taxable) {
-                $item->taxed = 0;
-                for ($qty = 0; $qty < $item->qty; $qty++) {
-                    $discounted = $item->discounted[$qty] ?? 0;
-                    $item->taxed += $this->formatMoney((($item->subTotal(false) / $item->qty) - $discounted) * $item->tax, null, null, false);
+            $item->taxed = 0;
+            for ($qty = 0; $qty < $item->qty; $qty++) {
+                $discounted = $item->discounted[$qty] ?? 0;
+                $taxable = ($item->taxableSubTotalPerItem(false) - $discounted);
+                if($taxable > 0) {
+                    $item->taxed += $this->formatMoney($taxable * $item->tax, null, null, false);
                 }
             }
         }
