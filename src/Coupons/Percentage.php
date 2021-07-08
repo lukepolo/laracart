@@ -32,6 +32,7 @@ class Percentage implements CouponContract
         $this->code = $code;
         if ($value > 1) {
             $this->message = 'Invalid value for a percentage coupon. The value must be between 0 and 1.';
+
             throw new CouponException($this->message);
         }
         $this->value = $value;
@@ -46,7 +47,7 @@ class Percentage implements CouponContract
      */
     public function discount($item)
     {
-        if($this->canApply()) {
+        if ($this->canApply()) {
             return LaraCart::formatMoney(
                 $item->price * $this->value,
                 null,
@@ -54,6 +55,7 @@ class Percentage implements CouponContract
                 false
             );
         }
+
         return 0;
     }
 

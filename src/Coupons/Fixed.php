@@ -35,7 +35,7 @@ class Fixed implements CouponContract
      */
     public function discount($item)
     {
-        if($this->canApply()) {
+        if ($this->canApply()) {
             $discount = $this->value - $this->discounted;
             if ($discount > $item->price) {
                 return $item->price;
@@ -48,6 +48,7 @@ class Fixed implements CouponContract
                 false
             );
         }
+
         return 0;
     }
 

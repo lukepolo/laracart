@@ -39,7 +39,8 @@ trait CouponTrait
      */
     public function canApply()
     {
-        $this->message = "Coupon Applied";
+        $this->message = 'Coupon Applied';
+
         return true;
     }
 
@@ -128,11 +129,13 @@ trait CouponTrait
         $item->update();
     }
 
-    public function discounted() {
+    public function discounted()
+    {
         return $this->discounted;
     }
 
-    public function getMessage() {
+    public function getMessage()
+    {
         return $this->message;
     }
 }

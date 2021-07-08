@@ -65,12 +65,13 @@ class CartSubItem
         return $price;
     }
 
-    public function taxableSubTotalPerItem() {
+    public function taxableSubTotalPerItem()
+    {
         $price = $this->price;
 
         if (isset($this->items)) {
             foreach ($this->items as $item) {
-                if($item->taxable) {
+                if ($item->taxable) {
                     $price += $item->taxableSubTotalPerItem(false);
                 }
             }
