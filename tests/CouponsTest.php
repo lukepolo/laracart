@@ -484,7 +484,8 @@ class CouponsTest extends Orchestra\Testbench\TestCase
         $this->assertEquals(0, $this->laracart->total(false));
     }
 
-    public function testCartVsItemCoupon() {
+    public function testCartVsItemCoupon()
+    {
         $item = $this->addItem();
         $couponPercentage = new \LukePOLO\LaraCart\Coupons\Percentage('50%', 0.5);
         $this->laracart->addCoupon($couponPercentage);
