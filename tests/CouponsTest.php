@@ -91,14 +91,20 @@ class CouponsTest extends Orchestra\Testbench\TestCase
         $fixedCoupon = new LukePOLO\LaraCart\Coupons\Fixed('10OFF', 10);
 
         $this->laracart->addCoupon($fixedCoupon);
-        // todo - move this to a diff test
-        $this->assertEquals($fixedCoupon, $this->laracart->findCoupon('10OFF'));
-        // todo - move this to a diff test
-        $this->assertEquals('$10.00', $fixedCoupon->displayValue());
-
         $this->addItem(1, 20);
         $this->assertEquals('10.00', $this->laracart->totalDiscount(false));
         $this->assertEquals('0.70', $this->laracart->taxTotal(false));
+    }
+
+    /**
+     * Test the fixed coupons.
+     */
+    public function testFixedCoupon()
+    {
+        $fixedCoupon = new LukePOLO\LaraCart\Coupons\Fixed('10OFF', 10);
+
+        $this->laracart->addCoupon($fixedCoupon);
+        $this->assertEquals($fixedCoupon, $this->laracart->findCoupon('10OFF'));
     }
 
     /**
