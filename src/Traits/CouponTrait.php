@@ -14,7 +14,7 @@ trait CouponTrait
 {
     public $code;
     public $value;
-    public $discounted;
+    public $discounted = 0;
     public $appliedToCart = true;
 
     use CartOptionsMagicMethodsTrait;
@@ -38,13 +38,7 @@ trait CouponTrait
      */
     public function canApply()
     {
-        try {
-            // TODO
-//            $this->discount();
-            return true;
-        } catch (CouponException $e) {
-            return $e->getMessage();
-        }
+        return true;
     }
 
     /**

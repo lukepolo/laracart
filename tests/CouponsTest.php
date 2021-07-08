@@ -387,19 +387,20 @@ class CouponsTest extends Orchestra\Testbench\TestCase
         $this->assertEmpty($this->laracart->getCoupons());
     }
 
-//    /**
-//     *  Testing getting the message on a coupon.
-//     */
-//    public function testCouponMessage()
-//    {
-//        $this->addItem(2, 30);
-//
-//        $fixedCoupon = new \LukePOLO\LaraCart\Tests\Coupons\Fixed('10OFF', 10);
-//
-//        $canApply = $fixedCoupon->canApply();
-//        $this->assertNotEquals(true, $fixedCoupon->canApply());
-//        $this->assertEquals('Sorry, you must have at least 100 dollars!', $canApply);
-//    }
+    /**
+     *  Testing getting the message on a coupon.
+     */
+    public function testCouponMessage()
+    {
+        $item = $this->addItem(2, 30);
+        $fixedCoupon = new \LukePOLO\LaraCart\Tests\Coupons\Fixed('10OFF', 10);
+
+        try {
+            $this->assertNotEquals(true, $fixedCoupon->discount($item));
+        } catch (\LukePOLO\LaraCart\Exceptions\CouponException $e) {
+            $this->assertEquals('Sorry, you must have at least 100 dollars!', $e->getMessage());
+        }
+    }
 
     /**
      * Testing discount when total is greater than applied coupon value.

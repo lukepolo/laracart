@@ -37,13 +37,28 @@ class Fixed implements CouponContract
      *
      * that way we can spit out why the coupon has failed
      *
-     * @throws CouponException
-     *
      * @return string
      */
-    public function discount($item, $amountApplied)
+    public function discount($item)
     {
-        throw new CouponException('Sorry, you must have at least 100 dollars!');
+        if($this->canApply()) {
+            return 100;
+        }
+        return 0;
+    }
+
+    /**
+     * Checks if you can apply the coupon
+     *
+     * @throws CouponException
+     *
+     * @return bool
+     */
+    public function canApply($throw = false) {
+        if($this->discounted === 0) {
+            throw new CouponException('Sorry, you must have at least 100 dollars!');
+        }
+        return true;
     }
 
     /**

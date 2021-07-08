@@ -145,21 +145,21 @@ class LaraCart implements LaraCartContract
             $item->discounted = [];
         }
 
+        foreach ($this->getItems() as $item) {
+            if ($item->coupon) {
+                $item->coupon->discounted = 0;
+                for ($qty = 0; $qty < $item->qty; $qty++) {
+                    $item->coupon->discounted += $item->discounted[$qty] = $this->formatMoney($item->coupon->discount($item), null, null, false);
+                }
+            }
+        }
+
         foreach ($this->getCoupons() as $coupon) {
             $coupon->discounted = 0;
             foreach ($this->getItems() as $item) {
                 $item->discounted = [];
                 for ($qty = 0; $qty < $item->qty; $qty++) {
                     $coupon->discounted += $item->discounted[$qty] = $this->formatMoney($coupon->discount($item), null, null, false);
-                }
-            }
-        }
-
-        foreach ($this->getItems() as $item) {
-            if ($item->coupon) {
-                $item->coupon->discounted = 0;
-                for ($qty = 0; $qty < $item->qty; $qty++) {
-                    $item->coupon->discounted += $item->discounted[$qty] = $this->formatMoney($item->coupon->discount($item), null, null, false);
                 }
             }
         }
