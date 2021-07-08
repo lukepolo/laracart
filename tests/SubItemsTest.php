@@ -248,17 +248,17 @@ class SubItemsTest extends Orchestra\Testbench\TestCase
         $this->assertEquals($subItem->size, $itemFound->size);
     }
 
-
-    public function testDifferentTaxtionsOnSubItems() {
+    public function testDifferentTaxtionsOnSubItems()
+    {
         $item = $this->addItem(1, 10, true, [
-            'tax' => .1
+            'tax' => .1,
         ]);
 
         $item->addSubItem([
             'size'    => 'XXL',
             'price'   => 10.00,
             'taxable' => true,
-            'tax' => .2
+            'tax'     => .2,
         ]);
 
         $this->assertEquals(0.30, $this->laracart->taxTotal(false));
