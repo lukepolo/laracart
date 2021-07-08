@@ -52,7 +52,8 @@ class CartFee
         return LaraCart::formatMoney($total, $this->locale, $this->currencyCode, $format);
     }
 
-    public function getDiscount($format = true) {
+    public function getDiscount($format = true)
+    {
         return LaraCart::formatMoney($this->discounted, $this->locale, $this->currencyCode, $format);
     }
 }
