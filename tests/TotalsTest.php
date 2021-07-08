@@ -356,7 +356,6 @@ class TotalsTest extends Orchestra\Testbench\TestCase
     {
         $this->app['config']->set('laracart.tax', .19);
         $this->app['config']->set('laracart.discounts_taxable', true);
-        $this->app['config']->set('laracart.discountsAlreadyTaxed', true);
 
         /* @var \LukePOLO\LaraCart\CartItem $item */
         $this->laracart->add(
@@ -375,6 +374,7 @@ class TotalsTest extends Orchestra\Testbench\TestCase
         $this->assertEquals(119, $this->laracart->total(false));
     }
 
+    // TOOD - pre taxation .... may not do it....
 //    public function testPreTaxationAndDiscountWithFixed100PercentOff()
 //    {
 //        $this->app['config']->set('laracart.tax', .19);

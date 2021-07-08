@@ -35,17 +35,20 @@ class Fixed implements CouponContract
      */
     public function discount($item)
     {
-        $discount = $this->value - $this->discounted;
-        if ($discount > $item->price) {
-            return $item->price;
-        }
+        if($this->canApply()) {
+            $discount = $this->value - $this->discounted;
+            if ($discount > $item->price) {
+                return $item->price;
+            }
 
-        return LaraCart::formatMoney(
-            $discount,
-            null,
-            null,
-            false
-        );
+            return LaraCart::formatMoney(
+                $discount,
+                null,
+                null,
+                false
+            );
+        }
+        return 0;
     }
 
     /**

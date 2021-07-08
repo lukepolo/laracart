@@ -16,6 +16,7 @@ trait CouponTrait
     public $value;
     public $discounted = 0;
     public $appliedToCart = true;
+    public $message;
 
     use CartOptionsMagicMethodsTrait;
 
@@ -38,6 +39,7 @@ trait CouponTrait
      */
     public function canApply()
     {
+        $this->message = "Coupon Applied";
         return true;
     }
 
@@ -128,5 +130,9 @@ trait CouponTrait
 
     public function discounted() {
         return $this->discounted;
+    }
+
+    public function getMessage() {
+        return $this->message;
     }
 }

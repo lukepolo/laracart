@@ -114,7 +114,7 @@ class ItemRelationTest extends Orchestra\Testbench\TestCase
         ]);
 
         $item = new \LukePOLO\LaraCart\Tests\Models\TestItem([
-            'price'   => 5000.01, // absurd!
+            'price'   => 5000.01,
             'taxable' => false,
             'tax'     => '.5',
         ]);
@@ -149,7 +149,7 @@ class ItemRelationTest extends Orchestra\Testbench\TestCase
         ]);
 
         $item = new \LukePOLO\LaraCart\Tests\Models\TestItem([
-            'price'   => 5000.01, // absurd!
+            'price'   => 5000.01,
             'taxable' => false,
             'tax'     => '.5',
         ]);
@@ -178,7 +178,7 @@ class ItemRelationTest extends Orchestra\Testbench\TestCase
         ]);
 
         $item = new \LukePOLO\LaraCart\Tests\Models\TestItem([
-            'price'   => 5000.01, // absurd!
+            'price'   => 5000.01,
             'taxable' => false,
             'tax'     => '.5',
         ]);
@@ -213,7 +213,7 @@ class ItemRelationTest extends Orchestra\Testbench\TestCase
         ]);
 
         $item = new \LukePOLO\LaraCart\Tests\Models\TestItem([
-            'price'   => 5000.01, // absurd!
+            'price'   => 5000.01,
             'taxable' => false,
             'tax'     => '.5',
         ]);
