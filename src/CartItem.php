@@ -229,7 +229,7 @@ class CartItem
      */
     public function subTotal($format = true)
     {
-        $subTotal = $this->active ? ($this->price + $this->subItemsTotal(false)) * $this->qty : 0;
+        $subTotal = $this->active ? ($this->price + $this->subItemsTotal()) * $this->qty : 0;
 
         return LaraCart::formatMoney($subTotal, $this->locale, $this->currencyCode, $format);
     }
@@ -237,11 +237,9 @@ class CartItem
     /**
      * Gets the totals for the options.
      *
-     * @param bool $format
-     *
-     * @return float|string
+     * @return float
      */
-    public function subItemsTotal($format = true)
+    public function subItemsTotal()
     {
         $total = 0;
 
@@ -249,7 +247,7 @@ class CartItem
             $total += $subItem->subTotal(false);
         }
 
-        return LaraCart::formatMoney($total, $this->locale, $this->currencyCode, $format);
+        return $total;
     }
 
     /**

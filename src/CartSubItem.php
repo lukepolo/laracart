@@ -50,11 +50,9 @@ class CartSubItem
     /**
      * Gets the formatted price.
      *
-     * @param bool|true $format
-     *
-     * @return string
+     * @return float
      */
-    public function subTotal($format = true)
+    public function subTotal()
     {
         $price = $this->price * ($this->qty || 1);
 
@@ -64,7 +62,7 @@ class CartSubItem
             }
         }
 
-        return LaraCart::formatMoney($price, $this->locale, $this->currencyCode, $format);
+        return $price;
     }
 
     /**
