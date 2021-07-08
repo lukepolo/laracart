@@ -39,7 +39,7 @@ class Fixed implements CouponContract
      *
      * @return string
      */
-    public function discount($item)
+    public function discount($price)
     {
         if ($this->canApply()) {
             return 100;

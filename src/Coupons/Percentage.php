@@ -45,11 +45,11 @@ class Percentage implements CouponContract
      *
      * @return string
      */
-    public function discount($item)
+    public function discount($price)
     {
         if ($this->canApply()) {
             return LaraCart::formatMoney(
-                $item->price * $this->value,
+                $price * $this->value,
                 null,
                 null,
                 false

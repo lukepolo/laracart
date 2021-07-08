@@ -149,7 +149,7 @@ class LaraCart implements LaraCartContract
             if ($item->coupon) {
                 $item->coupon->discounted = 0;
                 for ($qty = 0; $qty < $item->qty; $qty++) {
-                    $item->coupon->discounted += $item->discounted[$qty] = $this->formatMoney($item->coupon->discount($item), null, null, false);
+                    $item->coupon->discounted += $item->discounted[$qty] = $this->formatMoney($item->coupon->discount($item->price), null, null, false);
                 }
             }
         }
@@ -157,9 +157,17 @@ class LaraCart implements LaraCartContract
         foreach ($this->getCoupons() as $coupon) {
             $coupon->discounted = 0;
             foreach ($this->getItems() as $item) {
-                $item->discounted = [];
-                for ($qty = 0; $qty < $item->qty; $qty++) {
-                    $coupon->discounted += $item->discounted[$qty] = $this->formatMoney($coupon->discount($item), null, null, false);
+                if(!$item->coupon) {
+                    $item->discounted = [];
+                    for ($qty = 0; $qty < $item->qty; $qty++) {
+                        $coupon->discounted += $item->discounted[$qty] = $this->formatMoney($coupon->discount($item->price), null, null, false);
+                    }
+                }
+            }
+
+            if(config('laracart.discount_fees', false)) {
+                foreach($this->getFees() as $fee) {
+                    $coupon->discounted = $fee->discounted = $this->formatMoney($coupon->discount($fee->amount), null, null, false);
                 }
             }
         }
@@ -773,6 +781,11 @@ class LaraCart implements LaraCartContract
         foreach ($this->getItems() as $item) {
             $total += $item->getDiscount(false);
         }
+
+        foreach($this->getFees() as $fee) {
+            $total += $fee->getDiscount(false);
+        }
+
 
         return $this->formatMoney($total, null, null, $format);
     }

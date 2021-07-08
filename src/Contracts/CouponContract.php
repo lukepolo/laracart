@@ -20,7 +20,7 @@ interface CouponContract
      *
      * @return number
      */
-    public function discount($item);
+    public function discount($price);
 
     /**
      * Displays the type of value it is for the user.

@@ -58,7 +58,7 @@ class CouponsTest extends Orchestra\Testbench\TestCase
         $this->assertEquals($percentCoupon, $this->laracart->findCoupon('10%OFF'));
 
         $this->assertEquals('10%', $percentCoupon->displayValue());
-        $this->assertEquals(1, $percentCoupon->discount($item));
+        $this->assertEquals(1, $percentCoupon->discount($item->price));
         $this->assertEquals(9.63, $this->laracart->total(false));
         $this->assertEquals(.63, $this->laracart->taxTotal(false));
 
@@ -376,7 +376,7 @@ class CouponsTest extends Orchestra\Testbench\TestCase
         $fixedCoupon = new \LukePOLO\LaraCart\Tests\Coupons\Fixed('10OFF', 10);
 
         try {
-            $this->assertNotEquals(true, $fixedCoupon->discount($item));
+            $this->assertNotEquals(true, $fixedCoupon->discount($item->price));
         } catch (\LukePOLO\LaraCart\Exceptions\CouponException $e) {
             $this->assertEquals('Sorry, you must have at least 100 dollars!', $e->getMessage());
         }
@@ -418,8 +418,21 @@ class CouponsTest extends Orchestra\Testbench\TestCase
         $percentCoupon = new LukePOLO\LaraCart\Coupons\Percentage('100% Off', 1);
         $this->laracart->addCoupon($percentCoupon);
 
-        // TODO - we should make this configuraable?
         $this->assertEquals(150, $this->laracart->total(false));
+    }
+
+    public function testFeeDiscount() {
+        $this->app['config']->set('laracart.discount_fees', true);
+
+        $fixedCoupon = new LukePOLO\LaraCart\Coupons\Fixed('10 OFF', 10);
+
+        $this->laracart->addCoupon($fixedCoupon);
+
+        $this->addItem(1, 5);
+
+        $this->laracart->addFee('testFee', 15);
+
+        $this->assertEquals(10, $this->laracart->total(false));
     }
 
     /**

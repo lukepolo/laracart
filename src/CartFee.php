@@ -11,11 +11,12 @@ class CartFee
 {
     use CartOptionsMagicMethodsTrait;
 
+    public $tax;
     public $locale;
     public $amount;
     public $taxable;
-    public $tax;
     public $currencyCode;
+    public $discounted = 0;
 
     /**
      * CartFee constructor.
@@ -49,5 +50,9 @@ class CartFee
         }
 
         return LaraCart::formatMoney($total, $this->locale, $this->currencyCode, $format);
+    }
+
+    public function getDiscount($format = true) {
+        return LaraCart::formatMoney($this->discounted, $this->locale, $this->currencyCode, $format);
     }
 }
