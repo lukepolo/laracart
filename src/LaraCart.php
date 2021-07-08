@@ -167,7 +167,7 @@ class LaraCart implements LaraCartContract
                 $item->taxed = 0;
                 for ($qty = 0; $qty < $item->qty; $qty++) {
                     $discounted = $item->discounted[$qty] ?? 0;
-                    $item->taxed += $this->formatMoney(($item->price - $discounted) * $item->tax, null, null, false);
+                    $item->taxed += ($item->price - $discounted) * $item->tax;
                 }
             }
         }

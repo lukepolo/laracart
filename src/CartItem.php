@@ -221,7 +221,7 @@ class CartItem
     }
 
     /**
-     * Gets the sub total of the item based on the qty with or without tax in the proper format.
+     * Gets the sub total of the item based on the qty.
      *
      * @param bool $format
      *
