@@ -145,7 +145,7 @@ class LaraCart implements LaraCartContract
             $discounted = 0;
             foreach ($this->getItems() as $item) {
                 for ($qty = 0; $qty < $item->qty; $qty++) {
-                    $discounted += $item->discounted[$qty] = $coupon->discount($item, $discounted);
+                    $discounted += $item->discounted[$qty] = $this->formatMoney($coupon->discount($item, $discounted), null, null, false);
                 }
             }
         }
@@ -154,7 +154,7 @@ class LaraCart implements LaraCartContract
             if ($item->coupon) {
                 $discounted = 0;
                 for ($qty = 0; $qty < $item->qty; $qty++) {
-                    $discounted += $item->discounted[$qty] = $item->coupon->discount($item, $discounted);
+                    $discounted += $item->discounted[$qty] = $this->formatMoney($item->coupon->discount($item, $discounted), null, null, false);
                 }
             }
         }
@@ -167,7 +167,7 @@ class LaraCart implements LaraCartContract
                 $item->taxed = 0;
                 for ($qty = 0; $qty < $item->qty; $qty++) {
                     $discounted = $item->discounted[$qty] ?? 0;
-                    $item->taxed += ($item->price - $discounted) * $item->tax;
+                    $item->taxed += $this->formatMoney(($item->price - $discounted) * $item->tax, null, null, false);
                 }
             }
         }
@@ -609,14 +609,14 @@ class LaraCart implements LaraCartContract
 
         if ($this->count() != 0) {
             foreach ($this->getItems() as $item) {
-                $totalTax += $item->taxed;
+                $totalTax += $this->formatMoney($item->taxed, null, null, false);
             }
         }
 
-        if (config('laracart.taxable_fees', false)) {
+        if (config('laracart.fees_taxable', false)) {
             foreach ($this->getFees() as $fee) {
                 if ($fee->taxable) {
-                    $totalTax += $fee->amount * $fee->tax;
+                    $totalTax += $this->formatMoney($fee->amount * $fee->tax, null, null, false);
                 }
             }
         }
@@ -635,11 +635,21 @@ class LaraCart implements LaraCartContract
     {
         $total = $this->subTotal(false);
 
-        $total += $this->feeTotals(false);
+        $total += $this->feeSubTotal(false);
 
         $total -= $this->totalDiscount(false);
 
         $total += $this->taxTotal(false);
+
+        return $this->formatMoney($total, null, null, $format);
+    }
+
+    public function netTotal($format = true) {
+        $total = $this->subTotal(false);
+
+        $total += $this->feeSubTotal(false);
+
+        $total -= $this->totalDiscount(false);
 
         return $this->formatMoney($total, null, null, $format);
     }
@@ -708,8 +718,8 @@ class LaraCart implements LaraCartContract
         // When prices in cents do not need to be formatted then cast to integer and round the price
         } elseif (config('laracart.prices_in_cents', false) === true && !$format) {
             $number = (int) round($number);
-        } elseif (config('laracart.round_every_item_price', true)) {
-            $number = number_format($number, 2, '.', '');
+        } else {
+            $number = round($number, 2);
         }
 
         if ($format) {
@@ -721,24 +731,12 @@ class LaraCart implements LaraCartContract
         return $number;
     }
 
-    /**
-     * Gets all the fee totals.
-     *
-     * @param bool $format
-     *
-     * @return string
-     */
-    public function feeTotals($format = true)
+    public function feeSubTotal($format = true)
     {
         $feeTotal = 0;
 
         foreach ($this->getFees() as $fee) {
             $feeTotal += $fee->amount;
-
-            // TODO
-            if (config('laracart.discountOnFees', false)) {
-//            $subTotal = $subTotal + app(LaraCart::SERVICE)->feeTotals(false);
-            }
         }
 
         return $this->formatMoney($feeTotal, null, null, $format);

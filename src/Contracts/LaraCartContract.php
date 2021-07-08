@@ -272,7 +272,7 @@ interface LaraCartContract
      *
      * @return string
      */
-    public function feeTotals($format = true);
+    public function feeSubTotal($format = true);
 
     /**
      * Getes all the fees on the cart object.

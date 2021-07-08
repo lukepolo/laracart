@@ -43,7 +43,12 @@ class Fixed implements CouponContract
             return $item->price;
         }
 
-        return $discount;
+        return LaraCart::formatMoney(
+            $discount,
+            null,
+            null,
+            false
+        );
     }
 
     /**
@@ -57,7 +62,7 @@ class Fixed implements CouponContract
     public function displayValue($locale = null, $currencyCode = null, $format = true)
     {
         return LaraCart::formatMoney(
-            $this->discount(),
+            $this->value,
             $locale,
             $currencyCode,
             $format
