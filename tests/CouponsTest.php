@@ -328,21 +328,17 @@ class CouponsTest extends Orchestra\Testbench\TestCase
      */
     public function testCouponsTaxableItem()
     {
-        $this->addItem(1, 1);
+        $this->addItem();
 
         $percentCoupon = new LukePOLO\LaraCart\Coupons\Percentage('20%OFF', '.2');
 
         $this->laracart->addCoupon($percentCoupon);
 
-        // todo - move to diff test
-//        $this->assertEquals('20%', $percentCoupon->displayValue());
+        $this->assertEquals('20%', $percentCoupon->displayValue());
         $this->assertEquals('0.20', $this->laracart->totalDiscount(false));
 
-//        $this->app['config']->set('laracart.discounts_taxable', true);
-//
-//        $this->assertEquals('0.07', $this->laracart->taxTotal(false));
-//
-//        $this->assertEquals('0.87', $this->laracart->total(false));
+        $this->assertEquals('0.06', $this->laracart->taxTotal(false));
+        $this->assertEquals('0.86', $this->laracart->total(false));
     }
 
     /**
