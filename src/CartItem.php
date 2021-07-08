@@ -225,7 +225,7 @@ class CartItem
      *
      * @param bool $format
      *
-     * @return string
+     * @return float|string
      */
     public function subTotal($format = true)
     {
@@ -239,7 +239,7 @@ class CartItem
      *
      * @param bool $format
      *
-     * @return string
+     * @return float|string
      */
     public function subItemsTotal($format = true)
     {

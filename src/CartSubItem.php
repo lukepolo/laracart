@@ -56,7 +56,7 @@ class CartSubItem
      */
     public function subTotal($format = true)
     {
-        $price = $this->price * $this->qty;
+        $price = $this->price * ($this->qty || 1);
 
         if (isset($this->items)) {
             foreach ($this->items as $item) {

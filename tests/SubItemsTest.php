@@ -36,9 +36,9 @@ class SubItemsTest extends Orchestra\Testbench\TestCase
             'price' => 2.50,
         ]);
 
+        $this->assertEquals(3.50, $item->subTotal(false));
         $this->assertEquals('$2.50', $item->subItemsTotal());
-        $this->assertEquals('2.50', $item->subItemsTotal(false));
-        $this->assertEquals('2.68', $item->subItemsTotal(false, false, true)); // with tax
+        $this->assertEquals(2.50, $item->subItemsTotal(false));
     }
 
     /**
