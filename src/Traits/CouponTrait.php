@@ -128,7 +128,6 @@ trait CouponTrait
     public function setDiscountOnItem(CartItem $item)
     {
         $this->appliedToCart = false;
-        $item->code = $this->code;
         $item->coupon = $this;
         $item->update();
     }

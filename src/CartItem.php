@@ -36,10 +36,10 @@ class CartItem
     protected $itemModelRelations;
 
     public $locale;
+    public $coupon;
     public $lineItem;
     public $active = true;
     public $subItems = [];
-    public $couponInfo = [];
     public $currencyCode;
 
     public $taxed = 0;
@@ -278,9 +278,7 @@ class CartItem
     {
         $coupon->appliedToCart = false;
         app('laracart')->addCoupon($coupon);
-        $this->code = $coupon->code;
-        $this->couponInfo = $coupon->options;
-
+        $this->coupon = $coupon;
         return $this;
     }
 

@@ -141,9 +141,14 @@ class LaraCart implements LaraCartContract
 
     private function updateDiscounts()
     {
+        foreach ($this->getItems() as $item) {
+            $item->discounted = [];
+        }
+
         foreach ($this->getCoupons() as $coupon) {
             $discounted = 0;
             foreach ($this->getItems() as $item) {
+                $item->discounted = [];
                 for ($qty = 0; $qty < $item->qty; $qty++) {
                     $discounted += $item->discounted[$qty] = $this->formatMoney($coupon->discount($item, $discounted), null, null, false);
                 }
@@ -841,8 +846,7 @@ class LaraCart implements LaraCartContract
     private function removeCouponFromItems($code = null)
     {
         foreach ($this->getItems() as $item) {
-            if (isset($item->code) && (empty($code) || $item->code == $code)) {
-                $item->code = null;
+            if (isset($item->coupon) && (empty($code) || $item->coupon->code == $code)) {
                 $item->coupon = null;
             }
         }
