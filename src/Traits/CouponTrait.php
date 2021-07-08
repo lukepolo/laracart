@@ -131,4 +131,8 @@ trait CouponTrait
         $item->coupon = $this;
         $item->update();
     }
+
+    public function discounted() {
+        return $this->discounted;
+    }
 }
