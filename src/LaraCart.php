@@ -644,7 +644,8 @@ class LaraCart implements LaraCartContract
         return $this->formatMoney($total, null, null, $format);
     }
 
-    public function netTotal($format = true) {
+    public function netTotal($format = true)
+    {
         $total = $this->subTotal(false);
 
         $total += $this->feeSubTotal(false);

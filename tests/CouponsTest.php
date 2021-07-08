@@ -158,7 +158,7 @@ class CouponsTest extends Orchestra\Testbench\TestCase
 //        $this->laracart->addCoupon($fixedCoupon);
 //
 //        $foundCoupon = $this->laracart->findCoupon('10OFF');
-////        $this->assertEquals('Coupon Applied', $foundCoupon->getMessage());
+    ////        $this->assertEquals('Coupon Applied', $foundCoupon->getMessage());
 //        $this->assertEquals(true, $foundCoupon->canApply());
 //    }
 

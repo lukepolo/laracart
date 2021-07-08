@@ -486,8 +486,8 @@ class TotalsTest extends Orchestra\Testbench\TestCase
 //
 //        $this->assertEquals(100, $this->laracart->totalDiscount(false));
 //        // TODO
-////        $this->assertEquals(3.03, $this->laracart->taxTotal(false));
-////        $this->assertEquals(19, $this->laracart->total(false));
+    ////        $this->assertEquals(3.03, $this->laracart->taxTotal(false));
+    ////        $this->assertEquals(19, $this->laracart->total(false));
 //    }
 //
 //    public function testPreTaxationAndDiscountWithFixedCouponsTest3()
@@ -510,9 +510,9 @@ class TotalsTest extends Orchestra\Testbench\TestCase
 //        ]));
 //
 //        // TODO
-////        $this->assertEquals(101.15, $this->laracart->totalDiscount(false));
-////        $this->assertEquals(2.85, $this->laracart->taxTotal(false));
-////        $this->assertEquals(17.85, $this->laracart->total(false));
+    ////        $this->assertEquals(101.15, $this->laracart->totalDiscount(false));
+    ////        $this->assertEquals(2.85, $this->laracart->taxTotal(false));
+    ////        $this->assertEquals(17.85, $this->laracart->total(false));
 //    }
 //
 //    public function testPreTaxationAndDiscountWithPercentageCouponsWith84PercentDollar()
