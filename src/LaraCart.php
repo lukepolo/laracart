@@ -172,6 +172,7 @@ class LaraCart implements LaraCartContract
             }
         }
     }
+
 //
 //    private function updateTaxes()
 //    {
