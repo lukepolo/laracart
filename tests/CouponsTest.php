@@ -59,8 +59,8 @@ class CouponsTest extends Orchestra\Testbench\TestCase
 
         $this->assertEquals('10%', $percentCoupon->displayValue());
         $this->assertEquals(1, $percentCoupon->discount($item->price));
-        $this->assertEquals(9.63, $this->laracart->total(false));
         $this->assertEquals(.63, $this->laracart->taxTotal(false));
+        $this->assertEquals(9.63, $this->laracart->total(false));
 
         $this->assertCount(1, $this->laracart->getCoupons());
     }

@@ -42,7 +42,6 @@ class CartItem
     public $subItems = [];
     public $currencyCode;
 
-    public $taxed = 0;
     public $discounted = [];
 
     /**
@@ -88,7 +87,6 @@ class CartItem
 
             $cartItemArray = (array) $this;
 
-            unset($cartItemArray['taxed']);
             unset($cartItemArray['discounted']);
             unset($cartItemArray['options']['qty']);
 
@@ -313,8 +311,18 @@ class CartItem
      */
     public function tax($format = true)
     {
+        $taxed = 0;
+        for ($qty = 0; $qty < $this->qty; $qty++) {
+            $discounted = $this->discounted[$qty] ?? 0;
+            $taxable = $this->taxableSubTotalPerItem(false) - $discounted;
+            if ($taxable > 0) {
+                // TODO - allow for sub items to have different tax rates
+                $taxed += LaraCart::formatMoney($taxable * $this->tax, null, null, false);
+            }
+        }
+
         return LaraCart::formatMoney(
-            $this->taxed,
+            $taxed,
             $this->locale,
             $this->currencyCode,
             $format
