@@ -42,6 +42,10 @@ class CartItem
     public $subItems = [];
     public $currencyCode;
 
+    /**
+     * This tracks the discounts per item , we do this so we can properly
+     * round taxes when you have a qty > 0
+     */
     public $discounted = [];
 
     /**

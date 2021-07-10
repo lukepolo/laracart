@@ -141,10 +141,12 @@ class LaraCart implements LaraCartContract
 
     private function updateDiscounts()
     {
+        // reset discounted
         foreach ($this->getItems() as $item) {
             $item->discounted = [];
         }
 
+        // go through each item and see if they have a coupon attached
         foreach ($this->getItems() as $item) {
             if ($item->coupon) {
                 $item->coupon->discounted = 0;
@@ -154,6 +156,7 @@ class LaraCart implements LaraCartContract
             }
         }
 
+        // go through each coupon and apply to items that do not have a coupon attached
         foreach ($this->getCoupons() as $coupon) {
             $coupon->discounted = 0;
             foreach ($this->getItems() as $item) {
@@ -166,6 +169,7 @@ class LaraCart implements LaraCartContract
             }
 
             if (config('laracart.discount_fees', false)) {
+                // go through each fee and discount
                 foreach ($this->getFees() as $fee) {
                     $coupon->discounted = $fee->discounted = $this->formatMoney($coupon->discount($fee->amount), null, null, false);
                 }
@@ -178,6 +182,7 @@ class LaraCart implements LaraCartContract
      */
     public function update()
     {
+        // allows us to track a discount on the item so we are able properly do taxation
         $this->updateDiscounts();
 
         $this->session->put($this->prefix.'.'.$this->cart->instance, $this->cart);
