@@ -507,7 +507,7 @@ class CouponsTest extends Orchestra\Testbench\TestCase
     {
         $item = $this->addItem(1, 0);
 
-        $subItem = $item->addSubItem([
+        $item->addSubItem([
             'size'  => 'XXL',
             'price' => 5,
         ]);
