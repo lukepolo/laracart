@@ -236,7 +236,7 @@ class CartItem
 
     public function subTotalPerItem($format = true)
     {
-        $subTotal = $this->active ? ($this->price + $this->subItemsTotal()) : 0;
+        $subTotal = $this->active ? ($this->price + $this->subItemsTotal(false)) : 0;
 
         return LaraCart::formatMoney($subTotal, $this->locale, $this->currencyCode, $format);
     }
@@ -246,7 +246,7 @@ class CartItem
      *
      * @return float
      */
-    public function subItemsTotal()
+    public function subItemsTotal($format = true)
     {
         $total = 0;
 
@@ -254,7 +254,7 @@ class CartItem
             $total += $subItem->subTotal(false);
         }
 
-        return $total;
+        return LaraCart::formatMoney($total, $this->locale, $this->currencyCode, $format);
     }
 
     /**

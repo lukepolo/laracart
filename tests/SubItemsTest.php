@@ -37,7 +37,7 @@ class SubItemsTest extends Orchestra\Testbench\TestCase
         ]);
 
         $this->assertEquals(3.50, $item->subTotal(false));
-        $this->assertEquals(2.50, $item->subItemsTotal());
+        $this->assertEquals(2.50, $item->subItemsTotal(false));
     }
 
     /**
@@ -59,7 +59,7 @@ class SubItemsTest extends Orchestra\Testbench\TestCase
             ],
         ]);
 
-        $this->assertEquals(20, $item->subItemsTotal());
+        $this->assertEquals(20, $item->subItemsTotal(false));
         $this->assertEquals(30, $item->subTotal(false));
         $this->assertEquals(.30, $this->laracart->taxTotal(false));
         $this->assertEquals(30.30, $this->laracart->total(false));
@@ -81,7 +81,7 @@ class SubItemsTest extends Orchestra\Testbench\TestCase
             ],
         ]);
 
-        $this->assertEquals(20, $item->subItemsTotal());
+        $this->assertEquals(20, $item->subItemsTotal(false));
         $this->assertEquals(30, $item->subTotal(false));
         $this->assertEquals(.30, $this->laracart->taxTotal(false));
         $this->assertEquals(30.30, $this->laracart->total(false));
@@ -108,7 +108,7 @@ class SubItemsTest extends Orchestra\Testbench\TestCase
             ],
         ]);
 
-        $this->assertEquals(3, $item->subItemsTotal());
+        $this->assertEquals(3, $item->subItemsTotal(false));
         $this->assertEquals(14, $item->subTotal(false));
         $this->assertEquals(14.98, $item->total(false));
     }

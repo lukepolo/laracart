@@ -9,7 +9,7 @@
 
 * `addSubItem(array $subItem, $autoUpdate = true)` -> `addSubItem(array $subItem)`
 * `subTotal($format = true, $withDiscount = true, $taxedItemsOnly = false, $withTax = false)` -> `subTotal($format = true)`
-* `subItemsTotal($format = true, $taxedItemsOnly = false, $withTax = false)` -> `subItemsTotal()` // TODO - may add format back in
+* `subItemsTotal($format = true, $taxedItemsOnly = false, $withTax = false)` -> `subItemsTotal($format = true)`
 * `tax($amountNotTaxable = 0, $grossTax = true, $rounded = false, $withDiscount = true)` -> `tax($format = true)`
 
 ### Cart Sub Item
