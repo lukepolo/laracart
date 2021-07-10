@@ -34,6 +34,8 @@ class CartSubItem
             Arr::set($this->options, $option, $value);
         }
 
+        $this->tax = isset($options['tax']) ? $options['tax'] == 0 ? config('laracart.tax') : $options['tax'] : config('laracart.tax');
+
         $this->itemHash = app(LaraCart::HASH)->hash($this->options);
     }
 
@@ -67,17 +69,17 @@ class CartSubItem
 
     public function taxableSubTotalPerItem()
     {
-        $price = $this->price;
+        $taxable = $this->price;
 
         if (isset($this->items)) {
             foreach ($this->items as $item) {
                 if ($item->taxable) {
-                    $price += $item->taxableSubTotalPerItem(false);
+                    $taxable += $item->taxableSubTotalPerItem(false);
                 }
             }
         }
 
-        return $price;
+        return $taxable;
     }
 
     /**

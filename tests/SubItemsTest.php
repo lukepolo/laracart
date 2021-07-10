@@ -45,19 +45,45 @@ class SubItemsTest extends Orchestra\Testbench\TestCase
      */
     public function testSubItemItemsTotal()
     {
-        $item = $this->addItem(1, 11);
+        $item = $this->addItem(1, 10, true, [
+            "tax" => .01
+        ]);
 
         $item->addSubItem([
-            'price' => 2,
+            'price' => 10,
+            'tax' => .01,
             'items' => [
-                new \LukePOLO\LaraCart\CartItem('10', 'sub item item', 1, 1),
+                new \LukePOLO\LaraCart\CartItem('10', 'sub item item', 1, 10, [
+                    'tax' => .01
+                ]),
             ],
         ]);
 
-        $this->assertEquals(3, $item->subItemsTotal());
-        $this->assertEquals(14, $item->subTotal(false));
-        $this->assertEquals(.98, $this->laracart->taxTotal(false));
-        $this->assertEquals(14.98, $this->laracart->total(false));
+        $this->assertEquals(20, $item->subItemsTotal());
+        $this->assertEquals(30, $item->subTotal(false));
+        $this->assertEquals(.30, $this->laracart->taxTotal(false));
+        $this->assertEquals(30.30, $this->laracart->total(false));
+    }
+
+    public function testSubItemMultiQtyTaxation() {
+        $item = $this->addItem(1, 10, true, [
+            "tax" => .01
+        ]);
+
+        $item->addSubItem([
+            'price' => 10,
+            'tax' => .01,
+            'items' => [
+                new \LukePOLO\LaraCart\CartItem('10', 'sub item item', 10, 1, [
+                    'tax' => .01
+                ]),
+            ],
+        ]);
+
+        $this->assertEquals(20, $item->subItemsTotal());
+        $this->assertEquals(30, $item->subTotal(false));
+        $this->assertEquals(.30, $this->laracart->taxTotal(false));
+        $this->assertEquals(30.30, $this->laracart->total(false));
     }
 
     /**
@@ -251,14 +277,14 @@ class SubItemsTest extends Orchestra\Testbench\TestCase
     public function testDifferentTaxtionsOnSubItems()
     {
         $item = $this->addItem(1, 10, true, [
-            'tax' => .1,
+            'tax' => .01,
         ]);
 
         $item->addSubItem([
             'size'    => 'XXL',
             'price'   => 10.00,
             'taxable' => true,
-            'tax'     => .2,
+            'tax'     => .02,
         ]);
 
         $this->assertEquals(0.30, $this->laracart->taxTotal(false));

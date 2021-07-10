@@ -313,11 +313,34 @@ class CartItem
     {
         $taxed = 0;
         for ($qty = 0; $qty < $this->qty; $qty++) {
-            $discounted = $this->discounted[$qty] ?? 0;
-            $taxable = $this->taxableSubTotalPerItem(false) - $discounted;
+            $discountable = $this->discounted[$qty] ?? 0;
+            $price = ($this->taxable ? $this->price : 0);
+
+            $taxable = $price - ($discountable > 0 ? $discountable : 0);
+
+            $discountable = $discountable - $price;
+
+
             if ($taxable > 0) {
-                // TODO - allow for sub items to have different tax rates
                 $taxed += LaraCart::formatMoney($taxable * $this->tax, null, null, false);
+            }
+
+            foreach ($this->subItems as $subItem) {
+                $subItemTaxable = 0;
+                for ($subItemQty = 0; $subItemQty < ($subItem->qty || 1); $subItemQty++) {
+                    $subItemPrice = ($subItem->taxable ?? true) ? $subItem->price : 0;
+                    $subItemTaxable = $subItemPrice - ($discountable > 0 ? $discountable : 0);
+                    $discountable = $discountable - $subItemPrice;
+                }
+                $taxed += LaraCart::formatMoney($subItemTaxable * $subItem->tax, null, null, false);
+
+                if (isset($subItem->items)) {
+                    foreach ($subItem->items as $item) {
+                        if ($item->taxable) {
+                            $taxed += $item->tax(false);
+                        }
+                    }
+                }
             }
         }
 

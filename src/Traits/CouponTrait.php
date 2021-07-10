@@ -58,7 +58,7 @@ trait CouponTrait
     {
         $laraCart = \App::make(LaraCart::SERVICE);
 
-        if ($laraCart->subTotal(false, false, false) >= $minAmount) {
+        if ($laraCart->subTotal(false) >= $minAmount) {
             return true;
         } else {
             if ($throwErrors) {
