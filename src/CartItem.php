@@ -418,7 +418,7 @@ class CartItem
         app('laracart')->update();
     }
 
-    private function taxItems($items, &$discountable) {
-
+    private function taxItems($items, &$discountable)
+    {
     }
 }
