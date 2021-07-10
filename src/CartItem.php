@@ -292,18 +292,21 @@ class CartItem
     public function tax($format = true)
     {
         $taxed = 0;
+        // tax item by item
         for ($qty = 0; $qty < $this->qty; $qty++) {
+            // keep track of what is discountable
             $discountable = $this->discounted[$qty] ?? 0;
             $price = ($this->taxable ? $this->price : 0);
 
             $taxable = $price - ($discountable > 0 ? $discountable : 0);
-
+            // track what has been discounted so far
             $discountable = $discountable - $price;
 
             if ($taxable > 0) {
                 $taxed += LaraCart::formatMoney($taxable * $this->tax, null, null, false);
             }
 
+            // tax sub item item by sub item
             foreach ($this->subItems as $subItem) {
                 $subItemTaxable = 0;
                 for ($subItemQty = 0; $subItemQty < ($subItem->qty || 1); $subItemQty++) {
@@ -311,8 +314,12 @@ class CartItem
                     $subItemTaxable = $subItemPrice - ($discountable > 0 ? $discountable : 0);
                     $discountable = $discountable - $subItemPrice;
                 }
-                $taxed += LaraCart::formatMoney($subItemTaxable * $subItem->tax, null, null, false);
 
+                if ($subItemTaxable > 0) {
+                    $taxed += LaraCart::formatMoney($subItemTaxable * $subItem->tax, null, null, false);
+                }
+
+                // discount sub items ... items
                 if (isset($subItem->items)) {
                     foreach ($subItem->items as $item) {
                         if ($item->taxable) {
@@ -409,5 +416,9 @@ class CartItem
     {
         $this->generateHash();
         app('laracart')->update();
+    }
+
+    private function taxItems($items, &$discountable) {
+
     }
 }
