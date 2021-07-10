@@ -502,4 +502,22 @@ class CouponsTest extends Orchestra\Testbench\TestCase
         $this->assertEquals(.54, $cartTotal);
         $this->assertEquals($itemTotal, $cartTotal);
     }
+
+    public function testCouponOnSubItems()
+    {
+        $item = $this->addItem(1, 0);
+
+        $subItem = $item->addSubItem([
+            'size'  => 'XXL',
+            'price' => 5,
+        ]);
+
+        $this->assertEquals(5, $this->laracart->subTotal(false));
+
+        $fixedCoupon = new LukePOLO\LaraCart\Coupons\Fixed('5 OFF', 5);
+
+        $this->laracart->addCoupon($fixedCoupon);
+
+        $this->assertEquals(0, $this->laracart->subTotal(false));
+    }
 }
