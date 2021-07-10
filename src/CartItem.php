@@ -320,7 +320,6 @@ class CartItem
 
             $discountable = $discountable - $price;
 
-
             if ($taxable > 0) {
                 $taxed += LaraCart::formatMoney($taxable * $this->tax, null, null, false);
             }

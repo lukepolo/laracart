@@ -46,15 +46,15 @@ class SubItemsTest extends Orchestra\Testbench\TestCase
     public function testSubItemItemsTotal()
     {
         $item = $this->addItem(1, 10, true, [
-            "tax" => .01
+            'tax' => .01,
         ]);
 
         $item->addSubItem([
             'price' => 10,
-            'tax' => .01,
+            'tax'   => .01,
             'items' => [
                 new \LukePOLO\LaraCart\CartItem('10', 'sub item item', 1, 10, [
-                    'tax' => .01
+                    'tax' => .01,
                 ]),
             ],
         ]);
@@ -65,17 +65,18 @@ class SubItemsTest extends Orchestra\Testbench\TestCase
         $this->assertEquals(30.30, $this->laracart->total(false));
     }
 
-    public function testSubItemMultiQtyTaxation() {
+    public function testSubItemMultiQtyTaxation()
+    {
         $item = $this->addItem(1, 10, true, [
-            "tax" => .01
+            'tax' => .01,
         ]);
 
         $item->addSubItem([
             'price' => 10,
-            'tax' => .01,
+            'tax'   => .01,
             'items' => [
                 new \LukePOLO\LaraCart\CartItem('10', 'sub item item', 10, 1, [
-                    'tax' => .01
+                    'tax' => .01,
                 ]),
             ],
         ]);
