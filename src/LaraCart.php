@@ -173,29 +173,12 @@ class LaraCart implements LaraCartContract
         }
     }
 
-//
-//    private function updateTaxes()
-//    {
-//        foreach ($this->getItems() as $item) {
-//            $item->taxed = 0;
-//            for ($qty = 0; $qty < $item->qty; $qty++) {
-//                $discounted = $item->discounted[$qty] ?? 0;
-//                $taxable = $item->taxableSubTotalPerItem(false) - $discounted;
-//                if ($taxable > 0) {
-//                    // TODO - allow for sub items to have different tax rates
-//                    $item->taxed += $this->formatMoney($taxable * $item->tax, null, null, false);
-//                }
-//            }
-//        }
-//    }
-
     /**
      * Updates cart session.
      */
     public function update()
     {
         $this->updateDiscounts();
-//        $this->updateTaxes();
 
         $this->session->put($this->prefix.'.'.$this->cart->instance, $this->cart);
 
