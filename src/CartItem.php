@@ -227,9 +227,7 @@ class CartItem
      */
     public function subTotal($format = true)
     {
-        $subTotal =  $this->subTotalPerItem(false) * $this->qty;
-
-        return LaraCart::formatMoney($subTotal, $this->locale, $this->currencyCode, $format);
+        return LaraCart::formatMoney($this->subTotalPerItem(false) * $this->qty, $this->locale, $this->currencyCode, $format);
     }
 
     public function subTotalPerItem($format = true)
