@@ -10,7 +10,7 @@ class TotalsTest extends Orchestra\Testbench\TestCase
     /**
      * Test total discounts.
      */
-    public function testTotalDiscount()
+    public function testdiscountTotal()
     {
         $this->addItem(1, 10);
 
@@ -21,8 +21,8 @@ class TotalsTest extends Orchestra\Testbench\TestCase
 
         $this->laracart->addCoupon($fixedCoupon);
 
-        $this->assertEquals('$10.00', $this->laracart->totalDiscount());
-        $this->assertEquals(10, $this->laracart->totalDiscount(false));
+        $this->assertEquals('$10.00', $this->laracart->discountTotal());
+        $this->assertEquals(10, $this->laracart->discountTotal(false));
 
         $this->assertEquals(0, $this->laracart->total(false));
     }
@@ -30,7 +30,7 @@ class TotalsTest extends Orchestra\Testbench\TestCase
     /**
      * Test total discounts when using the pricing_in_cents config setting.
      */
-    public function testTotalDiscountInCents()
+    public function testdiscountTotalInCents()
     {
         $this->app['config']->set('laracart.prices_in_cents', true);
         $this->addItem(1, 1000);
@@ -42,8 +42,8 @@ class TotalsTest extends Orchestra\Testbench\TestCase
 
         $this->laracart->addCoupon($fixedCoupon);
 
-        $this->assertEquals('$10.00', $this->laracart->totalDiscount());
-        $this->assertEquals(1000, $this->laracart->totalDiscount(false));
+        $this->assertEquals('$10.00', $this->laracart->discountTotal());
+        $this->assertEquals(1000, $this->laracart->discountTotal(false));
 
         $this->assertEquals(0, $this->laracart->total(false));
     }
@@ -289,7 +289,7 @@ class TotalsTest extends Orchestra\Testbench\TestCase
         $this->laracart->addCoupon($coupon);
 
         $this->assertEquals(100, $this->laracart->subTotal(false));
-        $this->assertEquals(5, $this->laracart->totalDiscount(false));
+        $this->assertEquals(5, $this->laracart->discountTotal(false));
         $this->assertEquals(19.95, $this->laracart->taxTotal(false));
         $this->assertEquals(114.95, $this->laracart->total(false));
     }
@@ -307,7 +307,7 @@ class TotalsTest extends Orchestra\Testbench\TestCase
         $coupon->setDiscountOnItem($item);
 
         $this->assertEquals(100, $this->laracart->subTotal(false));
-        $this->assertEquals(5, $this->laracart->totalDiscount(false));
+        $this->assertEquals(5, $this->laracart->discountTotal(false));
         $this->assertEquals(95, $this->laracart->netTotal(false));
         $this->assertEquals(19.95, $this->laracart->taxTotal(false));
         $this->assertEquals(114.95, $this->laracart->total(false));
@@ -327,7 +327,7 @@ class TotalsTest extends Orchestra\Testbench\TestCase
         );
 
         $this->assertEquals(5586.88, $this->laracart->subTotal(false));
-        $this->assertEquals(0, $this->laracart->totalDiscount(false));
+        $this->assertEquals(0, $this->laracart->discountTotal(false));
         $this->assertEquals(1173.12, $this->laracart->taxTotal(false));
         $this->assertEquals(6760.00, $this->laracart->total(false));
 
@@ -336,7 +336,7 @@ class TotalsTest extends Orchestra\Testbench\TestCase
         $this->laracart->addCoupon($coupon);
 
         $this->assertEquals(5586.88, $this->laracart->subTotal(false));
-        $this->assertEquals(419.12, $this->laracart->totalDiscount(false));
+        $this->assertEquals(419.12, $this->laracart->discountTotal(false));
         $this->assertEquals(1085.24, $this->laracart->taxTotal(false));
         $this->assertEquals(6253.00, $this->laracart->total(false));
 
@@ -347,7 +347,7 @@ class TotalsTest extends Orchestra\Testbench\TestCase
         $this->laracart->addCoupon($coupon);
 
         $this->assertEquals(5586.88, $this->laracart->subTotal(false));
-        $this->assertEquals(100, $this->laracart->totalDiscount(false));
+        $this->assertEquals(100, $this->laracart->discountTotal(false));
         $this->assertEquals(1152.12, $this->laracart->taxTotal(false));
         $this->assertEquals(6639.00, $this->laracart->total(false));
     }
@@ -368,7 +368,7 @@ class TotalsTest extends Orchestra\Testbench\TestCase
         );
 
         $this->assertEquals(100, $this->laracart->subTotal(false));
-        $this->assertEquals(0, $this->laracart->totalDiscount(false));
+        $this->assertEquals(0, $this->laracart->discountTotal(false));
         $this->assertEquals(19, $this->laracart->taxTotal(false));
         $this->assertEquals(119, $this->laracart->total(false));
     }
@@ -386,7 +386,7 @@ class TotalsTest extends Orchestra\Testbench\TestCase
 
         $resume = [
             'subTotal'             => $this->laracart->subTotal(true, false),
-            'totalDiscount'        => $this->laracart->totalDiscount(true),
+            'discountTotal'        => $this->laracart->discountTotal(true),
             'subTotalWithDiscount' => $this->laracart->subTotal(true, true),
             'taxTotal'             => $this->laracart->taxTotal(true),
             'feeTotals'            => $this->laracart->feeSubTotal(true, true),

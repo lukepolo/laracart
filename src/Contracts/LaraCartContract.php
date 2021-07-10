@@ -288,5 +288,5 @@ interface LaraCartContract
      *
      * @return int|string
      */
-    public function totalDiscount($format = true);
+    public function discountTotal($format = true);
 }

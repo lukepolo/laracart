@@ -29,7 +29,7 @@
 * `subTotal($format = true, $withDiscount = true)` -> `subTotal($format = true);`
 * `feeTotals($format = true);` -> `feeSubTotal($format = true);`
 * `taxTotal($format = true, $withFees = true, $grossTaxes = true, $withDiscounts = true)` -> `taxTotal($format = true)`
-* `totalDiscount($format = true, $withItemDiscounts = true)` -> `totalDiscount($format = true)`
+* `discountTotal($format = true, $withItemDiscounts = true)` -> `discountTotal($format = true)`
 
 ### Config
 
