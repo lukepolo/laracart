@@ -414,6 +414,7 @@ class TotalsTest extends Orchestra\Testbench\TestCase
 
     public function testCartTaxSumary()
     {
+        $this->app['config']->set('laracart.fees_taxable', true);
         $item = $this->addItem(1, 10, true, [
             'tax' => .01,
         ]);
@@ -436,9 +437,19 @@ class TotalsTest extends Orchestra\Testbench\TestCase
             'tax'     => .02,
         ]);
 
+        $this->laracart->addFee(
+            'cart fee',
+            5.00,
+            true,
+            [
+                'tax' => .03,
+            ]
+        );
+
         $this->assertEquals([
             "0.01" => .22,
             "0.02" => .40,
+            "0.03" => .15,
         ], $this->laracart->taxSummary());
     }
 }

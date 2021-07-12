@@ -615,15 +615,28 @@ class LaraCart implements LaraCartContract
             $totalTax += $this->formatMoney($item->tax(false), null, null, false);
         }
 
+        $totalTax += $this->feeTaxTotal(false);
+
+        return $this->formatMoney($totalTax, null, null, $format);
+    }
+
+    public function feeTaxTotal($format = true) {
+        return $this->formatMoney(array_sum($this->feeTaxSummary()), null, null, $format);
+    }
+
+    public function feeTaxSummary() {
+        $taxed = [];
         if (config('laracart.fees_taxable', false)) {
             foreach ($this->getFees() as $fee) {
                 if ($fee->taxable) {
-                    $totalTax += $this->formatMoney($fee->amount * $fee->tax, null, null, false);
+                    if(!isset($taxed[(string) $fee->tax])) {
+                        $taxed[(string) $fee->tax] = 0;
+                    }
+                    $taxed[(string) $fee->tax] += $this->formatMoney($fee->amount * $fee->tax, null, null, false);
                 }
             }
         }
-
-        return $this->formatMoney($totalTax, null, null, $format);
+        return $taxed;
     }
 
     public function taxSummary() {
@@ -636,6 +649,14 @@ class LaraCart implements LaraCartContract
                 $taxed[(string) $taxRate] += $amount;
             }
         }
+
+        foreach($this->feeTaxSummary() as $taxRate => $amount) {
+            if(!isset($taxed[(string) $taxRate])) {
+                $taxed[(string)$taxRate] = 0;
+            }
+            $taxed[(string) $taxRate] += $amount;
+        }
+
         return $taxed;
     }
 
