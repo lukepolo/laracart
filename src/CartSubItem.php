@@ -34,6 +34,9 @@ class CartSubItem
             Arr::set($this->options, $option, $value);
         }
 
+        $this->taxable = isset($options['taxable']) ? $options['taxable'] : true;
+        $this->tax = isset($options['tax']) ? $options['tax'] == 0 ? config('laracart.tax') : $options['tax'] : config('laracart.tax');
+
         $this->itemHash = app(LaraCart::HASH)->hash($this->options);
     }
 
@@ -50,25 +53,19 @@ class CartSubItem
     /**
      * Gets the formatted price.
      *
-     * @param bool|true $format
-     * @param bool      $taxedItemsOnly
-     *
-     * @return string
+     * @return float
      */
-    public function price($format = true, $taxedItemsOnly = true)
+    public function subTotal()
     {
-        $price = $this->price;
+        $price = $this->price * ($this->qty || 1);
 
         if (isset($this->items)) {
             foreach ($this->items as $item) {
-                if ($taxedItemsOnly && !$item->taxable) {
-                    continue;
-                }
-                $price += $item->price(false, $taxedItemsOnly);
+                $price += $item->subTotal(false);
             }
         }
 
-        return LaraCart::formatMoney($price, $this->locale, $this->currencyCode, $format);
+        return $price;
     }
 
     /**

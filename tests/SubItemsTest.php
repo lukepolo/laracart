@@ -19,8 +19,6 @@ class SubItemsTest extends Orchestra\Testbench\TestCase
             'price' => 2.50,
         ]);
 
-        $this->assertInternalType('array', $item->subItems);
-
         $this->containsOnlyInstancesOf(LukePOLO\LaraCart\CartSubItem::class, $item->subItems);
 
         $this->assertEquals($subItem, $item->findSubItem($subItem->getHash()));
@@ -38,9 +36,8 @@ class SubItemsTest extends Orchestra\Testbench\TestCase
             'price' => 2.50,
         ]);
 
-        $this->assertEquals('$2.50', $item->subItemsTotal());
-        $this->assertEquals('2.50', $item->subItemsTotal(false));
-        $this->assertEquals('2.68', $item->subItemsTotal(false, false, true)); // with tax
+        $this->assertEquals(3.50, $item->subTotal(false));
+        $this->assertEquals(2.50, $item->subItemsTotal(false));
     }
 
     /**
@@ -48,22 +45,46 @@ class SubItemsTest extends Orchestra\Testbench\TestCase
      */
     public function testSubItemItemsTotal()
     {
-        $item = $this->addItem(1, 11);
+        $item = $this->addItem(1, 10, true, [
+            'tax' => .01,
+        ]);
 
         $item->addSubItem([
-            'price' => 2,
+            'price' => 10,
+            'tax'   => .01,
             'items' => [
-                new \LukePOLO\LaraCart\CartItem('10', 'sub item item', 1, 1),
+                new \LukePOLO\LaraCart\CartItem('10', 'sub item item', 1, 10, [
+                    'tax' => .01,
+                ]),
             ],
         ]);
 
-        $this->assertEquals(3, $item->subItemsTotal(false));
-        $this->assertEquals(3.21, $item->subItemsTotal(false, false, true)); // with tax
+        $this->assertEquals(20, $item->subItemsTotal(false));
+        $this->assertEquals(30, $item->subTotal(false));
+        $this->assertEquals(.30, $this->laracart->taxTotal(false));
+        $this->assertEquals(30.30, $this->laracart->total(false));
+    }
 
-        $this->assertEquals(14, $item->subTotal(false));
-        $this->assertEquals(14.98, $item->subTotal(false, true, false, true)); // with tax
-        $this->assertEquals(14, $item->price(false));
-        $this->assertEquals(14.98, $item->price(false, false, true)); // with tax
+    public function testSubItemMultiQtyTaxation()
+    {
+        $item = $this->addItem(1, 10, true, [
+            'tax' => .01,
+        ]);
+
+        $item->addSubItem([
+            'price' => 10,
+            'tax'   => .01,
+            'items' => [
+                new \LukePOLO\LaraCart\CartItem('10', 'sub item item', 10, 1, [
+                    'tax' => .01,
+                ]),
+            ],
+        ]);
+
+        $this->assertEquals(20, $item->subItemsTotal(false));
+        $this->assertEquals(30, $item->subTotal(false));
+        $this->assertEquals(.30, $this->laracart->taxTotal(false));
+        $this->assertEquals(30.30, $this->laracart->total(false));
     }
 
     /**
@@ -88,12 +109,8 @@ class SubItemsTest extends Orchestra\Testbench\TestCase
         ]);
 
         $this->assertEquals(3, $item->subItemsTotal(false));
-        $this->assertEquals(3.21, $item->subItemsTotal(false, false, true)); // with tax
-
         $this->assertEquals(14, $item->subTotal(false));
-        $this->assertEquals(14.98, $item->subTotal(false, true, false, true)); // with tax
-        $this->assertEquals(14, $item->price(false));
-        $this->assertEquals(14.98, $item->price(false, false, true)); // with tax
+        $this->assertEquals(14.98, $item->total(false));
     }
 
     /**
@@ -111,11 +128,9 @@ class SubItemsTest extends Orchestra\Testbench\TestCase
             ],
         ]);
 
-        $this->assertInternalType('array', $subItem->items);
-
         $this->containsOnlyInstancesOf(LukePOLO\LaraCart\CartItem::class, $subItem->items);
 
-        $this->assertEquals('$12.50', $subItem->price());
+        $this->assertEquals(12.50, $subItem->subTotal());
     }
 
     /**
@@ -133,16 +148,15 @@ class SubItemsTest extends Orchestra\Testbench\TestCase
             ],
         ]);
 
-        $this->assertInternalType('array', $subItem->items);
-
         $this->containsOnlyInstancesOf(LukePOLO\LaraCart\CartItem::class, $subItem->items);
 
-        $this->assertEquals('$12.50', $subItem->price());
+        $this->assertEquals(12.50, $subItem->subTotal());
+        $this->assertEquals('13.50', $item->subTotal(false));
 
         $this->assertEquals('13.50', $this->laracart->subTotal(false));
 
         $item->qty = 2;
-
+        $this->assertEquals('27.00', $item->subTotal(false));
         $this->assertEquals('27.00', $this->laracart->subTotal(false));
     }
 
@@ -182,7 +196,7 @@ class SubItemsTest extends Orchestra\Testbench\TestCase
             ],
         ]);
 
-        $this->assertEquals(13.50, $item->price(false));
+        $this->assertEquals(13.50, $item->subTotal(false));
 
         $this->assertEquals('0.25', $this->laracart->taxTotal(false));
     }
@@ -192,9 +206,9 @@ class SubItemsTest extends Orchestra\Testbench\TestCase
      */
     public function testAddTaxedSubItemsItemUnTaxed()
     {
-        $item = $this->addItem(2, 2, false);
+        $item = $this->addItem(1, 1, false);
 
-        // 12.50 * 2
+        // 12.50
         $item->addSubItem([
             'size'    => 'XXL',
             'price'   => 2.50,
@@ -204,9 +218,8 @@ class SubItemsTest extends Orchestra\Testbench\TestCase
             ],
         ]);
 
-        $this->assertEquals(14.50, $item->price(false));
-
-        $this->assertEquals(round(25 * .07, 2), $this->laracart->taxTotal(false));
+        $this->assertEquals(13.50, $item->subTotal(false));
+        $this->assertEquals(.88, $this->laracart->taxTotal(false));
     }
 
     /**
@@ -214,7 +227,7 @@ class SubItemsTest extends Orchestra\Testbench\TestCase
      */
     public function testAddTaxedSubSubItemUntaxedSubItemTaxed()
     {
-        $item = $this->addItem(1, 3, true);
+        $item = $this->addItem(1, 1, true);
 
         $subItem = new \LukePOLO\LaraCart\CartItem('itemId', 'test sub item', 1, 10, [], true);
 
@@ -231,9 +244,8 @@ class SubItemsTest extends Orchestra\Testbench\TestCase
             ],
         ]);
 
-        $this->assertEquals(23.00, $item->price(false));
-
-        $this->assertEquals('0.91', $this->laracart->taxTotal(false));
+        $this->assertEquals(21.00, $item->subTotal(false));
+        $this->assertEquals(0.77, $this->laracart->taxTotal(false));
     }
 
     public function testSearchSubItems()
@@ -261,5 +273,52 @@ class SubItemsTest extends Orchestra\Testbench\TestCase
 
         $this->assertEquals($subItem->getHash(), $itemFound->getHash());
         $this->assertEquals($subItem->size, $itemFound->size);
+    }
+
+    public function testDefaultTaxOnSubItem()
+    {
+        $item = $this->addItem(1, 0);
+
+        $item->addSubItem([
+            'size'    => 'XXL',
+            'price'   => 10.00,
+        ]);
+
+        $this->assertEquals(0.7, $this->laracart->taxTotal(false));
+    }
+
+    public function testDifferentTaxtionsOnSubItems()
+    {
+        $item = $this->addItem(1, 10, true, [
+            'tax' => .01,
+        ]);
+
+        $item->addSubItem([
+            'size'    => 'XXL',
+            'price'   => 10.00,
+            'taxable' => true,
+            'tax'     => .02,
+        ]);
+
+        $this->assertEquals(0.30, $this->laracart->taxTotal(false));
+    }
+
+    public function testTaxSumary()
+    {
+        $item = $this->addItem(1, 10, true, [
+            'tax' => .01,
+        ]);
+
+        $item->addSubItem([
+            'size'    => 'XXL',
+            'price'   => 10.00,
+            'taxable' => true,
+            'tax'     => .02,
+        ]);
+
+        $this->assertEquals([
+            '0.01' => .10,
+            '0.02' => .20,
+        ], $item->taxSummary());
     }
 }

@@ -9,19 +9,24 @@ class CouponsTest extends Orchestra\Testbench\TestCase
 {
     use \LukePOLO\LaraCart\Tests\LaraCartTestTrait;
 
+    public function testInvalidPercentageCoupon()
+    {
+        $this->addItem(3, 1);
+
+        try {
+            $percentCoupon = new LukePOLO\LaraCart\Coupons\Percentage('10%OFF', '23');
+            $this->expectException(\LukePOLO\LaraCart\Exceptions\CouponException::class);
+        } catch (\LukePOLO\LaraCart\Exceptions\CouponException $e) {
+            $this->assertEquals('Invalid value for a percentage coupon. The value must be between 0 and 1.', $e->getMessage());
+        }
+    }
+
     /**
      * Test the percentage coupons.
      */
     public function testAddPercentageCoupon()
     {
         $this->addItem(3, 1);
-
-        try {
-            $percentCoupon = new LukePOLO\LaraCart\Coupons\Percentage('10%OFF', '23');
-            $this->setExpectedException(\LukePOLO\LaraCart\Exceptions\CouponException::class);
-        } catch (\LukePOLO\LaraCart\Exceptions\CouponException $e) {
-            $this->assertEquals('Invalid value for a percentage coupon. The value must be between 0 and 1.', $e->getMessage());
-        }
 
         $percentCoupon = new LukePOLO\LaraCart\Coupons\Percentage('10%OFF', '.1');
 
@@ -30,11 +35,12 @@ class CouponsTest extends Orchestra\Testbench\TestCase
         $this->assertEquals($percentCoupon, $this->laracart->findCoupon('10%OFF'));
 
         $this->assertEquals('10%', $percentCoupon->displayValue());
-        $this->assertEquals('0.30', $percentCoupon->discount());
+        $this->assertEquals('0.30', $this->laracart->discountTotal(false));
 
         $this->assertCount(1, $this->laracart->getCoupons());
 
-        $this->assertEquals(.19, $this->laracart->taxTotal(false));
+        $this->assertEquals(3, $this->laracart->subTotal(false));
+        $this->assertEquals(.18, $this->laracart->taxTotal(false));
     }
 
     /**
@@ -42,11 +48,6 @@ class CouponsTest extends Orchestra\Testbench\TestCase
      */
     public function testAddPercentageCouponOnTaxItem()
     {
-        $this->app['config']->set('laracart.tax_by_item', false);
-        $this->app['config']->set('laracart.tax_item_before_discount', true);
-        $this->app['config']->set('laracart.discountsAlreadyTaxed', false);
-        $this->app['config']->set('laracart.discountTaxable', false);
-
         $item = $this->addItem(1, 10);
 
         $percentCoupon = new LukePOLO\LaraCart\Coupons\Percentage('10%OFF', '.1');
@@ -57,23 +58,9 @@ class CouponsTest extends Orchestra\Testbench\TestCase
         $this->assertEquals($percentCoupon, $this->laracart->findCoupon('10%OFF'));
 
         $this->assertEquals('10%', $percentCoupon->displayValue());
-        $this->assertEquals('0.89', $percentCoupon->discount());
-        $this->assertEquals(9.56, $this->laracart->total(false));
+        $this->assertEquals(1, $percentCoupon->discount($item->price));
         $this->assertEquals(.63, $this->laracart->taxTotal(false));
-
-        $this->app['config']->set('laracart.discountTaxable', true);
-
-        $this->assertEquals('10%', $percentCoupon->displayValue());
-        $this->assertEquals('0.89', $percentCoupon->discount());
         $this->assertEquals(9.63, $this->laracart->total(false));
-        $this->assertEquals(.7, $this->laracart->taxTotal(false));
-
-        $this->app['config']->set('laracart.tax_by_item', true);
-
-        $this->assertEquals('10%', $percentCoupon->displayValue());
-        $this->assertEquals('0.89', $percentCoupon->discount());
-        $this->assertEquals(9.63, $this->laracart->total(false));
-        $this->assertEquals(.7, $this->laracart->taxTotal(false));
 
         $this->assertCount(1, $this->laracart->getCoupons());
     }
@@ -86,17 +73,20 @@ class CouponsTest extends Orchestra\Testbench\TestCase
         $fixedCoupon = new LukePOLO\LaraCart\Coupons\Fixed('10OFF', 10);
 
         $this->laracart->addCoupon($fixedCoupon);
-
-        $this->assertEquals('0.00', $fixedCoupon->discount());
-
         $this->addItem(1, 20);
-
-        $this->assertEquals('$10.00', $fixedCoupon->displayValue());
-        $this->assertEquals('10', $fixedCoupon->discount());
-
-        $this->assertEquals($fixedCoupon, $this->laracart->findCoupon('10OFF'));
-
+        $this->assertEquals('10.00', $this->laracart->discountTotal(false));
         $this->assertEquals('0.70', $this->laracart->taxTotal(false));
+    }
+
+    /**
+     * Test the fixed coupons.
+     */
+    public function testFixedCoupon()
+    {
+        $fixedCoupon = new LukePOLO\LaraCart\Coupons\Fixed('10OFF', 10);
+
+        $this->laracart->addCoupon($fixedCoupon);
+        $this->assertEquals($fixedCoupon, $this->laracart->findCoupon('10OFF'));
     }
 
     /**
@@ -152,18 +142,13 @@ class CouponsTest extends Orchestra\Testbench\TestCase
      */
     public function testGetMessage()
     {
+        $this->addItem();
         $fixedCoupon = new LukePOLO\LaraCart\Coupons\Fixed('10OFF', 10);
         $this->laracart->addCoupon($fixedCoupon);
 
         $foundCoupon = $this->laracart->findCoupon('10OFF');
         $this->assertEquals('Coupon Applied', $foundCoupon->getMessage());
-
-        $this->app['config']->set('laracart.coupon_applied_message', 'Your coupon has been applied');
-
         $this->assertEquals(true, $foundCoupon->canApply());
-        $this->assertNull($foundCoupon->getFailedMessage());
-
-        $this->assertEquals('Your coupon has been applied', $foundCoupon->getMessage());
     }
 
     /**
@@ -185,7 +170,7 @@ class CouponsTest extends Orchestra\Testbench\TestCase
 
         try {
             $coupon->checkMinAmount(100);
-            $this->setExpectedException(\LukePOLO\LaraCart\Exceptions\CouponException::class);
+            $this->expectException(\LukePOLO\LaraCart\Exceptions\CouponException::class);
         } catch (\LukePOLO\LaraCart\Exceptions\CouponException $e) {
             $this->assertEquals('You must have at least a total of $100.00', $e->getMessage());
         }
@@ -207,7 +192,7 @@ class CouponsTest extends Orchestra\Testbench\TestCase
 
         try {
             $coupon->maxDiscount(10, 100);
-            $this->setExpectedException(\LukePOLO\LaraCart\Exceptions\CouponException::class);
+            $this->expectException(\LukePOLO\LaraCart\Exceptions\CouponException::class);
         } catch (\LukePOLO\LaraCart\Exceptions\CouponException $e) {
             $this->assertEquals('This has a max discount of $10.00', $e->getMessage());
         }
@@ -228,7 +213,7 @@ class CouponsTest extends Orchestra\Testbench\TestCase
 
         try {
             $this->assertEquals(false, $coupon->checkValidTimes(Carbon::tomorrow(), Carbon::tomorrow()));
-            $this->setExpectedException(\LukePOLO\LaraCart\Exceptions\CouponException::class);
+            $this->expectException(\LukePOLO\LaraCart\Exceptions\CouponException::class);
         } catch (\LukePOLO\LaraCart\Exceptions\CouponException $e) {
             $this->assertEquals('This coupon has expired', $e->getMessage());
         }
@@ -241,35 +226,39 @@ class CouponsTest extends Orchestra\Testbench\TestCase
     {
         $item = $this->addItem(1, 100);
 
+        $this->assertEquals(107, $this->laracart->total(false));
+
         $fixedCoupon = new LukePOLO\LaraCart\Coupons\Fixed('10OFF', 10);
 
-        $this->laracart->addCoupon($fixedCoupon);
+        $fixedCoupon->setDiscountOnItem($item);
 
-        $coupon = $this->laracart->findCoupon('10OFF');
+        $this->assertNotNull($item->coupon);
 
-        $this->assertEquals(90 * 1.07, $this->laracart->total(false));
-
-        $coupon->setDiscountOnItem($item);
-
-        $this->assertEquals('10OFF', $item->code);
-
-        $this->assertEquals(90 * 1.07, $this->laracart->total(false));
-
-        $this->app['config']->set('laracart.discountTaxable', true);
-
-        $this->assertEquals(90 + (100 * .07), $this->laracart->total(false));
-
-        $this->app['config']->set('laracart.discountTaxable', false);
-
+        $this->assertEquals('10OFF', $item->coupon->code);
         $this->assertEquals(90 * 1.07, $this->laracart->total(false));
 
         $this->laracart->removeCoupon('10OFF');
 
-        $this->assertEquals(107, $this->laracart->total(false));
-
-        $this->assertNull($item->code);
+        $this->assertNull($item->coupon);
         $this->assertEquals(0, $item->discount);
-        $this->assertCount(0, $item->couponInfo);
+
+        $this->assertEquals(0, $this->laracart->discountTotal(false));
+        $this->assertEquals(107, $this->laracart->total(false));
+    }
+
+    public function testDiscountsTaxable()
+    {
+        $this->addItem(1, 20);
+
+        $fixedCoupon = new LukePOLO\LaraCart\Coupons\Fixed('10OFF', 10);
+
+        $this->laracart->addCoupon($fixedCoupon);
+
+        $this->laracart->findCoupon('10OFF');
+
+        $this->assertEquals(20, $this->laracart->subTotal(false));
+
+        $this->assertEquals(10 + (10 * .07), $this->laracart->total(false));
     }
 
     /**
@@ -287,10 +276,10 @@ class CouponsTest extends Orchestra\Testbench\TestCase
 
         $coupon->setDiscountOnItem($item);
 
-        $this->assertEquals('10OFF', $item->code);
+        $this->assertEquals('10OFF', $item->coupon->code);
 
-        $this->assertEquals(0, $this->laracart->subTotal(false));
-        $this->assertEquals(10, $this->laracart->totalDiscount(false, true));
+        $this->assertEquals(0, $this->laracart->total(false));
+        $this->assertEquals(10, $this->laracart->discountTotal(false));
     }
 
     /**
@@ -307,9 +296,7 @@ class CouponsTest extends Orchestra\Testbench\TestCase
         $this->assertEquals($percentCoupon, $this->laracart->findCoupon('20%OFF'));
 
         $this->assertEquals('20%', $percentCoupon->displayValue());
-        $this->assertEquals('0.20', $percentCoupon->discount());
-
-        $this->app['config']->set('laracart.discountTaxable', true);
+        $this->assertEquals('0.20', $this->laracart->discountTotal(false));
 
         $this->assertEquals(0, $this->laracart->taxTotal(false));
 
@@ -321,22 +308,17 @@ class CouponsTest extends Orchestra\Testbench\TestCase
      */
     public function testCouponsTaxableItem()
     {
-        $this->addItem(1, 1);
+        $this->addItem();
 
         $percentCoupon = new LukePOLO\LaraCart\Coupons\Percentage('20%OFF', '.2');
 
         $this->laracart->addCoupon($percentCoupon);
 
-        $this->assertEquals($percentCoupon, $this->laracart->findCoupon('20%OFF'));
-
         $this->assertEquals('20%', $percentCoupon->displayValue());
-        $this->assertEquals('0.20', $percentCoupon->discount());
+        $this->assertEquals('0.20', $this->laracart->discountTotal(false));
 
-        $this->app['config']->set('laracart.discountTaxable', true);
-
-        $this->assertEquals('0.07', $this->laracart->taxTotal(false));
-
-        $this->assertEquals('0.87', $this->laracart->total(false));
+        $this->assertEquals('0.06', $this->laracart->taxTotal(false));
+        $this->assertEquals('0.86', $this->laracart->total(false));
     }
 
     /**
@@ -354,7 +336,7 @@ class CouponsTest extends Orchestra\Testbench\TestCase
 
         $coupon->setDiscountOnItem($item);
 
-        $this->assertEquals('10OFF', $item->code);
+        $this->assertEquals('10OFF', $item->coupon->code);
 
         $this->laracart->removeCoupons();
 
@@ -391,12 +373,13 @@ class CouponsTest extends Orchestra\Testbench\TestCase
     public function testCouponMessage()
     {
         $item = $this->addItem(2, 30);
-
         $fixedCoupon = new \LukePOLO\LaraCart\Tests\Coupons\Fixed('10OFF', 10);
 
-        $this->assertEquals(false, $fixedCoupon->canApply());
-        $this->assertEquals('Sorry, you must have at least 100 dollars!', $fixedCoupon->getMessage());
-        $this->assertEquals('Sorry, you must have at least 100 dollars!', $fixedCoupon->getFailedMessage());
+        try {
+            $this->assertNotEquals(true, $fixedCoupon->discount($item->price));
+        } catch (\LukePOLO\LaraCart\Exceptions\CouponException $e) {
+            $this->assertEquals('Sorry, you must have at least 100 dollars!', $e->getMessage());
+        }
     }
 
     /**
@@ -408,11 +391,11 @@ class CouponsTest extends Orchestra\Testbench\TestCase
 
         $this->laracart->addCoupon($fixedCoupon);
 
-        $this->assertEquals('0.00', $fixedCoupon->discount());
+        $this->assertEquals('0.00', $this->laracart->discountTotal(false));
 
         $this->addItem(1, 400);
 
-        $this->assertEquals('400.00', $fixedCoupon->discount());
+        $this->assertEquals('400.00', $this->laracart->discountTotal(false));
     }
 
     /**
@@ -424,22 +407,33 @@ class CouponsTest extends Orchestra\Testbench\TestCase
 
         $this->laracart->addCoupon($fixedCoupon);
 
-        $this->assertEquals('0.00', $fixedCoupon->discount());
-
         $this->addItem(1, 400);
 
         $this->laracart->addFee('testFee', 150);
 
-        $this->app['config']->set('laracart.discountOnFees', true);
+        $this->assertEquals('400.00', $this->laracart->discountTotal(false));
 
-        $this->assertEquals('500', $fixedCoupon->discount());
-
-        $this->app['config']->set('laracart.discountOnFees', true);
+        $this->assertEquals(150, $this->laracart->total(false));
 
         $percentCoupon = new LukePOLO\LaraCart\Coupons\Percentage('100% Off', 1);
         $this->laracart->addCoupon($percentCoupon);
 
-        $this->assertEquals(0, $this->laracart->total(false));
+        $this->assertEquals(150, $this->laracart->total(false));
+    }
+
+    public function testFeeDiscount()
+    {
+        $this->app['config']->set('laracart.discount_fees', true);
+
+        $fixedCoupon = new LukePOLO\LaraCart\Coupons\Fixed('10 OFF', 10);
+
+        $this->laracart->addCoupon($fixedCoupon);
+
+        $this->addItem(1, 5);
+
+        $this->laracart->addFee('testFee', 15);
+
+        $this->assertEquals(10, $this->laracart->total(false));
     }
 
     /**
@@ -453,7 +447,7 @@ class CouponsTest extends Orchestra\Testbench\TestCase
 
         $percentCoupon->setDiscountOnItem($item);
 
-        $this->assertEquals(18, $this->laracart->total(false, true, false));
+        $this->assertEquals(18, $this->laracart->total(false) - $this->laracart->taxTotal(false));
     }
 
     /**
@@ -462,11 +456,7 @@ class CouponsTest extends Orchestra\Testbench\TestCase
     public function testPreTaxDiscountFixed()
     {
         $this->app['config']->set('laracart.tax', .19);
-        $this->app['config']->set('laracart.tax_by_item', true);
-        $this->app['config']->set('laracart.discountOnFees', false);
-        $this->app['config']->set('laracart.discountTaxable', false);
-        $this->app['config']->set('laracart.discountsAlreadyTaxed', true);
-        $this->app['config']->set('laracart.tax_item_before_discount', true);
+        $this->app['config']->set('laracart.fees_taxable', false);
 
         $fixedCoupon = new LukePOLO\LaraCart\Coupons\Fixed('$1 Off', 1);
 
@@ -483,17 +473,50 @@ class CouponsTest extends Orchestra\Testbench\TestCase
     public function testPreTaxDiscountPercentage()
     {
         $this->app['config']->set('laracart.tax', .19);
-        $this->app['config']->set('laracart.tax_by_item', true);
-        $this->app['config']->set('laracart.discountOnFees', false);
-        $this->app['config']->set('laracart.discountTaxable', false);
-        $this->app['config']->set('laracart.discountsAlreadyTaxed', true);
-        $this->app['config']->set('laracart.tax_item_before_discount', true);
+        $this->app['config']->set('laracart.fees_taxable', false);
 
         $percentageCoupon = new LukePOLO\LaraCart\Coupons\Percentage('100%', 1);
 
         $this->addItem(1, .84);
 
         $this->laracart->addCoupon($percentageCoupon);
+
+        $this->assertEquals(0, $this->laracart->total(false));
+    }
+
+    public function testCartVsItemCoupon()
+    {
+        $item = $this->addItem();
+        $couponPercentage = new \LukePOLO\LaraCart\Coupons\Percentage('50%', 0.5);
+        $this->laracart->addCoupon($couponPercentage);
+
+        $cartTotal = $this->laracart->total(false);
+        $this->laracart->removeCoupon($couponPercentage->code);
+
+        $this->assertEquals(1.07, $this->laracart->total(false));
+
+        $item->addCoupon($couponPercentage);
+
+        $itemTotal = $this->laracart->total(false);
+
+        $this->assertEquals(.54, $cartTotal);
+        $this->assertEquals($itemTotal, $cartTotal);
+    }
+
+    public function testCouponOnSubItems()
+    {
+        $item = $this->addItem(1, 0);
+
+        $item->addSubItem([
+            'size'  => 'XXL',
+            'price' => 5,
+        ]);
+
+        $this->assertEquals(5, $this->laracart->subTotal(false));
+
+        $fixedCoupon = new LukePOLO\LaraCart\Coupons\Fixed('5 OFF', 5);
+
+        $this->laracart->addCoupon($fixedCoupon);
 
         $this->assertEquals(0, $this->laracart->total(false));
     }

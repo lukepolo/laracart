@@ -12,10 +12,11 @@ use LukePOLO\LaraCart\LaraCart;
  */
 trait CouponTrait
 {
-    /**
-     * @var bool
-     */
+    public $code;
+    public $value;
+    public $discounted = 0;
     public $appliedToCart = true;
+    public $message;
 
     use CartOptionsMagicMethodsTrait;
 
@@ -38,45 +39,9 @@ trait CouponTrait
      */
     public function canApply()
     {
-        try {
-            $this->discount(true);
+        $this->message = 'Coupon Applied';
 
-            return true;
-        } catch (CouponException $e) {
-            return false;
-        }
-    }
-
-    /**
-     * Get the reason why a coupon has failed to apply.
-     *
-     * @deprecated 1.3
-     *
-     * @return string
-     */
-    public function getMessage()
-    {
-        try {
-            $this->discount(true);
-
-            return config('laracart.coupon_applied_message', 'Coupon Applied');
-        } catch (CouponException $e) {
-            return $e->getMessage();
-        }
-    }
-
-    /**
-     * Gets the failed message for a coupon.
-     *
-     * @return null|string
-     */
-    public function getFailedMessage()
-    {
-        try {
-            $this->discount(true);
-        } catch (CouponException $e) {
-            return $e->getMessage();
-        }
+        return true;
     }
 
     /**
@@ -93,7 +58,7 @@ trait CouponTrait
     {
         $laraCart = \App::make(LaraCart::SERVICE);
 
-        if ($laraCart->subTotal(false, false, false) >= $minAmount) {
+        if ($laraCart->subTotal(false) >= $minAmount) {
             return true;
         } else {
             if ($throwErrors) {
@@ -160,7 +125,17 @@ trait CouponTrait
     public function setDiscountOnItem(CartItem $item)
     {
         $this->appliedToCart = false;
-        $item->code = $this->code;
         $item->coupon = $this;
+        $item->update();
+    }
+
+    public function discounted()
+    {
+        return $this->discounted;
+    }
+
+    public function getMessage()
+    {
+        return $this->message;
     }
 }

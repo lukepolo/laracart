@@ -457,7 +457,7 @@
         <line num="755" type="stmt" count="31"/>
         <line num="763" type="method" name="getFees" crap="1" count="38"/>
         <line num="765" type="stmt" count="38"/>
-        <line num="776" type="method" name="totalDiscount" crap="6.04" count="36"/>
+        <line num="776" type="method" name="discountTotal" crap="6.04" count="36"/>
         <line num="778" type="stmt" count="36"/>
         <line num="780" type="stmt" count="36"/>
         <line num="782" type="stmt" count="14"/>

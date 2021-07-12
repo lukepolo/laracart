@@ -139,11 +139,52 @@ class LaraCart implements LaraCartContract
         $this->update();
     }
 
+    private function updateDiscounts()
+    {
+        // reset discounted
+        foreach ($this->getItems() as $item) {
+            $item->discounted = [];
+        }
+
+        // go through each item and see if they have a coupon attached
+        foreach ($this->getItems() as $item) {
+            if ($item->coupon) {
+                $item->coupon->discounted = 0;
+                for ($qty = 0; $qty < $item->qty; $qty++) {
+                    $item->coupon->discounted += $item->discounted[$qty] = $this->formatMoney($item->coupon->discount($item->subTotalPerItem(false)), null, null, false);
+                }
+            }
+        }
+
+        // go through each coupon and apply to items that do not have a coupon attached
+        foreach ($this->getCoupons() as $coupon) {
+            $coupon->discounted = 0;
+            foreach ($this->getItems() as $item) {
+                if (!$item->coupon) {
+                    $item->discounted = [];
+                    for ($qty = 0; $qty < $item->qty; $qty++) {
+                        $coupon->discounted += $item->discounted[$qty] = $this->formatMoney($coupon->discount($item->subTotalPerItem(false)), null, null, false);
+                    }
+                }
+            }
+
+            if (config('laracart.discount_fees', false)) {
+                // go through each fee and discount
+                foreach ($this->getFees() as $fee) {
+                    $coupon->discounted = $fee->discounted = $this->formatMoney($coupon->discount($fee->amount), null, null, false);
+                }
+            }
+        }
+    }
+
     /**
      * Updates cart session.
      */
     public function update()
     {
+        // allows us to track a discount on the item so we are able properly do taxation
+        $this->updateDiscounts();
+
         $this->session->put($this->prefix.'.'.$this->cart->instance, $this->cart);
 
         if (config('laracart.cross_devices', false) && $this->authManager->check()) {
@@ -563,76 +604,93 @@ class LaraCart implements LaraCartContract
      * Gets the total tax for the cart.
      *
      * @param bool|true $format
-     * @param bool|true $withFees
-     * @param bool      $grossTaxes
      *
      * @return string
      */
-    public function taxTotal($format = true, $withFees = true, $grossTaxes = true, $withDiscounts = true)
+    public function taxTotal($format = true)
     {
         $totalTax = 0;
-        $discounted = 0;
-        if (config('laracart.discountsAlreadyTaxed', false)) {
-            $totalDiscount = 0;
-        } else {
-            $totalDiscount = $this->totalDiscount(false, false);
+
+        foreach ($this->getItems() as $item) {
+            $totalTax += $this->formatMoney($item->tax(false), null, null, false);
         }
 
-        if ($this->count() != 0) {
-            /**
-             * @var
-             * @var CartItem $item
-             */
-            foreach ($this->getItems() as $index => $item) {
-                if ($discounted >= $totalDiscount) {
-                    $totalTax += $item->tax(null, $grossTaxes);
-                } else {
-                    $itemPrice = $item->subTotal(false, config('laracart.discountTaxable', false));
-                    if (($discounted + $itemPrice) > $totalDiscount) {
-                        $totalTax += config('laracart.discountTaxable', false) ? $item->tax() : $item->tax($totalDiscount - $discounted);
-                    }
-
-                    $discounted += $itemPrice;
-                }
-            }
-        }
-
-        if ($withFees) {
-            foreach ($this->getFees() as $fee) {
-                if ($fee->taxable) {
-                    $totalTax += $fee->amount * $fee->tax;
-                }
-            }
-        }
+        $totalTax += $this->feeTaxTotal(false);
 
         return $this->formatMoney($totalTax, null, null, $format);
+    }
+
+    public function feeTaxTotal($format = true)
+    {
+        return $this->formatMoney(array_sum($this->feeTaxSummary()), null, null, $format);
+    }
+
+    public function feeTaxSummary()
+    {
+        $taxed = [];
+        if (config('laracart.fees_taxable', false)) {
+            foreach ($this->getFees() as $fee) {
+                if ($fee->taxable) {
+                    if (!isset($taxed[(string) $fee->tax])) {
+                        $taxed[(string) $fee->tax] = 0;
+                    }
+                    $taxed[(string) $fee->tax] += $this->formatMoney($fee->amount * $fee->tax, null, null, false);
+                }
+            }
+        }
+
+        return $taxed;
+    }
+
+    public function taxSummary()
+    {
+        $taxed = [];
+        foreach ($this->getItems() as $item) {
+            foreach ($item->taxSummary() as $taxRate => $amount) {
+                if (!isset($taxed[(string) $taxRate])) {
+                    $taxed[(string) $taxRate] = 0;
+                }
+                $taxed[(string) $taxRate] += $amount;
+            }
+        }
+
+        foreach ($this->feeTaxSummary() as $taxRate => $amount) {
+            if (!isset($taxed[(string) $taxRate])) {
+                $taxed[(string) $taxRate] = 0;
+            }
+            $taxed[(string) $taxRate] += $amount;
+        }
+
+        return $taxed;
     }
 
     /**
      * Gets the total of the cart with or without tax.
      *
      * @param bool $format
-     * @param bool $withDiscount
-     * @param bool $withTax
-     * @param bool $withFees
      *
      * @return string
      */
-    public function total($format = true, $withDiscount = true, $withTax = true, $withFees = true)
+    public function total($format = true)
     {
         $total = $this->subTotal(false);
 
-        if ($withFees) {
-            $total += $this->feeTotals(false);
-        }
+        $total += $this->feeSubTotal(false);
 
-        if ($withDiscount) {
-            $total -= $this->totalDiscount(false, false);
-        }
+        $total -= $this->discountTotal(false);
 
-        if ($withTax) {
-            $total += $this->taxTotal(false, $withFees, false);
-        }
+        $total += $this->taxTotal(false);
+
+        return $this->formatMoney($total, null, null, $format);
+    }
+
+    public function netTotal($format = true)
+    {
+        $total = $this->subTotal(false);
+
+        $total += $this->feeSubTotal(false);
+
+        $total -= $this->discountTotal(false);
 
         return $this->formatMoney($total, null, null, $format);
     }
@@ -641,41 +699,16 @@ class LaraCart implements LaraCartContract
      * Gets the subtotal of the cart with or without tax.
      *
      * @param bool $format
-     * @param bool $withDiscount
      *
      * @return string
      */
-    public function subTotal($format = true, $withDiscount = true)
+    public function subTotal($format = true)
     {
         $total = 0;
 
         if ($this->count() != 0) {
             foreach ($this->getItems() as $item) {
-                $total += $item->subTotal(false, $withDiscount);
-            }
-        }
-
-        if ($total < 0) {
-            $total = 0;
-        }
-
-        return $this->formatMoney($total, null, null, $format);
-    }
-
-    /**
-     * Gets the netTotal of the cart.
-     *
-     * @param bool $format
-     *
-     * @return string
-     */
-    public function netTotal($format = true)
-    {
-        $total = 0;
-
-        if ($this->count() != 0) {
-            foreach ($this->getItems() as $item) {
-                $total += $item->netTotal(false);
+                $total += $item->subTotal(false);
             }
         }
 
@@ -726,8 +759,8 @@ class LaraCart implements LaraCartContract
         // When prices in cents do not need to be formatted then cast to integer and round the price
         } elseif (config('laracart.prices_in_cents', false) === true && !$format) {
             $number = (int) round($number);
-        } elseif (config('laracart.round_every_item_price', true)) {
-            $number = number_format($number, 2, '.', '');
+        } else {
+            $number = round($number, 2);
         }
 
         if ($format) {
@@ -739,24 +772,12 @@ class LaraCart implements LaraCartContract
         return $number;
     }
 
-    /**
-     * Gets all the fee totals.
-     *
-     * @param bool $format
-     * @param bool $withTax
-     *
-     * @return string
-     */
-    public function feeTotals($format = true, $withTax = false)
+    public function feeSubTotal($format = true)
     {
         $feeTotal = 0;
 
         foreach ($this->getFees() as $fee) {
             $feeTotal += $fee->amount;
-
-            if ($withTax && $fee->taxable && $fee->tax > 0) {
-                $feeTotal += $fee->amount * $fee->tax;
-            }
         }
 
         return $this->formatMoney($feeTotal, null, null, $format);
@@ -776,29 +797,19 @@ class LaraCart implements LaraCartContract
      * Gets the total amount discounted.
      *
      * @param bool $format
-     * @param bool $withItemDiscounts
      *
      * @return string
      */
-    public function totalDiscount($format = true, $withItemDiscounts = true)
+    public function discountTotal($format = true)
     {
         $total = 0;
 
-        if ($withItemDiscounts) {
-            /** @var CartItem $item */
-            foreach ((array) $this->cart->items as $item) {
-                $total += floatval($item->getDiscount(false));
-            }
+        foreach ($this->getItems() as $item) {
+            $total += $item->getDiscount(false);
         }
 
-        foreach ($this->cart->coupons as $coupon) {
-            if ($coupon->appliedToCart) {
-                $total += $coupon->discount();
-            }
-        }
-
-        if ($total < 0) {
-            $total = $this->subTotal(false);
+        foreach ($this->getFees() as $fee) {
+            $total += $fee->getDiscount(false);
         }
 
         return $this->formatMoney($total, null, null, $format);
@@ -874,8 +885,7 @@ class LaraCart implements LaraCartContract
     private function removeCouponFromItems($code = null)
     {
         foreach ($this->getItems() as $item) {
-            if (isset($item->code) && (empty($code) || $item->code == $code)) {
-                $item->code = null;
+            if (isset($item->coupon) && (empty($code) || $item->coupon->code == $code)) {
                 $item->coupon = null;
             }
         }

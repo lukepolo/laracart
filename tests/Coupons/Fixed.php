@@ -2,7 +2,6 @@
 
 namespace LukePOLO\LaraCart\Tests\Coupons;
 
-use LukePOLO\LaraCart\CartItem;
 use LukePOLO\LaraCart\Contracts\CouponContract;
 use LukePOLO\LaraCart\Exceptions\CouponException;
 use LukePOLO\LaraCart\LaraCart;
@@ -36,28 +35,33 @@ class Fixed implements CouponContract
     /**
      * Gets the discount amount.
      *
-     * @param $throwErrors boolean this allows us to capture errors in our code if we wish,
      * that way we can spit out why the coupon has failed
-     *
-     * @throws CouponException
      *
      * @return string
      */
-    public function discount($throwErrors = false)
+    public function discount($price)
     {
-        throw new CouponException('Sorry, you must have at least 100 dollars!');
+        if ($this->canApply()) {
+            return 100;
+        }
+
+        return 0;
     }
 
     /**
-     * If an item is supplied it will get its discount value.
+     * Checks if you can apply the coupon.
      *
-     * @param CartItem $item
+     * @throws CouponException
      *
-     * @return float
+     * @return bool
      */
-    public function forItem(CartItem $item)
+    public function canApply($throw = false)
     {
-        return $item->price - $this->value;
+        if ($this->discounted === 0) {
+            throw new CouponException('Sorry, you must have at least 100 dollars!');
+        }
+
+        return true;
     }
 
     /**

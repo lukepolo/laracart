@@ -20,9 +20,7 @@ return [
     |
     */
     'database' => [
-
         'table' => 'users',
-
     ],
 
     /*
@@ -81,48 +79,11 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Calculate tax per item, rather than subtotal
-    | https://github.com/lukepolo/laracart/issues/180
-    |
-    | This will vary, please investigate to follow the rules of your local laws
-    | https://money.stackexchange.com/questions/15051/sales-tax-rounded-then-totaled-or-totaled-then-rounded
+    | Allows you to choose if the discounts applied to fees
     |--------------------------------------------------------------------------
     |
     */
-    'tax_by_item' => false,
-
-    /*
-    |--------------------------------------------------------------------------
-    | If you need to tax items before discount you can turn it on
-    |--------------------------------------------------------------------------
-    |
-    */
-    'tax_item_before_discount' => false,
-
-    /*
-    |--------------------------------------------------------------------------
-    | If you need to round only the total value then you can turn it off.
-    |--------------------------------------------------------------------------
-    |
-    */
-    'round_every_item_price' => true,
-
-    /*
-    |--------------------------------------------------------------------------
-    | Allows you to choose if the discounts applied are taxable
-    |--------------------------------------------------------------------------
-    |
-    */
-    'discountTaxable' => false,
-
-    /*
-    |--------------------------------------------------------------------------
-    | If your discounts are already pre taxes but items are not,
-    | you can set this here to get the correct values
-    |--------------------------------------------------------------------------
-    |
-    */
-    'discountsAlreadyTaxed' => false,
+    'fees_taxable' => false,
 
     /*
     |--------------------------------------------------------------------------
@@ -130,7 +91,7 @@ return [
     |--------------------------------------------------------------------------
     |
     */
-    'discountOnFees' => false,
+    'discount_fees' => false,
 
     /*
     |--------------------------------------------------------------------------
