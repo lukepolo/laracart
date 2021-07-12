@@ -34,6 +34,7 @@ class CartSubItem
             Arr::set($this->options, $option, $value);
         }
 
+        $this->taxable = isset($options['taxable']) ? $options['taxable'] : true;
         $this->tax = isset($options['tax']) ? $options['tax'] == 0 ? config('laracart.tax') : $options['tax'] : config('laracart.tax');
 
         $this->itemHash = app(LaraCart::HASH)->hash($this->options);

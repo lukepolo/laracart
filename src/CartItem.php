@@ -421,8 +421,4 @@ class CartItem
         $this->generateHash();
         app('laracart')->update();
     }
-
-    private function taxItems($items, &$discountable)
-    {
-    }
 }
