@@ -620,39 +620,43 @@ class LaraCart implements LaraCartContract
         return $this->formatMoney($totalTax, null, null, $format);
     }
 
-    public function feeTaxTotal($format = true) {
+    public function feeTaxTotal($format = true)
+    {
         return $this->formatMoney(array_sum($this->feeTaxSummary()), null, null, $format);
     }
 
-    public function feeTaxSummary() {
+    public function feeTaxSummary()
+    {
         $taxed = [];
         if (config('laracart.fees_taxable', false)) {
             foreach ($this->getFees() as $fee) {
                 if ($fee->taxable) {
-                    if(!isset($taxed[(string) $fee->tax])) {
+                    if (!isset($taxed[(string) $fee->tax])) {
                         $taxed[(string) $fee->tax] = 0;
                     }
                     $taxed[(string) $fee->tax] += $this->formatMoney($fee->amount * $fee->tax, null, null, false);
                 }
             }
         }
+
         return $taxed;
     }
 
-    public function taxSummary() {
+    public function taxSummary()
+    {
         $taxed = [];
         foreach ($this->getItems() as $item) {
-            foreach($item->taxSummary() as $taxRate => $amount) {
-                if(!isset($taxed[(string) $taxRate])) {
-                    $taxed[(string)$taxRate] = 0;
+            foreach ($item->taxSummary() as $taxRate => $amount) {
+                if (!isset($taxed[(string) $taxRate])) {
+                    $taxed[(string) $taxRate] = 0;
                 }
                 $taxed[(string) $taxRate] += $amount;
             }
         }
 
-        foreach($this->feeTaxSummary() as $taxRate => $amount) {
-            if(!isset($taxed[(string) $taxRate])) {
-                $taxed[(string)$taxRate] = 0;
+        foreach ($this->feeTaxSummary() as $taxRate => $amount) {
+            if (!isset($taxed[(string) $taxRate])) {
+                $taxed[(string) $taxRate] = 0;
             }
             $taxed[(string) $taxRate] += $amount;
         }

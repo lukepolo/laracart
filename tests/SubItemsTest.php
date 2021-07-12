@@ -317,8 +317,8 @@ class SubItemsTest extends Orchestra\Testbench\TestCase
         ]);
 
         $this->assertEquals([
-            "0.01" => .10,
-            "0.02" => .20,
+            '0.01' => .10,
+            '0.02' => .20,
         ], $item->taxSummary());
     }
 }

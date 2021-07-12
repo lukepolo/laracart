@@ -447,9 +447,9 @@ class TotalsTest extends Orchestra\Testbench\TestCase
         );
 
         $this->assertEquals([
-            "0.01" => .22,
-            "0.02" => .40,
-            "0.03" => .15,
+            '0.01' => .22,
+            '0.02' => .40,
+            '0.03' => .15,
         ], $this->laracart->taxSummary());
     }
 }

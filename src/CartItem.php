@@ -303,7 +303,8 @@ class CartItem
         );
     }
 
-    public function taxSummary() {
+    public function taxSummary()
+    {
         $taxed = [];
         // tax item by item
         for ($qty = 0; $qty < $this->qty; $qty++) {
@@ -316,7 +317,7 @@ class CartItem
             $discountable = $discountable - $price;
 
             if ($taxable > 0) {
-                if(!isset($taxed[(string) $this->tax])) {
+                if (!isset($taxed[(string) $this->tax])) {
                     $taxed[(string) $this->tax] = 0;
                 }
                 $taxed[(string) $this->tax] += LaraCart::formatMoney($taxable * $this->tax, null, null, false);
@@ -332,7 +333,7 @@ class CartItem
                 }
 
                 if ($subItemTaxable > 0) {
-                    if(!isset($taxed[(string) $subItem->tax])) {
+                    if (!isset($taxed[(string) $subItem->tax])) {
                         $taxed[(string) $subItem->tax] = 0;
                     }
                     $taxed[(string) $subItem->tax] += LaraCart::formatMoney($subItemTaxable * $subItem->tax, null, null, false);
@@ -342,8 +343,8 @@ class CartItem
                 if (isset($subItem->items)) {
                     foreach ($subItem->items as $item) {
                         if ($item->taxable) {
-                            foreach($item->taxSummary() as $taxRate => $amount) {
-                                if(!isset($taxed[(string) $taxRate])) {
+                            foreach ($item->taxSummary() as $taxRate => $amount) {
+                                if (!isset($taxed[(string) $taxRate])) {
                                     $taxed[(string) $taxRate] = 0;
                                 }
                                 $taxed[(string) $taxRate] += $amount;
@@ -353,6 +354,7 @@ class CartItem
                 }
             }
         }
+
         return $taxed;
     }
 
