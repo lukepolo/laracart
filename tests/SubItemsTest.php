@@ -302,4 +302,23 @@ class SubItemsTest extends Orchestra\Testbench\TestCase
 
         $this->assertEquals(0.30, $this->laracart->taxTotal(false));
     }
+
+    public function testTaxSumary()
+    {
+        $item = $this->addItem(1, 10, true, [
+            'tax' => .01,
+        ]);
+
+        $item->addSubItem([
+            'size'    => 'XXL',
+            'price'   => 10.00,
+            'taxable' => true,
+            'tax'     => .02,
+        ]);
+
+        $this->assertEquals([
+            "0.01" => .10,
+            "0.02" => .20,
+        ], $item->taxSummary());
+    }
 }
