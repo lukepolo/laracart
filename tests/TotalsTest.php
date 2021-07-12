@@ -425,9 +425,20 @@ class TotalsTest extends Orchestra\Testbench\TestCase
             'tax'     => .02,
         ]);
 
+        $item = $this->addItem(1, 12, true, [
+            'tax' => .01,
+        ]);
+
+        $item->addSubItem([
+            'size'    => 'XXL',
+            'price'   => 10.00,
+            'taxable' => true,
+            'tax'     => .02,
+        ]);
+
         $this->assertEquals([
-            "0.01" => .10,
-            "0.02" => .20,
+            "0.01" => .22,
+            "0.02" => .40,
         ], $this->laracart->taxSummary());
     }
 }

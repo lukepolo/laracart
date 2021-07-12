@@ -344,7 +344,7 @@ class CartItem
                         if ($item->taxable) {
                             foreach($item->taxSummary() as $taxRate => $amount) {
                                 if(!isset($taxed[(string) $taxRate])) {
-                                    $taxed[$taxRate] = 0;
+                                    $taxed[(string) $taxRate] = 0;
                                 }
                                 $taxed[(string) $taxRate] += $amount;
                             }

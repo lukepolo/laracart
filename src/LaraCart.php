@@ -627,9 +627,16 @@ class LaraCart implements LaraCartContract
     }
 
     public function taxSummary() {
+        $taxed = [];
         foreach ($this->getItems() as $item) {
-            $totalTax += $this->formatMoney($item->tax(false), null, null, false);
+            foreach($item->taxSummary() as $taxRate => $amount) {
+                if(!isset($taxed[(string) $taxRate])) {
+                    $taxed[(string)$taxRate] = 0;
+                }
+                $taxed[(string) $taxRate] += $amount;
+            }
         }
+        return $taxed;
     }
 
     /**
