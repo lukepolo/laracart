@@ -452,4 +452,27 @@ class TotalsTest extends Orchestra\Testbench\TestCase
             '0.03' => .15,
         ], $this->laracart->taxSummary());
     }
+
+    public function testSubItemTotalsRounding()
+    {
+        $item = $this->addItem(1, 0);
+
+        $item->addSubItem([
+            'description' => 'Ticket: Erwachsener',
+            'price' => 18.48739,
+            'qty' => 1,
+            'tax' => .19
+        ]);
+
+        $item->addSubItem([
+            'description' => 'Ticket: Ermäßigt',
+            'price' => 16.80672,
+            'qty' => 1,
+            'tax' => .19
+        ]);
+
+        //= 35.29411 * 1,19 = 41,9999909 => round(val) => 42.00
+        $this->assertEquals("$42.00", $this->laracart->total());
+
+    }
 }
