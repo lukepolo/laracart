@@ -184,14 +184,9 @@ class CartItem
         $this->update();
     }
 
-    public function getPrice($format = true)
+    public function getPrice()
     {
-        return LaraCart::formatMoney(
-            $this->price,
-            $this->locale,
-            $this->currencyCode,
-            $format
-        );
+        return $this->price;
     }
 
     /**
@@ -214,12 +209,7 @@ class CartItem
             }
         }
 
-        return LaraCart::formatMoney(
-            $total,
-            $this->locale,
-            $this->currencyCode,
-            $format
-        );
+        return $total;
     }
 
     /**
@@ -229,16 +219,16 @@ class CartItem
      *
      * @return float|string
      */
-    public function subTotal($format = true)
+    public function subTotal()
     {
-        return LaraCart::formatMoney($this->subTotalPerItem(false) * $this->qty, $this->locale, $this->currencyCode, $format);
+        return $this->subTotalPerItem(false) * $this->qty;
     }
 
-    public function subTotalPerItem($format = true)
+    public function subTotalPerItem()
     {
         $subTotal = $this->active ? ($this->price + $this->subItemsTotal(false)) : 0;
 
-        return LaraCart::formatMoney($subTotal, $this->locale, $this->currencyCode, $format);
+        return $subTotal;
     }
 
     /**
@@ -246,7 +236,7 @@ class CartItem
      *
      * @return float
      */
-    public function subItemsTotal($format = true)
+    public function subItemsTotal()
     {
         $total = 0;
 
@@ -254,24 +244,17 @@ class CartItem
             $total += $subItem->subTotal(false);
         }
 
-        return LaraCart::formatMoney($total, $this->locale, $this->currencyCode, $format);
+        return $total;
     }
 
     /**
      * Gets the discount of an item.
      *
-     * @param bool $format
-     *
      * @return string
      */
-    public function getDiscount($format = true)
+    public function getDiscount()
     {
-        return LaraCart::formatMoney(
-            array_sum($this->discounted),
-            $this->locale,
-            $this->currencyCode,
-            $format
-        );
+        return array_sum($this->discounted);
     }
 
     /**
@@ -293,14 +276,9 @@ class CartItem
      *
      * @return int|mixed
      */
-    public function tax($format = true)
+    public function tax()
     {
-        return LaraCart::formatMoney(
-            array_sum($this->taxSummary()),
-            $this->locale,
-            $this->currencyCode,
-            $format
-        );
+      return array_sum($this->taxSummary());
     }
 
     public function taxSummary()
@@ -320,7 +298,7 @@ class CartItem
                 if (!isset($taxed[(string) $this->tax])) {
                     $taxed[(string) $this->tax] = 0;
                 }
-                $taxed[(string) $this->tax] += LaraCart::formatMoney($taxable * $this->tax, null, null, false);
+                $taxed[(string) $this->tax] += $taxable * $this->tax;
             }
 
             // tax sub item item by sub item
@@ -336,7 +314,7 @@ class CartItem
                     if (!isset($taxed[(string) $subItem->tax])) {
                         $taxed[(string) $subItem->tax] = 0;
                     }
-                    $taxed[(string) $subItem->tax] += LaraCart::formatMoney($subItemTaxable * $subItem->tax, null, null, false);
+                    $taxed[(string) $subItem->tax] += $subItemTaxable * $subItem->tax;
                 }
 
                 // discount sub items ... items
