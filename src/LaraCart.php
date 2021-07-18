@@ -612,7 +612,7 @@ class LaraCart implements LaraCartContract
         $totalTax = 0;
 
         foreach ($this->getItems() as $item) {
-            $totalTax += $this->formatMoney($item->tax(false), null, null, false);
+            $totalTax += $item->tax(false);
         }
 
         $totalTax += $this->feeTaxTotal(false);

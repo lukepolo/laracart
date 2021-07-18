@@ -298,7 +298,7 @@ class CartItem
                 if (!isset($taxed[(string) $this->tax])) {
                     $taxed[(string) $this->tax] = 0;
                 }
-                $taxed[(string) $this->tax] += $taxable * $this->tax;
+                $taxed[(string) $this->tax] += LaraCart::formatMoney($taxable * $this->tax, null, null, false);
             }
 
             // tax sub item item by sub item
@@ -314,7 +314,7 @@ class CartItem
                     if (!isset($taxed[(string) $subItem->tax])) {
                         $taxed[(string) $subItem->tax] = 0;
                     }
-                    $taxed[(string) $subItem->tax] += $subItemTaxable * $subItem->tax;
+                    $taxed[(string) $subItem->tax] += LaraCart::formatMoney($subItemTaxable * $subItem->tax, null, null, false);
                 }
 
                 // discount sub items ... items
@@ -325,14 +325,13 @@ class CartItem
                                 if (!isset($taxed[(string) $taxRate])) {
                                     $taxed[(string) $taxRate] = 0;
                                 }
-                                $taxed[(string) $taxRate] += $amount;
+                                $taxed[(string) $taxRate] += LaraCart::formatMoney($amount, null, null, false);
                             }
                         }
                     }
                 }
             }
         }
-
         return $taxed;
     }
 

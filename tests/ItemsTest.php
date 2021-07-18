@@ -433,6 +433,7 @@ class ItemsTest extends Orchestra\Testbench\TestCase
         ]);
 
         $this->assertEquals(16.66, $this->laracart->netTotal(false));
+
         $this->assertEquals(20.00, $this->laracart->total(false));
 
         $this->addItem(1, 8.33, true, [

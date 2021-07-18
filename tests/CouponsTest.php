@@ -26,7 +26,7 @@ class CouponsTest extends Orchestra\Testbench\TestCase
      */
     public function testAddPercentageCoupon()
     {
-        $this->addItem(3, 1);
+        $this->addItem(3);
 
         $percentCoupon = new LukePOLO\LaraCart\Coupons\Percentage('10%OFF', '.1');
 
