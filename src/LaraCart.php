@@ -612,7 +612,7 @@ class LaraCart implements LaraCartContract
         $totalTax = 0;
 
         foreach ($this->getItems() as $item) {
-            $totalTax += $item->tax(false);
+            $totalTax += $item->taxTotal(false);
         }
 
         $totalTax += $this->feeTaxTotal(false);
@@ -673,13 +673,13 @@ class LaraCart implements LaraCartContract
      */
     public function total($format = true)
     {
-        $total = $this->subTotal(false);
+        $total = $this->itemTotals(false);
 
         $total += $this->feeSubTotal(false);
 
         $total -= $this->discountTotal(false);
 
-        $total += $this->taxTotal(false);
+//        $total += $this->taxTotal(false);
 
         return $this->formatMoney($total, null, null, $format);
     }
@@ -691,6 +691,22 @@ class LaraCart implements LaraCartContract
         $total += $this->feeSubTotal(false);
 
         $total -= $this->discountTotal(false);
+
+        return $this->formatMoney($total, null, null, $format);
+    }
+
+    public function itemTotals($format = true) {
+        $total = 0;
+
+        if ($this->count() != 0) {
+            foreach ($this->getItems() as $item) {
+                $total += $item->total(false);
+            }
+        }
+
+        if ($total < 0) {
+            $total = 0;
+        }
 
         return $this->formatMoney($total, null, null, $format);
     }

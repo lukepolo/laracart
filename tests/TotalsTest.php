@@ -467,7 +467,7 @@ class TotalsTest extends Orchestra\Testbench\TestCase
         $this->assertEquals(40.48, $this->laracart->total(false));
     }
 
-    public function testAnotherTest() {
+    public function testSubTotalTaxRounding() {
         $item = $this->addItem(1, 0);
 
         $item->addSubItem([
@@ -476,6 +476,7 @@ class TotalsTest extends Orchestra\Testbench\TestCase
             'qty' => 1,
             'tax' => .19
         ]);
+        // 18.48739 + (18.48739 *.19) = 21.9999941
 
         $item->addSubItem([
             'description' => 'Ticket: Ermäßigt',
@@ -484,6 +485,10 @@ class TotalsTest extends Orchestra\Testbench\TestCase
             'tax' => .19
         ]);
 
-        dd($this->laracart->total(false));
+        // 16.80672 + (16.80672 *.19) = 19.9999968
+
+        // 21.9999941 + 19.9999968 = 41.9999909
+
+        $this->assertEquals(42.00, $this->laracart->total(false));
     }
 }

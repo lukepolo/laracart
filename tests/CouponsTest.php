@@ -40,7 +40,7 @@ class CouponsTest extends Orchestra\Testbench\TestCase
         $this->assertCount(1, $this->laracart->getCoupons());
 
         $this->assertEquals(3, $this->laracart->subTotal(false));
-        $this->assertEquals(.18, $this->laracart->taxTotal(false));
+        $this->assertEquals(.19, $this->laracart->taxTotal(false));
     }
 
     /**

@@ -199,12 +199,24 @@ class CartItem
         $total = 0;
 
         if ($this->active) {
-            $total = $this->subTotal(false);
-            $total += $this->tax(false);
+            // total + tax = itemTotal * qty
+            for ($qty = 0; $qty < $this->qty; $qty++) {
+                $total += LaraCart::formatMoney($this->subTotalPerItem(false) + array_sum($this->taxSummary()[$qty]), null, null, false);
+            }
             $total -= $this->getDiscount(false);
             if ($total < 0) {
                 $total = 0;
             }
+        }
+
+        return $total;
+    }
+
+    public function taxTotal() {
+        $total = 0;
+
+        foreach($this->taxSummary() as $itemSummary) {
+            $total += array_sum($itemSummary);
         }
 
         return $total;
@@ -219,12 +231,12 @@ class CartItem
      */
     public function subTotal()
     {
-        return $this->subTotalPerItem(false) * $this->qty;
+        return $this->subTotalPerItem() * $this->qty;
     }
 
     public function subTotalPerItem()
     {
-        $subTotal = $this->active ? ($this->price + $this->subItemsTotal(false)) : 0;
+        $subTotal = $this->active ? ($this->price + $this->subItemsTotal()) : 0;
 
         return $subTotal;
     }
@@ -269,16 +281,6 @@ class CartItem
         return $this;
     }
 
-    /**
-     * Gets the tax for the item.
-     *
-     * @return int|mixed
-     */
-    public function tax()
-    {
-        return array_sum($this->taxSummary());
-    }
-
     public function taxSummary()
     {
         $taxed = [];
@@ -292,11 +294,12 @@ class CartItem
             // track what has been discounted so far
             $discountable = $discountable - $price;
 
+            $taxed[$qty] = [];
             if ($taxable > 0) {
-                if (!isset($taxed[(string) $this->tax])) {
-                    $taxed[(string) $this->tax] = 0;
+                if (!isset($taxed[$qty] [(string) $this->tax])) {
+                    $taxed[$qty] [(string) $this->tax] = 0;
                 }
-                $taxed[(string) $this->tax] += LaraCart::formatMoney($taxable * $this->tax, null, null, false);
+                $taxed[$qty] [(string) $this->tax] += $taxable * $this->tax;
             }
 
             // tax sub item item by sub item
@@ -309,21 +312,23 @@ class CartItem
                 }
 
                 if ($subItemTaxable > 0) {
-                    if (!isset($taxed[(string) $subItem->tax])) {
-                        $taxed[(string) $subItem->tax] = 0;
+                    if (!isset($taxed[$qty] [(string) $subItem->tax])) {
+                        $taxed[$qty] [(string) $subItem->tax] = 0;
                     }
-                    $taxed[(string) $subItem->tax] += LaraCart::formatMoney($subItemTaxable * $subItem->tax, null, null, false);
+                    $taxed[$qty] [(string) $subItem->tax] += $subItemTaxable * $subItem->tax;
                 }
 
                 // discount sub items ... items
                 if (isset($subItem->items)) {
                     foreach ($subItem->items as $item) {
                         if ($item->taxable) {
-                            foreach ($item->taxSummary() as $taxRate => $amount) {
-                                if (!isset($taxed[(string) $taxRate])) {
-                                    $taxed[(string) $taxRate] = 0;
+                            foreach ($item->taxSummary() as $itemTaxSummary) {
+                                foreach ($itemTaxSummary as $taxRate => $amount) {
+                                    if (!isset($taxed[$qty] [(string) $taxRate])) {
+                                        $taxed[$qty] [(string) $taxRate] = 0;
+                                    }
+                                    $taxed[$qty] [(string) $taxRate] += $amount;
                                 }
-                                $taxed[(string) $taxRate] += LaraCart::formatMoney($amount, null, null, false);
                             }
                         }
                     }
