@@ -689,7 +689,6 @@ class LaraCart implements LaraCartContract
         return $this->formatMoney($total, null, null, $format);
     }
 
-
     public function itemTotals($format = true)
     {
         $total = 0;
