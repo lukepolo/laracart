@@ -192,11 +192,9 @@ class CartItem
     /**
      * Gets the price of the item with or without tax, with the proper format.
      *
-     * @param bool $format
-     *
      * @return string
      */
-    public function total($format = true)
+    public function total()
     {
         $total = 0;
 
