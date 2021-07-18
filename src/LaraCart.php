@@ -677,7 +677,7 @@ class LaraCart implements LaraCartContract
 
         $total += $this->feeSubTotal(false);
 
-        $total -= $this->discountTotal(false);
+//        $total -= $this->discountTotal(false);
 
 //        $total += $this->taxTotal(false);
 

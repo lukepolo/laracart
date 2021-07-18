@@ -199,7 +199,6 @@ class CartItem
         $total = 0;
 
         if ($this->active) {
-            // total + tax = itemTotal * qty
             for ($qty = 0; $qty < $this->qty; $qty++) {
                 $total += LaraCart::formatMoney($this->subTotalPerItem(false) + array_sum($this->taxSummary()[$qty]), null, null, false);
             }

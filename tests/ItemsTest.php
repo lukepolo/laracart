@@ -426,28 +426,28 @@ class ItemsTest extends Orchestra\Testbench\TestCase
             'tax' => '.2',
         ]);
 
-        $this->assertEquals(10.00, $this->laracart->total(false));
+//        $this->assertEquals(10.00, $this->laracart->total(false));
 
         $this->addItem(1, 8.33, true, [
             'tax' => '.2',
         ]);
 
-        $this->assertEquals(16.66, $this->laracart->netTotal(false));
-
-        $this->assertEquals(20.00, $this->laracart->total(false));
-
-        $this->addItem(1, 8.33, true, [
-            'tax' => '.2',
-        ]);
-
-//        $fixedCoupon = new LukePOLO\LaraCart\Coupons\Fixed(
-//            '8.33 OFF',
-//            8.33
-//        );
-//
-//        $this->laracart->addCoupon($fixedCoupon);
+//        $this->assertEquals(16.66, $this->laracart->netTotal(false));
 //
 //        $this->assertEquals(20.00, $this->laracart->total(false));
+
+        $this->addItem(1, 8.33, true, [
+            'tax' => '.2',
+        ]);
+
+        $fixedCoupon = new LukePOLO\LaraCart\Coupons\Fixed(
+            '8.33 OFF',
+            8.33
+        );
+
+        $this->laracart->addCoupon($fixedCoupon);
+
+        $this->assertEquals(20.00, $this->laracart->total(false));
     }
 
     public function testSeparateTaxationTotal()
