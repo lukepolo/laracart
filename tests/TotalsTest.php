@@ -466,4 +466,24 @@ class TotalsTest extends Orchestra\Testbench\TestCase
 
         $this->assertEquals(40.48, $this->laracart->total(false));
     }
+
+    public function testAnotherTest() {
+        $item = $this->addItem(1, 0);
+
+        $item->addSubItem([
+            'description' => 'Ticket: Erwachsener',
+            'price' => 18.48739,
+            'qty' => 1,
+            'tax' => .19
+        ]);
+
+        $item->addSubItem([
+            'description' => 'Ticket: Ermäßigt',
+            'price' => 16.80672,
+            'qty' => 1,
+            'tax' => .19
+        ]);
+
+        dd($this->laracart->total(false));
+    }
 }
