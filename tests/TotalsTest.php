@@ -415,47 +415,46 @@ class TotalsTest extends Orchestra\Testbench\TestCase
         $this->assertEquals(13.61, $this->laracart->subTotal(false));
     }
 
-    // TODO
-//    public function testCartTaxSumary()
-//    {
-//        $this->app['config']->set('laracart.fees_taxable', true);
-//        $item = $this->addItem(1, 10, true, [
-//            'tax' => .01,
-//        ]);
-//
-//        $item->addSubItem([
-//            'size'    => 'XXL',
-//            'price'   => 10.00,
-//            'taxable' => true,
-//            'tax'     => .02,
-//        ]);
-//
-//        $item = $this->addItem(1, 12, true, [
-//            'tax' => .01,
-//        ]);
-//
-//        $item->addSubItem([
-//            'size'    => 'XXL',
-//            'price'   => 10.00,
-//            'taxable' => true,
-//            'tax'     => .02,
-//        ]);
-//
-//        $this->laracart->addFee(
-//            'cart fee',
-//            5.00,
-//            true,
-//            [
-//                'tax' => .03,
-//            ]
-//        );
-//
-//        $this->assertEquals([
-//            '0.01' => .22,
-//            '0.02' => .40,
-//            '0.03' => .15,
-//        ], $this->laracart->taxSummary());
-//    }
+    public function testCartTaxSumary()
+    {
+        $this->app['config']->set('laracart.fees_taxable', true);
+        $item = $this->addItem(1, 10, true, [
+            'tax' => .01,
+        ]);
+
+        $item->addSubItem([
+            'size'    => 'XXL',
+            'price'   => 10.00,
+            'taxable' => true,
+            'tax'     => .02,
+        ]);
+
+        $item = $this->addItem(1, 12, true, [
+            'tax' => .01,
+        ]);
+
+        $item->addSubItem([
+            'size'    => 'XXL',
+            'price'   => 10.00,
+            'taxable' => true,
+            'tax'     => .02,
+        ]);
+
+        $this->laracart->addFee(
+            'cart fee',
+            5.00,
+            true,
+            [
+                'tax' => .03,
+            ]
+        );
+
+        $this->assertEquals([
+            '0.01' => .22,
+            '0.02' => .40,
+            '0.03' => .15,
+        ], $this->laracart->taxSummary());
+    }
 
     public function testQtyOnSubItems()
     {
