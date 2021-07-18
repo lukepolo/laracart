@@ -453,18 +453,17 @@ class TotalsTest extends Orchestra\Testbench\TestCase
         ], $this->laracart->taxSummary());
     }
 
-    public function testQtyOnSubItems() {
+    public function testQtyOnSubItems()
+    {
         $item = $this->addItem(1, 0);
 
         $item->addSubItem([
             'description' => 'Ticket: Erwachsener',
-            'price' => 18.48739,
-            'qty' => 2,
-            'tax' => .19
+            'price'       => 18.48739,
+            'qty'         => 2,
+            'tax'         => .19,
         ]);
 
         $this->assertEquals(40.48, $this->laracart->total(false));
-
-
     }
 }
