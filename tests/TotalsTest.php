@@ -159,18 +159,21 @@ class TotalsTest extends Orchestra\Testbench\TestCase
      */
     public function testTotalTaxableItemTaxableFees()
     {
-        $this->app['config']->set('laracart.fees_taxable', true);
-        $tax = .20;
-        $priceItem = 5;
-        $priceFee = 2;
-
+        $tax = .10;
+        $priceItem = 10;
         $this->addItem(1, $priceItem, true, ['tax' => $tax]);
-        $this->laracart->addFee('test', $priceFee, true, ['tax' => $tax]);
+        $this->assertEquals(11, $this->laracart->total(false));
 
-        $this->assertEquals('2.00', $this->laracart->feeSubTotal(false));
-        $this->assertEquals('5.00', $this->laracart->subTotal(false));
-        $this->assertEquals(7, $this->laracart->netTotal(false));
-        $this->assertEquals('8.40', $this->laracart->total(false));
+        $this->app['config']->set('laracart.fees_taxable', true);
+        $fee = 10;
+        $this->laracart->addFee('test', $fee, true, ['tax' => $tax]);
+
+        $this->assertEquals($priceItem, $this->laracart->feeSubTotal(false));
+        $this->assertEquals($priceItem, $this->laracart->subTotal(false));
+        $this->assertEquals($priceItem + $fee, $this->laracart->netTotal(false));
+        $taxTotal = ($priceItem * .10) + ($fee * .10);
+        $this->assertEquals($taxTotal, $this->laracart->taxTotal(false));
+        $this->assertEquals($priceItem + $fee + $taxTotal, $this->laracart->total(false));
     }
 
     /**
