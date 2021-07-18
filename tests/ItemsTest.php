@@ -426,15 +426,15 @@ class ItemsTest extends Orchestra\Testbench\TestCase
             'tax' => '.2',
         ]);
 
-//        $this->assertEquals(10.00, $this->laracart->total(false));
+        $this->assertEquals(10.00, $this->laracart->total(false));
 
         $this->addItem(1, 8.33, true, [
             'tax' => '.2',
         ]);
 
-//        $this->assertEquals(16.66, $this->laracart->netTotal(false));
-//
-//        $this->assertEquals(20.00, $this->laracart->total(false));
+        $this->assertEquals(16.66, $this->laracart->netTotal(false));
+
+        $this->assertEquals(20.00, $this->laracart->total(false));
 
         $this->addItem(1, 8.33, true, [
             'tax' => '.2',
