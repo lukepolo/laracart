@@ -412,7 +412,7 @@ class TotalsTest extends Orchestra\Testbench\TestCase
         $this->assertEquals(13.61, $this->laracart->subTotal(false));
     }
 
-// TODO
+    // TODO
 //    public function testCartTaxSumary()
 //    {
 //        $this->app['config']->set('laracart.fees_taxable', true);
@@ -468,22 +468,23 @@ class TotalsTest extends Orchestra\Testbench\TestCase
         $this->assertEquals(40.48, $this->laracart->total(false));
     }
 
-    public function testSubTotalTaxRounding() {
+    public function testSubTotalTaxRounding()
+    {
         $item = $this->addItem(1, 0);
 
         $item->addSubItem([
             'description' => 'Ticket: Erwachsener',
-            'price' => 18.48739,
-            'qty' => 1,
-            'tax' => .19
+            'price'       => 18.48739,
+            'qty'         => 1,
+            'tax'         => .19,
         ]);
         // 18.48739 + (18.48739 *.19) = 21.9999941
 
         $item->addSubItem([
             'description' => 'Ticket: Ermäßigt',
-            'price' => 16.80672,
-            'qty' => 1,
-            'tax' => .19
+            'price'       => 16.80672,
+            'qty'         => 1,
+            'tax'         => .19,
         ]);
 
         // 16.80672 + (16.80672 *.19) = 19.9999968

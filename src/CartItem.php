@@ -212,10 +212,11 @@ class CartItem
         return $total;
     }
 
-    public function taxTotal() {
+    public function taxTotal()
+    {
         $total = 0;
 
-        foreach($this->taxSummary() as $itemSummary) {
+        foreach ($this->taxSummary() as $itemSummary) {
             $total += array_sum($itemSummary);
         }
 
@@ -296,10 +297,10 @@ class CartItem
 
             $taxed[$qty] = [];
             if ($taxable > 0) {
-                if (!isset($taxed[$qty] [(string) $this->tax])) {
-                    $taxed[$qty] [(string) $this->tax] = 0;
+                if (!isset($taxed[$qty][(string) $this->tax])) {
+                    $taxed[$qty][(string) $this->tax] = 0;
                 }
-                $taxed[$qty] [(string) $this->tax] += $taxable * $this->tax;
+                $taxed[$qty][(string) $this->tax] += $taxable * $this->tax;
             }
 
             // tax sub item item by sub item
@@ -312,10 +313,10 @@ class CartItem
                 }
 
                 if ($subItemTaxable > 0) {
-                    if (!isset($taxed[$qty] [(string) $subItem->tax])) {
-                        $taxed[$qty] [(string) $subItem->tax] = 0;
+                    if (!isset($taxed[$qty][(string) $subItem->tax])) {
+                        $taxed[$qty][(string) $subItem->tax] = 0;
                     }
-                    $taxed[$qty] [(string) $subItem->tax] += $subItemTaxable * $subItem->tax;
+                    $taxed[$qty][(string) $subItem->tax] += $subItemTaxable * $subItem->tax;
                 }
 
                 // discount sub items ... items
@@ -324,10 +325,10 @@ class CartItem
                         if ($item->taxable) {
                             foreach ($item->taxSummary() as $itemTaxSummary) {
                                 foreach ($itemTaxSummary as $taxRate => $amount) {
-                                    if (!isset($taxed[$qty] [(string) $taxRate])) {
-                                        $taxed[$qty] [(string) $taxRate] = 0;
+                                    if (!isset($taxed[$qty][(string) $taxRate])) {
+                                        $taxed[$qty][(string) $taxRate] = 0;
                                     }
-                                    $taxed[$qty] [(string) $taxRate] += $amount;
+                                    $taxed[$qty][(string) $taxRate] += $amount;
                                 }
                             }
                         }
