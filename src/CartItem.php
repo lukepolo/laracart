@@ -278,7 +278,7 @@ class CartItem
      */
     public function tax()
     {
-      return array_sum($this->taxSummary());
+        return array_sum($this->taxSummary());
     }
 
     public function taxSummary()
@@ -332,6 +332,7 @@ class CartItem
                 }
             }
         }
+
         return $taxed;
     }
 
