@@ -465,7 +465,7 @@ class TotalsTest extends Orchestra\Testbench\TestCase
             'tax'         => .19,
         ]);
 
-        $this->assertEquals(40.48, $this->laracart->total(false));
+        $this->assertEquals(40.49, $this->laracart->total(false));
     }
 
     public function testSubTotalTaxRounding()
