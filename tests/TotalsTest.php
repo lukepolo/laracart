@@ -159,18 +159,21 @@ class TotalsTest extends Orchestra\Testbench\TestCase
      */
     public function testTotalTaxableItemTaxableFees()
     {
-        $this->app['config']->set('laracart.fees_taxable', true);
-        $tax = .20;
-        $priceItem = 5;
-        $priceFee = 2;
-
+        $tax = .10;
+        $priceItem = 10;
         $this->addItem(1, $priceItem, true, ['tax' => $tax]);
-        $this->laracart->addFee('test', $priceFee, true, ['tax' => $tax]);
+        $this->assertEquals(11, $this->laracart->total(false));
 
-        $this->assertEquals('2.00', $this->laracart->feeSubTotal(false));
-        $this->assertEquals('5.00', $this->laracart->subTotal(false));
-        $this->assertEquals(7, $this->laracart->netTotal(false));
-        $this->assertEquals('8.40', $this->laracart->total(false));
+        $this->app['config']->set('laracart.fees_taxable', true);
+        $fee = 10;
+        $this->laracart->addFee('test', $fee, true, ['tax' => $tax]);
+
+        $this->assertEquals($priceItem, $this->laracart->feeSubTotal(false));
+        $this->assertEquals($priceItem, $this->laracart->subTotal(false));
+        $this->assertEquals($priceItem + $fee, $this->laracart->netTotal(false));
+        $taxTotal = ($priceItem * .10) + ($fee * .10);
+        $this->assertEquals($taxTotal, $this->laracart->taxTotal(false));
+        $this->assertEquals($priceItem + $fee + $taxTotal, $this->laracart->total(false));
     }
 
     /**
@@ -328,7 +331,7 @@ class TotalsTest extends Orchestra\Testbench\TestCase
 
         $this->assertEquals(5586.88, $this->laracart->subTotal(false));
         $this->assertEquals(0, $this->laracart->discountTotal(false));
-        $this->assertEquals(1173.12, $this->laracart->taxTotal(false));
+        $this->assertEquals(1173.24, $this->laracart->taxTotal(false));
         $this->assertEquals(6760.00, $this->laracart->total(false));
 
         // Test discount %
@@ -337,7 +340,7 @@ class TotalsTest extends Orchestra\Testbench\TestCase
 
         $this->assertEquals(5586.88, $this->laracart->subTotal(false));
         $this->assertEquals(419.12, $this->laracart->discountTotal(false));
-        $this->assertEquals(1085.24, $this->laracart->taxTotal(false));
+        $this->assertEquals(1085.23, $this->laracart->taxTotal(false));
         $this->assertEquals(6253.00, $this->laracart->total(false));
 
         $this->laracart->removeCoupons();
@@ -348,7 +351,7 @@ class TotalsTest extends Orchestra\Testbench\TestCase
 
         $this->assertEquals(5586.88, $this->laracart->subTotal(false));
         $this->assertEquals(100, $this->laracart->discountTotal(false));
-        $this->assertEquals(1152.12, $this->laracart->taxTotal(false));
+        $this->assertEquals(1152.24, $this->laracart->taxTotal(false));
         $this->assertEquals(6639.00, $this->laracart->total(false));
     }
 
@@ -451,5 +454,45 @@ class TotalsTest extends Orchestra\Testbench\TestCase
             '0.02' => .40,
             '0.03' => .15,
         ], $this->laracart->taxSummary());
+    }
+
+    public function testQtyOnSubItems()
+    {
+        $item = $this->addItem(1, 0);
+
+        $item->addSubItem([
+            'description' => 'Ticket: Erwachsener',
+            'price'       => 18.48739,
+            'qty'         => 2,
+            'tax'         => .19,
+        ]);
+
+        $this->assertEquals(40.49, $this->laracart->total(false));
+    }
+
+    public function testSubTotalTaxRounding()
+    {
+        $item = $this->addItem(1, 0);
+
+        $item->addSubItem([
+            'description' => 'Ticket: Erwachsener',
+            'price'       => 18.48739,
+            'qty'         => 1,
+            'tax'         => .19,
+        ]);
+        // 18.48739 + (18.48739 *.19) = 21.9999941
+
+        $item->addSubItem([
+            'description' => 'Ticket: Ermäßigt',
+            'price'       => 16.80672,
+            'qty'         => 1,
+            'tax'         => .19,
+        ]);
+
+        // 16.80672 + (16.80672 *.19) = 19.9999968
+
+        // 21.9999941 + 19.9999968 = 41.9999909
+
+        $this->assertEquals(42.00, $this->laracart->total(false));
     }
 }

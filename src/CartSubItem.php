@@ -34,6 +34,7 @@ class CartSubItem
             Arr::set($this->options, $option, $value);
         }
 
+        $this->qty = isset($options['qty']) ? $options['qty'] : 1;
         $this->taxable = isset($options['taxable']) ? $options['taxable'] : true;
         $this->tax = isset($options['tax']) ? $options['tax'] == 0 ? config('laracart.tax') : $options['tax'] : config('laracart.tax');
 
@@ -57,7 +58,7 @@ class CartSubItem
      */
     public function subTotal()
     {
-        $price = $this->price * ($this->qty || 1);
+        $price = $this->price * $this->qty;
 
         if (isset($this->items)) {
             foreach ($this->items as $item) {

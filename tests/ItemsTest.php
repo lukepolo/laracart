@@ -172,7 +172,7 @@ class ItemsTest extends Orchestra\Testbench\TestCase
     {
         $item = $this->addItem(3, 10);
 
-        $this->assertEquals('$10.00', $item->getPrice());
+        $this->assertEquals(10, $item->getPrice());
         $this->assertEquals(3, $item->qty);
         $this->assertEquals(30, $item->subTotal(false));
         $this->assertEquals(32.1, $item->total(false));
@@ -187,12 +187,7 @@ class ItemsTest extends Orchestra\Testbench\TestCase
         $item = $this->addItem(3, 1000);
 
         $this->assertEquals(3210, $item->total(false));
-        $this->assertEquals('$10.00', $item->getPrice());
         $this->assertEquals(3000, $item->subTotal(false));
-
-        // Test that floats are converted to int and not rounded in the constructor
-        $item2 = $this->addItem(3, 1000.55);
-        $this->assertEquals(1000, $item2->getPrice(false));
     }
 
     /**
@@ -438,6 +433,7 @@ class ItemsTest extends Orchestra\Testbench\TestCase
         ]);
 
         $this->assertEquals(16.66, $this->laracart->netTotal(false));
+
         $this->assertEquals(20.00, $this->laracart->total(false));
 
         $this->addItem(1, 8.33, true, [
