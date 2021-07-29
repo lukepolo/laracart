@@ -4,7 +4,6 @@ namespace LukePOLO\LaraCart\Coupons;
 
 use LukePOLO\LaraCart\Contracts\CouponContract;
 use LukePOLO\LaraCart\Exceptions\CouponException;
-use LukePOLO\LaraCart\LaraCart;
 use LukePOLO\LaraCart\Traits\CouponTrait;
 
 /**
@@ -48,7 +47,7 @@ class Percentage implements CouponContract
     public function discount($price)
     {
         if ($this->canApply()) {
-            return ($price * $this->value);
+            return $price * $this->value;
         }
 
         return 0;
