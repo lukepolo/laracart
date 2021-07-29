@@ -47,7 +47,7 @@ class Percentage implements CouponContract
     public function discount($price)
     {
         if ($this->canApply()) {
-            return $price * $this->value;
+            return ($price * $this->value);
         }
 
         return 0;
