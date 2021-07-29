@@ -202,7 +202,7 @@ class CartItem
             for ($qty = 0; $qty < $this->qty; $qty++) {
                 $total += LaraCart::formatMoney($this->subTotalPerItem(false) + array_sum($this->taxSummary()[$qty]), null, null, false);
             }
-            
+
             $total -= $this->getDiscount(false);
 
             if ($total < 0) {
