@@ -89,7 +89,7 @@ class CartItem
         if ($this->lineItem === false) {
             $this->itemHash = null;
 
-            $cartItemArray = (array) $this;
+            $cartItemArray = (array) clone $this;
 
             unset($cartItemArray['discounted']);
             unset($cartItemArray['options']['qty']);
