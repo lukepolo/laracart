@@ -379,10 +379,10 @@ class LaraCart implements LaraCartContract
         switch (count($matches)) {
             case 0:
                 return;
-            break;
+                break;
             case 1:
                 return $matches[0];
-            break;
+                break;
             default:
                 return $matches;
         }
