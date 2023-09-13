@@ -98,7 +98,7 @@ trait CouponTrait
      *
      * @param Carbon $startDate
      * @param Carbon $endDate
-     * @param $throwErrors
+     * @param        $throwErrors
      *
      * @throws CouponException
      *

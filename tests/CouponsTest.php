@@ -537,7 +537,6 @@ class CouponsTest extends Orchestra\Testbench\TestCase
         $this->assertEquals(440, $this->laracart->netTotal(false));
         $this->assertEquals(506, $this->laracart->total(false));
 
-
         $fixedCoupon = new LukePOLO\LaraCart\Coupons\Fixed('40 OFF', 40);
         $this->laracart->addCoupon($fixedCoupon);
         $this->assertCount(2, $this->laracart->getCoupons());

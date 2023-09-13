@@ -161,14 +161,14 @@ class LaraCart implements LaraCartContract
             $coupon->discounted = 0;
             foreach ($this->getItems() as $item) {
                 for ($qty = 0; $qty < $item->qty; $qty++) {
-                 if (!$item->coupon) {
+                    if (!$item->coupon) {
 //                     $item->discounted = [];
 //                     for ($qty = 0; $qty < $item->qty; $qty++) {
 //                         $coupon->discounted += $item->discounted[$qty] = $this->formatMoney($coupon->discount($item->subTotalPerItem(false)), null, null, false);
 //                     }
-                    $discount = $this->formatMoney($coupon->discount($item->subTotalPerItem(false)), null, null, false);
-                    $coupon->discounted += $discount;
-                    array_push($item->discounted, $discount);
+                        $discount = $this->formatMoney($coupon->discount($item->subTotalPerItem(false)), null, null, false);
+                        $coupon->discounted += $discount;
+                        array_push($item->discounted, $discount);
                     }
                 }
             }
@@ -384,10 +384,10 @@ class LaraCart implements LaraCartContract
         switch (count($matches)) {
             case 0:
                 return;
-            break;
+                break;
             case 1:
                 return $matches[0];
-            break;
+                break;
             default:
                 return $matches;
         }
@@ -761,7 +761,7 @@ class LaraCart implements LaraCartContract
         // When prices in cents needs to be formatted, divide by 100 to allow formatting in whole units
         if (config('laracart.prices_in_cents', false) === true && $format) {
             $number = $number / 100;
-        // When prices in cents do not need to be formatted then cast to integer and round the price
+            // When prices in cents do not need to be formatted then cast to integer and round the price
         } elseif (config('laracart.prices_in_cents', false) === true && !$format) {
             $number = (int) round($number);
         } else {

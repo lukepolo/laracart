@@ -84,7 +84,7 @@ interface LaraCartContract
     /**
      * Creates a CartItem and then adds it to cart.
      *
-     * @param $itemID
+     * @param            $itemID
      * @param null       $name
      * @param int        $qty
      * @param string     $price
@@ -203,8 +203,8 @@ interface LaraCartContract
      * Allows to charge for additional fees that may or may not be taxable
      * ex - service fee , delivery fee, tips.
      *
-     * @param $name
-     * @param $amount
+     * @param            $name
+     * @param            $amount
      * @param bool|false $taxable
      * @param array      $options
      */
