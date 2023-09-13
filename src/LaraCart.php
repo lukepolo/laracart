@@ -160,13 +160,13 @@ class LaraCart implements LaraCartContract
         foreach ($this->getCoupons() as $coupon) {
             $coupon->discounted = 0;
             foreach ($this->getItems() as $item) {
-                for ($qty = 0; $qty < $item->qty; $qty++) {
                     if (!$item->coupon) {
+                for ($qty = 0; $qty < $item->qty; $qty++) {
                         $discount = $this->formatMoney($coupon->discount($item->subTotalPerItem(false)), null, null, false);
                         $coupon->discounted += $discount;
                         array_push($item->discounted, $discount);
-                    }
                 }
+                    }
             }
 
             if (config('laracart.discount_fees', false)) {
