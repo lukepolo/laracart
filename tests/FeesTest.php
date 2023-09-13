@@ -10,7 +10,7 @@ class FeesTest extends Orchestra\Testbench\TestCase
     /**
      * Add a fee.
      *
-     * @param $name
+     * @param     $name
      * @param int $fee
      */
     private function addFee($name, $fee = 10)
@@ -24,7 +24,7 @@ class FeesTest extends Orchestra\Testbench\TestCase
     /**
      * Add a fee with tax.
      *
-     * @param $name
+     * @param     $name
      * @param int $fee
      */
     private function addFeeTax($name, $fee = 100, $tax = 0.21)

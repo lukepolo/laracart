@@ -20,8 +20,8 @@ class Fixed implements CouponContract
     /**
      * Fixed constructor.
      *
-     * @param $code
-     * @param $value
+     * @param       $code
+     * @param       $value
      * @param array $options
      */
     public function __construct($code, $value, $options = [])
