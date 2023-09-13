@@ -20,8 +20,8 @@ class Percentage implements CouponContract
     /**
      * Percentage constructor.
      *
-     * @param $code
-     * @param $value
+     * @param       $code
+     * @param       $value
      * @param array $options
      *
      * @throws \Exception
