@@ -1,0 +1,29 @@
+name: CI
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        php-version: [ '7.2', '7.3', '7.4', '8.0' ]
+    env:
+      XDEBUG_MODE: coverage
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php-version }}
+          coverage: xdebug
+      - name: Install Composer dependencies
+        run: |
+          composer self-update
+          composer install --prefer-source --no-interaction
+      - name: Run PHPUnit
+        run: vendor/bin/phpunit
