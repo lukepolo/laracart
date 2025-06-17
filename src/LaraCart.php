@@ -646,11 +646,13 @@ class LaraCart implements LaraCartContract
     {
         $taxed = [];
         foreach ($this->getItems() as $item) {
-            foreach ($item->taxSummary() as $taxRate => $amount) {
-                if (!isset($taxed[(string) $taxRate])) {
-                    $taxed[(string) $taxRate] = 0;
+            foreach ($item->taxSummary() as $qtyIndex => $taxRates) {
+                foreach ($taxRates as $taxRate => $amount) {
+                    if (!isset($taxed[(string) $taxRate])) {
+                        $taxed[(string) $taxRate] = 0;
+                    }
+                    $taxed[(string) $taxRate] += $amount;
                 }
-                $taxed[(string) $taxRate] += $amount;
             }
         }
 
