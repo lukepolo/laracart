@@ -17,13 +17,6 @@
 - Item Model Relation at a global and item level
 - Quickly insert items with your own item models
 
-## Laravel compatibility
-
-| Laravel           | laracart   |
-| :---------------- | :--------- |
-| 5.1 \| 5.2 \| 5.3 | 1.1 \| 1.2 |
-| 5.4+              | 1.\*       |
-
 ## Installation
 
 Install the package through [Composer](http://getcomposer.org/). Edit your project's `composer.json` file by adding:
@@ -31,7 +24,7 @@ Install the package through [Composer](http://getcomposer.org/). Edit your proje
     {
         "require": {
             ........,
-            "lukepolo/laracart": "1.11.*"
+            "lukepolo/laracart": "2.5.*"
         }
     }
 
