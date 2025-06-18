@@ -19,14 +19,7 @@
 
 ## Installation
 
-Install the package through [Composer](http://getcomposer.org/). Edit your project's `composer.json` file by adding:
-
-    {
-        "require": {
-            ........,
-            "lukepolo/laracart": "2.5.*"
-        }
-    }
+composer require lukepolo/laracart
 
 If using 5.4 you will need to include the service providers / facade in `app/config/app.php`:
 

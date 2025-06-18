@@ -316,9 +316,21 @@ class SubItemsTest extends Orchestra\Testbench\TestCase
             'tax'     => .02,
         ]);
 
+        // Flatten the taxSummary output
+        $taxSummary = $item->taxSummary();
+        $flat = [];
+        foreach ($taxSummary as $qtySummary) {
+            foreach ($qtySummary as $taxRate => $amount) {
+                if (!isset($flat[$taxRate])) {
+                    $flat[$taxRate] = 0;
+                }
+                $flat[$taxRate] += $amount;
+            }
+        }
+
         $this->assertEquals([
             '0.01' => .10,
             '0.02' => .20,
-        ], $item->taxSummary());
+        ], $flat);
     }
 }

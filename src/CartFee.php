@@ -43,7 +43,7 @@ class CartFee
      */
     public function getAmount($format = true, $withTax = false)
     {
-        $total = $this->amount;
+        $total = $this->amount - $this->discounted;
 
         if ($withTax) {
             $total += $this->tax * $total;

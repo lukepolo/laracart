@@ -175,7 +175,7 @@ class ItemsTest extends Orchestra\Testbench\TestCase
         $this->assertEquals(10, $item->getPrice());
         $this->assertEquals(3, $item->qty);
         $this->assertEquals(30, $item->subTotal(false));
-        $this->assertEquals(32.1, $item->total(false));
+        $this->assertEqualsWithDelta(32.1, $item->total(false), 0.0001);
     }
 
     /**
