@@ -12,18 +12,15 @@ jobs:
     strategy:
       matrix:
         php-version: [ '8.2', '8.3', '8.4' ]
-    env:
-      XDEBUG_MODE: coverage
     steps:
       - uses: actions/checkout@v4
       - name: Set up PHP
         uses: shivammathur/setup-php@v2
         with:
           php-version: ${{ matrix.php-version }}
-          coverage: xdebug
       - name: Install Composer dependencies
         run: |
           composer self-update
           composer install --prefer-source --no-interaction
       - name: Run PHPUnit
-        run: vendor/bin/phpunit --coverage-text
+        run: vendor/bin/phpunit --no-coverage
