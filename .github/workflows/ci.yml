@@ -26,4 +26,4 @@ jobs:
           composer self-update
           composer install --prefer-source --no-interaction
       - name: Run PHPUnit
-        run: vendor/bin/phpunit
+        run: vendor/bin/phpunit --coverage-text
