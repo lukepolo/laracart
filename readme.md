@@ -1,4 +1,4 @@
-## LaraCart - Laravel Shopping Cart Package (<a href="http://laracart.lukepolo.com/">http://laracart.lukepolo.com</a>)
+## LaraCart - Laravel Shopping Cart Package
 
 [![Total Downloads](https://poser.pugx.org/lukepolo/laracart/downloads)](https://packagist.org/packages/lukepolo/laracart)
 [![License](https://poser.pugx.org/lukepolo/laracart/license)](https://packagist.org/packages/lukepolo/laracart)
@@ -19,34 +19,11 @@
 
 ## Installation
 
-composer require lukepolo/laracart
-
-If using 5.4 you will need to include the service providers / facade in `app/config/app.php`:
-
-```php
-	LukePOLO\LaraCart\LaraCartServiceProvider::class,
 ```
-
-Include the Facade :
-
-```php
-	'LaraCart' => LukePOLO\LaraCart\Facades\LaraCart::class,
-```
-
-Copy over the configuration file by running the command:
-
-```
+	composer require lukepolo/laracart
     php artisan vendor:publish --provider='LukePOLO\LaraCart\LaraCartServiceProvider'
 ```
 
 ### Documentation
 
 <a href="http://laracart.lukepolo.com/">http://laracart.lukepolo.com</a>
-
-To Contribute to documentation use this repo :
-
-https://github.com/lukepolo/laracart-docs
-
-## License
-
-MIT
