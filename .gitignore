@@ -1,4 +1,4 @@
 /vendor
 composer.lock
-.phpunit-watcher-cache.php
+build
 .phpunit.result.cache
