@@ -3,6 +3,10 @@
 [![Total Downloads](https://poser.pugx.org/lukepolo/laracart/downloads)](https://packagist.org/packages/lukepolo/laracart)
 [![License](https://poser.pugx.org/lukepolo/laracart/license)](https://packagist.org/packages/lukepolo/laracart)
 
+### Documentation
+
+<a href="http://laracart.lukepolo.com/">http://laracart.lukepolo.com</a>
+
 ## Features
 
 - Coupons
@@ -19,11 +23,12 @@
 
 ## Installation
 
-```
-	composer require lukepolo/laracart
-    php artisan vendor:publish --provider='LukePOLO\LaraCart\LaraCartServiceProvider'
+```bash
+composer require lukepolo/laracart
 ```
 
-### Documentation
+Publish vendor config and migration:
 
-<a href="http://laracart.lukepolo.com/">http://laracart.lukepolo.com</a>
+```bash
+php artisan vendor:publish --provider="LukePOLO\LaraCart\LaraCartServiceProvider
+```
