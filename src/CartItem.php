@@ -91,8 +91,16 @@ class CartItem
 
             $cartItemArray = (array) clone $this;
 
+            // Exclude private and protected properties. https://www.php.net/manual/en/language.types.array.php#language.types.array.casting
+            foreach ($cartItemArray as $key => $value) {
+                if ($key[0] === "\0") {
+                    unset($cartItemArray[$key]);
+                }
+            }
+
             unset($cartItemArray['discounted']);
             unset($cartItemArray['options']['qty']);
+            unset($cartItemArray['options']['model']);
 
             foreach ($this->excludeFromHash as $option) {
                 unset($cartItemArray['options'][$option]);
